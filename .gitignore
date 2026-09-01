@@ -1,0 +1,20 @@
+# dependencies
+node_modules/
+
+# environment / secrets
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# editor / tool settings
+.vscode/
+.idea/
+.claude/
+
+# logs
+*.log

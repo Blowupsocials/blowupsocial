@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – BlowUpSocial</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .dash-layout { display: flex; min-height: 100vh; padding-top: 66px; position: relative; z-index: 1; }
+    .sidebar {
+      width: 240px; flex-shrink: 0;
+      background: rgba(255,255,255,0.03);
+      border-right: 1px solid var(--border);
+      padding: 32px 16px;
+      position: fixed; top: 66px; left: 0; bottom: 0;
+      overflow-y: auto;
+    }
+    .sidebar-section { margin-bottom: 32px; }
+    .sidebar-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; padding: 0 8px; }
+    .sidebar-link {
+      display: flex; align-items: center; gap: 11px;
+      padding: 10px 12px; border-radius: 10px;
+      font-size: 0.84rem; font-weight: 500; color: var(--text-dim);
+      transition: all 0.2s; margin-bottom: 4px;
+    }
+    .sidebar-link i { width: 16px; text-align: center; font-size: 0.88rem; }
+    .sidebar-link:hover  { background: var(--glass); color: var(--text); }
+    .sidebar-link.active { background: rgba(236,72,153,0.08); color: #f9a8d4; border: 1px solid rgba(236,72,153,0.20); }
+    .sidebar-link.active i { color: #ec4899; }
+    .dash-main { margin-left: 240px; flex: 1; padding: 40px 40px; }
+    .dash-greeting { margin-bottom: 36px; }
+    .dash-greeting h1 { font-family:'Space Grotesk',sans-serif; font-size: 1.7rem; font-weight: 800; margin-bottom: 6px; }
+    .dash-greeting p { color: var(--text-muted); font-size: 0.88rem; }
+    .dash-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 36px; }
+    .dash-stat {
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px 20px;
+      backdrop-filter: blur(12px);
+    }
+    .dash-stat-icon { font-size: 1.2rem; margin-bottom: 14px; display: block; }
+    .dash-stat-num { font-family:'Space Grotesk',sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+    .dash-stat-lbl { font-size: 0.76rem; color: var(--text-muted); }
+    .dash-section-title { font-family:'Space Grotesk',sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
+    .orders-table { width: 100%; border-collapse: collapse; }
+    .orders-table th { text-align: left; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); padding: 10px 16px; border-bottom: 1px solid var(--border); }
+    .orders-table td { padding: 14px 16px; font-size: 0.84rem; border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--text-dim); }
+    .orders-table tr:hover td { background: var(--glass); color: var(--text); }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 50px; font-size: 0.7rem; font-weight: 700; }
+    .badge-green  { background: rgba(16,185,129,0.12); color: #34d399; border: 1px solid rgba(16,185,129,0.2); }
+    .badge-yellow { background: rgba(251,191,36,0.12);  color: #fbbf24; border: 1px solid rgba(251,191,36,0.2); }
+    .badge-blue   { background: rgba(59,130,246,0.12);  color: #60a5fa; border: 1px solid rgba(59,130,246,0.2); }
+    .badge-red    { background: rgba(239,68,68,0.12);   color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+    .orders-wrap { background: var(--glass); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; backdrop-filter: blur(12px); }
+    .empty-orders { text-align:center; padding:40px 20px; color:var(--text-muted); font-size:0.88rem; }
+    .empty-orders i { font-size:2rem; margin-bottom:12px; display:block; opacity:0.4; }
+    .skeleton { background:linear-gradient(90deg,rgba(124,58,237,0.06) 25%,rgba(124,58,237,0.12) 50%,rgba(124,58,237,0.06) 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:6px; height:18px; }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    @media(max-width:768px) { .sidebar{display:none} .dash-main{margin-left:0;padding:24px 16px} .dash-stats{grid-template-columns:1fr 1fr} }
+    @media(max-width:480px) { .dash-stats{grid-template-columns:1fr 1fr} .dash-main{padding:20px 14px} }
+  </style>
+</head>
+<body>
+
+  <div class="orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
+  </div>
+
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">
+        <img src="img/logo.jpg" alt="BlowUpSocial" class="logo-img" />
+      </a>
+      <div style="flex:1"></div>
+      <div class="nav-right">
+        <a href="index.html" class="btn-ghost"><i class="fas fa-store"></i> Browse Store</a>
+        <div id="user-avatar" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:800;cursor:pointer;color:#fff;box-shadow:0 0 16px rgba(236,72,153,0.4);">…</div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dash-layout">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Main</div>
+        <a href="dashboard.html" class="sidebar-link active"><i class="fas fa-gauge"></i> Dashboard</a>
+        <a href="#" class="sidebar-link"><i class="fas fa-bag-shopping"></i> My Orders</a>
+        <a href="#" class="sidebar-link"><i class="fas fa-star"></i> Favourites</a>
+        <a href="#" class="sidebar-link"><i class="fas fa-wallet"></i> Wallet</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Shop</div>
+        <a href="index.html" class="sidebar-link"><i class="fas fa-store"></i> Browse Store</a>
+        <a href="#" class="sidebar-link"><i class="fas fa-tag"></i> Pricing</a>
+        <a href="#" class="sidebar-link"><i class="fas fa-boxes-stacked"></i> Bulk Orders</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Account</div>
+        <a href="#" class="sidebar-link"><i class="fas fa-user"></i> Profile</a>
+        <a href="#" class="sidebar-link"><i class="fas fa-bell"></i> Notifications</a>
+        <a href="#" class="sidebar-link"><i class="fas fa-gear"></i> Settings</a>
+        <a href="#" class="sidebar-link" id="signout-btn" style="color:rgba(248,113,113,0.7)"><i class="fas fa-right-from-bracket"></i> Sign Out</a>
+      </div>
+    </aside>
+
+    <main class="dash-main">
+      <div class="dash-greeting">
+        <h1 id="greeting-text">Loading… 👋</h1>
+        <p>Here's what's happening with your account today.</p>
+      </div>
+
+      <div class="dash-stats">
+        <div class="dash-stat">
+          <span class="dash-stat-icon">📦</span>
+          <div class="dash-stat-num" id="stat-orders">—</div>
+          <div class="dash-stat-lbl">Total Orders</div>
+        </div>
+        <div class="dash-stat">
+          <span class="dash-stat-icon">✅</span>
+          <div class="dash-stat-num" id="stat-completed">—</div>
+          <div class="dash-stat-lbl">Completed</div>
+        </div>
+        <div class="dash-stat">
+          <span class="dash-stat-icon">💰</span>
+          <div class="dash-stat-num" id="stat-spent">—</div>
+          <div class="dash-stat-lbl">Total Spent</div>
+        </div>
+        <div class="dash-stat">
+          <span class="dash-stat-icon">💳</span>
+          <div class="dash-stat-num" id="stat-wallet">—</div>
+          <div class="dash-stat-lbl">Wallet Balance</div>
+        </div>
+      </div>
+
+      <div class="dash-section-title">Recent Orders</div>
+      <div class="orders-wrap">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Service</th>
+              <th>Date</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="orders-body">
+            <tr><td colspan="5"><div class="skeleton" style="margin:14px 16px;"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    function timeGreeting() {
+      const h = new Date().getHours();
+      if (h < 12) return 'Good morning';
+      if (h < 17) return 'Good afternoon';
+      return 'Good evening';
+    }
+
+    function initials(name) {
+      if (!name) return '?';
+      const parts = name.trim().split(' ').filter(Boolean);
+      return parts.length >= 2
+        ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+        : parts[0].slice(0, 2).toUpperCase();
+    }
+
+    function formatDate(iso) {
+      return new Date(iso).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+    }
+
+    function badgeClass(status) {
+      const s = (status || '').toLowerCase();
+      if (s === 'delivered') return 'badge-green';
+      if (s === 'cancelled') return 'badge-red';
+      if (s === 'processing' || s === 'pending') return 'badge-yellow';
+      return 'badge-blue';
+    }
+
+    function renderOrders(orders) {
+      const tbody = document.getElementById('orders-body');
+      if (!orders || orders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-orders"><i class="fas fa-bag-shopping"></i>No orders yet. <a href="index.html" style="color:var(--purple);font-weight:600;">Browse the store</a> to get started.</div></td></tr>`;
+        return;
+      }
+      tbody.innerHTML = orders.map(o => {
+        const ref = o.order_ref || `#${String(o.id).padStart(5, '0')}`;
+        return `
+          <tr>
+            <td>${ref}</td>
+            <td>${o.service}</td>
+            <td>${formatDate(o.created_at)}</td>
+            <td>$${parseFloat(o.amount).toFixed(2)}</td>
+            <td><span class="badge ${badgeClass(o.status)}">${o.status}</span></td>
+          </tr>`;
+      }).join('');
+    }
+
+    (async () => {
+      // Auth guard
+      const { data: { session } } = await db.auth.getSession();
+      if (!session) { window.location.href = 'login.html'; return; }
+
+      const user = session.user;
+
+      // Load profile
+      const { data: profile } = await db
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+
+      const name = profile?.full_name || user.email.split('@')[0];
+
+      // Update greeting + avatar
+      document.getElementById('greeting-text').textContent = `${timeGreeting()}, ${name.split(' ')[0]} 👋`;
+      document.getElementById('user-avatar').textContent = initials(name);
+
+      // Load orders
+      const { data: orders } = await db
+        .from('orders')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      const total     = orders?.length || 0;
+      const completed = orders?.filter(o => o.status === 'Delivered').length || 0;
+      const spent     = orders?.reduce((sum, o) => sum + parseFloat(o.amount || 0), 0) || 0;
+      const wallet    = parseFloat(profile?.wallet_balance || 0);
+
+      document.getElementById('stat-orders').textContent    = total;
+      document.getElementById('stat-completed').textContent = completed;
+      document.getElementById('stat-spent').textContent     = `$${spent.toFixed(2)}`;
+      document.getElementById('stat-wallet').textContent    = `$${wallet.toFixed(2)}`;
+
+      renderOrders(orders);
+
+      // Sign out
+      document.getElementById('signout-btn').addEventListener('click', async (e) => {
+        e.preventDefault();
+        await db.auth.signOut();
+        window.location.href = 'login.html';
+      });
+    })();
+  </script>
+</body>
+</html>
