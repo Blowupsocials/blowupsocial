@@ -5,251 +5,1031 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard – BlowUpSocial</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet" />
   <style>
-    .dash-layout { display: flex; min-height: 100vh; padding-top: 66px; position: relative; z-index: 1; }
-    .sidebar {
-      width: 240px; flex-shrink: 0;
-      background: rgba(255,255,255,0.03);
-      border-right: 1px solid var(--border);
-      padding: 32px 16px;
-      position: fixed; top: 66px; left: 0; bottom: 0;
-      overflow-y: auto;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f0f2f7; display: flex; min-height: 100vh; color: #1a1a2e; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; }
+
+    /* ── SIDEBAR ── */
+    .ds-sidebar {
+      width: 220px; background: #0f0e1c;
+      position: fixed; top: 0; left: 0; bottom: 0;
+      display: flex; flex-direction: column;
+      z-index: 200; overflow-y: auto;
     }
-    .sidebar-section { margin-bottom: 32px; }
-    .sidebar-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; padding: 0 8px; }
-    .sidebar-link {
-      display: flex; align-items: center; gap: 11px;
-      padding: 10px 12px; border-radius: 10px;
-      font-size: 0.84rem; font-weight: 500; color: var(--text-dim);
-      transition: all 0.2s; margin-bottom: 4px;
+    .ds-logo {
+      display: flex; align-items: center; gap: 10px;
+      padding: 20px 18px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      flex-shrink: 0;
     }
-    .sidebar-link i { width: 16px; text-align: center; font-size: 0.88rem; }
-    .sidebar-link:hover  { background: var(--glass); color: var(--text); }
-    .sidebar-link.active { background: rgba(236,72,153,0.08); color: #f9a8d4; border: 1px solid rgba(236,72,153,0.20); }
-    .sidebar-link.active i { color: #ec4899; }
-    .dash-main { margin-left: 240px; flex: 1; padding: 40px 40px; }
-    .dash-greeting { margin-bottom: 36px; }
-    .dash-greeting h1 { font-family:'Space Grotesk',sans-serif; font-size: 1.7rem; font-weight: 800; margin-bottom: 6px; }
-    .dash-greeting p { color: var(--text-muted); font-size: 0.88rem; }
-    .dash-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 36px; }
-    .dash-stat {
-      background: var(--glass); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 22px 20px;
-      backdrop-filter: blur(12px);
+    .ds-logo img { width: 30px; height: 30px; border-radius: 8px; object-fit: cover; }
+    .ds-logo-text { font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; font-weight: 800; color: #fff; letter-spacing: -0.3px; }
+
+    .ds-nav { flex: 1; padding: 14px 10px; display: flex; flex-direction: column; gap: 2px; }
+    .ds-nav-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.2); padding: 10px 12px 4px; }
+    .ds-nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px; border-radius: 8px;
+      font-size: 0.81rem; font-weight: 500;
+      color: rgba(255,255,255,0.45);
+      transition: all 0.15s; cursor: pointer;
     }
-    .dash-stat-icon { font-size: 1.2rem; margin-bottom: 14px; display: block; }
-    .dash-stat-num { font-family:'Space Grotesk',sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
-    .dash-stat-lbl { font-size: 0.76rem; color: var(--text-muted); }
-    .dash-section-title { font-family:'Space Grotesk',sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
-    .orders-table { width: 100%; border-collapse: collapse; }
-    .orders-table th { text-align: left; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); padding: 10px 16px; border-bottom: 1px solid var(--border); }
-    .orders-table td { padding: 14px 16px; font-size: 0.84rem; border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--text-dim); }
-    .orders-table tr:hover td { background: var(--glass); color: var(--text); }
-    .badge { display: inline-block; padding: 3px 10px; border-radius: 50px; font-size: 0.7rem; font-weight: 700; }
-    .badge-green  { background: rgba(16,185,129,0.12); color: #34d399; border: 1px solid rgba(16,185,129,0.2); }
-    .badge-yellow { background: rgba(251,191,36,0.12);  color: #fbbf24; border: 1px solid rgba(251,191,36,0.2); }
-    .badge-blue   { background: rgba(59,130,246,0.12);  color: #60a5fa; border: 1px solid rgba(59,130,246,0.2); }
-    .badge-red    { background: rgba(239,68,68,0.12);   color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
-    .orders-wrap { background: var(--glass); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; backdrop-filter: blur(12px); }
-    .empty-orders { text-align:center; padding:40px 20px; color:var(--text-muted); font-size:0.88rem; }
-    .empty-orders i { font-size:2rem; margin-bottom:12px; display:block; opacity:0.4; }
-    .skeleton { background:linear-gradient(90deg,rgba(124,58,237,0.06) 25%,rgba(124,58,237,0.12) 50%,rgba(124,58,237,0.06) 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:6px; height:18px; }
-    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
-    @media(max-width:768px) { .sidebar{display:none} .dash-main{margin-left:0;padding:24px 16px} .dash-stats{grid-template-columns:1fr 1fr} }
-    @media(max-width:480px) { .dash-stats{grid-template-columns:1fr 1fr} .dash-main{padding:20px 14px} }
+    .ds-nav-item i { width: 15px; text-align: center; font-size: 0.82rem; flex-shrink: 0; }
+    .ds-nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); }
+    .ds-nav-item.active { background: rgba(124,58,237,0.18); color: #a78bfa; }
+    .ds-nav-item.active i { color: #7c3aed; }
+    .ds-nav-item.danger { color: rgba(248,113,113,0.6); margin-top: 4px; }
+    .ds-nav-item.danger:hover { background: rgba(239,68,68,0.08); color: #f87171; }
+
+    .ds-nav-badge {
+      margin-left: auto; background: #ec4899;
+      color: #fff; font-size: 0.58rem; font-weight: 800;
+      padding: 2px 6px; border-radius: 50px; line-height: 1.4;
+    }
+
+    .ds-refer-card {
+      margin: 0 10px 12px;
+      background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+      border-radius: 14px; padding: 18px 16px; color: #fff; flex-shrink: 0;
+    }
+    .ds-refer-icon { font-size: 1.5rem; margin-bottom: 8px; }
+    .ds-refer-title { font-size: 0.82rem; font-weight: 700; margin-bottom: 4px; }
+    .ds-refer-desc { font-size: 0.7rem; opacity: 0.85; margin-bottom: 12px; line-height: 1.45; }
+    .ds-refer-btn {
+      background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3);
+      color: #fff; padding: 7px 0; border-radius: 8px;
+      font-size: 0.75rem; font-weight: 700; cursor: pointer;
+      transition: background 0.15s; width: 100%;
+    }
+    .ds-refer-btn:hover { background: rgba(255,255,255,0.28); }
+
+    .ds-user-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 14px; border-top: 1px solid rgba(255,255,255,0.06); flex-shrink: 0;
+    }
+    .ds-user-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, #ec4899, #7c3aed);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 800; color: #fff; flex-shrink: 0;
+    }
+    .ds-user-name { font-size: 0.78rem; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ds-user-email { font-size: 0.66rem; color: rgba(255,255,255,0.35); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* ── MAIN ── */
+    .ds-main { margin-left: 220px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+    /* ── TOPBAR ── */
+    .ds-topbar {
+      background: #fff; display: flex; align-items: center;
+      padding: 0 24px; height: 62px;
+      border-bottom: 1px solid #e8eaf0;
+      position: sticky; top: 0; z-index: 100; gap: 10px; flex-shrink: 0;
+    }
+    .ds-mob-toggle { display: none; background: none; border: none; cursor: pointer; font-size: 1.1rem; color: #4b5063; padding: 4px; }
+    .ds-topbar-left { flex: 1; min-width: 0; }
+    .ds-topbar-left h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 800; color: #1a1a2e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ds-topbar-left p { font-size: 0.72rem; color: #8b8fa8; margin-top: 1px; }
+    .ds-topbar-right { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+
+    .ds-btn-quick {
+      background: linear-gradient(135deg, #7c3aed, #ec4899); color: #fff; border: none;
+      padding: 7px 14px; border-radius: 8px; font-size: 0.78rem; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; gap: 6px; transition: opacity 0.15s; white-space: nowrap;
+    }
+    .ds-btn-quick:hover { opacity: 0.88; }
+
+    .ds-bell {
+      position: relative; width: 34px; height: 34px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px; background: #f5f6fa; color: #6b7080;
+      cursor: pointer; font-size: 0.88rem; transition: background 0.15s; flex-shrink: 0;
+    }
+    .ds-bell:hover { background: #edeef5; }
+    .ds-bell-badge {
+      position: absolute; top: 3px; right: 3px;
+      width: 16px; height: 16px; background: #ec4899; border-radius: 50%;
+      border: 2px solid #fff; font-size: 0.5rem; font-weight: 800; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .ds-bal-chip {
+      display: flex; align-items: center; gap: 7px; padding: 5px 11px;
+      background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px;
+      font-size: 0.76rem; white-space: nowrap;
+    }
+    .ds-bal-chip span { color: #6b7280; }
+    .ds-bal-chip strong { color: #16a34a; font-weight: 700; }
+
+    .ds-btn-addfunds {
+      background: #16a34a; color: #fff; border: none;
+      padding: 7px 13px; border-radius: 8px; font-size: 0.76rem;
+      font-weight: 600; cursor: pointer; transition: opacity 0.15s; white-space: nowrap;
+    }
+    .ds-btn-addfunds:hover { opacity: 0.88; }
+
+    /* Profile dropdown */
+    .ds-profile-wrap { position: relative; flex-shrink: 0; }
+    .ds-profile-btn {
+      display: flex; align-items: center; gap: 7px;
+      background: none; border: 1px solid #e8eaf0;
+      padding: 4px 10px 4px 4px; border-radius: 50px; cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .ds-profile-btn:hover { border-color: #c4b5fd; background: #faf9ff; }
+    .ds-topbar-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg, #ec4899, #7c3aed);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.67rem; font-weight: 800; color: #fff;
+    }
+    .ds-profile-chevron { font-size: 0.65rem; color: #8b8fa8; transition: transform 0.2s; }
+    .ds-profile-wrap.open .ds-profile-chevron { transform: rotate(180deg); }
+
+    .ds-dropdown {
+      position: absolute; right: 0; top: calc(100% + 8px);
+      width: 210px; background: #fff;
+      border: 1px solid #e8eaf0; border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      opacity: 0; pointer-events: none;
+      transform: translateY(-6px); transition: opacity 0.18s, transform 0.18s;
+      z-index: 300;
+    }
+    .ds-profile-wrap.open .ds-dropdown { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .ds-dd-hdr { padding: 14px 14px 10px; border-bottom: 1px solid #f0f2f6; }
+    .ds-dd-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, #ec4899, #7c3aed);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 800; color: #fff; margin-bottom: 8px;
+    }
+    .ds-dd-name { font-size: 0.82rem; font-weight: 700; color: #1a1a2e; }
+    .ds-dd-email { font-size: 0.7rem; color: #8b8fa8; margin-top: 1px; }
+    .ds-dd-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 9px 14px; font-size: 0.79rem; font-weight: 500; color: #4b5063;
+      transition: background 0.12s; cursor: pointer;
+    }
+    .ds-dd-item:hover { background: #f9fafb; color: #1a1a2e; }
+    .ds-dd-item i { width: 14px; text-align: center; font-size: 0.8rem; color: #8b8fa8; }
+    .ds-dd-divider { height: 1px; background: #f0f2f6; margin: 4px 0; }
+    .ds-dd-item.danger { color: #ef4444; }
+    .ds-dd-item.danger i { color: #ef4444; }
+    .ds-dd-item.danger:hover { background: #fef2f2; }
+
+    /* ── CONTENT ── */
+    .ds-content { display: flex; gap: 18px; padding: 22px; flex: 1; align-items: flex-start; }
+    .ds-center { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+    .ds-right  { width: 278px; flex-shrink: 0; display: flex; flex-direction: column; gap: 14px; }
+
+    /* ── STAT CARDS ── */
+    .ds-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .ds-stat-card { background: #fff; border-radius: 14px; padding: 18px 16px 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+    .ds-stat-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+    .ds-stat-icon-wrap { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+    .si-blue   { background: #eff6ff; color: #3b82f6; }
+    .si-green  { background: #f0fdf4; color: #16a34a; }
+    .si-yellow { background: #fffbeb; color: #d97706; }
+    .si-purple { background: #f5f3ff; color: #7c3aed; }
+    .ds-stat-label { font-size: 0.68rem; color: #8b8fa8; font-weight: 500; margin-bottom: 4px; }
+    .ds-stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; font-weight: 800; color: #1a1a2e; line-height: 1; }
+    .ds-stat-trend { font-size: 0.69rem; font-weight: 600; margin-top: 4px; }
+    .trend-up { color: #16a34a; } .trend-neutral { color: #8b8fa8; }
+    .ds-sparkline { margin-top: 10px; overflow: hidden; }
+    .ds-sparkline svg { width: 100%; height: 28px; display: block; }
+
+    /* ── CARD SHELL ── */
+    .ds-card { background: #fff; border-radius: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; }
+    .ds-card-hdr { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid #f0f2f6; }
+    .ds-card-hdr-title { font-family: 'Space Grotesk', sans-serif; font-size: 0.88rem; font-weight: 700; color: #1a1a2e; }
+    .ds-card-hdr a { font-size: 0.73rem; color: #7c3aed; font-weight: 600; }
+    .ds-card-hdr a:hover { text-decoration: underline; }
+
+    /* Filter tabs */
+    .ds-filter-tabs { display: flex; gap: 4px; padding: 12px 20px; border-bottom: 1px solid #f0f2f6; overflow-x: auto; }
+    .ds-filter-tab {
+      padding: 5px 12px; border-radius: 6px; border: 1px solid transparent;
+      font-size: 0.74rem; font-weight: 600; color: #8b8fa8; cursor: pointer;
+      background: none; white-space: nowrap; transition: all 0.15s;
+    }
+    .ds-filter-tab:hover { background: #f5f3ff; color: #7c3aed; }
+    .ds-filter-tab.active { background: #f5f3ff; color: #7c3aed; border-color: #ddd6fe; }
+
+    /* ── ORDERS TABLE ── */
+    .ds-table-wrap { overflow-x: auto; }
+    .ds-table { width: 100%; border-collapse: collapse; min-width: 540px; }
+    .ds-table th {
+      text-align: left; font-size: 0.68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.6px; color: #8b8fa8;
+      padding: 9px 20px; background: #f9fafb; border-bottom: 1px solid #f0f2f6; white-space: nowrap;
+    }
+    .ds-table td { padding: 11px 20px; font-size: 0.8rem; color: #4b5063; border-bottom: 1px solid #f5f6fa; white-space: nowrap; }
+    .ds-table tr:last-child td { border-bottom: none; }
+    .ds-table tr:hover td { background: #fafbff; }
+    .td-order { color: #1a1a2e; font-weight: 600; }
+    .td-link { max-width: 140px; overflow: hidden; text-overflow: ellipsis; color: #7c3aed; font-weight: 500; }
+    .td-service { color: #1a1a2e; font-weight: 500; }
+
+    .ds-badge { display: inline-block; padding: 3px 9px; border-radius: 50px; font-size: 0.67rem; font-weight: 700; }
+    .badge-completed  { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+    .badge-inprogress { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+    .badge-processing { background: #eff6ff; color: #3b82f6; border: 1px solid #bfdbfe; }
+    .badge-pending    { background: #f5f5f5; color: #6b7280; border: 1px solid #e5e7eb; }
+    .badge-cancelled  { background: #fef2f2; color: #ef4444; border: 1px solid #fecaca; }
+
+    .ds-empty { text-align: center; padding: 36px 20px; color: #8b8fa8; font-size: 0.82rem; }
+    .ds-empty i { font-size: 1.8rem; display: block; margin-bottom: 10px; opacity: 0.3; }
+
+    /* ── SERVICES GRID ── */
+    .ds-services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding: 16px 20px; }
+    .ds-svc-card {
+      border: 1px solid #eff0f5; border-radius: 12px; padding: 14px;
+      display: flex; flex-direction: column; gap: 8px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .ds-svc-card:hover { border-color: #c4b5fd; box-shadow: 0 2px 10px rgba(124,58,237,0.08); }
+    .ds-svc-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #fff; }
+    .svc-ig { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+    .svc-tt { background: #010101; }
+    .svc-yt { background: #ff0000; }
+    .svc-sp { background: #1db954; }
+    .svc-x  { background: #14171a; }
+    .svc-fb { background: #1877f2; }
+    .ds-svc-name { font-size: 0.8rem; font-weight: 700; color: #1a1a2e; }
+    .ds-svc-type { font-size: 0.68rem; color: #8b8fa8; margin-top: -4px; }
+    .ds-svc-price { font-size: 0.72rem; color: #4b5063; }
+    .ds-svc-price strong { color: #7c3aed; font-weight: 700; }
+    .ds-svc-btn {
+      background: linear-gradient(135deg, #7c3aed, #ec4899); color: #fff; border: none;
+      padding: 6px 0; border-radius: 7px; font-size: 0.74rem; font-weight: 600;
+      cursor: pointer; transition: opacity 0.15s; width: 100%; margin-top: 2px;
+    }
+    .ds-svc-btn:hover { opacity: 0.85; }
+
+    /* ── SUPPORT BAR ── */
+    .ds-support {
+      background: linear-gradient(135deg, #f5f3ff, #fff); border: 1px solid #ede9fe;
+      border-radius: 14px; padding: 16px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04); gap: 16px;
+    }
+    .ds-support-left { display: flex; align-items: center; gap: 14px; }
+    .ds-support-icon { width: 42px; height: 42px; border-radius: 10px; background: #7c3aed; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .ds-support-text strong { display: block; color: #1a1a2e; font-size: 0.85rem; font-weight: 700; margin-bottom: 2px; }
+    .ds-support-text span { font-size: 0.76rem; color: #6b7280; }
+    .ds-support-btn {
+      background: #7c3aed; color: #fff; border: none;
+      padding: 8px 16px; border-radius: 8px; font-size: 0.78rem;
+      font-weight: 600; cursor: pointer; white-space: nowrap;
+      transition: opacity 0.15s; display: flex; align-items: center; gap: 6px;
+    }
+    .ds-support-btn:hover { opacity: 0.88; }
+
+    /* ── RIGHT PANEL ── */
+    .ds-bal-card {
+      background: linear-gradient(135deg, #16a34a 0%, #059669 100%);
+      border-radius: 16px; padding: 20px 18px; color: #fff;
+      position: relative; overflow: hidden; min-height: 150px;
+    }
+    .ds-bal-orb-1 { position: absolute; right: -30px; top: -30px; width: 110px; height: 110px; background: rgba(255,255,255,0.08); border-radius: 50%; }
+    .ds-bal-orb-2 { position: absolute; right: 20px; bottom: -40px; width: 90px; height: 90px; background: rgba(255,255,255,0.05); border-radius: 50%; }
+    .ds-mini-card {
+      position: absolute; right: 16px; top: 20px;
+      width: 72px; height: 46px; border-radius: 7px;
+      background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+      transform: rotate(12deg); backdrop-filter: blur(4px);
+      display: flex; flex-direction: column; justify-content: space-between; padding: 8px;
+    }
+    .ds-mini-card-chip { width: 14px; height: 10px; background: rgba(255,255,255,0.5); border-radius: 2px; }
+    .ds-mini-card-num { font-size: 0.45rem; color: rgba(255,255,255,0.7); letter-spacing: 0.5px; font-weight: 600; }
+    .ds-bal-card-lbl { font-size: 0.72rem; opacity: 0.85; margin-bottom: 6px; position: relative; z-index: 1; }
+    .ds-bal-card-amt { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 14px; line-height: 1; position: relative; z-index: 1; }
+    .ds-bal-card-btn {
+      background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3);
+      color: #fff; padding: 8px 0; border-radius: 8px;
+      font-size: 0.78rem; font-weight: 700; cursor: pointer; width: 100%;
+      transition: background 0.15s; position: relative; z-index: 1;
+    }
+    .ds-bal-card-btn:hover { background: rgba(255,255,255,0.28); }
+
+    .ds-panel-card { background: #fff; border-radius: 14px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+    .ds-panel-title { font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem; font-weight: 700; color: #1a1a2e; margin-bottom: 12px; }
+
+    .ds-qa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+    .ds-qa-btn {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 6px; padding: 14px 8px; border-radius: 10px; border: none;
+      cursor: pointer; font-size: 0.7rem; font-weight: 600;
+      transition: opacity 0.15s, transform 0.1s; line-height: 1;
+    }
+    .ds-qa-btn:hover { opacity: 0.8; }
+    .ds-qa-btn:active { transform: scale(0.96); }
+    .ds-qa-btn i { font-size: 1rem; }
+    .qa-purple { background: #f5f3ff; color: #7c3aed; }
+    .qa-green  { background: #f0fdf4; color: #16a34a; }
+    .qa-blue   { background: #eff6ff; color: #3b82f6; }
+    .qa-orange { background: #fff7ed; color: #ea580c; }
+
+    .ds-ann-list { display: flex; flex-direction: column; gap: 12px; }
+    .ds-ann-item { display: flex; gap: 9px; align-items: flex-start; }
+    .ds-ann-dot { width: 7px; height: 7px; border-radius: 50%; background: #7c3aed; flex-shrink: 0; margin-top: 5px; }
+    .ds-ann-title { font-size: 0.76rem; font-weight: 600; color: #1a1a2e; margin-bottom: 2px; }
+    .ds-ann-desc { font-size: 0.69rem; color: #8b8fa8; line-height: 1.4; }
+
+    /* ── RECENT ACTIVITY (right panel) ── */
+    .ds-activity-list { display: flex; flex-direction: column; }
+    .ds-act-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 0; border-bottom: 1px solid #f5f6fa;
+    }
+    .ds-act-item:last-child { border-bottom: none; }
+    .ds-act-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; color: #fff; flex-shrink: 0; }
+    .ds-act-info { flex: 1; min-width: 0; }
+    .ds-act-name { font-size: 0.75rem; font-weight: 600; color: #1a1a2e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ds-act-time { font-size: 0.67rem; color: #8b8fa8; margin-top: 1px; }
+    .ds-act-amount { font-size: 0.76rem; font-weight: 700; color: #1a1a2e; flex-shrink: 0; }
+
+    /* ── ADD FUNDS MODAL ── */
+    .ds-modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+      z-index: 500; display: flex; align-items: center; justify-content: center;
+      padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    }
+    .ds-modal-overlay.show { opacity: 1; pointer-events: all; }
+    .ds-modal {
+      background: #fff; border-radius: 18px; width: 100%; max-width: 420px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      transform: translateY(16px); transition: transform 0.2s;
+    }
+    .ds-modal-overlay.show .ds-modal { transform: translateY(0); }
+    .ds-modal-hdr {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 22px; border-bottom: 1px solid #f0f2f6;
+    }
+    .ds-modal-hdr h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 800; color: #1a1a2e; }
+    .ds-modal-close { background: #f5f6fa; border: none; width: 28px; height: 28px; border-radius: 6px; cursor: pointer; color: #6b7080; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+    .ds-modal-close:hover { background: #edeef5; }
+    .ds-modal-body { padding: 20px 22px 24px; }
+    .ds-modal-body p { font-size: 0.8rem; color: #6b7280; margin-bottom: 18px; line-height: 1.5; }
+    .ds-amount-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+    .ds-amount-btn {
+      border: 2px solid #e5e7eb; background: none; border-radius: 10px;
+      padding: 10px 0; font-size: 0.85rem; font-weight: 700; color: #4b5063;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .ds-amount-btn:hover { border-color: #7c3aed; color: #7c3aed; background: #f5f3ff; }
+    .ds-amount-btn.selected { border-color: #7c3aed; color: #7c3aed; background: #f5f3ff; }
+    .ds-modal-input-label { font-size: 0.78rem; font-weight: 600; color: #4b5063; margin-bottom: 6px; display: block; }
+    .ds-modal-input {
+      width: 100%; border: 2px solid #e5e7eb; border-radius: 10px;
+      padding: 10px 14px; font-size: 0.9rem; font-weight: 700; color: #1a1a2e;
+      outline: none; transition: border-color 0.15s; font-family: inherit;
+    }
+    .ds-modal-input:focus { border-color: #7c3aed; }
+    .ds-modal-methods { display: flex; gap: 8px; margin-top: 14px; margin-bottom: 16px; }
+    .ds-method-btn {
+      flex: 1; border: 2px solid #e5e7eb; background: none; border-radius: 10px;
+      padding: 9px; cursor: pointer; transition: all 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      font-size: 0.76rem; font-weight: 600; color: #4b5063;
+    }
+    .ds-method-btn:hover { border-color: #7c3aed; color: #7c3aed; }
+    .ds-method-btn.selected { border-color: #7c3aed; color: #7c3aed; background: #f5f3ff; }
+    .ds-modal-submit {
+      width: 100%; background: linear-gradient(135deg, #7c3aed, #ec4899);
+      color: #fff; border: none; padding: 12px; border-radius: 10px;
+      font-size: 0.88rem; font-weight: 700; cursor: pointer;
+      transition: opacity 0.15s; margin-top: 4px;
+    }
+    .ds-modal-submit:hover { opacity: 0.88; }
+    .ds-modal-note { text-align: center; font-size: 0.7rem; color: #9ca3af; margin-top: 10px; }
+
+    /* ── TOAST ── */
+    .ds-toast-wrap { position: fixed; bottom: 24px; right: 24px; z-index: 600; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+    .ds-toast {
+      background: #1a1a2e; color: #fff; padding: 11px 16px;
+      border-radius: 10px; font-size: 0.78rem; font-weight: 500;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 9px;
+      pointer-events: all; animation: toastIn 0.25s ease;
+      max-width: 280px; line-height: 1.4;
+    }
+    .ds-toast i { font-size: 0.85rem; flex-shrink: 0; }
+    .ds-toast.success i { color: #34d399; }
+    .ds-toast.info i { color: #60a5fa; }
+    .ds-toast.warn i { color: #fbbf24; }
+    @keyframes toastIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes toastOut { to { opacity: 0; transform: translateX(20px); } }
+
+    /* ── MOBILE ── */
+    .ds-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 150; }
+    .ds-overlay.show { display: block; }
+
+    @media (max-width: 1200px) {
+      .ds-stats { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 1060px) {
+      .ds-right { width: 248px; }
+    }
+    @media (max-width: 940px) {
+      .ds-services-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .ds-sidebar { transform: translateX(-100%); transition: transform 0.25s ease; }
+      .ds-sidebar.open { transform: translateX(0); }
+      .ds-main { margin-left: 0; }
+      .ds-mob-toggle { display: flex; align-items: center; justify-content: center; }
+      .ds-content { flex-direction: column; padding: 14px; }
+      .ds-right { width: 100%; }
+      .ds-stats { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .ds-topbar { padding: 0 14px; gap: 7px; }
+      .ds-topbar-left p { display: none; }
+      .ds-bal-chip span { display: none; }
+      .ds-btn-addfunds { display: none; }
+      .ds-services-grid { grid-template-columns: 1fr 1fr; }
+      .ds-amount-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 380px) {
+      .ds-stats { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="orbs">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <div class="orb orb-4"></div>
-  </div>
-
-  <nav class="navbar">
-    <div class="container nav-inner">
-      <a href="index.html" class="logo">
-        <img src="img/logo.jpg" alt="BlowUpSocial" class="logo-img" />
-      </a>
-      <div style="flex:1"></div>
-      <div class="nav-right">
-        <a href="index.html" class="btn-ghost"><i class="fas fa-store"></i> Browse Store</a>
-        <div id="user-avatar" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:800;cursor:pointer;color:#fff;box-shadow:0 0 16px rgba(236,72,153,0.4);">…</div>
+  <!-- ── ADD FUNDS MODAL ── -->
+  <div class="ds-modal-overlay" id="funds-modal">
+    <div class="ds-modal">
+      <div class="ds-modal-hdr">
+        <h3><i class="fas fa-wallet" style="color:#16a34a;margin-right:8px"></i>Add Funds</h3>
+        <button class="ds-modal-close" id="modal-close"><i class="fas fa-xmark"></i></button>
+      </div>
+      <div class="ds-modal-body">
+        <p>Choose an amount to top up your wallet. Funds are credited instantly after payment confirmation.</p>
+        <div class="ds-amount-grid">
+          <button class="ds-amount-btn" data-amt="10">$10</button>
+          <button class="ds-amount-btn" data-amt="25">$25</button>
+          <button class="ds-amount-btn selected" data-amt="50">$50</button>
+          <button class="ds-amount-btn" data-amt="100">$100</button>
+        </div>
+        <label class="ds-modal-input-label">Or enter a custom amount</label>
+        <input type="number" class="ds-modal-input" id="custom-amount" placeholder="0.00" min="1" max="10000" />
+        <div class="ds-modal-methods">
+          <button class="ds-method-btn selected" data-method="card"><i class="fas fa-credit-card"></i> Card</button>
+          <button class="ds-method-btn" data-method="paypal"><i class="fab fa-paypal"></i> PayPal</button>
+          <button class="ds-method-btn" data-method="crypto"><i class="fab fa-bitcoin"></i> Crypto</button>
+        </div>
+        <button class="ds-modal-submit" id="modal-submit">Continue to Payment</button>
+        <p class="ds-modal-note"><i class="fas fa-lock"></i> Secured with 256-bit SSL encryption</p>
       </div>
     </div>
-  </nav>
+  </div>
 
-  <div class="dash-layout">
-    <aside class="sidebar">
-      <div class="sidebar-section">
-        <div class="sidebar-label">Main</div>
-        <a href="dashboard.html" class="sidebar-link active"><i class="fas fa-gauge"></i> Dashboard</a>
-        <a href="#" class="sidebar-link"><i class="fas fa-bag-shopping"></i> My Orders</a>
-        <a href="#" class="sidebar-link"><i class="fas fa-star"></i> Favourites</a>
-        <a href="#" class="sidebar-link"><i class="fas fa-wallet"></i> Wallet</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-label">Shop</div>
-        <a href="index.html" class="sidebar-link"><i class="fas fa-store"></i> Browse Store</a>
-        <a href="#" class="sidebar-link"><i class="fas fa-tag"></i> Pricing</a>
-        <a href="#" class="sidebar-link"><i class="fas fa-boxes-stacked"></i> Bulk Orders</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-label">Account</div>
-        <a href="#" class="sidebar-link"><i class="fas fa-user"></i> Profile</a>
-        <a href="#" class="sidebar-link"><i class="fas fa-bell"></i> Notifications</a>
-        <a href="#" class="sidebar-link"><i class="fas fa-gear"></i> Settings</a>
-        <a href="#" class="sidebar-link" id="signout-btn" style="color:rgba(248,113,113,0.7)"><i class="fas fa-right-from-bracket"></i> Sign Out</a>
-      </div>
-    </aside>
+  <!-- Mobile overlay -->
+  <div class="ds-overlay" id="ds-overlay"></div>
+  <!-- Toast container -->
+  <div class="ds-toast-wrap" id="toast-wrap"></div>
 
-    <main class="dash-main">
-      <div class="dash-greeting">
-        <h1 id="greeting-text">Loading… 👋</h1>
+  <!-- ── SIDEBAR ── -->
+  <aside class="ds-sidebar" id="ds-sidebar">
+    <div class="ds-logo">
+      <img src="img/logo.jpg" alt="BlowUpSocial" />
+      <span class="ds-logo-text">BlowUpSocial</span>
+    </div>
+
+    <nav class="ds-nav">
+      <div class="ds-nav-label">Main</div>
+      <a href="dashboard.html" class="ds-nav-item active"><i class="fas fa-gauge"></i> Dashboard</a>
+      <a href="index.html" class="ds-nav-item js-order"><i class="fas fa-plus-circle"></i> New Order</a>
+      <a href="#" class="ds-nav-item js-coming"><i class="fas fa-bag-shopping"></i> My Orders <span class="ds-nav-badge" id="orders-badge">0</span></a>
+
+      <div class="ds-nav-label">Shop</div>
+      <a href="index.html" class="ds-nav-item"><i class="fas fa-boxes-stacked"></i> Services</a>
+      <a href="#" class="ds-nav-item js-funds"><i class="fas fa-wallet"></i> Add Funds</a>
+      <a href="#" class="ds-nav-item js-coming"><i class="fas fa-right-left"></i> Transactions</a>
+
+      <div class="ds-nav-label">Account</div>
+      <a href="#" class="ds-nav-item js-coming"><i class="fas fa-users"></i> Referrals</a>
+      <a href="#" class="ds-nav-item js-coming"><i class="fas fa-star"></i> Favorites</a>
+      <a href="#" class="ds-nav-item js-coming"><i class="fas fa-code"></i> API Access</a>
+      <a href="#" class="ds-nav-item js-coming"><i class="fas fa-headset"></i> Support</a>
+      <a href="#" class="ds-nav-item js-coming"><i class="fas fa-gear"></i> Settings</a>
+      <a href="#" class="ds-nav-item danger" id="signout-btn"><i class="fas fa-right-from-bracket"></i> Sign Out</a>
+    </nav>
+
+    <div class="ds-refer-card">
+      <div class="ds-refer-icon">🚀</div>
+      <div class="ds-refer-title">Refer &amp; Earn</div>
+      <div class="ds-refer-desc">Invite friends and earn 5% commission on every order they place.</div>
+      <button class="ds-refer-btn js-coming">Start Earning</button>
+    </div>
+
+    <div class="ds-user-row">
+      <div class="ds-user-avatar" id="sidebar-avatar">…</div>
+      <div style="min-width:0">
+        <div class="ds-user-name" id="sidebar-name">Loading…</div>
+        <div class="ds-user-email" id="sidebar-email">…</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <div class="ds-main">
+
+    <!-- TOPBAR -->
+    <header class="ds-topbar">
+      <button class="ds-mob-toggle" id="mob-toggle" aria-label="Open sidebar"><i class="fas fa-bars"></i></button>
+      <div class="ds-topbar-left">
+        <h2 id="greeting-text">Welcome back! 👋</h2>
         <p>Here's what's happening with your account today.</p>
       </div>
+      <div class="ds-topbar-right">
+        <a href="index.html" class="ds-btn-quick"><i class="fas fa-bolt"></i> New Order</a>
+        <div class="ds-bell js-coming">
+          <i class="fas fa-bell"></i>
+          <span class="ds-bell-badge" id="notif-badge">3</span>
+        </div>
+        <div class="ds-bal-chip">
+          <span>Balance</span>
+          <strong id="topbar-wallet">$0.00</strong>
+        </div>
+        <button class="ds-btn-addfunds js-funds">+ Add Funds</button>
 
-      <div class="dash-stats">
-        <div class="dash-stat">
-          <span class="dash-stat-icon">📦</span>
-          <div class="dash-stat-num" id="stat-orders">—</div>
-          <div class="dash-stat-lbl">Total Orders</div>
-        </div>
-        <div class="dash-stat">
-          <span class="dash-stat-icon">✅</span>
-          <div class="dash-stat-num" id="stat-completed">—</div>
-          <div class="dash-stat-lbl">Completed</div>
-        </div>
-        <div class="dash-stat">
-          <span class="dash-stat-icon">💰</span>
-          <div class="dash-stat-num" id="stat-spent">—</div>
-          <div class="dash-stat-lbl">Total Spent</div>
-        </div>
-        <div class="dash-stat">
-          <span class="dash-stat-icon">💳</span>
-          <div class="dash-stat-num" id="stat-wallet">—</div>
-          <div class="dash-stat-lbl">Wallet Balance</div>
+        <!-- Profile button -->
+        <div class="ds-profile-wrap" id="profile-wrap">
+          <button class="ds-profile-btn" id="profile-btn">
+            <div class="ds-topbar-avatar" id="topbar-avatar">…</div>
+            <i class="fas fa-chevron-down ds-profile-chevron"></i>
+          </button>
+          <div class="ds-dropdown" id="profile-dropdown">
+            <div class="ds-dd-hdr">
+              <div class="ds-dd-avatar" id="dd-avatar">…</div>
+              <div class="ds-dd-name" id="dd-name">Loading…</div>
+              <div class="ds-dd-email" id="dd-email">…</div>
+            </div>
+            <div class="ds-dd-divider"></div>
+            <a href="#" class="ds-dd-item js-coming"><i class="fas fa-user"></i> My Profile</a>
+            <a href="#" class="ds-dd-item js-coming"><i class="fas fa-gear"></i> Settings</a>
+            <a href="#" class="ds-dd-item js-coming"><i class="fas fa-bell"></i> Notifications</a>
+            <div class="ds-dd-divider"></div>
+            <a href="#" class="ds-dd-item danger" id="dd-signout"><i class="fas fa-right-from-bracket"></i> Sign Out</a>
+          </div>
         </div>
       </div>
+    </header>
 
-      <div class="dash-section-title">Recent Orders</div>
-      <div class="orders-wrap">
-        <table class="orders-table">
-          <thead>
-            <tr>
-              <th>Order</th>
-              <th>Service</th>
-              <th>Date</th>
-              <th>Amount</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="orders-body">
-            <tr><td colspan="5"><div class="skeleton" style="margin:14px 16px;"></div></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </main>
-  </div>
+    <!-- CONTENT -->
+    <div class="ds-content">
+
+      <!-- CENTER COLUMN -->
+      <div class="ds-center">
+
+        <!-- STAT CARDS -->
+        <div class="ds-stats">
+          <div class="ds-stat-card">
+            <div class="ds-stat-top">
+              <div>
+                <div class="ds-stat-label">Total Orders</div>
+                <div class="ds-stat-num" id="stat-total">—</div>
+                <div class="ds-stat-trend trend-neutral" id="trend-total">All time</div>
+              </div>
+              <div class="ds-stat-icon-wrap si-blue"><i class="fas fa-bag-shopping"></i></div>
+            </div>
+            <div class="ds-sparkline">
+              <svg viewBox="0 0 100 28" preserveAspectRatio="none">
+                <polyline points="0,24 17,19 33,21 50,13 66,9 83,6 100,3" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="ds-stat-card">
+            <div class="ds-stat-top">
+              <div>
+                <div class="ds-stat-label">Completed</div>
+                <div class="ds-stat-num" id="stat-completed">—</div>
+                <div class="ds-stat-trend trend-up" id="trend-completed">↑ 0% rate</div>
+              </div>
+              <div class="ds-stat-icon-wrap si-green"><i class="fas fa-circle-check"></i></div>
+            </div>
+            <div class="ds-sparkline">
+              <svg viewBox="0 0 100 28" preserveAspectRatio="none">
+                <polyline points="0,25 17,20 33,17 50,13 66,9 83,5 100,2" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="ds-stat-card">
+            <div class="ds-stat-top">
+              <div>
+                <div class="ds-stat-label">In Progress</div>
+                <div class="ds-stat-num" id="stat-progress">—</div>
+                <div class="ds-stat-trend trend-neutral">Active now</div>
+              </div>
+              <div class="ds-stat-icon-wrap si-yellow"><i class="fas fa-spinner"></i></div>
+            </div>
+            <div class="ds-sparkline">
+              <svg viewBox="0 0 100 28" preserveAspectRatio="none">
+                <polyline points="0,14 17,18 33,11 50,19 66,9 83,14 100,7" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="ds-stat-card">
+            <div class="ds-stat-top">
+              <div>
+                <div class="ds-stat-label">Total Spent</div>
+                <div class="ds-stat-num" id="stat-spent">$0</div>
+                <div class="ds-stat-trend trend-neutral">Lifetime value</div>
+              </div>
+              <div class="ds-stat-icon-wrap si-purple"><i class="fas fa-dollar-sign"></i></div>
+            </div>
+            <div class="ds-sparkline">
+              <svg viewBox="0 0 100 28" preserveAspectRatio="none">
+                <polyline points="0,19 17,15 33,19 50,11 66,15 83,9 100,13" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- RECENT ORDERS -->
+        <div class="ds-card">
+          <div class="ds-card-hdr">
+            <span class="ds-card-hdr-title">Recent Orders</span>
+            <a href="#" class="js-coming">View All Orders</a>
+          </div>
+          <div class="ds-filter-tabs">
+            <button class="ds-filter-tab active" data-filter="all">All</button>
+            <button class="ds-filter-tab" data-filter="completed">Completed</button>
+            <button class="ds-filter-tab" data-filter="in-progress">In Progress</button>
+            <button class="ds-filter-tab" data-filter="pending">Pending</button>
+            <button class="ds-filter-tab" data-filter="cancelled">Cancelled</button>
+          </div>
+          <div class="ds-table-wrap">
+            <table class="ds-table">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Link / Target</th>
+                  <th>Service</th>
+                  <th>Qty</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="orders-body">
+                <tr>
+                  <td colspan="6" class="ds-empty">
+                    <i class="fas fa-circle-notch fa-spin"></i>
+                    Loading your orders…
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- POPULAR SERVICES -->
+        <div class="ds-card">
+          <div class="ds-card-hdr">
+            <span class="ds-card-hdr-title">Popular Services</span>
+            <a href="index.html">Browse All</a>
+          </div>
+          <div class="ds-services-grid">
+            <div class="ds-svc-card">
+              <div class="ds-svc-icon svc-ig"><i class="fab fa-instagram"></i></div>
+              <div><div class="ds-svc-name">Instagram</div><div class="ds-svc-type">Followers</div></div>
+              <div class="ds-svc-price">From <strong>$1.20</strong></div>
+              <button class="ds-svc-btn" onclick="location.href='index.html'">Order Now</button>
+            </div>
+            <div class="ds-svc-card">
+              <div class="ds-svc-icon svc-tt"><i class="fab fa-tiktok"></i></div>
+              <div><div class="ds-svc-name">TikTok</div><div class="ds-svc-type">Views</div></div>
+              <div class="ds-svc-price">From <strong>$0.75</strong></div>
+              <button class="ds-svc-btn" onclick="location.href='index.html'">Order Now</button>
+            </div>
+            <div class="ds-svc-card">
+              <div class="ds-svc-icon svc-yt"><i class="fab fa-youtube"></i></div>
+              <div><div class="ds-svc-name">YouTube</div><div class="ds-svc-type">Subscribers</div></div>
+              <div class="ds-svc-price">From <strong>$2.10</strong></div>
+              <button class="ds-svc-btn" onclick="location.href='index.html'">Order Now</button>
+            </div>
+            <div class="ds-svc-card">
+              <div class="ds-svc-icon svc-sp"><i class="fab fa-spotify"></i></div>
+              <div><div class="ds-svc-name">Spotify</div><div class="ds-svc-type">Plays</div></div>
+              <div class="ds-svc-price">From <strong>$0.50</strong></div>
+              <button class="ds-svc-btn" onclick="location.href='index.html'">Order Now</button>
+            </div>
+            <div class="ds-svc-card">
+              <div class="ds-svc-icon svc-x"><i class="fab fa-x-twitter"></i></div>
+              <div><div class="ds-svc-name">X (Twitter)</div><div class="ds-svc-type">Followers</div></div>
+              <div class="ds-svc-price">From <strong>$1.00</strong></div>
+              <button class="ds-svc-btn" onclick="location.href='index.html'">Order Now</button>
+            </div>
+            <div class="ds-svc-card">
+              <div class="ds-svc-icon svc-fb"><i class="fab fa-facebook-f"></i></div>
+              <div><div class="ds-svc-name">Facebook</div><div class="ds-svc-type">Page Likes</div></div>
+              <div class="ds-svc-price">From <strong>$1.50</strong></div>
+              <button class="ds-svc-btn" onclick="location.href='index.html'">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUPPORT BAR -->
+        <div class="ds-support">
+          <div class="ds-support-left">
+            <div class="ds-support-icon"><i class="fas fa-headset"></i></div>
+            <div class="ds-support-text">
+              <strong>Need Help?</strong>
+              <span>Our support team is available 24/7 — average response time under 10 minutes.</span>
+            </div>
+          </div>
+          <button class="ds-support-btn js-coming"><i class="fas fa-comment-dots"></i> Contact Support</button>
+        </div>
+
+      </div><!-- /ds-center -->
+
+      <!-- RIGHT PANEL -->
+      <aside class="ds-right">
+
+        <!-- Balance card -->
+        <div class="ds-bal-card">
+          <div class="ds-bal-orb-1"></div>
+          <div class="ds-bal-orb-2"></div>
+          <div class="ds-mini-card">
+            <div class="ds-mini-card-chip"></div>
+            <div class="ds-mini-card-num">•••• 4891</div>
+          </div>
+          <div class="ds-bal-card-lbl">Account Balance</div>
+          <div class="ds-bal-card-amt" id="right-wallet">$0.00</div>
+          <button class="ds-bal-card-btn js-funds">+ Add Funds</button>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="ds-panel-card">
+          <div class="ds-panel-title">Quick Actions</div>
+          <div class="ds-qa-grid">
+            <button class="ds-qa-btn qa-purple" onclick="location.href='index.html'"><i class="fas fa-plus"></i>New Order</button>
+            <button class="ds-qa-btn qa-green js-funds"><i class="fas fa-wallet"></i>Add Funds</button>
+            <button class="ds-qa-btn qa-blue js-coming"><i class="fas fa-headset"></i>Support</button>
+            <button class="ds-qa-btn qa-orange js-coming"><i class="fas fa-code"></i>API</button>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="ds-panel-card">
+          <div class="ds-panel-title">Recent Activity</div>
+          <div class="ds-activity-list" id="activity-list">
+            <div class="ds-act-item">
+              <div class="ds-act-icon" style="background:linear-gradient(135deg,#f09433,#bc1888)"><i class="fab fa-instagram"></i></div>
+              <div class="ds-act-info">
+                <div class="ds-act-name">Instagram Followers</div>
+                <div class="ds-act-time">Delivered · 2h ago</div>
+              </div>
+              <div class="ds-act-amount" style="color:#16a34a">✓</div>
+            </div>
+            <div class="ds-act-item">
+              <div class="ds-act-icon" style="background:#010101"><i class="fab fa-tiktok"></i></div>
+              <div class="ds-act-info">
+                <div class="ds-act-name">TikTok Views</div>
+                <div class="ds-act-time">In progress · 5h ago</div>
+              </div>
+              <div class="ds-act-amount" style="color:#d97706">⋯</div>
+            </div>
+            <div class="ds-act-item">
+              <div class="ds-act-icon" style="background:#1db954"><i class="fab fa-spotify"></i></div>
+              <div class="ds-act-info">
+                <div class="ds-act-name">Spotify Plays</div>
+                <div class="ds-act-time">Delivered · 1d ago</div>
+              </div>
+              <div class="ds-act-amount" style="color:#16a34a">✓</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Announcements -->
+        <div class="ds-panel-card">
+          <div class="ds-panel-title">Announcements</div>
+          <div class="ds-ann-list">
+            <div class="ds-ann-item">
+              <div class="ds-ann-dot"></div>
+              <div>
+                <div class="ds-ann-title">New Services Added</div>
+                <div class="ds-ann-desc">12 new services across Instagram &amp; TikTok added this week.</div>
+              </div>
+            </div>
+            <div class="ds-ann-item">
+              <div class="ds-ann-dot" style="background:#16a34a"></div>
+              <div>
+                <div class="ds-ann-title">Faster Delivery</div>
+                <div class="ds-ann-desc">Instagram Followers now delivered in under 2 hours on average.</div>
+              </div>
+            </div>
+            <div class="ds-ann-item">
+              <div class="ds-ann-dot" style="background:#d97706"></div>
+              <div>
+                <div class="ds-ann-title">Maintenance Notice</div>
+                <div class="ds-ann-desc">Brief downtime planned Sep 5 · 2–4 AM UTC.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+
+    </div><!-- /ds-content -->
+  </div><!-- /ds-main -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-client.js"></script>
-  <script src="js/main.js"></script>
   <script>
+    /* ── Toast ── */
+    function toast(msg, type = 'info') {
+      const icons = { info: 'fa-circle-info', success: 'fa-circle-check', warn: 'fa-triangle-exclamation' };
+      const wrap = document.getElementById('toast-wrap');
+      const el = document.createElement('div');
+      el.className = `ds-toast ${type}`;
+      el.innerHTML = `<i class="fas ${icons[type]}"></i><span>${msg}</span>`;
+      wrap.appendChild(el);
+      setTimeout(() => { el.style.animation = 'toastOut 0.25s ease forwards'; setTimeout(() => el.remove(), 250); }, 3000);
+    }
+
+    /* ── Mobile sidebar ── */
+    const sidebar = document.getElementById('ds-sidebar');
+    const overlay = document.getElementById('ds-overlay');
+    document.getElementById('mob-toggle').addEventListener('click', () => {
+      sidebar.classList.toggle('open'); overlay.classList.toggle('show');
+    });
+    overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('show'); });
+
+    /* ── Profile dropdown ── */
+    const profileWrap = document.getElementById('profile-wrap');
+    document.getElementById('profile-btn').addEventListener('click', e => {
+      e.stopPropagation(); profileWrap.classList.toggle('open');
+    });
+    document.addEventListener('click', () => profileWrap.classList.remove('open'));
+
+    /* ── Coming soon handler ── */
+    document.querySelectorAll('.js-coming').forEach(el => {
+      el.addEventListener('click', e => { e.preventDefault(); toast('Coming soon — this feature is under development.', 'info'); });
+    });
+
+    /* ── Add Funds modal ── */
+    const fundsModal  = document.getElementById('funds-modal');
+    let selectedAmt   = 50;
+    let selectedMethod = 'card';
+
+    function openFundsModal() { fundsModal.classList.add('show'); }
+    function closeFundsModal() { fundsModal.classList.remove('show'); }
+
+    document.querySelectorAll('.js-funds').forEach(el => { el.addEventListener('click', e => { e.preventDefault(); openFundsModal(); }); });
+    document.getElementById('modal-close').addEventListener('click', closeFundsModal);
+    fundsModal.addEventListener('click', e => { if (e.target === fundsModal) closeFundsModal(); });
+
+    document.querySelectorAll('.ds-amount-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.ds-amount-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedAmt = parseInt(btn.dataset.amt);
+        document.getElementById('custom-amount').value = '';
+      });
+    });
+
+    document.querySelectorAll('.ds-method-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.ds-method-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected'); selectedMethod = btn.dataset.method;
+      });
+    });
+
+    document.getElementById('modal-submit').addEventListener('click', () => {
+      const custom = parseFloat(document.getElementById('custom-amount').value);
+      const amount = custom > 0 ? custom : selectedAmt;
+      closeFundsModal();
+      toast(`Payment gateway coming soon! $${amount} via ${selectedMethod} noted.`, 'warn');
+    });
+
+    /* ── Filter tabs ── */
+    let allOrders = [];
+    document.querySelectorAll('.ds-filter-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.ds-filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const f = tab.dataset.filter;
+        if (f === 'all') { renderOrders(allOrders); return; }
+        const map = { completed: ['delivered','completed'], 'in-progress': ['in progress','processing'], pending: ['pending'], cancelled: ['cancelled'] };
+        const keys = map[f] || [];
+        renderOrders(allOrders.filter(o => keys.includes((o.status || '').toLowerCase())));
+      });
+    });
+
+    /* ── Helpers ── */
     function timeGreeting() {
       const h = new Date().getHours();
-      if (h < 12) return 'Good morning';
-      if (h < 17) return 'Good afternoon';
-      return 'Good evening';
+      return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
     }
 
     function initials(name) {
       if (!name) return '?';
-      const parts = name.trim().split(' ').filter(Boolean);
-      return parts.length >= 2
-        ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
-        : parts[0].slice(0, 2).toUpperCase();
+      const p = name.trim().split(' ').filter(Boolean);
+      return p.length >= 2 ? (p[0][0] + p[p.length-1][0]).toUpperCase() : p[0].slice(0,2).toUpperCase();
     }
 
     function formatDate(iso) {
-      return new Date(iso).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+      return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     }
 
-    function badgeClass(status) {
-      const s = (status || '').toLowerCase();
-      if (s === 'delivered') return 'badge-green';
-      if (s === 'cancelled') return 'badge-red';
-      if (s === 'processing' || s === 'pending') return 'badge-yellow';
-      return 'badge-blue';
+    function badgeClass(s) {
+      s = (s || '').toLowerCase();
+      if (s === 'delivered' || s === 'completed') return 'badge-completed';
+      if (s === 'cancelled')                       return 'badge-cancelled';
+      if (s === 'in progress')                     return 'badge-inprogress';
+      if (s === 'processing')                      return 'badge-processing';
+      return 'badge-pending';
     }
 
     function renderOrders(orders) {
       const tbody = document.getElementById('orders-body');
       if (!orders || orders.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-orders"><i class="fas fa-bag-shopping"></i>No orders yet. <a href="index.html" style="color:var(--purple);font-weight:600;">Browse the store</a> to get started.</div></td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="ds-empty"><i class="fas fa-bag-shopping"></i>No orders here yet.<br><a href="index.html" style="color:#7c3aed;font-weight:600;text-decoration:underline;">Browse the store to get started →</a></td></tr>`;
         return;
       }
-      tbody.innerHTML = orders.map(o => {
-        const ref = o.order_ref || `#${String(o.id).padStart(5, '0')}`;
-        return `
-          <tr>
-            <td>${ref}</td>
-            <td>${o.service}</td>
-            <td>${formatDate(o.created_at)}</td>
-            <td>$${parseFloat(o.amount).toFixed(2)}</td>
-            <td><span class="badge ${badgeClass(o.status)}">${o.status}</span></td>
-          </tr>`;
+      tbody.innerHTML = orders.slice(0, 10).map(o => {
+        const ref   = o.order_ref || `#${String(o.id).padStart(5,'0')}`;
+        const link  = o.link || o.target_url || '—';
+        const disp  = link !== '—' && link.length > 24 ? link.slice(0,24)+'…' : link;
+        const qty   = o.quantity != null ? Number(o.quantity).toLocaleString() : (o.amount ? `$${parseFloat(o.amount).toFixed(2)}` : '—');
+        const st    = o.status || 'Pending';
+        return `<tr>
+          <td class="td-order">${ref}</td>
+          <td class="td-link" title="${link}">${disp}</td>
+          <td class="td-service">${o.service || '—'}</td>
+          <td>${qty}</td>
+          <td><span class="ds-badge ${badgeClass(st)}">${st}</span></td>
+          <td>${formatDate(o.created_at)}</td>
+        </tr>`;
       }).join('');
     }
 
+    /* ── Main init ── */
     (async () => {
-      // Auth guard
       const { data: { session } } = await db.auth.getSession();
       if (!session) { window.location.href = 'login.html'; return; }
 
       const user = session.user;
 
-      // Load profile
-      const { data: profile } = await db
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single();
+      const { data: profile } = await db.from('profiles').select('*').eq('id', user.id).single();
 
-      const name = profile?.full_name || user.email.split('@')[0];
+      const name   = profile?.full_name || user.email.split('@')[0];
+      const email  = user.email || '';
+      const wallet = parseFloat(profile?.wallet_balance || 0);
+      const inits  = initials(name);
 
-      // Update greeting + avatar
-      document.getElementById('greeting-text').textContent = `${timeGreeting()}, ${name.split(' ')[0]} 👋`;
-      document.getElementById('user-avatar').textContent = initials(name);
+      /* Populate names & avatars */
+      document.getElementById('greeting-text').textContent  = `${timeGreeting()}, ${name.split(' ')[0]}! 👋`;
+      document.getElementById('sidebar-avatar').textContent = inits;
+      document.getElementById('sidebar-name').textContent   = name;
+      document.getElementById('sidebar-email').textContent  = email;
+      document.getElementById('topbar-avatar').textContent  = inits;
+      document.getElementById('dd-avatar').textContent      = inits;
+      document.getElementById('dd-name').textContent        = name;
+      document.getElementById('dd-email').textContent       = email;
 
-      // Load orders
-      const { data: orders } = await db
-        .from('orders')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+      /* Wallet */
+      const fmt = `$${wallet.toFixed(2)}`;
+      document.getElementById('topbar-wallet').textContent = fmt;
+      document.getElementById('right-wallet').textContent  = fmt;
 
-      const total     = orders?.length || 0;
-      const completed = orders?.filter(o => o.status === 'Delivered').length || 0;
-      const spent     = orders?.reduce((sum, o) => sum + parseFloat(o.amount || 0), 0) || 0;
-      const wallet    = parseFloat(profile?.wallet_balance || 0);
+      /* Orders */
+      const { data: orders } = await db.from('orders').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
+      allOrders = orders || [];
 
-      document.getElementById('stat-orders').textContent    = total;
+      const total      = allOrders.length;
+      const completed  = allOrders.filter(o => ['Delivered','Completed'].includes(o.status)).length;
+      const inProgress = allOrders.filter(o => ['In Progress','Processing'].includes(o.status)).length;
+      const spent      = allOrders.reduce((s, o) => s + parseFloat(o.amount || 0), 0);
+      const pct        = total > 0 ? Math.round(completed / total * 100) : 0;
+
+      document.getElementById('stat-total').textContent     = total;
       document.getElementById('stat-completed').textContent = completed;
-      document.getElementById('stat-spent').textContent     = `$${spent.toFixed(2)}`;
-      document.getElementById('stat-wallet').textContent    = `$${wallet.toFixed(2)}`;
+      document.getElementById('stat-progress').textContent  = inProgress;
+      document.getElementById('stat-spent').textContent     = `$${spent.toFixed(0)}`;
+      document.getElementById('trend-completed').textContent = `↑ ${pct}% rate`;
+      document.getElementById('trend-total').textContent     = `${total} orders total`;
+      document.getElementById('orders-badge').textContent    = total;
 
-      renderOrders(orders);
+      renderOrders(allOrders);
 
-      // Sign out
-      document.getElementById('signout-btn').addEventListener('click', async (e) => {
+      /* Sign out (sidebar + dropdown) */
+      async function doSignOut(e) {
         e.preventDefault();
         await db.auth.signOut();
         window.location.href = 'login.html';
-      });
+      }
+      document.getElementById('signout-btn').addEventListener('click', doSignOut);
+      document.getElementById('dd-signout').addEventListener('click', doSignOut);
     })();
   </script>
 </body>
