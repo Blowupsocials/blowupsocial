@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Order – BlowUpSocial</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { overflow-x: hidden; }
+    body { font-family: 'Inter', sans-serif; background: #f0f2f7; color: #1a1a2e; min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* ── TOPBAR ── */
+    .no-topbar {
+      background: #fff; height: 62px; display: flex; align-items: center;
+      padding: 0 24px; gap: 14px; border-bottom: 1px solid #e8eaf0;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .no-back {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.82rem; font-weight: 600; color: #6b7080;
+      transition: color 0.15s;
+    }
+    .no-back:hover { color: #7c3aed; }
+    .no-title {
+      font-family: 'Space Grotesk', sans-serif; font-size: 1rem;
+      font-weight: 800; color: #1a1a2e; flex: 1;
+    }
+    .no-wallet {
+      display: flex; align-items: center; gap: 7px; padding: 6px 12px;
+      background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px;
+      font-size: 0.78rem; white-space: nowrap;
+    }
+    .no-wallet span { color: #6b7280; }
+    .no-wallet strong { color: #16a34a; font-weight: 700; }
+
+    /* ── PAGE BODY ── */
+    .no-page { max-width: 1200px; margin: 0 auto; padding: 24px 20px 80px; }
+
+    /* ── PLATFORM TABS ── */
+    .no-platforms {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+    }
+    .no-plat-btn {
+      display: flex; align-items: center; gap: 7px;
+      padding: 8px 16px; border-radius: 50px;
+      border: 1.5px solid #e5e7eb; background: #fff;
+      font-size: 0.78rem; font-weight: 600; color: #6b7080;
+      transition: all 0.15s; white-space: nowrap;
+    }
+    .no-plat-btn:hover { border-color: #c4b5fd; color: #7c3aed; }
+    .no-plat-btn.active { background: #7c3aed; border-color: #7c3aed; color: #fff; }
+    .no-plat-btn i { font-size: 0.85rem; }
+
+    /* ── SEARCH ── */
+    .no-search-wrap { position: relative; margin-bottom: 20px; }
+    .no-search {
+      width: 100%; padding: 11px 16px 11px 42px;
+      border: 1.5px solid #e5e7eb; border-radius: 10px;
+      font-size: 0.85rem; font-family: inherit; outline: none;
+      transition: border-color 0.15s; background: #fff;
+    }
+    .no-search:focus { border-color: #7c3aed; }
+    .no-search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 0.85rem; pointer-events: none; }
+
+    /* ── STATS BAR ── */
+    .no-stats { display: flex; gap: 14px; margin-bottom: 20px; }
+    .no-stat { background: #fff; border-radius: 10px; padding: 12px 18px; flex: 1; border: 1px solid #f0f2f6; }
+    .no-stat-label { font-size: 0.68rem; color: #8b8fa8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .no-stat-val { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 800; color: #1a1a2e; margin-top: 2px; }
+
+    /* ── SERVICE GRID ── */
+    .no-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+    .no-svc-card {
+      background: #fff; border: 1.5px solid #f0f2f6; border-radius: 14px;
+      padding: 16px; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .no-svc-card:hover { border-color: #c4b5fd; box-shadow: 0 4px 16px rgba(124,58,237,0.08); }
+    .no-svc-top { display: flex; align-items: flex-start; gap: 12px; }
+    .no-svc-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #fff; flex-shrink: 0; }
+    .no-svc-info { flex: 1; min-width: 0; }
+    .no-svc-name { font-size: 0.82rem; font-weight: 700; color: #1a1a2e; line-height: 1.3; }
+    .no-svc-cat  { font-size: 0.68rem; color: #8b8fa8; margin-top: 2px; }
+    .no-svc-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+    .no-svc-tag {
+      font-size: 0.66rem; font-weight: 600; padding: 3px 8px;
+      border-radius: 50px; background: #f5f3ff; color: #7c3aed;
+    }
+    .no-svc-tag.green { background: #f0fdf4; color: #16a34a; }
+    .no-svc-tag.blue  { background: #eff6ff; color: #3b82f6; }
+    .no-svc-footer { display: flex; align-items: center; justify-content: space-between; }
+    .no-svc-price { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 800; color: #7c3aed; }
+    .no-svc-price-sub { font-size: 0.65rem; color: #9ca3af; font-weight: 400; font-family: 'Inter', sans-serif; }
+    .no-svc-order-btn {
+      background: linear-gradient(135deg, #7c3aed, #ec4899); color: #fff;
+      border: none; padding: 7px 16px; border-radius: 8px;
+      font-size: 0.76rem; font-weight: 700; transition: opacity 0.15s;
+    }
+    .no-svc-order-btn:hover { opacity: 0.85; }
+
+    /* Platform icon colors */
+    .pi-ig  { background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
+    .pi-tt  { background: #010101; }
+    .pi-yt  { background: #ff0000; }
+    .pi-fb  { background: #1877f2; }
+    .pi-x   { background: #14171a; }
+    .pi-sp  { background: #1db954; }
+    .pi-sc  { background: #fffc00; color: #000 !important; }
+    .pi-tg  { background: #229ed9; }
+    .pi-li  { background: #0a66c2; }
+    .pi-th  { background: #000; }
+    .pi-am  { background: #e60026; }
+    .pi-pin { background: #e60023; }
+    .pi-dc  { background: #5865f2; }
+    .pi-def { background: linear-gradient(135deg, #7c3aed, #ec4899); }
+
+    /* ── EMPTY / LOADING ── */
+    .no-empty {
+      grid-column: 1 / -1; text-align: center;
+      padding: 60px 20px; color: #8b8fa8;
+    }
+    .no-empty i { font-size: 2.5rem; display: block; margin-bottom: 12px; opacity: 0.25; }
+    .no-spinner { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 80px; color: #8b8fa8; font-size: 0.88rem; }
+    .no-spinner i { font-size: 1.5rem; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── ORDER MODAL ── */
+    .no-modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+      z-index: 500; display: flex; align-items: flex-end;
+      justify-content: center; padding: 0;
+      opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    }
+    .no-modal-overlay.show { opacity: 1; pointer-events: all; }
+    .no-modal {
+      background: #fff; border-radius: 22px 22px 0 0;
+      width: 100%; max-width: 520px;
+      padding: 24px; max-height: 90vh; overflow-y: auto;
+      transform: translateY(30px); transition: transform 0.25s;
+    }
+    .no-modal-overlay.show .no-modal { transform: translateY(0); }
+    .no-modal-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .no-modal-hdr h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 800; color: #1a1a2e; }
+    .no-modal-close { background: #f5f6fa; border: none; width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #6b7080; font-size: 0.85rem; transition: background 0.15s; }
+    .no-modal-close:hover { background: #edeef5; }
+
+    .no-modal-svc { display: flex; gap: 12px; align-items: flex-start; padding: 14px; background: #faf9ff; border: 1px solid #ede9fe; border-radius: 12px; margin-bottom: 20px; }
+    .no-modal-svc-name { font-size: 0.84rem; font-weight: 700; color: #1a1a2e; line-height: 1.3; }
+    .no-modal-svc-cat  { font-size: 0.7rem; color: #8b8fa8; margin-top: 3px; }
+
+    .no-field { margin-bottom: 16px; }
+    .no-label { font-size: 0.78rem; font-weight: 600; color: #4b5063; margin-bottom: 6px; display: block; }
+    .no-input {
+      width: 100%; padding: 10px 14px; border: 1.5px solid #e5e7eb;
+      border-radius: 10px; font-size: 0.88rem; font-family: inherit;
+      outline: none; transition: border-color 0.15s; color: #1a1a2e;
+    }
+    .no-input:focus { border-color: #7c3aed; }
+    .no-qty-row { display: flex; gap: 10px; align-items: center; }
+    .no-qty-row .no-input { flex: 1; }
+    .no-qty-info { font-size: 0.7rem; color: #9ca3af; white-space: nowrap; }
+
+    .no-cost-bar {
+      background: linear-gradient(135deg, #f5f3ff, #fdf2f8);
+      border: 1px solid #ede9fe; border-radius: 12px;
+      padding: 14px 16px; margin-bottom: 20px;
+      display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    }
+    .no-cost-left { font-size: 0.78rem; color: #6b7080; }
+    .no-cost-left strong { display: block; font-size: 0.68rem; color: #9ca3af; font-weight: 500; margin-bottom: 2px; }
+    .no-cost-amt { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 800; color: #7c3aed; }
+    .no-cost-bal { font-size: 0.72rem; color: #6b7080; text-align: right; }
+    .no-cost-bal span { color: #16a34a; font-weight: 700; }
+
+    .no-submit {
+      width: 100%; background: linear-gradient(135deg, #7c3aed, #ec4899);
+      color: #fff; border: none; padding: 13px;
+      border-radius: 11px; font-size: 0.9rem; font-weight: 700;
+      transition: opacity 0.15s;
+    }
+    .no-submit:hover { opacity: 0.88; }
+    .no-submit:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .no-modal-note { text-align: center; font-size: 0.7rem; color: #9ca3af; margin-top: 10px; }
+
+    /* ── TOAST ── */
+    .no-toast-wrap { position: fixed; bottom: 24px; right: 24px; z-index: 600; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+    .no-toast {
+      background: #1a1a2e; color: #fff; padding: 11px 16px; border-radius: 10px;
+      font-size: 0.78rem; font-weight: 500; box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      display: flex; align-items: center; gap: 9px; pointer-events: all;
+      animation: tIn 0.25s ease; max-width: 300px; line-height: 1.4;
+    }
+    .no-toast i { font-size: 0.85rem; flex-shrink: 0; }
+    .no-toast.success i { color: #34d399; }
+    .no-toast.error   i { color: #f87171; }
+    .no-toast.info    i { color: #60a5fa; }
+    @keyframes tIn  { from { opacity:0; transform:translateX(20px); } to { opacity:1; transform:translateX(0); } }
+    @keyframes tOut { to   { opacity:0; transform:translateX(20px); } }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .no-topbar { padding: 0 14px; }
+      .no-page { padding: 16px 14px 100px; }
+      .no-stats { display: none; }
+      .no-grid { grid-template-columns: 1fr; }
+      .no-modal { border-radius: 22px 22px 0 0; padding: 20px; }
+    }
+    @media (max-width: 480px) {
+      .no-plat-btn span { display: none; }
+      .no-plat-btn { padding: 8px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toast -->
+  <div class="no-toast-wrap" id="toast-wrap"></div>
+
+  <!-- Order modal -->
+  <div class="no-modal-overlay" id="order-modal">
+    <div class="no-modal">
+      <div class="no-modal-hdr">
+        <h3>Place Order</h3>
+        <button class="no-modal-close" id="modal-close"><i class="fas fa-xmark"></i></button>
+      </div>
+
+      <div class="no-modal-svc" id="modal-svc-info">
+        <div class="no-svc-icon pi-def" id="modal-icon"><i class="fas fa-bolt"></i></div>
+        <div>
+          <div class="no-modal-svc-name" id="modal-svc-name">Service Name</div>
+          <div class="no-modal-svc-cat"  id="modal-svc-cat">Category</div>
+        </div>
+      </div>
+
+      <div class="no-field">
+        <label class="no-label">Link / Target URL</label>
+        <input class="no-input" type="url" id="order-link" placeholder="https://instagram.com/yourusername" />
+      </div>
+
+      <div class="no-field">
+        <label class="no-label">Quantity</label>
+        <div class="no-qty-row">
+          <input class="no-input" type="number" id="order-qty" placeholder="1000" min="1" />
+          <span class="no-qty-info" id="qty-range">Min: — / Max: —</span>
+        </div>
+      </div>
+
+      <div class="no-cost-bar">
+        <div class="no-cost-left">
+          <strong>Total cost</strong>
+          <div id="cost-display">$0.00</div>
+        </div>
+        <div class="no-cost-bal">
+          Your balance<br>
+          <span id="modal-balance">$0.00</span>
+        </div>
+      </div>
+
+      <div id="modal-error" style="display:none;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#ef4444;padding:10px 14px;border-radius:9px;font-size:.8rem;margin-bottom:14px;text-align:center;"></div>
+
+      <button class="no-submit" id="order-submit">Place Order <i class="fas fa-arrow-right"></i></button>
+      <p class="no-modal-note">Orders begin within minutes of confirmation.</p>
+    </div>
+  </div>
+
+  <!-- Topbar -->
+  <div class="no-topbar">
+    <a href="dashboard.html" class="no-back"><i class="fas fa-arrow-left"></i> Dashboard</a>
+    <div class="no-title">New Order</div>
+    <div class="no-wallet"><span>Balance</span><strong id="topbar-balance">$0.00</strong></div>
+  </div>
+
+  <!-- Page body -->
+  <div class="no-page">
+
+    <!-- Stats -->
+    <div class="no-stats">
+      <div class="no-stat">
+        <div class="no-stat-label">Services Available</div>
+        <div class="no-stat-val" id="stat-services">—</div>
+      </div>
+      <div class="no-stat">
+        <div class="no-stat-label">Platforms</div>
+        <div class="no-stat-val" id="stat-platforms">—</div>
+      </div>
+      <div class="no-stat">
+        <div class="no-stat-label">Your Balance</div>
+        <div class="no-stat-val" id="stat-balance">—</div>
+      </div>
+      <div class="no-stat">
+        <div class="no-stat-label">Lowest Price / 1K</div>
+        <div class="no-stat-val" id="stat-lowest">—</div>
+      </div>
+    </div>
+
+    <!-- Platform tabs -->
+    <div class="no-platforms" id="platform-tabs">
+      <button class="no-plat-btn active" data-plat="all"><i class="fas fa-th-large"></i><span>All</span></button>
+    </div>
+
+    <!-- Search -->
+    <div class="no-search-wrap">
+      <i class="fas fa-magnifying-glass no-search-icon"></i>
+      <input class="no-search" type="text" id="search-input" placeholder="Search services (e.g. Nigeria followers, TikTok views…)" />
+    </div>
+
+    <!-- Services grid -->
+    <div class="no-grid" id="services-grid">
+      <div class="no-spinner"><i class="fas fa-circle-notch"></i> Loading services from Peakerr…</div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js"></script>
+  <script>
+    /* ── Config ── */
+    const MARKUP = 2.0; // sell at 2x Peakerr cost — adjust as needed
+
+    /* ── Platform map ── */
+    const PLATFORMS = [
+      { key: 'instagram', label: 'Instagram', icon: 'fab fa-instagram', css: 'pi-ig', match: ['instagram'] },
+      { key: 'tiktok',    label: 'TikTok',    icon: 'fab fa-tiktok',    css: 'pi-tt', match: ['tiktok'] },
+      { key: 'youtube',   label: 'YouTube',   icon: 'fab fa-youtube',   css: 'pi-yt', match: ['youtube'] },
+      { key: 'facebook',  label: 'Facebook',  icon: 'fab fa-facebook-f',css: 'pi-fb', match: ['facebook'] },
+      { key: 'twitter',   label: 'X / Twitter',icon:'fab fa-x-twitter', css: 'pi-x',  match: ['twitter','x '] },
+      { key: 'spotify',   label: 'Spotify',   icon: 'fab fa-spotify',   css: 'pi-sp', match: ['spotify'] },
+      { key: 'snapchat',  label: 'Snapchat',  icon: 'fab fa-snapchat',  css: 'pi-sc', match: ['snapchat'] },
+      { key: 'telegram',  label: 'Telegram',  icon: 'fab fa-telegram',  css: 'pi-tg', match: ['telegram'] },
+      { key: 'linkedin',  label: 'LinkedIn',  icon: 'fab fa-linkedin-in',css:'pi-li', match: ['linkedin'] },
+      { key: 'threads',   label: 'Threads',   icon: 'fab fa-threads',   css: 'pi-th', match: ['threads'] },
+      { key: 'audiomack', label: 'Audiomack', icon: 'fas fa-music',     css: 'pi-am', match: ['audiomack'] },
+      { key: 'soundcloud',label: 'SoundCloud',icon: 'fab fa-soundcloud',css: 'pi-def',match: ['soundcloud'] },
+      { key: 'discord',   label: 'Discord',   icon: 'fab fa-discord',   css: 'pi-dc', match: ['discord'] },
+      { key: 'pinterest', label: 'Pinterest', icon: 'fab fa-pinterest',  css: 'pi-pin',match: ['pinterest'] },
+    ];
+
+    function detectPlatform(name, category) {
+      const hay = (name + ' ' + (category || '')).toLowerCase();
+      for (const p of PLATFORMS) {
+        if (p.match.some(m => hay.includes(m))) return p;
+      }
+      return null;
+    }
+
+    function getPlatformCSS(name, category) {
+      const p = detectPlatform(name, category);
+      return p ? { css: p.css, icon: p.icon } : { css: 'pi-def', icon: 'fas fa-star' };
+    }
+
+    /* ── Toast ── */
+    function toast(msg, type = 'info') {
+      const icons = { info: 'fa-circle-info', success: 'fa-circle-check', error: 'fa-circle-xmark' };
+      const wrap = document.getElementById('toast-wrap');
+      const el = document.createElement('div');
+      el.className = `no-toast ${type}`;
+      el.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i><span>${msg}</span>`;
+      wrap.appendChild(el);
+      setTimeout(() => { el.style.animation = 'tOut 0.25s ease forwards'; setTimeout(() => el.remove(), 250); }, 3500);
+    }
+
+    /* ── State ── */
+    let allServices = [];
+    let activePlat  = 'all';
+    let userBalance = 0;
+    let selectedSvc = null;
+
+    /* ── Peakerr API ── */
+    async function peakerr(body) {
+      const r = await fetch('/api/peakerr', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      return r.json();
+    }
+
+    /* ── Filter & render ── */
+    function getFilteredServices() {
+      const q = document.getElementById('search-input').value.trim().toLowerCase();
+      return allServices.filter(s => {
+        const platMatch = activePlat === 'all' || detectPlatform(s.name, s.category)?.key === activePlat;
+        const txtMatch  = !q || s.name.toLowerCase().includes(q) || (s.category||'').toLowerCase().includes(q);
+        return platMatch && txtMatch;
+      });
+    }
+
+    function renderServices() {
+      const grid = document.getElementById('services-grid');
+      const list = getFilteredServices();
+
+      if (!list.length) {
+        grid.innerHTML = `<div class="no-empty"><i class="fas fa-search"></i>No services found.<br><small>Try a different search or platform.</small></div>`;
+        return;
+      }
+
+      grid.innerHTML = list.map(s => {
+        const { css, icon } = getPlatformCSS(s.name, s.category);
+        const price = ((parseFloat(s.rate) * MARKUP)).toFixed(3);
+        const refillTag = s.refill == 1 ? `<span class="no-svc-tag green"><i class="fas fa-rotate-right"></i> Refill</span>` : '';
+        const cancelTag = s.cancel == 1 ? `<span class="no-svc-tag blue"><i class="fas fa-ban"></i> Cancel</span>` : '';
+        return `
+          <div class="no-svc-card" data-id="${s.service}" onclick="openOrder(${s.service})">
+            <div class="no-svc-top">
+              <div class="no-svc-icon ${css}"><i class="${icon}"></i></div>
+              <div class="no-svc-info">
+                <div class="no-svc-name">${s.name}</div>
+                <div class="no-svc-cat">${s.category || '—'}</div>
+              </div>
+            </div>
+            <div class="no-svc-meta">
+              <span class="no-svc-tag">Min: ${Number(s.min).toLocaleString()}</span>
+              <span class="no-svc-tag">Max: ${Number(s.max).toLocaleString()}</span>
+              ${refillTag}${cancelTag}
+            </div>
+            <div class="no-svc-footer">
+              <div class="no-svc-price">$${price}<span class="no-svc-price-sub"> / 1K</span></div>
+              <button class="no-svc-order-btn" onclick="event.stopPropagation();openOrder(${s.service})">Order Now</button>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    /* ── Build platform tabs from available services ── */
+    function buildTabs() {
+      const found = new Set();
+      allServices.forEach(s => {
+        const p = detectPlatform(s.name, s.category);
+        if (p) found.add(p.key);
+      });
+
+      const tabsEl = document.getElementById('platform-tabs');
+      const existing = `<button class="no-plat-btn active" data-plat="all"><i class="fas fa-th-large"></i><span>All</span></button>`;
+      const platBtns = PLATFORMS
+        .filter(p => found.has(p.key))
+        .map(p => `<button class="no-plat-btn" data-plat="${p.key}"><i class="${p.icon}"></i><span>${p.label}</span></button>`)
+        .join('');
+      tabsEl.innerHTML = existing + platBtns;
+
+      tabsEl.querySelectorAll('.no-plat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabsEl.querySelectorAll('.no-plat-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activePlat = btn.dataset.plat;
+          renderServices();
+        });
+      });
+    }
+
+    /* ── Order modal ── */
+    function openOrder(serviceId) {
+      selectedSvc = allServices.find(s => s.service == serviceId);
+      if (!selectedSvc) return;
+
+      const { css, icon } = getPlatformCSS(selectedSvc.name, selectedSvc.category);
+      document.getElementById('modal-icon').className = `no-svc-icon ${css}`;
+      document.getElementById('modal-icon').innerHTML = `<i class="${icon}"></i>`;
+      document.getElementById('modal-svc-name').textContent = selectedSvc.name;
+      document.getElementById('modal-svc-cat').textContent  = selectedSvc.category || '';
+      document.getElementById('qty-range').textContent = `Min: ${Number(selectedSvc.min).toLocaleString()} / Max: ${Number(selectedSvc.max).toLocaleString()}`;
+      document.getElementById('order-qty').min   = selectedSvc.min;
+      document.getElementById('order-qty').max   = selectedSvc.max;
+      document.getElementById('order-qty').value = selectedSvc.min;
+      document.getElementById('order-link').value = '';
+      document.getElementById('modal-balance').textContent = `$${userBalance.toFixed(2)}`;
+      document.getElementById('modal-error').style.display = 'none';
+      updateCost();
+
+      document.getElementById('order-modal').classList.add('show');
+    }
+
+    function closeOrder() { document.getElementById('order-modal').classList.remove('show'); }
+
+    function updateCost() {
+      if (!selectedSvc) return;
+      const qty  = parseInt(document.getElementById('order-qty').value) || 0;
+      const cost = (parseFloat(selectedSvc.rate) * MARKUP * qty / 1000);
+      document.getElementById('cost-display').textContent = `$${cost.toFixed(3)}`;
+    }
+
+    document.getElementById('order-qty').addEventListener('input', updateCost);
+    document.getElementById('modal-close').addEventListener('click', closeOrder);
+    document.getElementById('order-modal').addEventListener('click', e => { if (e.target.id === 'order-modal') closeOrder(); });
+    document.getElementById('search-input').addEventListener('input', renderServices);
+
+    /* ── Place order ── */
+    document.getElementById('order-submit').addEventListener('click', async () => {
+      if (!selectedSvc) return;
+      const link = document.getElementById('order-link').value.trim();
+      const qty  = parseInt(document.getElementById('order-qty').value);
+      const cost = parseFloat(selectedSvc.rate) * MARKUP * qty / 1000;
+      const errEl = document.getElementById('modal-error');
+
+      errEl.style.display = 'none';
+
+      if (!link) { errEl.textContent = 'Please enter a link or target URL.'; errEl.style.display = 'block'; return; }
+      if (!qty || qty < selectedSvc.min || qty > selectedSvc.max) {
+        errEl.textContent = `Quantity must be between ${selectedSvc.min} and ${selectedSvc.max}.`;
+        errEl.style.display = 'block'; return;
+      }
+      if (cost > userBalance) {
+        errEl.textContent = `Insufficient balance. You need $${cost.toFixed(2)} but have $${userBalance.toFixed(2)}.`;
+        errEl.style.display = 'block'; return;
+      }
+
+      const btn = document.getElementById('order-submit');
+      btn.disabled = true;
+      btn.textContent = 'Placing order…';
+
+      try {
+        // 1. Place on Peakerr
+        const result = await peakerr({ action: 'add', service: selectedSvc.service, link, quantity: qty });
+
+        if (result.error || !result.order) {
+          errEl.textContent = result.error || 'Peakerr rejected the order. Try again.';
+          errEl.style.display = 'block';
+          btn.disabled = false;
+          btn.innerHTML = 'Place Order <i class="fas fa-arrow-right"></i>';
+          return;
+        }
+
+        const peakerrOrderId = result.order;
+
+        // 2. Deduct from Supabase wallet
+        const { data: { session } } = await db.auth.getSession();
+        const userId = session.user.id;
+        const newBalance = parseFloat((userBalance - cost).toFixed(4));
+
+        await db.from('profiles').update({ wallet_balance: newBalance }).eq('id', userId);
+
+        // 3. Save order to Supabase
+        await db.from('orders').insert({
+          user_id:    userId,
+          order_ref:  `PKR-${peakerrOrderId}`,
+          service:    selectedSvc.name,
+          link:       link,
+          quantity:   qty,
+          amount:     cost.toFixed(4),
+          status:     'Pending',
+          created_at: new Date().toISOString()
+        });
+
+        // 4. Update local balance
+        userBalance = newBalance;
+        document.getElementById('topbar-balance').textContent = `$${newBalance.toFixed(2)}`;
+        document.getElementById('modal-balance').textContent  = `$${newBalance.toFixed(2)}`;
+        document.getElementById('stat-balance').textContent   = `$${newBalance.toFixed(2)}`;
+
+        closeOrder();
+        toast(`Order #PKR-${peakerrOrderId} placed! Processing will begin shortly.`, 'success');
+
+      } catch (err) {
+        errEl.textContent = 'Something went wrong. Please try again.';
+        errEl.style.display = 'block';
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = 'Place Order <i class="fas fa-arrow-right"></i>';
+    });
+
+    /* ── Main init ── */
+    (async () => {
+      // Auth check
+      const { data: { session } } = await db.auth.getSession();
+      if (!session) { window.location.href = 'login.html'; return; }
+
+      // Load user profile
+      const { data: profile } = await db.from('profiles').select('wallet_balance').eq('id', session.user.id).single();
+      userBalance = parseFloat(profile?.wallet_balance || 0);
+      document.getElementById('topbar-balance').textContent = `$${userBalance.toFixed(2)}`;
+      document.getElementById('stat-balance').textContent   = `$${userBalance.toFixed(2)}`;
+
+      // Load services from Peakerr
+      const data = await peakerr({ action: 'services' });
+
+      if (!Array.isArray(data)) {
+        document.getElementById('services-grid').innerHTML =
+          `<div class="no-empty"><i class="fas fa-triangle-exclamation"></i>Could not load services. Please try again later.</div>`;
+        return;
+      }
+
+      allServices = data;
+
+      // Stats
+      const prices = data.map(s => parseFloat(s.rate) * MARKUP).filter(n => !isNaN(n));
+      const platCount = new Set(data.map(s => detectPlatform(s.name, s.category)?.key).filter(Boolean)).size;
+      document.getElementById('stat-services').textContent = data.length.toLocaleString();
+      document.getElementById('stat-platforms').textContent = platCount;
+      document.getElementById('stat-lowest').textContent = prices.length ? `$${Math.min(...prices).toFixed(4)}/K` : '—';
+
+      buildTabs();
+      renderServices();
+    })();
+  </script>
+</body>
+</html>

@@ -1,13 +1,10 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "**/*.html", "use": "@vercel/static" },
-    { "src": "css/**", "use": "@vercel/static" },
-    { "src": "js/**", "use": "@vercel/static" },
-    { "src": "img/**", "use": "@vercel/static" },
-    { "src": "images/**", "use": "@vercel/static" }
-  ],
+  "functions": {
+    "api/peakerr.js": { "runtime": "nodejs20.x" }
+  },
   "routes": [
+    { "src": "/api/peakerr", "dest": "/api/peakerr.js" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }
