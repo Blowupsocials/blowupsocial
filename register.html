@@ -28,61 +28,129 @@
     </div>
   </nav>
 
+  <style>
+    /* OTP verification screen */
+    .otp-screen { display: none; text-align: center; }
+    .otp-screen.show { display: block; }
+    .otp-email-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(236,72,153,0.12));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; margin: 0 auto 18px;
+    }
+    .otp-sent-to { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
+    .otp-sent-to strong { color: var(--text-primary); }
+    .otp-boxes {
+      display: flex; gap: 10px; justify-content: center;
+      margin: 0 auto 24px; max-width: 320px;
+    }
+    .otp-box {
+      flex: 1; max-width: 48px; height: 58px;
+      border: 2px solid #e5e7eb; border-radius: 12px;
+      text-align: center; font-size: 1.5rem; font-weight: 800;
+      color: var(--text-primary); outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      background: #fff; caret-color: transparent;
+    }
+    .otp-box:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,0.12); }
+    .otp-box.filled { border-color: #7c3aed; background: #faf8ff; }
+    .otp-resend { font-size: 0.8rem; color: var(--text-muted); margin-top: 18px; }
+    .otp-resend a { color: #a78bfa; font-weight: 600; cursor: pointer; }
+    .otp-resend a:hover { text-decoration: underline; }
+    .otp-back { background: none; border: none; color: var(--text-muted); font-size: 0.8rem; cursor: pointer; margin-top: 10px; display: inline-flex; align-items: center; gap: 5px; font-family: inherit; }
+    .otp-back:hover { color: var(--text-primary); }
+    .otp-timer { color: #8b8fa8; }
+  </style>
+
   <main class="auth-page">
     <div class="auth-card">
 
       <a href="index.html" class="logo"><img src="img/logo.jpg" alt="BlowUpSocial" class="logo-img" /></a>
 
-      <h2>Create account</h2>
-      <p class="auth-sub">Join 50,000+ creators. Free to sign up.</p>
+      <!-- STEP 1: Registration form -->
+      <div id="signupStep">
+        <h2>Create account</h2>
+        <p class="auth-sub">Join 50,000+ creators. Free to sign up.</p>
 
-      <form id="registerForm" onsubmit="handleRegister(event)">
-        <div class="form-group">
-          <label for="fullname">Full Name</label>
-          <input class="form-input" type="text" id="fullname" placeholder="John Doe" required />
-        </div>
-
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input class="form-input" type="email" id="email" placeholder="you@example.com" required />
-        </div>
-
-        <div class="form-group">
-          <label for="password">Password</label>
-          <div class="form-input-wrap">
-            <input class="form-input" type="password" id="password" placeholder="Create a strong password" required />
-            <i class="fas fa-eye input-icon" id="togglePwd" onclick="togglePassword('password','togglePwd')"></i>
+        <form id="registerForm" onsubmit="handleRegister(event)">
+          <div class="form-group">
+            <label for="fullname">Full Name</label>
+            <input class="form-input" type="text" id="fullname" placeholder="John Doe" required />
           </div>
-        </div>
 
-        <div class="form-group">
-          <label for="confirmPassword">Confirm Password</label>
-          <div class="form-input-wrap">
-            <input class="form-input" type="password" id="confirmPassword" placeholder="Repeat your password" required />
-            <i class="fas fa-eye input-icon" id="togglePwd2" onclick="togglePassword('confirmPassword','togglePwd2')"></i>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input class="form-input" type="email" id="email" placeholder="you@example.com" required />
           </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="form-input-wrap">
+              <input class="form-input" type="password" id="password" placeholder="Create a strong password" required />
+              <i class="fas fa-eye input-icon" id="togglePwd" onclick="togglePassword('password','togglePwd')"></i>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="form-input-wrap">
+              <input class="form-input" type="password" id="confirmPassword" placeholder="Repeat your password" required />
+              <i class="fas fa-eye input-icon" id="togglePwd2" onclick="togglePassword('confirmPassword','togglePwd2')"></i>
+            </div>
+          </div>
+
+          <div style="margin-bottom:22px;">
+            <label class="remember-row" style="font-size:0.79rem;color:var(--text-muted);">
+              <input type="checkbox" required />
+              I agree to the <a href="#" style="color:#a78bfa;">Terms of Service</a> and <a href="#" style="color:#a78bfa;">Privacy Policy</a>
+            </label>
+          </div>
+
+          <button type="submit" class="btn-auth" id="registerBtn">Create Account <i class="fas fa-arrow-right"></i></button>
+        </form>
+
+        <div class="auth-divider">or sign up with</div>
+
+        <button class="btn-social" onclick="void(0)">
+          <i class="fab fa-google" style="color:#ea4335"></i> Sign up with Google
+        </button>
+        <button class="btn-social" onclick="void(0)">
+          <i class="fab fa-facebook-f" style="color:#1877f2"></i> Sign up with Facebook
+        </button>
+
+        <p class="auth-switch">Already have an account? <a href="login.html">Sign in</a></p>
+      </div>
+
+      <!-- STEP 2: OTP verification -->
+      <div class="otp-screen" id="verifyStep">
+        <div class="otp-email-icon">📧</div>
+        <h2 style="margin-bottom:10px;">Verify your email</h2>
+        <p class="otp-sent-to">We sent a 6-digit code to<br><strong id="otp-display-email"></strong></p>
+
+        <div id="otp-msg"></div>
+
+        <div class="otp-boxes" id="otp-boxes">
+          <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" />
+          <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" />
+          <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" />
+          <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" />
+          <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" />
+          <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" />
         </div>
 
-        <div style="margin-bottom:22px;">
-          <label class="remember-row" style="font-size:0.79rem;color:var(--text-muted);">
-            <input type="checkbox" required />
-            I agree to the <a href="#" style="color:#a78bfa;">Terms of Service</a> and <a href="#" style="color:#a78bfa;">Privacy Policy</a>
-          </label>
-        </div>
+        <button class="btn-auth" id="otp-submit-btn" onclick="handleVerify()">
+          Verify Code <i class="fas fa-arrow-right"></i>
+        </button>
 
-        <button type="submit" class="btn-auth">Create Account <i class="fas fa-arrow-right"></i></button>
-      </form>
-
-      <div class="auth-divider">or sign up with</div>
-
-      <button class="btn-social" onclick="void(0)">
-        <i class="fab fa-google" style="color:#ea4335"></i> Sign up with Google
-      </button>
-      <button class="btn-social" onclick="void(0)">
-        <i class="fab fa-facebook-f" style="color:#1877f2"></i> Sign up with Facebook
-      </button>
-
-      <p class="auth-switch">Already have an account? <a href="login.html">Sign in</a></p>
+        <p class="otp-resend">
+          Didn't receive it? <a id="resend-link" onclick="resendCode()">Resend code</a>
+          <span class="otp-timer" id="resend-timer"></span>
+        </p>
+        <button class="otp-back" onclick="goBack()">
+          <i class="fas fa-arrow-left"></i> Change email
+        </button>
+      </div>
 
     </div>
   </main>
@@ -91,23 +159,25 @@
   <script src="js/supabase-client.js"></script>
   <script src="js/main.js"></script>
   <script>
-    // Redirect already-logged-in users
     db.auth.getSession().then(({ data: { session } }) => {
       if (session) window.location.href = 'dashboard.html';
     });
 
+    let pendingEmail = '';
+    let resendCooldown = null;
+
+    /* ── Password toggle ── */
     function togglePassword(id, iconId) {
       const input = document.getElementById(id);
       const icon  = document.getElementById(iconId);
       if (input.type === 'password') {
-        input.type = 'text';
-        icon.classList.replace('fa-eye', 'fa-eye-slash');
+        input.type = 'text'; icon.classList.replace('fa-eye', 'fa-eye-slash');
       } else {
-        input.type = 'password';
-        icon.classList.replace('fa-eye-slash', 'fa-eye');
+        input.type = 'password'; icon.classList.replace('fa-eye-slash', 'fa-eye');
       }
     }
 
+    /* ── Signup form message ── */
     function showMsg(msg, isError = true) {
       let el = document.getElementById('auth-msg');
       if (!el) {
@@ -121,16 +191,91 @@
       el.textContent = msg;
     }
 
+    /* ── OTP screen message ── */
+    function showOtpMsg(msg, isError = true) {
+      const el = document.getElementById('otp-msg');
+      el.style.cssText = isError
+        ? 'background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.25);color:#ef4444;padding:11px 14px;border-radius:9px;font-size:.82rem;margin-bottom:16px;text-align:center;'
+        : 'background:rgba(5,150,105,.10);border:1px solid rgba(5,150,105,.25);color:#059669;padding:11px 14px;border-radius:9px;font-size:.82rem;margin-bottom:16px;text-align:center;';
+      el.textContent = msg;
+    }
+
+    /* ── Switch to OTP screen ── */
+    function showVerifyStep(email) {
+      pendingEmail = email;
+      document.getElementById('otp-display-email').textContent = email;
+      document.getElementById('signupStep').style.display = 'none';
+      document.getElementById('verifyStep').classList.add('show');
+      document.getElementById('otp-msg').textContent = '';
+      document.querySelectorAll('.otp-box').forEach(b => { b.value = ''; b.classList.remove('filled'); });
+      document.querySelectorAll('.otp-box')[0].focus();
+      startResendTimer(60);
+    }
+
+    function goBack() {
+      document.getElementById('verifyStep').classList.remove('show');
+      document.getElementById('signupStep').style.display = '';
+      clearInterval(resendCooldown);
+      document.getElementById('resend-timer').textContent = '';
+    }
+
+    /* ── Resend cooldown timer ── */
+    function startResendTimer(seconds) {
+      const link  = document.getElementById('resend-link');
+      const timer = document.getElementById('resend-timer');
+      link.style.pointerEvents = 'none'; link.style.opacity = '0.4';
+      let s = seconds;
+      timer.textContent = ` (${s}s)`;
+      resendCooldown = setInterval(() => {
+        s--;
+        if (s <= 0) {
+          clearInterval(resendCooldown);
+          timer.textContent = '';
+          link.style.pointerEvents = ''; link.style.opacity = '';
+        } else {
+          timer.textContent = ` (${s}s)`;
+        }
+      }, 1000);
+    }
+
+    /* ── OTP box keyboard navigation ── */
+    document.querySelectorAll('.otp-box').forEach((box, i, boxes) => {
+      box.addEventListener('input', () => {
+        box.value = box.value.replace(/\D/g, '').slice(-1);
+        box.classList.toggle('filled', box.value !== '');
+        if (box.value && i < boxes.length - 1) boxes[i + 1].focus();
+      });
+      box.addEventListener('keydown', e => {
+        if (e.key === 'Backspace' && !box.value && i > 0) {
+          boxes[i - 1].value = '';
+          boxes[i - 1].classList.remove('filled');
+          boxes[i - 1].focus();
+        }
+        if (e.key === 'ArrowLeft' && i > 0) boxes[i - 1].focus();
+        if (e.key === 'ArrowRight' && i < boxes.length - 1) boxes[i + 1].focus();
+      });
+      box.addEventListener('paste', e => {
+        e.preventDefault();
+        const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
+        [...pasted].forEach((ch, j) => {
+          if (boxes[i + j]) { boxes[i + j].value = ch; boxes[i + j].classList.add('filled'); }
+        });
+        const next = boxes[Math.min(i + pasted.length, boxes.length - 1)];
+        next && next.focus();
+      });
+    });
+
+    /* ── Step 1: Sign up ── */
     async function handleRegister(e) {
       e.preventDefault();
-      const btn  = e.target.querySelector('.btn-auth');
+      const btn  = document.getElementById('registerBtn');
       const name = document.getElementById('fullname').value.trim();
       const email= document.getElementById('email').value.trim();
       const pwd  = document.getElementById('password').value;
       const pwd2 = document.getElementById('confirmPassword').value;
 
-      if (pwd !== pwd2)  { showMsg('Passwords do not match.'); return; }
-      if (pwd.length < 6){ showMsg('Password must be at least 6 characters.'); return; }
+      if (pwd !== pwd2)   { showMsg('Passwords do not match.'); return; }
+      if (pwd.length < 6) { showMsg('Password must be at least 6 characters.'); return; }
 
       btn.textContent = 'Creating account…';
       btn.disabled = true;
@@ -151,9 +296,44 @@
       if (data.session) {
         window.location.href = 'dashboard.html';
       } else {
-        btn.textContent = 'Account Created!';
-        showMsg('Check your email to confirm your account, then sign in.', false);
+        showVerifyStep(email);
       }
+    }
+
+    /* ── Step 2: Verify OTP ── */
+    async function handleVerify() {
+      const boxes = document.querySelectorAll('.otp-box');
+      const code  = [...boxes].map(b => b.value).join('');
+      if (code.length < 6) { showOtpMsg('Please enter all 6 digits.'); return; }
+
+      const btn = document.getElementById('otp-submit-btn');
+      btn.textContent = 'Verifying…';
+      btn.disabled = true;
+
+      const { data, error } = await db.auth.verifyOtp({
+        email: pendingEmail,
+        token: code,
+        type: 'signup'
+      });
+
+      if (error) {
+        btn.innerHTML = 'Verify Code <i class="fas fa-arrow-right"></i>';
+        btn.disabled = false;
+        showOtpMsg(error.message || 'Invalid or expired code. Try again.');
+        return;
+      }
+
+      showOtpMsg('Email verified! Redirecting…', false);
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
+    }
+
+    /* ── Resend OTP ── */
+    async function resendCode() {
+      if (!pendingEmail) return;
+      const { error } = await db.auth.resend({ type: 'signup', email: pendingEmail });
+      if (error) { showOtpMsg(error.message); return; }
+      showOtpMsg('A new code has been sent to your email.', false);
+      startResendTimer(60);
     }
   </script>
 </body>
