@@ -429,6 +429,26 @@
     .ds-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 150; }
     .ds-overlay.show { display: block; }
 
+    /* ── BOTTOM NAV (mobile only) ── */
+    .ds-bot-nav {
+      display: none;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: #fff; border-top: 1px solid #e8eaf0;
+      z-index: 200; height: 62px;
+      justify-content: space-around; align-items: stretch;
+      box-shadow: 0 -2px 16px rgba(0,0,0,0.07);
+    }
+    .ds-bot-item {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 4px; flex: 1;
+      font-size: 0.62rem; font-weight: 600; color: #8b8fa8;
+      transition: color 0.15s; background: none; border: none;
+      text-decoration: none; cursor: pointer; padding: 8px 4px;
+    }
+    .ds-bot-item i { font-size: 1.1rem; }
+    .ds-bot-item span { line-height: 1; }
+    .ds-bot-item.active { color: #7c3aed; }
+
     @media (max-width: 1200px) {
       .ds-stats { grid-template-columns: repeat(2, 1fr); }
     }
@@ -439,62 +459,85 @@
       .ds-services-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
-    /* Tablet/mobile: sidebar goes off-canvas */
+    /* ── TABLET / MOBILE ── */
     @media (max-width: 768px) {
-      .ds-sidebar { transform: translateX(-100%); transition: transform 0.25s ease; width: 240px; }
-      .ds-sidebar.open { transform: translateX(0); }
+      /* Sidebar hidden; bottom nav takes over */
+      .ds-sidebar { display: none; }
       .ds-main { margin-left: 0; width: 100%; }
-      .ds-mob-toggle { display: flex; align-items: center; justify-content: center; }
-      .ds-content { flex-direction: column; padding: 14px; gap: 14px; }
-      .ds-right { width: 100%; }
-      .ds-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
-      /* Topbar: strip down to hamburger + title + avatar only */
-      .ds-btn-quick { display: none; }
-      .ds-bell { display: none; }
-      .ds-btn-addfunds { display: none; }
-      .ds-bal-chip { display: none; }
-      .ds-support { flex-wrap: wrap; gap: 12px; }
-      .ds-support-btn { width: 100%; justify-content: center; }
-      .ds-services-grid { grid-template-columns: repeat(2, 1fr); }
-      /* Hide profile name/chevron, keep just avatar circle */
+      .ds-mob-toggle { display: none; }
+      .ds-bot-nav { display: flex; }
+
+      /* Topbar: greeting + bell + avatar only */
+      .ds-btn-quick, .ds-btn-addfunds, .ds-bal-chip { display: none; }
+      .ds-topbar { padding: 0 16px; gap: 10px; height: 56px; }
+      .ds-topbar-left p { display: none; }
       .ds-profile-btn { border: none; padding: 2px; background: none; }
       .ds-profile-chevron { display: none; }
+
+      /* Content: single column, balance card FIRST, padding for bottom nav */
+      .ds-content { flex-direction: column; padding: 14px; gap: 14px; padding-bottom: calc(62px + 14px); }
+
+      /* Right panel: comes first (order -1), full width, vertical stack */
+      .ds-right { order: -1; width: 100%; }
+
+      /* Hide activity and announcements; show balance + quick actions */
+      .ds-right > div:nth-child(3),
+      .ds-right > div:nth-child(4) { display: none; }
+
+      /* Quick actions: 4 in a row */
+      .ds-qa-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+      .ds-qa-btn { padding: 12px 4px; font-size: 0.66rem; }
+
+      /* Stats 2-column */
+      .ds-stats { grid-template-columns: 1fr 1fr; gap: 12px; }
+
+      /* Orders table: hide Link and Qty columns */
+      .ds-table th:nth-child(2), .ds-table td:nth-child(2),
+      .ds-table th:nth-child(4), .ds-table td:nth-child(4) { display: none; }
+      .ds-table { min-width: 0; }
+
+      /* Services: 2 columns */
+      .ds-services-grid { grid-template-columns: 1fr 1fr; }
+
+      /* Support bar stacks */
+      .ds-support { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .ds-support-btn { width: 100%; justify-content: center; }
+
+      /* Toast above bottom nav */
+      .ds-toast-wrap { right: 10px; left: 10px; bottom: calc(62px + 10px); }
     }
 
-    /* Phone */
+    /* ── PHONE ── */
     @media (max-width: 560px) {
-      .ds-topbar { padding: 0 12px; gap: 8px; height: 54px; }
-      .ds-topbar-left h2 { font-size: 0.9rem; }
-      .ds-topbar-left p { display: none; }
-      .ds-content { padding: 10px; gap: 10px; }
+      .ds-topbar { padding: 0 12px; height: 52px; }
+      .ds-topbar-left h2 { font-size: 0.88rem; }
+      .ds-content { padding: 10px; gap: 10px; padding-bottom: calc(62px + 10px); }
+      .ds-right { gap: 10px; }
+      .ds-stats { gap: 8px; }
+      .ds-stat-card { padding: 14px 12px 10px; }
+      .ds-stat-num { font-size: 1.3rem; }
+      .ds-sparkline { display: none; }
       .ds-card-hdr { padding: 12px 14px; }
-      .ds-table th, .ds-table td { padding: 9px 12px; font-size: 0.75rem; }
+      .ds-filter-tabs { padding: 8px 12px; gap: 3px; }
+      .ds-filter-tab { padding: 5px 10px; font-size: 0.69rem; }
+      .ds-table th, .ds-table td { padding: 10px 12px; font-size: 0.76rem; }
       .ds-services-grid { grid-template-columns: 1fr 1fr; padding: 12px; gap: 10px; }
+      .ds-svc-card { padding: 12px 10px; }
       .ds-amount-grid { grid-template-columns: 1fr 1fr; }
-      .ds-modal { border-radius: 14px; }
       .ds-modal-hdr { padding: 14px 16px; }
       .ds-modal-body { padding: 16px; }
-      .ds-toast-wrap { right: 10px; left: 10px; bottom: 16px; }
       .ds-toast { max-width: 100%; }
-      .ds-filter-tabs { padding: 10px 12px; gap: 3px; }
-      .ds-filter-tab { padding: 4px 10px; font-size: 0.7rem; }
-      .ds-stat-card { padding: 14px 12px 10px; }
-      .ds-stat-num { font-size: 1.4rem; }
+      .ds-bal-card-amt { font-size: 1.9rem; }
     }
 
-    /* Small phones */
-    @media (max-width: 420px) {
-      .ds-stats { grid-template-columns: 1fr 1fr; gap: 8px; }
-      .ds-stat-num { font-size: 1.25rem; }
-      .ds-bal-card-amt { font-size: 1.6rem; }
-      .ds-content { padding: 8px; gap: 8px; }
-    }
-
-    @media (max-width: 360px) {
+    /* ── SMALL PHONE ── */
+    @media (max-width: 380px) {
       .ds-stats { grid-template-columns: 1fr 1fr; }
+      .ds-qa-btn { font-size: 0.6rem; padding: 10px 2px; }
+      .ds-qa-btn i { font-size: 0.85rem; }
       .ds-services-grid { grid-template-columns: 1fr; }
-      .ds-topbar { padding: 0 10px; gap: 6px; }
-      .ds-topbar-left h2 { font-size: 0.82rem; }
+      .ds-bot-item { font-size: 0.58rem; }
+      .ds-bot-item i { font-size: 1rem; }
     }
   </style>
 </head>
@@ -881,6 +924,30 @@
 
     </div><!-- /ds-content -->
   </div><!-- /ds-main -->
+
+  <!-- Bottom Navigation (mobile only) -->
+  <nav class="ds-bot-nav">
+    <a href="dashboard.html" class="ds-bot-item active">
+      <i class="fas fa-gauge"></i>
+      <span>Home</span>
+    </a>
+    <a href="#" class="ds-bot-item js-coming">
+      <i class="fas fa-bag-shopping"></i>
+      <span>Orders</span>
+    </a>
+    <a href="index.html" class="ds-bot-item">
+      <i class="fas fa-boxes-stacked"></i>
+      <span>Services</span>
+    </a>
+    <button class="ds-bot-item js-funds">
+      <i class="fas fa-wallet"></i>
+      <span>Wallet</span>
+    </button>
+    <a href="#" class="ds-bot-item js-coming">
+      <i class="fas fa-user"></i>
+      <span>Account</span>
+    </a>
+  </nav>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-client.js"></script>
