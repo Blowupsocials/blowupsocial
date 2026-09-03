@@ -324,7 +324,7 @@
 
     <!-- Services grid -->
     <div class="no-grid" id="services-grid">
-      <div class="no-spinner"><i class="fas fa-circle-notch"></i> Loading services from Peakerr…</div>
+      <div class="no-spinner"><i class="fas fa-circle-notch"></i> Loading services…</div>
     </div>
 
   </div>
@@ -573,7 +573,7 @@
         const result = await peakerr({ action: 'add', service: selectedSvc.service, link, quantity: qty });
 
         if (result.error || !result.order) {
-          errEl.textContent = result.error || 'Peakerr rejected the order. Try again.';
+          errEl.textContent = result.error || 'Order could not be placed. Please try again.';
           errEl.style.display = 'block';
           btn.disabled = false;
           btn.innerHTML = 'Place Order <i class="fas fa-arrow-right"></i>';
@@ -592,7 +592,7 @@
         // 3. Save order to Supabase
         await db.from('orders').insert({
           user_id:    userId,
-          order_ref:  `PKR-${peakerrOrderId}`,
+          order_ref:  `BUS-${peakerrOrderId}`,
           service:    selectedSvc.name,
           link:       link,
           quantity:   qty,
@@ -608,7 +608,7 @@
         document.getElementById('stat-balance').textContent   = fmtNGN(newBalance);
 
         closeOrder();
-        toast(`Order #PKR-${peakerrOrderId} placed! Processing will begin shortly.`, 'success');
+        toast(`Order #${peakerrOrderId} placed! Processing will begin shortly.`, 'success');
 
       } catch (err) {
         errEl.textContent = 'Something went wrong. Please try again.';
