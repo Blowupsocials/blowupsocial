@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accounts Store – BlowUpSocial</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { overflow-x: hidden; }
+    body { font-family: 'Inter', sans-serif; background: #f0f2f7; color: #1a1a2e; min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; border: none; }
+
+    /* TOPBAR */
+    .ac-topbar {
+      background: #fff; height: 62px; display: flex; align-items: center;
+      padding: 0 24px; gap: 14px; border-bottom: 1px solid #e8eaf0;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .ac-back {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.82rem; font-weight: 600; color: #6b7080; transition: color 0.15s;
+    }
+    .ac-back:hover { color: #7c3aed; }
+    .ac-topbar-title {
+      font-family: 'Space Grotesk', sans-serif; font-size: 1rem;
+      font-weight: 800; color: #1a1a2e; flex: 1;
+    }
+    .ac-wallet-chip {
+      display: flex; align-items: center; gap: 7px; padding: 6px 12px;
+      background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 8px;
+      font-size: 0.78rem; white-space: nowrap;
+    }
+    .ac-wallet-chip span { color: #6b7280; }
+    .ac-wallet-chip strong { color: #7c3aed; font-weight: 700; }
+
+    /* PAGE */
+    .ac-page { max-width: 1200px; margin: 0 auto; padding: 24px 20px 80px; }
+
+    /* SETUP NOTICE */
+    .ac-setup-notice {
+      background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 14px;
+      padding: 20px 22px; margin-bottom: 22px; display: none;
+    }
+    .ac-setup-notice h3 { font-size: 0.88rem; font-weight: 700; color: #92400e; margin-bottom: 6px; }
+    .ac-setup-notice p { font-size: 0.8rem; color: #78350f; line-height: 1.6; }
+    .ac-setup-notice code { background: rgba(0,0,0,0.07); padding: 1px 5px; border-radius: 4px; font-size: 0.77rem; }
+
+    /* PAGE TABS */
+    .ac-page-tabs { display: flex; border-bottom: 2px solid #e8eaf0; margin-bottom: 22px; }
+    .ac-page-tab {
+      padding: 10px 20px; font-size: 0.84rem; font-weight: 600;
+      color: #8b8fa8; background: none; border: none;
+      border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s;
+    }
+    .ac-page-tab.active { color: #7c3aed; border-bottom-color: #7c3aed; }
+    .ac-page-tab:hover:not(.active) { color: #4b5063; }
+
+    /* PLATFORM TABS */
+    .ac-platforms { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+    .ac-plat-btn {
+      display: flex; align-items: center; gap: 7px; padding: 8px 16px; border-radius: 50px;
+      border: 1.5px solid #e5e7eb; background: #fff;
+      font-size: 0.78rem; font-weight: 600; color: #6b7080; transition: all 0.15s; white-space: nowrap;
+    }
+    .ac-plat-btn:hover { border-color: #c4b5fd; color: #7c3aed; }
+    .ac-plat-btn.active { background: #7c3aed; border-color: #7c3aed; color: #fff; }
+    .ac-plat-btn i { font-size: 0.85rem; }
+
+    /* GRID */
+    .ac-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
+
+    /* CARD */
+    .ac-card {
+      background: #fff; border-radius: 16px; border: 1.5px solid #f0f2f6;
+      padding: 20px; display: flex; flex-direction: column; gap: 12px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .ac-card:hover { border-color: #c4b5fd; box-shadow: 0 4px 16px rgba(124,58,237,0.08); }
+    .ac-card-top { display: flex; align-items: flex-start; gap: 12px; }
+    .ac-card-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; flex-shrink: 0;
+    }
+    .ac-card-plat-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+    .ac-card-title { font-size: 0.85rem; font-weight: 700; color: #1a1a2e; line-height: 1.35; }
+    .ac-card-desc {
+      font-size: 0.77rem; color: #6b7080; line-height: 1.5;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .ac-card-foot { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+    .ac-card-price { font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; font-weight: 800; color: #1a1a2e; }
+    .ac-card-qty { font-size: 0.71rem; color: #8b8fa8; margin-top: 2px; }
+    .ac-btn-buy {
+      background: linear-gradient(135deg, #7c3aed, #ec4899);
+      color: #fff; padding: 9px 18px; border-radius: 10px;
+      font-size: 0.8rem; font-weight: 700; transition: opacity 0.15s;
+    }
+    .ac-btn-buy:hover { opacity: 0.88; }
+    .ac-btn-buy:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* LOADING / EMPTY */
+    .ac-state { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #8b8fa8; }
+    .ac-state i { font-size: 2rem; margin-bottom: 14px; display: block; }
+    .ac-state p { font-size: 0.88rem; line-height: 1.5; }
+
+    /* MY ORDERS */
+    .ac-orders-list { display: flex; flex-direction: column; gap: 12px; }
+    .ac-order-card {
+      background: #fff; border-radius: 14px; border: 1.5px solid #f0f2f6;
+      padding: 18px 20px; display: flex; align-items: center; gap: 14px;
+    }
+    .ac-order-icon {
+      width: 42px; height: 42px; border-radius: 11px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.1rem;
+    }
+    .ac-order-info { flex: 1; min-width: 0; }
+    .ac-order-title { font-size: 0.85rem; font-weight: 700; color: #1a1a2e; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ac-order-meta { font-size: 0.72rem; color: #8b8fa8; }
+    .ac-order-right { text-align: right; flex-shrink: 0; }
+    .ac-order-price { font-family: 'Space Grotesk', sans-serif; font-size: 0.92rem; font-weight: 800; }
+    .ac-status { display: inline-block; padding: 2px 9px; border-radius: 50px; font-size: 0.68rem; font-weight: 700; margin-top: 5px; }
+    .st-pending  { background: #fffbeb; color: #92400e; }
+    .st-complete { background: #f0fdf4; color: #166534; }
+    .st-failed   { background: #fef2f2; color: #991b1b; }
+    .ac-creds-btn {
+      margin-top: 8px; background: #f5f3ff; color: #7c3aed;
+      border: 1px solid #ddd6fe; padding: 5px 12px;
+      border-radius: 7px; font-size: 0.75rem; font-weight: 600; display: inline-block;
+    }
+    .ac-creds-btn:hover { background: #ede9fe; }
+
+    /* MODAL */
+    .ac-modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 500; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    }
+    .ac-modal-overlay.show { opacity: 1; pointer-events: all; }
+    .ac-modal {
+      background: #fff; border-radius: 18px;
+      width: min(480px, calc(100vw - 32px)); max-height: 90vh; overflow-y: auto;
+      transform: translateY(12px); transition: transform 0.2s;
+    }
+    .ac-modal-overlay.show .ac-modal { transform: translateY(0); }
+    .ac-modal-hdr {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 20px 0; margin-bottom: 18px;
+    }
+    .ac-modal-hdr h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 800; }
+    .ac-modal-close {
+      width: 30px; height: 30px; border-radius: 8px; background: #f5f6fa; color: #6b7080;
+      display: flex; align-items: center; justify-content: center; border: none; font-size: 0.88rem;
+    }
+    .ac-modal-close:hover { background: #edeef5; }
+    .ac-modal-body { padding: 0 20px 20px; }
+
+    .ac-confirm-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid #f0f2f6; font-size: 0.83rem;
+    }
+    .ac-confirm-row:last-of-type { border-bottom: none; }
+    .ac-confirm-row .lbl { color: #6b7080; }
+    .ac-confirm-row .val { font-weight: 700; color: #1a1a2e; text-align: right; }
+    .ac-confirm-row .val.hi { color: #7c3aed; font-size: 1rem; }
+    .ac-confirm-row .val.red { color: #ef4444; }
+
+    .ac-modal-actions { display: flex; gap: 10px; margin-top: 18px; }
+    .ac-btn-cancel {
+      flex: 1; padding: 11px; border-radius: 10px;
+      border: 1.5px solid #e5e7eb; background: #fff;
+      font-size: 0.83rem; font-weight: 600; color: #6b7080;
+    }
+    .ac-btn-cancel:hover { background: #f9fafb; }
+    .ac-btn-confirm {
+      flex: 2; padding: 11px; border-radius: 10px;
+      background: linear-gradient(135deg, #7c3aed, #ec4899);
+      color: #fff; font-size: 0.83rem; font-weight: 700; border: none;
+    }
+    .ac-btn-confirm:hover { opacity: 0.9; }
+    .ac-btn-confirm:disabled { opacity: 0.45; cursor: not-allowed; }
+    .ac-modal-error {
+      background: #fef2f2; color: #991b1b; border-radius: 8px;
+      padding: 10px 14px; font-size: 0.8rem; margin-top: 12px; display: none;
+    }
+
+    /* CREDENTIALS */
+    .ac-success-icon {
+      width: 56px; height: 56px; border-radius: 50%; background: #f0fdf4; color: #16a34a;
+      display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin: 0 auto 16px;
+    }
+    .ac-creds-box { background: #f9fafb; border-radius: 12px; border: 1px solid #e5e7eb; padding: 14px; margin-top: 10px; }
+    .ac-creds-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid #f0f2f6; font-size: 0.81rem; }
+    .ac-creds-row:last-child { border-bottom: none; }
+    .ac-creds-key { color: #8b8fa8; min-width: 90px; font-size: 0.75rem; }
+    .ac-creds-val { font-weight: 600; color: #1a1a2e; font-family: monospace; flex: 1; word-break: break-all; }
+    .ac-copy-btn { background: none; color: #8b8fa8; font-size: 0.75rem; padding: 2px 6px; border-radius: 5px; flex-shrink: 0; }
+    .ac-copy-btn:hover { background: #e5e7eb; color: #1a1a2e; }
+    .ac-warn-box {
+      background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px;
+      padding: 10px 14px; font-size: 0.78rem; color: #92400e; margin-top: 14px;
+      display: flex; gap: 8px; align-items: flex-start;
+    }
+    .ac-warn-box i { flex-shrink: 0; margin-top: 1px; }
+
+    /* TOAST */
+    .ac-toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+      padding: 11px 22px; border-radius: 50px; font-size: 0.82rem; font-weight: 600;
+      color: #fff; z-index: 9999; transition: transform 0.3s; pointer-events: none; white-space: nowrap;
+    }
+    .ac-toast.show { transform: translateX(-50%) translateY(0); }
+    .ac-toast.success { background: #16a34a; }
+    .ac-toast.error   { background: #ef4444; }
+
+    @media (max-width: 640px) {
+      .ac-page { padding: 16px 12px 80px; }
+      .ac-grid { grid-template-columns: 1fr; }
+      .ac-topbar { padding: 0 16px; gap: 10px; }
+      .ac-topbar-title { font-size: 0.88rem; }
+    }
+  </style>
+</head>
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/supabase-client.js"></script>
+
+  <!-- TOPBAR -->
+  <div class="ac-topbar">
+    <a href="dashboard.html" class="ac-back"><i class="fas fa-arrow-left"></i><span style="display:none"> Dashboard</span></a>
+    <div class="ac-topbar-title">Social Media Accounts</div>
+    <div class="ac-wallet-chip"><span>Balance:</span><strong id="topbar-balance">₦0</strong></div>
+  </div>
+
+  <!-- PAGE -->
+  <div class="ac-page">
+
+    <div class="ac-setup-notice" id="setup-notice">
+      <h3><i class="fas fa-circle-info" style="margin-right:6px"></i>Accounts Store Setup Required</h3>
+      <p>Add your accounts provider credentials as Vercel environment variables:<br>
+         <code>ACCSMASTER_EMAIL</code> and <code>ACCSMASTER_PASSWORD</code>, then redeploy.
+      </p>
+    </div>
+
+    <!-- PAGE TABS -->
+    <div class="ac-page-tabs">
+      <button class="ac-page-tab active" id="ptab-browse" onclick="showView('browse')">
+        <i class="fas fa-store" style="margin-right:6px"></i>Browse Accounts
+      </button>
+      <button class="ac-page-tab" id="ptab-orders" onclick="showView('orders')">
+        <i class="fas fa-bag-shopping" style="margin-right:6px"></i>My Purchases
+      </button>
+    </div>
+
+    <!-- BROWSE VIEW -->
+    <div id="view-browse">
+      <div class="ac-platforms" id="platforms-row">
+        <button class="ac-plat-btn active" data-cat="" onclick="selectCat(this,'')">
+          <i class="fas fa-th-large"></i> All
+        </button>
+      </div>
+      <div class="ac-grid" id="offers-grid">
+        <div class="ac-state"><i class="fas fa-spinner fa-spin"></i><p>Loading available accounts…</p></div>
+      </div>
+    </div>
+
+    <!-- ORDERS VIEW -->
+    <div id="view-orders" style="display:none">
+      <div class="ac-orders-list" id="orders-list">
+        <div class="ac-state"><i class="fas fa-spinner fa-spin"></i><p>Loading your purchases…</p></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BUY MODAL -->
+  <div class="ac-modal-overlay" id="buy-modal">
+    <div class="ac-modal">
+      <div class="ac-modal-hdr">
+        <h3><i class="fas fa-cart-shopping" style="color:#7c3aed;margin-right:8px"></i>Confirm Purchase</h3>
+        <button class="ac-modal-close" onclick="closeBuyModal()"><i class="fas fa-xmark"></i></button>
+      </div>
+      <div class="ac-modal-body">
+        <div class="ac-confirm-row"><span class="lbl">Account</span><span class="val" id="bm-name" style="max-width:58%">—</span></div>
+        <div class="ac-confirm-row"><span class="lbl">Platform</span><span class="val" id="bm-platform">—</span></div>
+        <div class="ac-confirm-row"><span class="lbl">Your Balance</span><span class="val" id="bm-balance">—</span></div>
+        <div class="ac-confirm-row"><span class="lbl">Cost</span><span class="val hi" id="bm-price">—</span></div>
+        <div class="ac-confirm-row"><span class="lbl">Balance After</span><span class="val" id="bm-after">—</span></div>
+        <div class="ac-modal-error" id="bm-error"></div>
+        <div class="ac-modal-actions">
+          <button class="ac-btn-cancel" onclick="closeBuyModal()">Cancel</button>
+          <button class="ac-btn-confirm" id="bm-confirm-btn" onclick="confirmBuy()">Confirm Purchase</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREDENTIALS MODAL -->
+  <div class="ac-modal-overlay" id="creds-modal">
+    <div class="ac-modal">
+      <div class="ac-modal-hdr">
+        <h3>Purchase Complete</h3>
+        <button class="ac-modal-close" onclick="document.getElementById('creds-modal').classList.remove('show')"><i class="fas fa-xmark"></i></button>
+      </div>
+      <div class="ac-modal-body">
+        <div class="ac-success-icon"><i class="fas fa-check"></i></div>
+        <div id="creds-content"></div>
+        <div class="ac-warn-box" id="creds-warn" style="display:none">
+          <i class="fas fa-triangle-exclamation"></i>
+          <span>Save these credentials now. Change the account password after your first login.</span>
+        </div>
+        <button class="ac-btn-confirm" style="width:100%;margin-top:18px"
+          onclick="document.getElementById('creds-modal').classList.remove('show')">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-toast" id="ac-toast"></div>
+
+  <script>
+    const MARKUP     = 1.8;
+    const USD_TO_NGN = 1600;
+    const fmtNGN = v => `₦${Math.round(v * USD_TO_NGN).toLocaleString('en-NG')}`;
+
+    let userBalance   = 0;
+    let userId        = null;
+    let selectedOffer = null;
+    let allOffers     = [];
+
+    /* ── PLATFORM MAP ── */
+    const PLAT = [
+      { key:'instagram', label:'Instagram', icon:'fa-brands fa-instagram', color:'#E1306C', bg:'#fdf2f8' },
+      { key:'facebook',  label:'Facebook',  icon:'fa-brands fa-facebook',  color:'#1877F2', bg:'#eff6ff' },
+      { key:'tiktok',    label:'TikTok',    icon:'fa-brands fa-tiktok',    color:'#000',    bg:'#f9fafb' },
+      { key:'twitter',   label:'Twitter/X', icon:'fa-brands fa-x-twitter', color:'#000',    bg:'#f3f4f6' },
+      { key:'youtube',   label:'YouTube',   icon:'fa-brands fa-youtube',   color:'#FF0000', bg:'#fef2f2' },
+      { key:'gmail',     label:'Gmail',     icon:'fa-solid fa-envelope',   color:'#EA4335', bg:'#fef2f2' },
+      { key:'linkedin',  label:'LinkedIn',  icon:'fa-brands fa-linkedin',  color:'#0A66C2', bg:'#eff6ff' },
+      { key:'telegram',  label:'Telegram',  icon:'fa-brands fa-telegram',  color:'#2AABEE', bg:'#f0f9ff' },
+      { key:'reddit',    label:'Reddit',    icon:'fa-brands fa-reddit',    color:'#FF4500', bg:'#fff7ed' },
+      { key:'discord',   label:'Discord',   icon:'fa-brands fa-discord',   color:'#5865F2', bg:'#f5f3ff' },
+      { key:'spotify',   label:'Spotify',   icon:'fa-brands fa-spotify',   color:'#1DB954', bg:'#f0fdf4' },
+    ];
+    const DEFAULT_PLAT = { key:'other', label:'Other', icon:'fa-solid fa-user', color:'#6b7080', bg:'#f5f6fa' };
+
+    function detectPlatform(text) {
+      const t = (text || '').toLowerCase();
+      for (const p of PLAT) {
+        if (t.includes(p.key)) return p;
+        if (p.key === 'twitter'   && (t.includes('x-twitter') || t.includes('x (twitter)'))) return p;
+        if (p.key === 'tiktok'    && t.includes('tik tok')) return p;
+        if (p.key === 'gmail'     && t.includes('google'))  return p;
+        if (p.key === 'facebook'  && (t.includes(' fb ') || t.startsWith('fb '))) return p;
+      }
+      return null;
+    }
+
+    function platFor(title, category) {
+      return detectPlatform(title) || detectPlatform(category) || DEFAULT_PLAT;
+    }
+
+    /* ── API ── */
+    async function accsmaster(payload) {
+      const r = await fetch('/api/accsmaster', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      return r.json();
+    }
+
+    /* ── VIEW TABS ── */
+    function showView(tab) {
+      document.getElementById('view-browse').style.display = tab === 'browse' ? '' : 'none';
+      document.getElementById('view-orders').style.display = tab === 'orders' ? '' : 'none';
+      document.getElementById('ptab-browse').className = 'ac-page-tab' + (tab === 'browse' ? ' active' : '');
+      document.getElementById('ptab-orders').className = 'ac-page-tab' + (tab === 'orders' ? ' active' : '');
+      if (tab === 'orders') loadMyOrders();
+    }
+
+    /* ── CATEGORY FILTER ── */
+    function selectCat(btn, catId) {
+      document.querySelectorAll('.ac-plat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (!catId) {
+        renderOffers(allOffers);
+      } else {
+        loadOffers(catId);
+      }
+    }
+
+    /* ── LOAD CATEGORIES ── */
+    async function loadCategories() {
+      const data = await accsmaster({ action: 'categories' });
+      if (data.error === 'accounts_not_configured') {
+        document.getElementById('setup-notice').style.display = 'block';
+        return;
+      }
+      const cats = Array.isArray(data) ? data : (data.data || []);
+      const row  = document.getElementById('platforms-row');
+      const seen = new Set();
+
+      cats.forEach(cat => {
+        const name = cat.name || cat.title || String(cat.id || '');
+        const id   = String(cat.id || cat.slug || name);
+        const plat = detectPlatform(name) || DEFAULT_PLAT;
+        if (seen.has(plat.key)) return;
+        seen.add(plat.key);
+
+        const btn = document.createElement('button');
+        btn.className = 'ac-plat-btn';
+        btn.setAttribute('data-cat', id);
+        btn.innerHTML = `<i class="${plat.icon}" style="color:${plat.key !== 'other' ? plat.color : 'inherit'}"></i> ${plat.label !== 'Other' ? plat.label : name}`;
+        btn.onclick = () => selectCat(btn, id);
+        row.appendChild(btn);
+      });
+    }
+
+    /* ── LOAD OFFERS ── */
+    async function loadOffers(catId) {
+      const grid = document.getElementById('offers-grid');
+      grid.innerHTML = `<div class="ac-state"><i class="fas fa-spinner fa-spin"></i><p>Loading accounts…</p></div>`;
+      const params = { action: 'offers' };
+      if (catId) params.category_id = catId;
+
+      const data = await accsmaster(params);
+
+      if (data.error === 'accounts_not_configured') {
+        grid.innerHTML = `<div class="ac-state"><i class="fas fa-gear"></i><p>Accounts store is not configured yet.<br>Contact support for assistance.</p></div>`;
+        return;
+      }
+      if (data.error) {
+        grid.innerHTML = `<div class="ac-state"><i class="fas fa-triangle-exclamation"></i><p>Could not load accounts. Please try again later.</p></div>`;
+        return;
+      }
+
+      const offers = Array.isArray(data) ? data : (data.data || data.offers || []);
+      if (!catId) allOffers = offers;
+      renderOffers(offers);
+    }
+
+    /* ── RENDER OFFERS ── */
+    function renderOffers(offers) {
+      const grid = document.getElementById('offers-grid');
+      if (!offers.length) {
+        grid.innerHTML = `<div class="ac-state"><i class="fas fa-box-open"></i><p>No accounts available in this category right now.<br>Check back soon.</p></div>`;
+        return;
+      }
+
+      grid.innerHTML = offers.map(o => {
+        const title    = o.title || o.name || `Account #${o.id}`;
+        const category = o.category || o.type || '';
+        const plat     = platFor(title, category);
+        const priceUsd = parseFloat(o.price || o.rate || 0);
+        const sellUsd  = priceUsd * MARKUP;
+        const qty      = parseInt(o.quantity || o.stock || o.count || 0);
+        const desc     = o.description || o.desc || '';
+        const offerObj = JSON.stringify({ id: o.id, title, platform: plat.label, platKey: plat.key, priceUsd, sellUsd });
+
+        return `<div class="ac-card">
+          <div class="ac-card-top">
+            <div class="ac-card-icon" style="background:${plat.bg};color:${plat.color}">
+              <i class="${plat.icon}"></i>
+            </div>
+            <div>
+              <div class="ac-card-plat-label" style="color:${plat.color}">${esc(plat.label)}</div>
+              <div class="ac-card-title">${esc(title)}</div>
+            </div>
+          </div>
+          ${desc ? `<div class="ac-card-desc">${esc(desc)}</div>` : ''}
+          <div class="ac-card-foot">
+            <div>
+              <div class="ac-card-price">${fmtNGN(sellUsd)}</div>
+              <div class="ac-card-qty">${qty > 0 ? qty + ' available' : 'In stock'}</div>
+            </div>
+            <button class="ac-btn-buy" onclick='openBuyModal(${esc(offerObj)})'>Buy Now</button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function esc(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    /* ── BUY MODAL ── */
+    function openBuyModal(offer) {
+      if (typeof offer === 'string') offer = JSON.parse(offer);
+      selectedOffer = offer;
+      const notEnough = userBalance < offer.sellUsd;
+
+      document.getElementById('bm-name').textContent     = offer.title;
+      document.getElementById('bm-platform').textContent = offer.platform;
+      document.getElementById('bm-balance').textContent  = fmtNGN(userBalance);
+      document.getElementById('bm-price').textContent    = fmtNGN(offer.sellUsd);
+
+      const afterEl = document.getElementById('bm-after');
+      afterEl.textContent = fmtNGN(Math.max(0, userBalance - offer.sellUsd));
+      afterEl.className   = 'val' + (notEnough ? ' red' : '');
+
+      const errEl = document.getElementById('bm-error');
+      errEl.style.display = notEnough ? 'block' : 'none';
+      if (notEnough) errEl.textContent = 'Insufficient wallet balance. Please add funds first.';
+
+      document.getElementById('bm-confirm-btn').disabled = notEnough;
+      document.getElementById('buy-modal').classList.add('show');
+    }
+
+    function closeBuyModal() {
+      document.getElementById('buy-modal').classList.remove('show');
+      selectedOffer = null;
+    }
+
+    /* ── CONFIRM PURCHASE ── */
+    async function confirmBuy() {
+      if (!selectedOffer) return;
+      const btn   = document.getElementById('bm-confirm-btn');
+      const errEl = document.getElementById('bm-error');
+      btn.disabled = true;
+      btn.textContent = 'Processing…';
+      errEl.style.display = 'none';
+
+      try {
+        // 1. Place order with provider
+        const result = await accsmaster({ action: 'buy', type: 'offer', offer_id: selectedOffer.id, quantity: 1 });
+        if (result.error) throw new Error(result.error);
+
+        const providerOrderId = result.id || result.order_id || result.order?.id || null;
+        const credentials     = result.credentials || result.account || result.data || null;
+        const newBalance      = userBalance - selectedOffer.sellUsd;
+
+        // 2. Deduct from wallet
+        await db.from('profiles').update({ wallet_balance: newBalance }).eq('id', userId);
+
+        // 3. Save order to Supabase
+        await db.from('account_orders').insert({
+          user_id:          userId,
+          provider_order_id: String(providerOrderId || ''),
+          offer_id:         String(selectedOffer.id),
+          offer_title:      selectedOffer.title,
+          platform:         selectedOffer.platform,
+          price_usd:        selectedOffer.sellUsd,
+          price_ngn:        Math.round(selectedOffer.sellUsd * USD_TO_NGN),
+          status:           credentials ? 'complete' : 'pending',
+          credentials:      credentials || null,
+        });
+
+        // 4. Update local state
+        userBalance = newBalance;
+        document.getElementById('topbar-balance').textContent = fmtNGN(newBalance);
+
+        closeBuyModal();
+        showCredentials(selectedOffer, credentials, providerOrderId);
+
+      } catch (_) {
+        errEl.textContent   = 'Purchase could not be completed. Please try again.';
+        errEl.style.display = 'block';
+        btn.disabled    = false;
+        btn.textContent = 'Confirm Purchase';
+      }
+    }
+
+    /* ── CREDENTIALS MODAL ── */
+    function showCredentials(offer, credentials, orderId) {
+      const content = document.getElementById('creds-content');
+      const warn    = document.getElementById('creds-warn');
+
+      if (credentials && typeof credentials === 'object' && Object.keys(credentials).length) {
+        const rows = Object.entries(credentials).map(([k, v]) =>
+          `<div class="ac-creds-row">
+            <span class="ac-creds-key">${esc(k)}</span>
+            <span class="ac-creds-val" id="cv-${k}">${esc(String(v))}</span>
+            <button class="ac-copy-btn" onclick="copyText('cv-${k}')"><i class="fas fa-copy"></i></button>
+          </div>`
+        ).join('');
+        content.innerHTML = `<p style="text-align:center;font-size:0.83rem;color:#6b7080;margin-bottom:10px">Your credentials for <strong>${esc(offer.title)}</strong></p><div class="ac-creds-box">${rows}</div>`;
+        warn.style.display = 'flex';
+      } else if (typeof credentials === 'string' && credentials.trim()) {
+        content.innerHTML = `<div class="ac-creds-box"><pre style="font-size:0.8rem;white-space:pre-wrap;word-break:break-all">${esc(credentials)}</pre></div>`;
+        warn.style.display = 'flex';
+      } else {
+        content.innerHTML = `
+          <p style="text-align:center;font-size:0.9rem;font-weight:700;margin-bottom:8px">Order Placed!</p>
+          <p style="text-align:center;font-size:0.83rem;color:#6b7080;line-height:1.55">
+            Your account is being prepared for delivery. Check <strong>My Purchases</strong> once ready.
+            ${orderId ? `<br><br>Reference: <strong>BUS-${esc(String(orderId))}</strong>` : ''}
+          </p>`;
+        warn.style.display = 'none';
+      }
+
+      document.getElementById('creds-modal').classList.add('show');
+    }
+
+    function copyText(elemId) {
+      const val = document.getElementById(elemId)?.textContent || '';
+      navigator.clipboard.writeText(val).then(() => toast('Copied!', 'success'));
+    }
+
+    /* ── MY ORDERS ── */
+    async function loadMyOrders() {
+      const list = document.getElementById('orders-list');
+      list.innerHTML = `<div class="ac-state"><i class="fas fa-spinner fa-spin"></i><p>Loading…</p></div>`;
+
+      const { data: orders } = await db
+        .from('account_orders')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+
+      if (!orders?.length) {
+        list.innerHTML = `<div class="ac-state"><i class="fas fa-bag-shopping"></i><p>No purchases yet.<br>Browse accounts to get started.</p></div>`;
+        return;
+      }
+
+      list.innerHTML = orders.map(o => {
+        const plat     = platFor(o.platform, o.offer_title);
+        const date     = new Date(o.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'numeric' });
+        const stClass  = { pending:'st-pending', complete:'st-complete', failed:'st-failed' }[o.status] || 'st-pending';
+        const stLabel  = { pending:'Processing', complete:'Delivered', failed:'Failed' }[o.status] || 'Pending';
+        const hasCredsBtn = o.status === 'complete' && o.credentials
+          ? `<button class="ac-creds-btn" onclick='showStoredCreds(${esc(JSON.stringify({ title: o.offer_title, platform: o.platform, credentials: o.credentials }))})'>
+               <i class="fas fa-key"></i> View Credentials
+             </button>`
+          : '';
+
+        return `<div class="ac-order-card">
+          <div class="ac-order-icon" style="background:${plat.bg};color:${plat.color}"><i class="${plat.icon}"></i></div>
+          <div class="ac-order-info">
+            <div class="ac-order-title">${esc(o.offer_title || 'Account Order')}</div>
+            <div class="ac-order-meta">${esc(o.platform || '')} · ${date}</div>
+            ${hasCredsBtn}
+          </div>
+          <div class="ac-order-right">
+            <div class="ac-order-price">₦${(o.price_ngn || 0).toLocaleString('en-NG')}</div>
+            <span class="ac-status ${stClass}">${stLabel}</span>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function showStoredCreds(data) {
+      if (typeof data === 'string') data = JSON.parse(data);
+      showCredentials({ title: data.title }, data.credentials, null);
+    }
+
+    /* ── TOAST ── */
+    function toast(msg, type = 'success') {
+      const el = document.getElementById('ac-toast');
+      el.textContent = msg;
+      el.className = `ac-toast ${type} show`;
+      setTimeout(() => el.classList.remove('show'), 3000);
+    }
+
+    /* ── INIT ── */
+    (async () => {
+      const { data: { session } } = await db.auth.getSession();
+      if (!session) { window.location.href = 'login.html'; return; }
+
+      userId = session.user.id;
+      const { data: profile } = await db.from('profiles').select('wallet_balance').eq('id', userId).single();
+      userBalance = parseFloat(profile?.wallet_balance || 0);
+      document.getElementById('topbar-balance').textContent = fmtNGN(userBalance);
+
+      await loadCategories();
+      await loadOffers('');
+    })();
+  </script>
+</body>
+</html>
