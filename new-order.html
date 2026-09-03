@@ -72,8 +72,21 @@
     .no-stat-label { font-size: 0.68rem; color: #8b8fa8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
     .no-stat-val { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 800; color: #1a1a2e; margin-top: 2px; }
 
-    /* ── SERVICE GRID ── */
-    .no-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+    /* ── CATEGORY SECTIONS ── */
+    .no-grid { display: flex; flex-direction: column; gap: 12px; }
+    .no-cat-section { background: #fff; border: 1.5px solid #f0f2f6; border-radius: 14px; overflow: hidden; }
+    .no-cat-hdr {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 13px 16px; background: none; border: none; cursor: pointer;
+      text-align: left; transition: background 0.13s;
+    }
+    .no-cat-hdr:hover { background: #faf9ff; }
+    .no-cat-name { font-family: 'Space Grotesk', sans-serif; font-size: 0.88rem; font-weight: 800; color: #1a1a2e; flex: 1; }
+    .no-cat-count { font-size: 0.72rem; color: #8b8fa8; font-weight: 500; white-space: nowrap; }
+    .no-cat-hdr > i { font-size: 0.72rem; color: #9ca3af; }
+    .no-cat-body { border-top: 1.5px solid #f0f2f6; }
+    .no-cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; padding: 14px; }
+
     .no-svc-card {
       background: #fff; border: 1.5px solid #f0f2f6; border-radius: 14px;
       padding: 16px; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s;
@@ -207,7 +220,7 @@
       .no-topbar { padding: 0 14px; }
       .no-page { padding: 16px 14px 100px; }
       .no-stats { display: none; }
-      .no-grid { grid-template-columns: 1fr; }
+      .no-cat-grid { grid-template-columns: 1fr; }
       .no-modal { border-radius: 22px 22px 0 0; padding: 20px; }
     }
     @media (max-width: 480px) {
@@ -392,37 +405,78 @@
       });
     }
 
+    function renderCard(s) {
+      const { css, icon } = getPlatformCSS(s.name, s.category);
+      const price      = fmtNGN(parseFloat(s.rate) * MARKUP / 1000);
+      const refillTag  = s.refill == 1 ? `<span class="no-svc-tag green"><i class="fas fa-rotate-right"></i> Refill</span>` : '';
+      const cancelTag  = s.cancel == 1 ? `<span class="no-svc-tag blue"><i class="fas fa-ban"></i> Cancel</span>` : '';
+      return `
+        <div class="no-svc-card" onclick="openOrder(${s.service})">
+          <div class="no-svc-top">
+            <div class="no-svc-icon ${css}"><i class="${icon}"></i></div>
+            <div class="no-svc-info">
+              <div class="no-svc-name">${s.name}</div>
+              <div class="no-svc-cat">${s.category || '—'}</div>
+            </div>
+          </div>
+          <div class="no-svc-meta">
+            <span class="no-svc-tag">Min: ${Number(s.min).toLocaleString()}</span>
+            <span class="no-svc-tag">Max: ${Number(s.max).toLocaleString()}</span>
+            ${refillTag}${cancelTag}
+          </div>
+          <div class="no-svc-footer">
+            <div class="no-svc-price">${price}<span class="no-svc-price-sub"> / 1K</span></div>
+            <button class="no-svc-order-btn" onclick="event.stopPropagation();openOrder(${s.service})">Order Now</button>
+          </div>
+        </div>`;
+    }
+
+    function toggleCat(hdr) {
+      const body = hdr.nextElementSibling;
+      const icon = hdr.querySelector('i');
+      const open = body.style.display !== 'none';
+      body.style.display = open ? 'none' : '';
+      icon.className = open ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
+    }
+
+    function catLabel(category) {
+      if (!category) return 'Other';
+      if (activePlat === 'all') return category;
+      const platName = PLATFORMS.find(p => p.key === activePlat)?.label || '';
+      return category.replace(new RegExp(`^${platName}\\s*`, 'i'), '').trim() || category;
+    }
+
     function renderServices() {
       const grid = document.getElementById('services-grid');
       const list = getFilteredServices();
 
       if (!list.length) {
-        grid.innerHTML = `<div class="no-empty"><i class="fas fa-search"></i>No services found.<br><small>Try a different search or platform.</small></div>`;
+        grid.innerHTML = `<div class="no-empty"><i class="fas fa-search"></i>No services found.<br><small>Try a different platform or search term.</small></div>`;
         return;
       }
 
-      grid.innerHTML = list.map(s => {
-        const { css, icon } = getPlatformCSS(s.name, s.category);
-        const price = fmtNGN(parseFloat(s.rate) * MARKUP / 1000);
-        const refillTag = s.refill == 1 ? `<span class="no-svc-tag green"><i class="fas fa-rotate-right"></i> Refill</span>` : '';
-        const cancelTag = s.cancel == 1 ? `<span class="no-svc-tag blue"><i class="fas fa-ban"></i> Cancel</span>` : '';
+      // Group by category
+      const groups = {};
+      list.forEach(s => {
+        const key = s.category || 'Other';
+        if (!groups[key]) groups[key] = [];
+        groups[key].push(s);
+      });
+
+      let i = 0;
+      grid.innerHTML = Object.entries(groups).map(([cat, svcs]) => {
+        const open   = i++ < 3; // first 3 expanded
+        const label  = catLabel(cat);
+        const count  = svcs.length;
         return `
-          <div class="no-svc-card" data-id="${s.service}" onclick="openOrder(${s.service})">
-            <div class="no-svc-top">
-              <div class="no-svc-icon ${css}"><i class="${icon}"></i></div>
-              <div class="no-svc-info">
-                <div class="no-svc-name">${s.name}</div>
-                <div class="no-svc-cat">${s.category || '—'}</div>
-              </div>
-            </div>
-            <div class="no-svc-meta">
-              <span class="no-svc-tag">Min: ${Number(s.min).toLocaleString()}</span>
-              <span class="no-svc-tag">Max: ${Number(s.max).toLocaleString()}</span>
-              ${refillTag}${cancelTag}
-            </div>
-            <div class="no-svc-footer">
-              <div class="no-svc-price">${price}<span class="no-svc-price-sub"> / 1K</span></div>
-              <button class="no-svc-order-btn" onclick="event.stopPropagation();openOrder(${s.service})">Order Now</button>
+          <div class="no-cat-section">
+            <button class="no-cat-hdr" onclick="toggleCat(this)">
+              <span class="no-cat-name">${label}</span>
+              <span class="no-cat-count">${count} service${count !== 1 ? 's' : ''}</span>
+              <i class="fas fa-chevron-${open ? 'up' : 'down'}"></i>
+            </button>
+            <div class="no-cat-body" ${open ? '' : 'style="display:none"'}>
+              <div class="no-cat-grid">${svcs.map(renderCard).join('')}</div>
             </div>
           </div>`;
       }).join('');
