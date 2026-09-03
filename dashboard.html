@@ -544,6 +544,25 @@
 </head>
 <body>
 
+  <!-- ── WALLET MODAL ── -->
+  <div class="ds-modal-overlay" id="wallet-modal">
+    <div class="ds-modal">
+      <div class="ds-modal-hdr">
+        <h3><i class="fas fa-wallet" style="color:#7c3aed;margin-right:8px"></i>My Wallet</h3>
+        <button class="ds-modal-close" id="wallet-modal-close"><i class="fas fa-xmark"></i></button>
+      </div>
+      <div class="ds-modal-body">
+        <div style="background:linear-gradient(135deg,#7c3aed,#ec4899);border-radius:14px;padding:22px 20px;color:#fff;margin-bottom:20px;text-align:center;">
+          <div style="font-size:0.75rem;opacity:0.8;margin-bottom:6px;letter-spacing:0.04em;">AVAILABLE BALANCE</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:800;letter-spacing:-0.5px;" id="wallet-modal-balance">₦0</div>
+        </div>
+        <button class="ds-modal-submit" id="wallet-add-funds-btn">
+          <i class="fas fa-plus" style="margin-right:6px"></i>Add Funds
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ── ADD FUNDS MODAL ── -->
   <div class="ds-modal-overlay" id="funds-modal">
     <div class="ds-modal">
@@ -739,7 +758,7 @@
         </div>
 
         <!-- RECENT ORDERS -->
-        <div class="ds-card">
+        <div class="ds-card" id="orders-section">
           <div class="ds-card-hdr">
             <span class="ds-card-hdr-title">Recent Orders</span>
             <a href="#" class="js-coming">View All Orders</a>
@@ -932,15 +951,15 @@
       <i class="fas fa-gauge"></i>
       <span>Home</span>
     </a>
-    <a href="#" class="ds-bot-item js-coming">
+    <button class="ds-bot-item" id="bot-orders-btn">
       <i class="fas fa-bag-shopping"></i>
       <span>Orders</span>
-    </a>
+    </button>
     <a href="new-order.html" class="ds-bot-item">
       <i class="fas fa-boxes-stacked"></i>
       <span>Services</span>
     </a>
-    <button class="ds-bot-item js-funds">
+    <button class="ds-bot-item" id="bot-wallet-btn">
       <i class="fas fa-wallet"></i>
       <span>Wallet</span>
     </button>
@@ -982,6 +1001,29 @@
     /* ── Coming soon handler ── */
     document.querySelectorAll('.js-coming').forEach(el => {
       el.addEventListener('click', e => { e.preventDefault(); toast('Coming soon — this feature is under development.', 'info'); });
+    });
+
+    /* ── Bottom nav: Orders → scroll to orders section ── */
+    document.getElementById('bot-orders-btn').addEventListener('click', () => {
+      const sec = document.getElementById('orders-section');
+      if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    /* ── Wallet modal ── */
+    const walletModal = document.getElementById('wallet-modal');
+    function openWalletModal() {
+      const USD_TO_NGN = 1600;
+      const bal = window.userWallet || 0;
+      document.getElementById('wallet-modal-balance').textContent =
+        `₦${Math.round(bal * USD_TO_NGN).toLocaleString('en-NG')}`;
+      walletModal.classList.add('show');
+    }
+    document.getElementById('bot-wallet-btn').addEventListener('click', openWalletModal);
+    document.getElementById('wallet-modal-close').addEventListener('click', () => walletModal.classList.remove('show'));
+    walletModal.addEventListener('click', e => { if (e.target === walletModal) walletModal.classList.remove('show'); });
+    document.getElementById('wallet-add-funds-btn').addEventListener('click', () => {
+      walletModal.classList.remove('show');
+      openFundsModal();
     });
 
     /* ── Add Funds modal ── */
@@ -1093,6 +1135,7 @@
       const name   = profile?.full_name || user.email.split('@')[0];
       const email  = user.email || '';
       const wallet = parseFloat(profile?.wallet_balance || 0);
+      window.userWallet = wallet;
       const inits  = initials(name);
 
       /* Currency */
