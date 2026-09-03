@@ -803,38 +803,38 @@
           <div class="ds-services-grid">
             <div class="ds-svc-card">
               <div class="ds-svc-icon svc-ig"><i class="fab fa-instagram"></i></div>
-              <div><div class="ds-svc-name">Instagram</div><div class="ds-svc-type">Followers</div></div>
-              <div class="ds-svc-price">From <strong>₦1,920</strong></div>
+              <div><div class="ds-svc-name">Instagram</div><div class="ds-svc-type" id="svc-type-ig">Followers</div></div>
+              <div class="ds-svc-price">From <strong id="svc-price-ig">…</strong></div>
               <button class="ds-svc-btn" onclick="location.href='new-order.html'">Order Now</button>
             </div>
             <div class="ds-svc-card">
               <div class="ds-svc-icon svc-tt"><i class="fab fa-tiktok"></i></div>
-              <div><div class="ds-svc-name">TikTok</div><div class="ds-svc-type">Views</div></div>
-              <div class="ds-svc-price">From <strong>₦1,200</strong></div>
+              <div><div class="ds-svc-name">TikTok</div><div class="ds-svc-type" id="svc-type-tt">Views</div></div>
+              <div class="ds-svc-price">From <strong id="svc-price-tt">…</strong></div>
               <button class="ds-svc-btn" onclick="location.href='new-order.html'">Order Now</button>
             </div>
             <div class="ds-svc-card">
               <div class="ds-svc-icon svc-yt"><i class="fab fa-youtube"></i></div>
-              <div><div class="ds-svc-name">YouTube</div><div class="ds-svc-type">Subscribers</div></div>
-              <div class="ds-svc-price">From <strong>₦3,360</strong></div>
+              <div><div class="ds-svc-name">YouTube</div><div class="ds-svc-type" id="svc-type-yt">Subscribers</div></div>
+              <div class="ds-svc-price">From <strong id="svc-price-yt">…</strong></div>
               <button class="ds-svc-btn" onclick="location.href='new-order.html'">Order Now</button>
             </div>
             <div class="ds-svc-card">
               <div class="ds-svc-icon svc-sp"><i class="fab fa-spotify"></i></div>
-              <div><div class="ds-svc-name">Spotify</div><div class="ds-svc-type">Plays</div></div>
-              <div class="ds-svc-price">From <strong>₦800</strong></div>
+              <div><div class="ds-svc-name">Spotify</div><div class="ds-svc-type" id="svc-type-sp">Plays</div></div>
+              <div class="ds-svc-price">From <strong id="svc-price-sp">…</strong></div>
               <button class="ds-svc-btn" onclick="location.href='new-order.html'">Order Now</button>
             </div>
             <div class="ds-svc-card">
               <div class="ds-svc-icon svc-x"><i class="fab fa-x-twitter"></i></div>
-              <div><div class="ds-svc-name">X (Twitter)</div><div class="ds-svc-type">Followers</div></div>
-              <div class="ds-svc-price">From <strong>₦1,600</strong></div>
+              <div><div class="ds-svc-name">X (Twitter)</div><div class="ds-svc-type" id="svc-type-x">Followers</div></div>
+              <div class="ds-svc-price">From <strong id="svc-price-x">…</strong></div>
               <button class="ds-svc-btn" onclick="location.href='new-order.html'">Order Now</button>
             </div>
             <div class="ds-svc-card">
               <div class="ds-svc-icon svc-fb"><i class="fab fa-facebook-f"></i></div>
-              <div><div class="ds-svc-name">Facebook</div><div class="ds-svc-type">Page Likes</div></div>
-              <div class="ds-svc-price">From <strong>₦2,400</strong></div>
+              <div><div class="ds-svc-name">Facebook</div><div class="ds-svc-type" id="svc-type-fb">Page Likes</div></div>
+              <div class="ds-svc-price">From <strong id="svc-price-fb">…</strong></div>
               <button class="ds-svc-btn" onclick="location.href='new-order.html'">Order Now</button>
             </div>
           </div>
@@ -1002,6 +1002,41 @@
     document.querySelectorAll('.js-coming').forEach(el => {
       el.addEventListener('click', e => { e.preventDefault(); toast('Coming soon — this feature is under development.', 'info'); });
     });
+
+    /* ── Popular services: live prices from Peakerr ── */
+    (async () => {
+      const MARKUP     = 5;
+      const USD_TO_NGN = 1600;
+      const platforms  = [
+        { id: 'ig', keys: ['instagram'] },
+        { id: 'tt', keys: ['tiktok', 'tik tok'] },
+        { id: 'yt', keys: ['youtube'] },
+        { id: 'sp', keys: ['spotify'] },
+        { id: 'x',  keys: ['twitter', 'x (twitter)', 'x-twitter'] },
+        { id: 'fb', keys: ['facebook'] },
+      ];
+      try {
+        const res  = await fetch('/api/peakerr', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'services' })
+        });
+        const svcs = await res.json();
+        if (!Array.isArray(svcs)) return;
+        platforms.forEach(({ id, keys }) => {
+          const matches = svcs.filter(s => {
+            const n = (s.name || '').toLowerCase(), c = (s.category || '').toLowerCase();
+            return keys.some(k => n.includes(k) || c.includes(k));
+          });
+          if (!matches.length) return;
+          const cheap = matches.reduce((a, b) => parseFloat(a.rate) < parseFloat(b.rate) ? a : b);
+          const ngn   = Math.round(parseFloat(cheap.rate) * MARKUP * USD_TO_NGN);
+          const priceEl = document.getElementById(`svc-price-${id}`);
+          const typeEl  = document.getElementById(`svc-type-${id}`);
+          if (priceEl) priceEl.textContent = `₦${ngn.toLocaleString('en-NG')}`;
+          if (typeEl)  typeEl.textContent  = cheap.name.replace(/^(Instagram|TikTok|YouTube|Spotify|Twitter|Facebook|X)\s*/i, '').split(' ').slice(0,3).join(' ') || typeEl.textContent;
+        });
+      } catch (_) {}
+    })();
 
     /* ── Bottom nav: Orders → scroll to orders section ── */
     document.getElementById('bot-orders-btn').addEventListener('click', () => {
