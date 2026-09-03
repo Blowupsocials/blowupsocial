@@ -461,15 +461,16 @@
 
     /* ── TABLET / MOBILE ── */
     @media (max-width: 768px) {
-      /* Sidebar hidden; bottom nav takes over */
-      .ds-sidebar { display: none; }
+      /* Sidebar: off-canvas slide-in (hamburger opens it) */
+      .ds-sidebar { transform: translateX(-100%); transition: transform 0.28s cubic-bezier(.4,0,.2,1); width: 260px; display: flex; }
+      .ds-sidebar.open { transform: translateX(0); box-shadow: 6px 0 24px rgba(0,0,0,0.18); }
       .ds-main { margin-left: 0; width: 100%; }
-      .ds-mob-toggle { display: none; }
+      .ds-mob-toggle { display: flex; align-items: center; justify-content: center; }
       .ds-bot-nav { display: flex; }
 
-      /* Topbar: greeting + bell + avatar only */
+      /* Topbar: hamburger + greeting + avatar */
       .ds-btn-quick, .ds-btn-addfunds, .ds-bal-chip { display: none; }
-      .ds-topbar { padding: 0 16px; gap: 10px; height: 56px; }
+      .ds-topbar { padding: 0 14px; gap: 10px; height: 56px; }
       .ds-topbar-left p { display: none; }
       .ds-profile-btn { border: none; padding: 2px; background: none; }
       .ds-profile-chevron { display: none; }
@@ -724,10 +725,10 @@
             <div class="ds-stat-top">
               <div>
                 <div class="ds-stat-label">Total Spent</div>
-                <div class="ds-stat-num" id="stat-spent">$0</div>
+                <div class="ds-stat-num" id="stat-spent">₦0</div>
                 <div class="ds-stat-trend trend-neutral">Lifetime value</div>
               </div>
-              <div class="ds-stat-icon-wrap si-purple"><i class="fas fa-dollar-sign"></i></div>
+              <div class="ds-stat-icon-wrap si-purple"><i class="fas fa-naira-sign"></i></div>
             </div>
             <div class="ds-sparkline">
               <svg viewBox="0 0 100 28" preserveAspectRatio="none">
@@ -1094,6 +1095,10 @@
       const wallet = parseFloat(profile?.wallet_balance || 0);
       const inits  = initials(name);
 
+      /* Currency */
+      const USD_TO_NGN = 1600;
+      const fmtNGN = v => `₦${Math.round(v * USD_TO_NGN).toLocaleString('en-NG')}`;
+
       /* Populate names & avatars */
       document.getElementById('greeting-text').textContent  = `${timeGreeting()}, ${name.split(' ')[0]}! 👋`;
       document.getElementById('sidebar-avatar').textContent = inits;
@@ -1105,9 +1110,8 @@
       document.getElementById('dd-email').textContent       = email;
 
       /* Wallet */
-      const fmt = `$${wallet.toFixed(2)}`;
-      document.getElementById('topbar-wallet').textContent = fmt;
-      document.getElementById('right-wallet').textContent  = fmt;
+      document.getElementById('topbar-wallet').textContent = fmtNGN(wallet);
+      document.getElementById('right-wallet').textContent  = fmtNGN(wallet);
 
       /* Orders */
       const { data: orders } = await db.from('orders').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
@@ -1122,7 +1126,7 @@
       document.getElementById('stat-total').textContent     = total;
       document.getElementById('stat-completed').textContent = completed;
       document.getElementById('stat-progress').textContent  = inProgress;
-      document.getElementById('stat-spent').textContent     = `$${spent.toFixed(0)}`;
+      document.getElementById('stat-spent').textContent     = fmtNGN(spent);
       document.getElementById('trend-completed').textContent = `↑ ${pct}% rate`;
       document.getElementById('trend-total').textContent     = `${total} orders total`;
       document.getElementById('orders-badge').textContent    = total;

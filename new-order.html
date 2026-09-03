@@ -253,11 +253,11 @@
       <div class="no-cost-bar">
         <div class="no-cost-left">
           <strong>Total cost</strong>
-          <div id="cost-display">$0.00</div>
+          <div id="cost-display">₦0</div>
         </div>
         <div class="no-cost-bal">
           Your balance<br>
-          <span id="modal-balance">$0.00</span>
+          <span id="modal-balance">₦0</span>
         </div>
       </div>
 
@@ -272,7 +272,7 @@
   <div class="no-topbar">
     <a href="dashboard.html" class="no-back"><i class="fas fa-arrow-left"></i> Dashboard</a>
     <div class="no-title">New Order</div>
-    <div class="no-wallet"><span>Balance</span><strong id="topbar-balance">$0.00</strong></div>
+    <div class="no-wallet"><span>Balance</span><strong id="topbar-balance">₦0</strong></div>
   </div>
 
   <!-- Page body -->
@@ -320,7 +320,9 @@
   <script src="js/supabase-client.js"></script>
   <script>
     /* ── Config ── */
-    const MARKUP = 2.0; // sell at 2x Peakerr cost — adjust as needed
+    const MARKUP     = 2.0;    // sell at 2x Peakerr cost
+    const USD_TO_NGN = 1600;   // NGN display rate
+    const fmtNGN = v => `₦${Math.round(v * USD_TO_NGN).toLocaleString('en-NG')}`;
 
     /* ── Platform map ── */
     const PLATFORMS = [
@@ -401,7 +403,7 @@
 
       grid.innerHTML = list.map(s => {
         const { css, icon } = getPlatformCSS(s.name, s.category);
-        const price = ((parseFloat(s.rate) * MARKUP)).toFixed(3);
+        const price = fmtNGN(parseFloat(s.rate) * MARKUP / 1000);
         const refillTag = s.refill == 1 ? `<span class="no-svc-tag green"><i class="fas fa-rotate-right"></i> Refill</span>` : '';
         const cancelTag = s.cancel == 1 ? `<span class="no-svc-tag blue"><i class="fas fa-ban"></i> Cancel</span>` : '';
         return `
@@ -419,7 +421,7 @@
               ${refillTag}${cancelTag}
             </div>
             <div class="no-svc-footer">
-              <div class="no-svc-price">$${price}<span class="no-svc-price-sub"> / 1K</span></div>
+              <div class="no-svc-price">${price}<span class="no-svc-price-sub"> / 1K</span></div>
               <button class="no-svc-order-btn" onclick="event.stopPropagation();openOrder(${s.service})">Order Now</button>
             </div>
           </div>`;
@@ -467,7 +469,7 @@
       document.getElementById('order-qty').max   = selectedSvc.max;
       document.getElementById('order-qty').value = selectedSvc.min;
       document.getElementById('order-link').value = '';
-      document.getElementById('modal-balance').textContent = `$${userBalance.toFixed(2)}`;
+      document.getElementById('modal-balance').textContent = fmtNGN(userBalance);
       document.getElementById('modal-error').style.display = 'none';
       updateCost();
 
@@ -480,7 +482,7 @@
       if (!selectedSvc) return;
       const qty  = parseInt(document.getElementById('order-qty').value) || 0;
       const cost = (parseFloat(selectedSvc.rate) * MARKUP * qty / 1000);
-      document.getElementById('cost-display').textContent = `$${cost.toFixed(3)}`;
+      document.getElementById('cost-display').textContent = fmtNGN(cost);
     }
 
     document.getElementById('order-qty').addEventListener('input', updateCost);
@@ -504,7 +506,7 @@
         errEl.style.display = 'block'; return;
       }
       if (cost > userBalance) {
-        errEl.textContent = `Insufficient balance. You need $${cost.toFixed(2)} but have $${userBalance.toFixed(2)}.`;
+        errEl.textContent = `Insufficient balance. You need ${fmtNGN(cost)} but have ${fmtNGN(userBalance)}.`;
         errEl.style.display = 'block'; return;
       }
 
@@ -547,9 +549,9 @@
 
         // 4. Update local balance
         userBalance = newBalance;
-        document.getElementById('topbar-balance').textContent = `$${newBalance.toFixed(2)}`;
-        document.getElementById('modal-balance').textContent  = `$${newBalance.toFixed(2)}`;
-        document.getElementById('stat-balance').textContent   = `$${newBalance.toFixed(2)}`;
+        document.getElementById('topbar-balance').textContent = fmtNGN(newBalance);
+        document.getElementById('modal-balance').textContent  = fmtNGN(newBalance);
+        document.getElementById('stat-balance').textContent   = fmtNGN(newBalance);
 
         closeOrder();
         toast(`Order #PKR-${peakerrOrderId} placed! Processing will begin shortly.`, 'success');
@@ -572,8 +574,8 @@
       // Load user profile
       const { data: profile } = await db.from('profiles').select('wallet_balance').eq('id', session.user.id).single();
       userBalance = parseFloat(profile?.wallet_balance || 0);
-      document.getElementById('topbar-balance').textContent = `$${userBalance.toFixed(2)}`;
-      document.getElementById('stat-balance').textContent   = `$${userBalance.toFixed(2)}`;
+      document.getElementById('topbar-balance').textContent = fmtNGN(userBalance);
+      document.getElementById('stat-balance').textContent   = fmtNGN(userBalance);
 
       // Load services from Peakerr
       const data = await peakerr({ action: 'services' });
@@ -591,7 +593,7 @@
       const platCount = new Set(data.map(s => detectPlatform(s.name, s.category)?.key).filter(Boolean)).size;
       document.getElementById('stat-services').textContent = data.length.toLocaleString();
       document.getElementById('stat-platforms').textContent = platCount;
-      document.getElementById('stat-lowest').textContent = prices.length ? `$${Math.min(...prices).toFixed(4)}/K` : '—';
+      document.getElementById('stat-lowest').textContent = prices.length ? `${fmtNGN(Math.min(...prices) / 1000)}/K` : '—';
 
       buildTabs();
       renderServices();
