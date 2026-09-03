@@ -591,7 +591,7 @@
       <a href="#" class="ds-nav-item js-coming"><i class="fas fa-bag-shopping"></i> My Orders <span class="ds-nav-badge" id="orders-badge">0</span></a>
 
       <div class="ds-nav-label">Shop</div>
-      <a href="index.html" class="ds-nav-item"><i class="fas fa-boxes-stacked"></i> Services</a>
+      <a href="new-order.html" class="ds-nav-item"><i class="fas fa-boxes-stacked"></i> Services</a>
       <a href="#" class="ds-nav-item js-funds"><i class="fas fa-wallet"></i> Add Funds</a>
       <a href="#" class="ds-nav-item js-coming"><i class="fas fa-right-left"></i> Transactions</a>
 
@@ -779,44 +779,44 @@
         <div class="ds-card">
           <div class="ds-card-hdr">
             <span class="ds-card-hdr-title">Popular Services</span>
-            <a href="index.html">Browse All</a>
+            <a href="new-order.html">Browse All</a>
           </div>
           <div class="ds-services-grid">
             <div class="ds-svc-card">
               <div class="ds-svc-icon svc-ig"><i class="fab fa-instagram"></i></div>
               <div><div class="ds-svc-name">Instagram</div><div class="ds-svc-type">Followers</div></div>
-              <div class="ds-svc-price">From <strong>$1.20</strong></div>
-              <button class="ds-svc-btn" onclick="location.href='index.html'">Order Now</button>
+              <div class="ds-svc-price">From <strong>₦1,920</strong></div>
+              <button class="ds-svc-btn" onclick="location.href='new-order.html'">Order Now</button>
             </div>
             <div class="ds-svc-card">
               <div class="ds-svc-icon svc-tt"><i class="fab fa-tiktok"></i></div>
               <div><div class="ds-svc-name">TikTok</div><div class="ds-svc-type">Views</div></div>
-              <div class="ds-svc-price">From <strong>$0.75</strong></div>
-              <button class="ds-svc-btn" onclick="location.href='index.html'">Order Now</button>
+              <div class="ds-svc-price">From <strong>₦1,200</strong></div>
+              <button class="ds-svc-btn" onclick="location.href='new-order.html'">Order Now</button>
             </div>
             <div class="ds-svc-card">
               <div class="ds-svc-icon svc-yt"><i class="fab fa-youtube"></i></div>
               <div><div class="ds-svc-name">YouTube</div><div class="ds-svc-type">Subscribers</div></div>
-              <div class="ds-svc-price">From <strong>$2.10</strong></div>
-              <button class="ds-svc-btn" onclick="location.href='index.html'">Order Now</button>
+              <div class="ds-svc-price">From <strong>₦3,360</strong></div>
+              <button class="ds-svc-btn" onclick="location.href='new-order.html'">Order Now</button>
             </div>
             <div class="ds-svc-card">
               <div class="ds-svc-icon svc-sp"><i class="fab fa-spotify"></i></div>
               <div><div class="ds-svc-name">Spotify</div><div class="ds-svc-type">Plays</div></div>
-              <div class="ds-svc-price">From <strong>$0.50</strong></div>
-              <button class="ds-svc-btn" onclick="location.href='index.html'">Order Now</button>
+              <div class="ds-svc-price">From <strong>₦800</strong></div>
+              <button class="ds-svc-btn" onclick="location.href='new-order.html'">Order Now</button>
             </div>
             <div class="ds-svc-card">
               <div class="ds-svc-icon svc-x"><i class="fab fa-x-twitter"></i></div>
               <div><div class="ds-svc-name">X (Twitter)</div><div class="ds-svc-type">Followers</div></div>
-              <div class="ds-svc-price">From <strong>$1.00</strong></div>
-              <button class="ds-svc-btn" onclick="location.href='index.html'">Order Now</button>
+              <div class="ds-svc-price">From <strong>₦1,600</strong></div>
+              <button class="ds-svc-btn" onclick="location.href='new-order.html'">Order Now</button>
             </div>
             <div class="ds-svc-card">
               <div class="ds-svc-icon svc-fb"><i class="fab fa-facebook-f"></i></div>
               <div><div class="ds-svc-name">Facebook</div><div class="ds-svc-type">Page Likes</div></div>
-              <div class="ds-svc-price">From <strong>$1.50</strong></div>
-              <button class="ds-svc-btn" onclick="location.href='index.html'">Order Now</button>
+              <div class="ds-svc-price">From <strong>₦2,400</strong></div>
+              <button class="ds-svc-btn" onclick="location.href='new-order.html'">Order Now</button>
             </div>
           </div>
         </div>
@@ -936,7 +936,7 @@
       <i class="fas fa-bag-shopping"></i>
       <span>Orders</span>
     </a>
-    <a href="index.html" class="ds-bot-item">
+    <a href="new-order.html" class="ds-bot-item">
       <i class="fas fa-boxes-stacked"></i>
       <span>Services</span>
     </a>
@@ -1061,7 +1061,7 @@
     function renderOrders(orders) {
       const tbody = document.getElementById('orders-body');
       if (!orders || orders.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="ds-empty"><i class="fas fa-bag-shopping"></i>No orders here yet.<br><a href="index.html" style="color:#7c3aed;font-weight:600;text-decoration:underline;">Browse the store to get started →</a></td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="ds-empty"><i class="fas fa-bag-shopping"></i>No orders here yet.<br><a href="new-order.html" style="color:#7c3aed;font-weight:600;text-decoration:underline;">Browse the store to get started →</a></td></tr>`;
         return;
       }
       tbody.innerHTML = orders.slice(0, 10).map(o => {
