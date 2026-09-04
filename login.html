@@ -83,10 +83,8 @@
       window.location.href = (email || '').toLowerCase() === ADMIN_EMAIL ? 'admin.html' : 'dashboard.html';
     }
 
-    // Redirect already-logged-in users
-    db.auth.getSession().then(({ data: { session } }) => {
-      if (session) redirectAfterLogin(session.user.email);
-    });
+    // Always sign out on visiting login page — ensures fresh login every time
+    db.auth.signOut();
 
     function togglePassword(id, iconId) {
       const input = document.getElementById(id);
