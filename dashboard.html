@@ -1168,19 +1168,16 @@
       if (!session) { window.location.href = 'login.html'; return; }
 
       const user    = session.user;
-      const isAdmin = (user.email || '').toLowerCase() === 'blowupsocialsconsult@gmail.com';
 
-      // Show admin links immediately
-      if (isAdmin) {
-        ['admin-panel-btn', 'admin-sidebar-btn', 'dd-admin-link'].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) el.style.display = 'flex';
-        });
+      // Send admin straight to admin dashboard
+      if ((user.email || '').toLowerCase() === 'blowupsocialsconsult@gmail.com') {
+        window.location.href = 'admin.html';
+        return;
       }
 
       const { data: profile } = await db.from('profiles').select('*').eq('id', user.id).single();
 
-      const name   = isAdmin ? 'Admin' : (profile?.full_name || user.email.split('@')[0]);
+      const name   = profile?.full_name || user.email.split('@')[0];
       const email  = user.email || '';
       const wallet = parseFloat(profile?.wallet_balance || 0);
       window.userWallet = wallet;
