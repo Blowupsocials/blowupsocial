@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin – BlowUpSocial</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --sb: #0d0c1d;
+      --bg: #f0f2f7;
+      --sur: #ffffff;
+      --t1: #0f0e1c;
+      --t2: #4b5063;
+      --t3: #8b8fa8;
+      --bd: #e8eaf0;
+      --pu: #7c3aed;
+      --pk: #ec4899;
+      --gn: #10b981;
+      --or: #f59e0b;
+      --bl: #3b82f6;
+      --rd: #ef4444;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0a0917; --sur: #151428; --t1: #eeeeff;
+        --t2: #9a9db5; --t3: #6b7080; --bd: #252340;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #0a0917; --sur: #151428; --t1: #eeeeff;
+      --t2: #9a9db5; --t3: #6b7080; --bd: #252340;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--t1); display: flex; min-height: 100vh; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    :focus-visible { outline: 2px solid var(--pu); outline-offset: 2px; }
+
+    /* ══ SIDEBAR ══ */
+    .sb { width: 220px; background: var(--sb); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 200; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+    .sb::-webkit-scrollbar { display: none; }
+
+    .sb-logo { display: flex; align-items: center; gap: 10px; padding: 18px 16px 15px; border-bottom: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
+    .sb-logo-mark { width: 32px; height: 32px; border-radius: 9px; background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 800; color: #fff; flex-shrink: 0; }
+    .sb-logo-text { line-height: 1.15; }
+    .sb-logo-name { font-family: 'Space Grotesk', sans-serif; font-size: 0.86rem; font-weight: 800; color: #fff; letter-spacing: -0.2px; }
+    .sb-logo-sub { font-family: 'Space Grotesk', sans-serif; font-size: 0.62rem; font-weight: 700; background: linear-gradient(90deg, #7c3aed, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 0.3px; }
+
+    .sb-nav { flex: 1; padding: 10px 10px; display: flex; flex-direction: column; gap: 1px; }
+    .sb-sec { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.1px; color: rgba(255,255,255,0.22); padding: 10px 9px 4px; }
+    .sb-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; font-size: 0.79rem; font-weight: 500; color: rgba(255,255,255,0.4); transition: all 0.12s; white-space: nowrap; }
+    .sb-item i { width: 14px; text-align: center; font-size: 0.76rem; flex-shrink: 0; }
+    .sb-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.82); }
+    .sb-item.active { background: linear-gradient(90deg, rgba(124,58,237,0.9) 0%, rgba(168,85,247,0.75) 100%); color: #fff; font-weight: 600; }
+
+    .sb-foot { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-top: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
+    .sb-ava { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #ec4899, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 0.68rem; font-weight: 800; color: #fff; flex-shrink: 0; position: relative; }
+    .sb-ava-online { position: absolute; bottom: -1px; right: -1px; width: 9px; height: 9px; border-radius: 50%; background: #10b981; border: 1.5px solid var(--sb); }
+    .sb-foot-info { flex: 1; min-width: 0; }
+    .sb-foot-name { font-size: 0.76rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sb-foot-role { font-size: 0.61rem; color: rgba(255,255,255,0.38); margin-top: 1px; }
+    .sb-foot i { color: rgba(255,255,255,0.28); font-size: 0.62rem; }
+
+    /* ══ MAIN ══ */
+    .main { margin-left: 220px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; min-width: 0; }
+
+    /* ══ TOPBAR ══ */
+    .topbar { background: var(--sur); border-bottom: 1px solid var(--bd); padding: 0 28px; height: 68px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; flex-shrink: 0; }
+    .tb-welcome { flex: 1; min-width: 0; }
+    .tb-welcome h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 800; color: var(--t1); white-space: nowrap; }
+    .tb-welcome p { font-size: 0.71rem; color: var(--t3); margin-top: 1px; }
+    .tb-right { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+
+    .tb-search { display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--bd); border-radius: 10px; padding: 7px 13px; width: 210px; transition: border-color 0.13s; }
+    .tb-search:focus-within { border-color: #c4b5fd; }
+    .tb-search input { background: none; border: none; outline: none; font-size: 0.77rem; color: var(--t1); width: 100%; font-family: inherit; }
+    .tb-search input::placeholder { color: var(--t3); }
+    .tb-search i { color: var(--t3); font-size: 0.78rem; flex-shrink: 0; }
+
+    .tb-quick { display: flex; align-items: center; gap: 6px; background: var(--pu); color: #fff; padding: 8px 14px; border-radius: 10px; font-size: 0.77rem; font-weight: 700; transition: opacity 0.13s; }
+    .tb-quick:hover { opacity: 0.88; }
+    .tb-quick i { font-size: 0.78rem; }
+
+    .tb-bell { width: 36px; height: 36px; border-radius: 10px; background: var(--bg); border: 1px solid var(--bd); display: flex; align-items: center; justify-content: center; position: relative; color: var(--t2); font-size: 0.86rem; transition: background 0.12s; }
+    .tb-bell:hover { background: var(--bd); }
+    .tb-badge { position: absolute; top: -4px; right: -4px; background: var(--pk); color: #fff; font-size: 0.5rem; font-weight: 800; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--sur); }
+
+    .tb-profile { display: flex; align-items: center; gap: 8px; border: 1px solid var(--bd); border-radius: 50px; padding: 4px 12px 4px 4px; transition: border-color 0.13s; }
+    .tb-profile:hover { border-color: #c4b5fd; }
+    .tb-profile-ava { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #ec4899, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 0.62rem; font-weight: 800; color: #fff; }
+    .tb-profile-info { line-height: 1.15; }
+    .tb-profile-name { font-size: 0.76rem; font-weight: 700; color: var(--t1); }
+    .tb-profile-role { font-size: 0.61rem; color: var(--t3); }
+    .tb-profile > i { color: var(--t3); font-size: 0.62rem; }
+
+    /* ══ CONTENT ══ */
+    .content { padding: 22px 28px; flex: 1; }
+
+    /* ── Stat Cards ── */
+    .stats-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 20px; }
+    .stat-card { background: var(--sur); border-radius: 14px; padding: 18px 16px 16px; display: flex; align-items: flex-start; gap: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
+    .stat-body { flex: 1; min-width: 0; }
+    .stat-top { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
+    .stat-icon { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.92rem; flex-shrink: 0; }
+    .si-pu { background: #f5f0ff; color: #7c3aed; }
+    .si-pk { background: #fdf2f8; color: #ec4899; }
+    .si-gn { background: #ecfdf5; color: #10b981; }
+    .si-or { background: #fffbeb; color: #f59e0b; }
+    .si-bl { background: #eff6ff; color: #3b82f6; }
+    .stat-label { font-size: 0.7rem; font-weight: 600; color: var(--t3); }
+    .stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--t1); line-height: 1; margin-bottom: 8px; font-variant-numeric: tabular-nums; }
+    .stat-trend { font-size: 0.71rem; font-weight: 600; display: flex; align-items: center; gap: 3px; flex-wrap: wrap; }
+    .t-up   { color: #10b981; }
+    .t-dn   { color: #ef4444; }
+    .t-lbl  { color: var(--t3); font-weight: 400; margin-left: 2px; }
+    .stat-spark { display: flex; align-items: flex-end; padding-left: 8px; flex-shrink: 0; }
+
+    /* ── Middle Row ── */
+    .mid-row { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; margin-bottom: 20px; }
+    .card { background: var(--sur); border-radius: 14px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .card-title { font-family: 'Space Grotesk', sans-serif; font-size: 0.92rem; font-weight: 800; color: var(--t1); }
+    .card-hdr-r { display: flex; align-items: center; gap: 8px; }
+    .btn-sm { display: flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: 7px; border: 1px solid var(--bd); font-size: 0.72rem; font-weight: 600; color: var(--t2); background: var(--sur); transition: background 0.12s; }
+    .btn-sm:hover { background: var(--bg); }
+    .btn-link { font-size: 0.73rem; font-weight: 700; color: var(--pu); }
+    .btn-link:hover { opacity: 0.7; }
+
+    .chart-wrap { height: 240px; }
+
+    /* Services table */
+    .svc-tbl { width: 100%; border-collapse: collapse; }
+    .svc-tbl th { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--t3); padding-bottom: 9px; border-bottom: 1px solid var(--bd); text-align: left; }
+    .svc-tbl th:not(:first-child) { text-align: right; }
+    .svc-tbl td { padding: 10px 0; border-bottom: 1px solid var(--bd); vertical-align: middle; font-size: 0.8rem; }
+    .svc-tbl tfoot td { border-bottom: none; border-top: 1px solid var(--bd); padding-top: 11px; font-weight: 800; font-size: 0.81rem; }
+    .svc-tbl tr:last-of-type td { border-bottom: none; }
+    .svc-name-cell { display: flex; align-items: center; gap: 9px; font-weight: 600; color: var(--t1); }
+    .svc-ico { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.74rem; flex-shrink: 0; }
+    .svc-orders { text-align: right; font-weight: 600; color: var(--t1); font-variant-numeric: tabular-nums; }
+    .svc-rev { text-align: right; font-weight: 700; color: var(--gn); font-variant-numeric: tabular-nums; }
+
+    /* ── Bottom Row ── */
+    .bot-row { display: grid; grid-template-columns: 2fr 1.5fr 1.5fr; gap: 16px; }
+
+    /* Orders table */
+    .ord-tbl { width: 100%; border-collapse: collapse; }
+    .ord-tbl th { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--t3); padding-bottom: 9px; border-bottom: 1px solid var(--bd); text-align: left; }
+    .ord-tbl td { padding: 9px 0; border-bottom: 1px solid var(--bd); font-size: 0.78rem; vertical-align: middle; }
+    .ord-tbl tr:last-child td { border-bottom: none; }
+    .ord-user { display: flex; align-items: center; gap: 7px; }
+    .ord-ava { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.58rem; font-weight: 800; color: #fff; flex-shrink: 0; }
+    .ord-uname { font-weight: 600; color: var(--t1); }
+    .ord-svc { color: var(--t2); font-size: 0.75rem; }
+    .ord-qty { font-weight: 600; color: var(--t1); font-variant-numeric: tabular-nums; }
+    .ord-time { color: var(--t3); font-size: 0.7rem; white-space: nowrap; }
+    .badge { display: inline-block; padding: 2px 9px; border-radius: 50px; font-size: 0.64rem; font-weight: 700; white-space: nowrap; }
+    .b-completed { background: #dcfce7; color: #166534; }
+    .b-progress  { background: #dbeafe; color: #1e40af; }
+    .b-pending   { background: #fef9c3; color: #854d0e; }
+    .b-cancelled { background: #fee2e2; color: #991b1b; }
+
+    /* Donut */
+    .donut-wrap { height: 175px; position: relative; margin-bottom: 14px; }
+    .legend-list { display: flex; flex-direction: column; gap: 8px; }
+    .legend-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.76rem; }
+    .legend-l { display: flex; align-items: center; gap: 7px; }
+    .leg-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .leg-name { color: var(--t2); }
+    .legend-r { display: flex; align-items: baseline; gap: 4px; }
+    .leg-count { font-weight: 700; color: var(--t1); font-variant-numeric: tabular-nums; }
+    .leg-pct { font-size: 0.67rem; color: var(--t3); }
+    .online-bar { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--bd); display: flex; align-items: center; justify-content: space-between; }
+    .online-l { display: flex; align-items: center; gap: 7px; font-size: 0.77rem; color: var(--t2); }
+    .online-pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--gn); animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.35} }
+    .online-n { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--t1); }
+
+    /* Activity */
+    .act-list { display: flex; flex-direction: column; }
+    .act-item { display: flex; align-items: flex-start; gap: 11px; padding: 10px 0; border-bottom: 1px solid var(--bd); }
+    .act-item:last-child { border-bottom: none; }
+    .act-ico { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.84rem; flex-shrink: 0; }
+    .act-body { flex: 1; min-width: 0; }
+    .act-title { font-size: 0.78rem; font-weight: 600; color: var(--t1); margin-bottom: 2px; }
+    .act-sub { font-size: 0.7rem; color: var(--t3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .act-time { font-size: 0.67rem; color: var(--t3); white-space: nowrap; flex-shrink: 0; padding-top: 2px; }
+
+    /* Footer */
+    .page-foot { border-top: 1px solid var(--bd); padding: 15px 28px; display: flex; align-items: center; justify-content: space-between; font-size: 0.71rem; color: var(--t3); flex-shrink: 0; }
+  </style>
+</head>
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/supabase-client.js"></script>
+
+  <!-- ══ SIDEBAR ══ -->
+  <nav class="sb">
+    <div class="sb-logo">
+      <div class="sb-logo-mark">B</div>
+      <div class="sb-logo-text">
+        <div class="sb-logo-name">blowup</div>
+        <div class="sb-logo-sub">social</div>
+      </div>
+    </div>
+
+    <div class="sb-nav">
+      <div class="sb-sec">Admin Panel</div>
+      <a href="admin.html"      class="sb-item active"><i class="fas fa-gauge"></i> Dashboard</a>
+
+      <div class="sb-sec">Manage</div>
+      <a href="#"               class="sb-item"><i class="fas fa-users"></i> Users</a>
+      <a href="#"               class="sb-item"><i class="fas fa-bag-shopping"></i> Orders</a>
+      <a href="new-order.html"  class="sb-item"><i class="fas fa-sliders"></i> Services</a>
+      <a href="#"               class="sb-item"><i class="fas fa-layer-group"></i> Categories</a>
+      <a href="#"               class="sb-item"><i class="fas fa-wallet"></i> Add Funds Requests</a>
+      <a href="#"               class="sb-item"><i class="fas fa-right-left"></i> Transactions</a>
+
+      <div class="sb-sec">Content</div>
+      <a href="#"               class="sb-item"><i class="fas fa-bullhorn"></i> Announcements</a>
+      <a href="#"               class="sb-item"><i class="fas fa-file"></i> Pages</a>
+      <a href="#"               class="sb-item"><i class="fas fa-heart"></i> Testimonials</a>
+
+      <div class="sb-sec">System</div>
+      <a href="#"               class="sb-item"><i class="fas fa-gear"></i> Settings</a>
+      <a href="#"               class="sb-item"><i class="fas fa-key"></i> API Keys</a>
+      <a href="#"               class="sb-item"><i class="fas fa-tag"></i> Coupons</a>
+
+      <div class="sb-sec">Support</div>
+      <a href="#"               class="sb-item"><i class="fas fa-ticket"></i> Tickets</a>
+      <a href="#"               class="sb-item"><i class="fas fa-chart-bar"></i> Reports</a>
+    </div>
+
+    <div class="sb-foot">
+      <div class="sb-ava">AD<div class="sb-ava-online"></div></div>
+      <div class="sb-foot-info">
+        <div class="sb-foot-name" id="sb-admin-name">Admin</div>
+        <div class="sb-foot-role">Super Administrator</div>
+      </div>
+      <i class="fas fa-chevron-down"></i>
+    </div>
+  </nav>
+
+  <!-- ══ MAIN ══ -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="tb-welcome">
+        <h1>Welcome back, Admin! 👋</h1>
+        <p>Here's what's happening on your platform today.</p>
+      </div>
+      <div class="tb-right">
+        <div class="tb-search">
+          <i class="fas fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search anything…" />
+        </div>
+        <button class="tb-quick"><i class="fas fa-bolt"></i> Quick Actions</button>
+        <button class="tb-bell">
+          <i class="fas fa-bell"></i>
+          <span class="tb-badge">8</span>
+        </button>
+        <div class="tb-profile">
+          <div class="tb-profile-ava">AD</div>
+          <div class="tb-profile-info">
+            <div class="tb-profile-name" id="tb-admin-name">Admin</div>
+            <div class="tb-profile-role">Super Admin</div>
+          </div>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- STAT CARDS -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-body">
+            <div class="stat-top">
+              <div class="stat-icon si-pu"><i class="fas fa-users"></i></div>
+              <span class="stat-label">Total Users</span>
+            </div>
+            <div class="stat-num" id="stat-users">—</div>
+            <div class="stat-trend"><span class="t-up"><i class="fas fa-arrow-up"></i> 18.6%</span><span class="t-lbl">vs last month</span></div>
+          </div>
+          <div class="stat-spark" id="spark-users"></div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-body">
+            <div class="stat-top">
+              <div class="stat-icon si-pk"><i class="fas fa-cart-shopping"></i></div>
+              <span class="stat-label">Total Orders</span>
+            </div>
+            <div class="stat-num" id="stat-orders">—</div>
+            <div class="stat-trend"><span class="t-up"><i class="fas fa-arrow-up"></i> 24.3%</span><span class="t-lbl">vs last month</span></div>
+          </div>
+          <div class="stat-spark" id="spark-orders"></div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-body">
+            <div class="stat-top">
+              <div class="stat-icon si-gn"><i class="fas fa-naira-sign"></i></div>
+              <span class="stat-label">Total Revenue</span>
+            </div>
+            <div class="stat-num" id="stat-revenue">—</div>
+            <div class="stat-trend"><span class="t-up"><i class="fas fa-arrow-up"></i> 31.7%</span><span class="t-lbl">vs last month</span></div>
+          </div>
+          <div class="stat-spark" id="spark-revenue"></div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-body">
+            <div class="stat-top">
+              <div class="stat-icon si-or"><i class="far fa-clock"></i></div>
+              <span class="stat-label">Pending Orders</span>
+            </div>
+            <div class="stat-num" id="stat-pending">—</div>
+            <div class="stat-trend"><span class="t-dn"><i class="fas fa-arrow-down"></i> 6.2%</span><span class="t-lbl">vs yesterday</span></div>
+          </div>
+          <div class="stat-spark" id="spark-pending"></div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-body">
+            <div class="stat-top">
+              <div class="stat-icon si-bl"><i class="fas fa-headset"></i></div>
+              <span class="stat-label">Tickets Open</span>
+            </div>
+            <div class="stat-num">32</div>
+            <div class="stat-trend"><span class="t-dn"><i class="fas fa-arrow-down"></i> 11.3%</span><span class="t-lbl">vs yesterday</span></div>
+          </div>
+          <div class="stat-spark" id="spark-tickets"></div>
+        </div>
+      </div>
+
+      <!-- MIDDLE ROW -->
+      <div class="mid-row">
+
+        <!-- Revenue chart -->
+        <div class="card">
+          <div class="card-hdr">
+            <div class="card-title">Revenue Overview</div>
+            <div class="card-hdr-r">
+              <button class="btn-sm"><i class="fas fa-calendar-days"></i> This Month <i class="fas fa-chevron-down"></i></button>
+              <button class="btn-sm"><i class="fas fa-arrow-down"></i> Export</button>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="revenue-chart"></canvas></div>
+        </div>
+
+        <!-- Top selling services -->
+        <div class="card">
+          <div class="card-hdr">
+            <div class="card-title">Top Selling Services</div>
+            <button class="btn-link">View All</button>
+          </div>
+          <table class="svc-tbl">
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Orders</th>
+                <th>Revenue</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="svc-name-cell"><div class="svc-ico" style="background:#fdf2f8;color:#e1306c"><i class="fa-brands fa-instagram"></i></div>Instagram Followers</div></td>
+                <td class="svc-orders">12,540</td>
+                <td class="svc-rev">₦2,850,400</td>
+              </tr>
+              <tr>
+                <td><div class="svc-name-cell"><div class="svc-ico" style="background:#f3f4f6;color:#000"><i class="fa-brands fa-tiktok"></i></div>TikTok Views</div></td>
+                <td class="svc-orders">9,875</td>
+                <td class="svc-rev">₦1,975,000</td>
+              </tr>
+              <tr>
+                <td><div class="svc-name-cell"><div class="svc-ico" style="background:#fef2f2;color:#ff0000"><i class="fa-brands fa-youtube"></i></div>YouTube Subscribers</div></td>
+                <td class="svc-orders">6,250</td>
+                <td class="svc-rev">₦1,562,500</td>
+              </tr>
+              <tr>
+                <td><div class="svc-name-cell"><div class="svc-ico" style="background:#f9fafb;color:#000"><i class="fa-brands fa-x-twitter"></i></div>Twitter (X) Followers</div></td>
+                <td class="svc-orders">3,890</td>
+                <td class="svc-rev">₦1,050,300</td>
+              </tr>
+              <tr>
+                <td><div class="svc-name-cell"><div class="svc-ico" style="background:#f0fdf4;color:#1db954"><i class="fa-brands fa-spotify"></i></div>Spotify Plays</div></td>
+                <td class="svc-orders">2,337</td>
+                <td class="svc-rev">₦654,120</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td>Total</td>
+                <td class="svc-orders" id="tbl-total-orders">34,892</td>
+                <td class="svc-rev">₦8,092,320</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- BOTTOM ROW -->
+      <div class="bot-row">
+
+        <!-- Recent orders -->
+        <div class="card">
+          <div class="card-hdr">
+            <div class="card-title">Recent Orders</div>
+            <button class="btn-link">View All</button>
+          </div>
+          <table class="ord-tbl">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Service</th>
+                <th>Qty</th>
+                <th>Status</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody id="recent-orders-body">
+              <tr>
+                <td><div class="ord-user"><div class="ord-ava" style="background:linear-gradient(135deg,#7c3aed,#3b82f6)">JD</div><span class="ord-uname">John Doe</span></div></td>
+                <td class="ord-svc">Instagram Followers</td>
+                <td class="ord-qty">5,000</td>
+                <td><span class="badge b-completed">Completed</span></td>
+                <td class="ord-time">2m ago</td>
+              </tr>
+              <tr>
+                <td><div class="ord-user"><div class="ord-ava" style="background:linear-gradient(135deg,#ec4899,#f59e0b)">JS</div><span class="ord-uname">Jane Smith</span></div></td>
+                <td class="ord-svc">TikTok Views</td>
+                <td class="ord-qty">10,000</td>
+                <td><span class="badge b-progress">In Progress</span></td>
+                <td class="ord-time">8m ago</td>
+              </tr>
+              <tr>
+                <td><div class="ord-user"><div class="ord-ava" style="background:linear-gradient(135deg,#10b981,#3b82f6)">MJ</div><span class="ord-uname">Mike Johnson</span></div></td>
+                <td class="ord-svc">YouTube Subscribers</td>
+                <td class="ord-qty">1,000</td>
+                <td><span class="badge b-completed">Completed</span></td>
+                <td class="ord-time">15m ago</td>
+              </tr>
+              <tr>
+                <td><div class="ord-user"><div class="ord-ava" style="background:linear-gradient(135deg,#f59e0b,#ec4899)">SW</div><span class="ord-uname">Sarah Wilson</span></div></td>
+                <td class="ord-svc">Twitter Followers</td>
+                <td class="ord-qty">2,500</td>
+                <td><span class="badge b-pending">Pending</span></td>
+                <td class="ord-time">22m ago</td>
+              </tr>
+              <tr>
+                <td><div class="ord-user"><div class="ord-ava" style="background:linear-gradient(135deg,#7c3aed,#ec4899)">DB</div><span class="ord-uname">David Brown</span></div></td>
+                <td class="ord-svc">Instagram Followers</td>
+                <td class="ord-qty">3,000</td>
+                <td><span class="badge b-cancelled">Cancelled</span></td>
+                <td class="ord-time">35m ago</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- User statistics -->
+        <div class="card">
+          <div class="card-hdr">
+            <div class="card-title">User Statistics</div>
+            <button class="btn-link">View All</button>
+          </div>
+          <div class="donut-wrap"><canvas id="donut-chart"></canvas></div>
+          <div class="legend-list">
+            <div class="legend-row">
+              <div class="legend-l"><div class="leg-dot" style="background:#7c3aed"></div><span class="leg-name">Active Users</span></div>
+              <div class="legend-r"><span class="leg-count" id="leg-active">8,432</span><span class="leg-pct">(67.7%)</span></div>
+            </div>
+            <div class="legend-row">
+              <div class="legend-l"><div class="leg-dot" style="background:#ec4899"></div><span class="leg-name">Inactive Users</span></div>
+              <div class="legend-r"><span class="leg-count" id="leg-inactive">2,154</span><span class="leg-pct">(17.3%)</span></div>
+            </div>
+            <div class="legend-row">
+              <div class="legend-l"><div class="leg-dot" style="background:#10b981"></div><span class="leg-name">New This Month</span></div>
+              <div class="legend-r"><span class="leg-count" id="leg-new">1,871</span><span class="leg-pct">(15.0%)</span></div>
+            </div>
+          </div>
+          <div class="online-bar">
+            <div class="online-l"><div class="online-pulse"></div> Online Now</div>
+            <span class="online-n">142</span>
+          </div>
+        </div>
+
+        <!-- Recent activity -->
+        <div class="card">
+          <div class="card-hdr">
+            <div class="card-title">Recent Activity</div>
+            <button class="btn-link">View All</button>
+          </div>
+          <div class="act-list">
+            <div class="act-item">
+              <div class="act-ico" style="background:#f5f0ff;color:#7c3aed"><i class="fas fa-user-plus"></i></div>
+              <div class="act-body">
+                <div class="act-title">New user registered</div>
+                <div class="act-sub">johndoe@example.com</div>
+              </div>
+              <span class="act-time">2m ago</span>
+            </div>
+            <div class="act-item">
+              <div class="act-ico" style="background:#fdf2f8;color:#ec4899"><i class="fas fa-bag-shopping"></i></div>
+              <div class="act-body">
+                <div class="act-title">New order received</div>
+                <div class="act-sub">Order #BS24589</div>
+              </div>
+              <span class="act-time">5m ago</span>
+            </div>
+            <div class="act-item">
+              <div class="act-ico" style="background:#ecfdf5;color:#10b981"><i class="fas fa-arrow-down"></i></div>
+              <div class="act-body">
+                <div class="act-title">Funds added by user</div>
+                <div class="act-sub">₦15,000 by janesmith</div>
+              </div>
+              <span class="act-time">12m ago</span>
+            </div>
+            <div class="act-item">
+              <div class="act-ico" style="background:#fffbeb;color:#f59e0b"><i class="fas fa-arrows-rotate"></i></div>
+              <div class="act-body">
+                <div class="act-title">Service updated</div>
+                <div class="act-sub">YouTube Subscribers</div>
+              </div>
+              <span class="act-time">25m ago</span>
+            </div>
+            <div class="act-item">
+              <div class="act-ico" style="background:#eff6ff;color:#3b82f6"><i class="fas fa-ticket"></i></div>
+              <div class="act-body">
+                <div class="act-title">New support ticket</div>
+                <div class="act-sub">Ticket #TK2456</div>
+              </div>
+              <span class="act-time">32m ago</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <footer class="page-foot">
+      <span>© 2024 BlowUpSocial. All rights reserved.</span>
+      <span>Crafted with ❤️ for growth</span>
+    </footer>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script>
+    const ADMIN_EMAIL = 'blowupsocialsconsult@gmail.com';
+    const USD_TO_NGN  = 1600;
+
+    /* ── Sparkline generator ── */
+    function sparkline(data, color) {
+      const w = 68, h = 36, p = 2;
+      const mn = Math.min(...data), mx = Math.max(...data), rng = mx - mn || 1;
+      const coords = data.map((v, i) => [
+        p + (i / (data.length - 1)) * (w - 2 * p),
+        p + (1 - (v - mn) / rng) * (h - 2 * p)
+      ]);
+      const line = coords.map((c, i) => `${i ? 'L' : 'M'}${c[0].toFixed(1)},${c[1].toFixed(1)}`).join(' ');
+      const area = `${line} L${(w-p).toFixed(1)},${(h-p).toFixed(1)} L${p},${(h-p).toFixed(1)} Z`;
+      const gid  = `g${Math.random().toString(36).slice(2)}`;
+      return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+        <defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="${color}" stop-opacity="0.22"/>
+          <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
+        </linearGradient></defs>
+        <path d="${area}" fill="url(#${gid})"/>
+        <path d="${line}" fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>`;
+    }
+
+    /* ── Sample sparkline data ── */
+    const spData = {
+      users:   [9100, 9800, 10200, 10900, 11400, 11800, 12100, 12300, 12400, 12457],
+      orders:  [24500, 26800, 28200, 29600, 31000, 32400, 33500, 34200, 34600, 34892],
+      revenue: [5200000, 5800000, 6300000, 6900000, 7200000, 7600000, 7900000, 8100000, 8300000, 8450320],
+      pending: [1800, 1650, 1550, 1480, 1430, 1400, 1370, 1340, 1290, 1245],
+      tickets: [58, 52, 48, 44, 41, 39, 37, 36, 34, 32],
+    };
+
+    document.getElementById('spark-users').innerHTML   = sparkline(spData.users,   '#7c3aed');
+    document.getElementById('spark-orders').innerHTML  = sparkline(spData.orders,  '#ec4899');
+    document.getElementById('spark-revenue').innerHTML = sparkline(spData.revenue, '#10b981');
+    document.getElementById('spark-pending').innerHTML = sparkline(spData.pending, '#f59e0b');
+    document.getElementById('spark-tickets').innerHTML = sparkline(spData.tickets, '#3b82f6');
+
+    /* ── Revenue chart ── */
+    const mayRevenue = [
+      2100000,2280000,2450000,2600000,2780000,2950000,3100000,3050000,3350000,
+      3600000,3800000,3700000,4100000,4300000,4500000,4450000,4700000,5000000,
+      5300000,5600000,5800000,6100000,6400000,6650000,7000000,7200000,7480000,
+      7800000,8100000,8300000,8450320
+    ];
+
+    const revenueCtx = document.getElementById('revenue-chart').getContext('2d');
+    new Chart(revenueCtx, {
+      type: 'line',
+      data: {
+        labels: Array.from({length:31}, (_,i) => `May ${i+1}`),
+        datasets: [{
+          data: mayRevenue,
+          borderColor: '#7c3aed',
+          backgroundColor: (ctx) => {
+            const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 220);
+            g.addColorStop(0, 'rgba(124,58,237,0.18)');
+            g.addColorStop(1, 'rgba(124,58,237,0)');
+            return g;
+          },
+          fill: true, tension: 0.45, borderWidth: 2,
+          pointRadius: 0, pointHoverRadius: 5,
+          pointBackgroundColor: '#7c3aed', pointBorderColor: '#fff', pointBorderWidth: 2,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#0f0e1c', titleColor: '#8b8fa8', bodyColor: '#fff',
+            padding: 12, cornerRadius: 8, displayColors: false,
+            callbacks: {
+              title: i => i[0].label,
+              label: i => `Revenue: ₦${Number(i.raw).toLocaleString('en-NG')}`,
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            border: { display: false },
+            ticks: {
+              color: '#8b8fa8', font: { size: 10.5 },
+              maxRotation: 0,
+              callback: (_, i) => [0,5,10,15,20,25,30].includes(i) ? `May ${i+1}` : '',
+            }
+          },
+          y: {
+            min: 0, max: 10000000,
+            grid: { color: 'rgba(0,0,0,0.045)', drawBorder: false },
+            border: { display: false },
+            ticks: {
+              color: '#8b8fa8', font: { size: 10.5 },
+              callback: v => v === 0 ? '₦0' : `₦${v/1000000}M`,
+              stepSize: 2000000,
+            }
+          }
+        }
+      }
+    });
+
+    /* ── Donut chart ── */
+    const donutCtx = document.getElementById('donut-chart').getContext('2d');
+    const centerPlugin = {
+      id: 'centerText',
+      afterDraw(chart) {
+        const { ctx, chartArea: { left, right, top, bottom } } = chart;
+        const cx = left + (right - left) / 2, cy = top + (bottom - top) / 2;
+        ctx.save();
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--t1').trim() || '#0f0e1c';
+        ctx.font = '800 19px "Space Grotesk", sans-serif';
+        ctx.fillText(document.getElementById('leg-active') ? (
+          parseInt(document.getElementById('leg-active').textContent.replace(/,/g,'')) +
+          parseInt(document.getElementById('leg-inactive').textContent.replace(/,/g,'')) +
+          parseInt(document.getElementById('leg-new').textContent.replace(/,/g,''))
+        ).toLocaleString('en-NG') : '12,457', cx, cy - 9);
+        ctx.fillStyle = '#8b8fa8';
+        ctx.font = '400 10.5px Inter, sans-serif';
+        ctx.fillText('Total Users', cx, cy + 10);
+        ctx.restore();
+      }
+    };
+
+    new Chart(donutCtx, {
+      type: 'doughnut',
+      plugins: [centerPlugin],
+      data: {
+        datasets: [{
+          data: [67.7, 17.3, 15.0],
+          backgroundColor: ['#7c3aed', '#ec4899', '#10b981'],
+          borderWidth: 0, hoverOffset: 3,
+        }]
+      },
+      options: {
+        cutout: '72%',
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+        animation: { animateRotate: true, duration: 800 },
+      }
+    });
+
+    /* ── Supabase data ── */
+    const fmtNGN  = v => `₦${Math.round(v * USD_TO_NGN).toLocaleString('en-NG')}`;
+    const fmtNum  = v => Number(v).toLocaleString('en-NG');
+    const relTime = t => {
+      const s = Math.floor((Date.now() - new Date(t)) / 1000);
+      if (s < 60)   return `${s}s ago`;
+      if (s < 3600) return `${Math.floor(s/60)}m ago`;
+      if (s < 86400) return `${Math.floor(s/3600)}h ago`;
+      return `${Math.floor(s/86400)}d ago`;
+    };
+
+    const COLORS = ['linear-gradient(135deg,#7c3aed,#3b82f6)', 'linear-gradient(135deg,#ec4899,#f59e0b)',
+                    'linear-gradient(135deg,#10b981,#3b82f6)', 'linear-gradient(135deg,#f59e0b,#ec4899)',
+                    'linear-gradient(135deg,#7c3aed,#ec4899)'];
+
+    function initials(email) {
+      const parts = (email || '').split('@')[0].split(/[._-]/);
+      return (parts[0][0] + (parts[1]?.[0] || parts[0][1] || '')).toUpperCase();
+    }
+
+    const STATUS_CLASS = { Completed:'b-completed', 'In Progress':'b-progress', Pending:'b-pending', Cancelled:'b-cancelled' };
+
+    (async () => {
+      /* Auth + admin guard */
+      const { data: { session } } = await db.auth.getSession();
+      if (!session) { window.location.href = 'login.html'; return; }
+      if (session.user.email !== ADMIN_EMAIL) { window.location.href = 'dashboard.html'; return; }
+
+      /* Stat: total users */
+      const { count: userCount } = await db.from('profiles').select('*', { count: 'exact', head: true });
+      if (userCount != null) document.getElementById('stat-users').textContent = fmtNum(userCount);
+
+      /* Stat: total + pending orders */
+      const { count: orderCount } = await db.from('orders').select('*', { count: 'exact', head: true });
+      if (orderCount != null) {
+        document.getElementById('stat-orders').textContent = fmtNum(orderCount);
+        document.getElementById('tbl-total-orders').textContent = fmtNum(orderCount);
+      }
+
+      const { count: pendingCount } = await db.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'Pending');
+      if (pendingCount != null) document.getElementById('stat-pending').textContent = fmtNum(pendingCount);
+
+      /* Stat: total revenue (sum of charges in USD → NGN) */
+      const { data: revData } = await db.from('orders').select('charge').eq('status', 'Completed');
+      if (revData) {
+        const total = revData.reduce((s, r) => s + parseFloat(r.charge || 0), 0);
+        document.getElementById('stat-revenue').textContent = fmtNGN(total);
+      }
+
+      /* Recent orders */
+      const { data: orders } = await db.from('orders')
+        .select('id, service_id, quantity, charge, status, created_at, user_id')
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (orders?.length) {
+        const tbody = document.getElementById('recent-orders-body');
+        tbody.innerHTML = orders.map((o, i) => {
+          const ini = initials(o.user_id || '');
+          const st  = o.status || 'Pending';
+          const cls = STATUS_CLASS[st] || 'b-pending';
+          return `<tr>
+            <td><div class="ord-user">
+              <div class="ord-ava" style="background:${COLORS[i % COLORS.length]}">${ini}</div>
+              <span class="ord-uname">${o.user_id?.slice(0,8) || 'User'}…</span>
+            </div></td>
+            <td class="ord-svc">${o.service_id ? `Service #${o.service_id}` : '—'}</td>
+            <td class="ord-qty">${Number(o.quantity || 0).toLocaleString('en-NG')}</td>
+            <td><span class="badge ${cls}">${st}</span></td>
+            <td class="ord-time">${relTime(o.created_at)}</td>
+          </tr>`;
+        }).join('');
+      }
+
+      /* User stats for donut */
+      const { count: totalU } = await db.from('profiles').select('*', { count: 'exact', head: true });
+      if (totalU) {
+        const active   = Math.round(totalU * 0.677);
+        const inactive = Math.round(totalU * 0.173);
+        const newU     = totalU - active - inactive;
+        document.getElementById('leg-active').textContent   = fmtNum(active);
+        document.getElementById('leg-inactive').textContent = fmtNum(inactive);
+        document.getElementById('leg-new').textContent      = fmtNum(newU);
+      }
+    })();
+  </script>
+</body>
+</html>
