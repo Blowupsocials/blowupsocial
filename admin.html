@@ -724,7 +724,7 @@
       /* Auth + admin guard */
       const { data: { session } } = await db.auth.getSession();
       if (!session) { window.location.href = 'login.html'; return; }
-      if (session.user.email !== ADMIN_EMAIL) { window.location.href = 'dashboard.html'; return; }
+      if ((session.user.email || '').toLowerCase() !== ADMIN_EMAIL) { window.location.href = 'dashboard.html'; return; }
 
       /* Stat: total users */
       const { count: userCount } = await db.from('profiles').select('*', { count: 'exact', head: true });
