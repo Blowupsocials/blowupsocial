@@ -677,6 +677,7 @@
               <div class="ds-dd-email" id="dd-email">…</div>
             </div>
             <div class="ds-dd-divider"></div>
+            <a href="admin.html" class="ds-dd-item" id="dd-admin-link" style="display:none;color:#7c3aed"><i class="fas fa-gauge" style="color:#7c3aed"></i> Admin Panel</a>
             <a href="#" class="ds-dd-item js-coming"><i class="fas fa-user"></i> My Profile</a>
             <a href="#" class="ds-dd-item js-coming"><i class="fas fa-gear"></i> Settings</a>
             <a href="#" class="ds-dd-item js-coming"><i class="fas fa-bell"></i> Notifications</a>
@@ -1171,9 +1172,9 @@
 
       // Show admin links immediately
       if (isAdmin) {
-        ['admin-panel-btn', 'admin-sidebar-btn'].forEach(id => {
+        ['admin-panel-btn', 'admin-sidebar-btn', 'dd-admin-link'].forEach(id => {
           const el = document.getElementById(id);
-          if (el) { el.style.cssText = 'display:flex!important'; }
+          if (el) el.style.display = 'flex';
         });
       }
 
