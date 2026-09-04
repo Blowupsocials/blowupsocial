@@ -78,9 +78,14 @@
   <script src="js/supabase-client.js"></script>
   <script src="js/main.js"></script>
   <script>
+    const ADMIN_EMAIL = 'blowupsocialsconsult@gmail.com';
+    function redirectAfterLogin(email) {
+      window.location.href = email === ADMIN_EMAIL ? 'admin.html' : 'dashboard.html';
+    }
+
     // Redirect already-logged-in users
     db.auth.getSession().then(({ data: { session } }) => {
-      if (session) window.location.href = 'dashboard.html';
+      if (session) redirectAfterLogin(session.user.email);
     });
 
     function togglePassword(id, iconId) {
@@ -124,7 +129,7 @@
         return;
       }
 
-      window.location.href = 'dashboard.html';
+      redirectAfterLogin(email);
     }
   </script>
 </body>
