@@ -1166,27 +1166,22 @@
       const { data: { session } } = await db.auth.getSession();
       if (!session) { window.location.href = 'login.html'; return; }
 
-      const user = session.user;
+      const user    = session.user;
+      const isAdmin = (user.email || '').toLowerCase() === 'blowupsocialsconsult@gmail.com';
 
-      // Show admin links for the admin account
+      // Show admin links immediately
       if (isAdmin) {
         ['admin-panel-btn', 'admin-sidebar-btn'].forEach(id => {
           const el = document.getElementById(id);
-          if (el) el.removeAttribute('style'), el.style.display = 'flex';
+          if (el) { el.style.cssText = 'display:flex!important'; }
         });
       }
 
       const { data: profile } = await db.from('profiles').select('*').eq('id', user.id).single();
 
-      const isAdmin = (user.email || '').toLowerCase() === 'blowupsocialsconsult@gmail.com';
       const name   = isAdmin ? 'Admin' : (profile?.full_name || user.email.split('@')[0]);
       const email  = user.email || '';
       const wallet = parseFloat(profile?.wallet_balance || 0);
-
-      if (email.toLowerCase() === 'blowupsocialsconsult@gmail.com') {
-        const adminBtn = document.getElementById('admin-panel-btn');
-        if (adminBtn) adminBtn.style.display = 'flex';
-      }
       window.userWallet = wallet;
       const inits  = initials(name);
 
