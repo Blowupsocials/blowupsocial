@@ -120,6 +120,7 @@
       btn.textContent = 'Signing in…';
       btn.disabled = true;
 
+      await db.auth.signOut();
       const { data, error } = await db.auth.signInWithPassword({ email, password: pwd });
 
       if (error) {
