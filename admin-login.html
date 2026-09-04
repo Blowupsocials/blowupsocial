@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login – BlowUpSocial</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #0d0c1d;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .card {
+      background: #151428;
+      border: 1px solid #2a2a42;
+      border-radius: 16px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 400px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+      justify-content: center;
+    }
+    .logo-mark {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #7c3aed, #ec4899);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; font-weight: 800; color: #fff;
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+    }
+    .logo-name {
+      font-size: 1rem; font-weight: 800; color: #fff;
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+    }
+    h2 { color: #fff; font-size: 1.3rem; font-weight: 700; text-align: center; margin-bottom: 6px; }
+    .sub { color: #6b7080; font-size: 0.82rem; text-align: center; margin-bottom: 28px; }
+    label { display: block; font-size: 0.78rem; font-weight: 600; color: #9a9db5; margin-bottom: 6px; }
+    .field { margin-bottom: 16px; }
+    input {
+      width: 100%; padding: 11px 14px;
+      background: #0d0c1d; border: 1px solid #2a2a42;
+      border-radius: 10px; color: #fff; font-size: 0.85rem;
+      outline: none; transition: border-color 0.15s;
+      font-family: inherit;
+    }
+    input:focus { border-color: #7c3aed; }
+    input::placeholder { color: #4b5063; }
+    .pw-wrap { position: relative; }
+    .pw-wrap input { padding-right: 40px; }
+    .pw-eye {
+      position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
+      color: #4b5063; cursor: pointer; font-size: 0.85rem;
+    }
+    .btn {
+      width: 100%; padding: 12px;
+      background: linear-gradient(135deg, #7c3aed, #ec4899);
+      border: none; border-radius: 10px;
+      color: #fff; font-size: 0.88rem; font-weight: 700;
+      cursor: pointer; margin-top: 8px; transition: opacity 0.15s;
+      font-family: inherit;
+    }
+    .btn:hover { opacity: 0.88; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .error {
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.25);
+      color: #f87171; padding: 10px 14px;
+      border-radius: 8px; font-size: 0.8rem;
+      text-align: center; margin-bottom: 14px;
+      display: none;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.25);
+      color: #a78bfa; font-size: 0.72rem; font-weight: 600;
+      padding: 4px 10px; border-radius: 50px; margin: 0 auto 20px;
+      width: fit-content; display: flex;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <div class="logo-mark">B</div>
+      <div class="logo-name">BlowUpSocial</div>
+    </div>
+
+    <div class="badge"><i class="fas fa-shield-halved"></i> Admin Access Only</div>
+
+    <h2>Admin Sign In</h2>
+    <p class="sub">Sign in to access the admin dashboard</p>
+
+    <div class="error" id="err"></div>
+
+    <form onsubmit="handleLogin(event)">
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" id="email" placeholder="admin@example.com" required autocomplete="username" />
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="pwd" placeholder="Enter password" required autocomplete="current-password" />
+          <i class="fas fa-eye pw-eye" id="eye" onclick="togglePwd()"></i>
+        </div>
+      </div>
+      <button class="btn" id="btn" type="submit">Sign In to Admin</button>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script>
+    // If already logged in, go straight to admin
+    db.auth.getSession().then(({ data: { session } }) => {
+      if (session) window.location.href = 'admin.html';
+    });
+
+    function togglePwd() {
+      const inp = document.getElementById('pwd');
+      const eye = document.getElementById('eye');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+      eye.classList.toggle('fa-eye');
+      eye.classList.toggle('fa-eye-slash');
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const btn   = document.getElementById('btn');
+      const err   = document.getElementById('err');
+      const email = document.getElementById('email').value.trim();
+      const pwd   = document.getElementById('pwd').value;
+
+      err.style.display = 'none';
+      btn.textContent = 'Signing in…';
+      btn.disabled = true;
+
+      // Sign out any existing session first
+      await db.auth.signOut();
+
+      const { error } = await db.auth.signInWithPassword({ email, password: pwd });
+
+      if (error) {
+        err.textContent = error.message;
+        err.style.display = 'block';
+        btn.textContent = 'Sign In to Admin';
+        btn.disabled = false;
+        return;
+      }
+
+      // Always go to admin.html — no email check needed on this page
+      window.location.href = 'admin.html';
+    }
+  </script>
+</body>
+</html>
