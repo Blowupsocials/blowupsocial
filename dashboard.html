@@ -604,6 +604,7 @@
     </div>
 
     <nav class="ds-nav">
+      <a href="admin.html" id="admin-sidebar-btn" class="ds-nav-item" style="display:none;background:linear-gradient(90deg,rgba(124,58,237,0.18),rgba(236,72,153,0.12));color:#a78bfa;font-weight:700;margin-bottom:6px"><i class="fas fa-gauge"></i> Admin Panel</a>
       <div class="ds-nav-label">Main</div>
       <a href="dashboard.html" class="ds-nav-item active"><i class="fas fa-gauge"></i> Dashboard</a>
       <a href="new-order.html" class="ds-nav-item js-order"><i class="fas fa-plus-circle"></i> New Order</a>
@@ -1166,6 +1167,14 @@
       if (!session) { window.location.href = 'login.html'; return; }
 
       const user = session.user;
+
+      // Show admin links immediately for the admin account
+      if ((user.email || '').toLowerCase() === 'blowupsocialsconsult@gmail.com') {
+        ['admin-panel-btn', 'admin-sidebar-btn'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.style.display = 'flex';
+        });
+      }
 
       const { data: profile } = await db.from('profiles').select('*').eq('id', user.id).single();
 
