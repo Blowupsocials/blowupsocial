@@ -721,10 +721,9 @@
     const STATUS_CLASS = { Completed:'b-completed', 'In Progress':'b-progress', Pending:'b-pending', Cancelled:'b-cancelled' };
 
     (async () => {
-      /* Auth + admin guard */
+      /* Auth check only — no email redirect */
       const { data: { session } } = await db.auth.getSession();
       if (!session) { window.location.href = 'login.html'; return; }
-      if ((session.user.email || '').toLowerCase() !== ADMIN_EMAIL) { window.location.href = 'dashboard.html'; return; }
 
       /* Stat: total users */
       const { count: userCount } = await db.from('profiles').select('*', { count: 'exact', head: true });

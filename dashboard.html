@@ -604,7 +604,7 @@
     </div>
 
     <nav class="ds-nav">
-      <a href="admin.html" id="admin-sidebar-btn" class="ds-nav-item" style="display:none;background:linear-gradient(90deg,rgba(124,58,237,0.18),rgba(236,72,153,0.12));color:#a78bfa;font-weight:700;margin-bottom:6px"><i class="fas fa-gauge"></i> Admin Panel</a>
+      <a href="admin.html" id="admin-sidebar-btn" class="ds-nav-item" style="display:none;background:linear-gradient(90deg,rgba(124,58,237,0.22),rgba(236,72,153,0.14));color:#a78bfa;font-weight:700;margin-bottom:6px;border:1px solid rgba(124,58,237,0.25)"><i class="fas fa-shield-halved"></i> Admin Panel</a>
       <div class="ds-nav-label">Main</div>
       <a href="dashboard.html" class="ds-nav-item active"><i class="fas fa-gauge"></i> Dashboard</a>
       <a href="new-order.html" class="ds-nav-item js-order"><i class="fas fa-plus-circle"></i> New Order</a>
@@ -1168,17 +1168,18 @@
 
       const user = session.user;
 
-      // Show admin links immediately for the admin account
-      if ((user.email || '').toLowerCase() === 'blowupsocialsconsult@gmail.com') {
+      // Show admin links for the admin account
+      if (isAdmin) {
         ['admin-panel-btn', 'admin-sidebar-btn'].forEach(id => {
           const el = document.getElementById(id);
-          if (el) el.style.display = 'flex';
+          if (el) el.removeAttribute('style'), el.style.display = 'flex';
         });
       }
 
       const { data: profile } = await db.from('profiles').select('*').eq('id', user.id).single();
 
-      const name   = profile?.full_name || user.email.split('@')[0];
+      const isAdmin = (user.email || '').toLowerCase() === 'blowupsocialsconsult@gmail.com';
+      const name   = isAdmin ? 'Admin' : (profile?.full_name || user.email.split('@')[0]);
       const email  = user.email || '';
       const wallet = parseFloat(profile?.wallet_balance || 0);
 
