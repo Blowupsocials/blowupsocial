@@ -1,38 +1,21 @@
-const BASE = 'https://accsmaster.com/api/v1';
+// AccsZone reseller API proxy — https://accszone.com/api/v1
+const BASE = 'https://accszone.com/api/v1';
 
-// Module-level token cache — persists across warm Vercel invocations
-let _token  = null;
-let _expiry = 0;
-
-async function getToken() {
-  if (_token && Date.now() < _expiry) return _token;
-
-  const email    = process.env.ACCSMASTER_EMAIL;
-  const password = process.env.ACCSMASTER_PASSWORD;
-  if (!email || !password) throw new Error('NOT_CONFIGURED');
-
-  const r = await fetch(`${BASE}/user/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password }),
-  });
-
-  if (!r.ok) {
-    const body = await r.text().catch(() => '');
-    throw new Error(`Auth failed (${r.status}): ${body}`);
-  }
-
-  const data = await r.json();
-  if (!data.token) throw new Error('No token in auth response');
-
-  _token  = data.token;
-  _expiry = Date.now() + 22 * 60 * 60 * 1000; // 22 h — refresh before 24 h expiry
-  return _token;
-}
-
-const GET_ACTIONS  = new Set(['categories', 'offers', 'offer', 'orders', 'order']);
-const POST_ACTIONS = new Set(['buy']);
+const GET_ACTIONS = new Set(['categories', 'subcategories', 'listings', 'listing', 'orders', 'order', 'balance']);
+const POST_ACTIONS = new Set(['purchase']);
 const ALL_ALLOWED  = new Set([...GET_ACTIONS, ...POST_ACTIONS]);
+
+function buildPath(action, params) {
+  if (action === 'subcategories' && params.id) return `/categories/${params.id}/subcategories`;
+  if (action === 'listing'       && params.slug) return `/listings/${params.slug}`;
+  if (action === 'order'         && params.id)   return `/orders/${params.id}`;
+  if (action === 'balance')   return '/user/balance';
+  if (action === 'categories') return '/categories';
+  if (action === 'listings')   return '/listings';
+  if (action === 'orders')     return '/orders';
+  if (action === 'purchase')   return '/purchase';
+  return `/${action}`;
+}
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -42,39 +25,41 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') { res.status(200).end(); return; }
   if (req.method !== 'POST')   { res.status(405).json({ error: 'Method not allowed' }); return; }
 
+  const apiKey = process.env.ACCSZONE_API_KEY;
+  if (!apiKey) return res.status(503).json({ error: 'accounts_not_configured' });
+
   const { action, ...params } = req.body || {};
   if (!action || !ALL_ALLOWED.has(action)) {
     return res.status(400).json({ error: 'Invalid or missing action' });
   }
 
-  try {
-    const token = await getToken();
+  const path    = buildPath(action, params);
+  const headers = { 'X-API-Key': apiKey, 'Content-Type': 'application/json', Accept: 'application/json' };
 
+  // Strip routing fields from forwarded params
+  const { id: _id, slug: _slug, ...forwardParams } = params;
+
+  try {
     let upstream;
     if (GET_ACTIONS.has(action)) {
-      const qs = Object.keys(params).length ? '?' + new URLSearchParams(params).toString() : '';
-      upstream = await fetch(`${BASE}/${action}${qs}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const qs = Object.keys(forwardParams).length ? '?' + new URLSearchParams(forwardParams).toString() : '';
+      upstream = await fetch(`${BASE}${path}${qs}`, { headers });
     } else {
-      upstream = await fetch(`${BASE}/${action}`, {
+      upstream = await fetch(`${BASE}${path}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify(params),
+        headers,
+        body: JSON.stringify(forwardParams),
       });
     }
 
     if (!upstream.ok) {
       const body = await upstream.text().catch(() => '');
-      return res.status(502).json({ error: `Upstream returned ${upstream.status}`, detail: body });
+      return res.status(502).json({ error: `Provider returned ${upstream.status}`, detail: body });
     }
 
     const data = await upstream.json();
     res.status(200).json(data);
   } catch (err) {
-    if (err.message === 'NOT_CONFIGURED') {
-      return res.status(503).json({ error: 'accounts_not_configured' });
-    }
     res.status(500).json({ error: 'Request failed', detail: err.message });
   }
 }
