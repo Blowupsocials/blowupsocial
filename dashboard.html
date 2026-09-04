@@ -651,6 +651,7 @@
         <p>Here's what's happening with your account today.</p>
       </div>
       <div class="ds-topbar-right">
+        <a href="admin.html" id="admin-panel-btn" class="ds-btn-quick" style="display:none;background:linear-gradient(135deg,#0d0c1d,#3b0764)"><i class="fas fa-gauge"></i> Admin Panel</a>
         <a href="new-order.html" class="ds-btn-quick"><i class="fas fa-bolt"></i> New Order</a>
         <div class="ds-bell js-coming">
           <i class="fas fa-bell"></i>
@@ -1171,6 +1172,11 @@
       const name   = profile?.full_name || user.email.split('@')[0];
       const email  = user.email || '';
       const wallet = parseFloat(profile?.wallet_balance || 0);
+
+      if (email.toLowerCase() === 'blowupsocialsconsult@gmail.com') {
+        const adminBtn = document.getElementById('admin-panel-btn');
+        if (adminBtn) adminBtn.style.display = 'flex';
+      }
       window.userWallet = wallet;
       const inits  = initials(name);
 
