@@ -1,7 +1,9 @@
 {
   "version": 2,
   "routes": [
-    { "src": "/api/peakerr", "dest": "/api/peakerr.js" },
+    { "src": "/api/peakerr",     "dest": "/api/peakerr.js" },
+    { "src": "/api/accsmaster", "dest": "/api/accsmaster.js" },
+    { "src": "/api/send-email", "dest": "/api/send-email.js" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }

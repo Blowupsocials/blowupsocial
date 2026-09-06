@@ -293,6 +293,13 @@
         return;
       }
 
+      // Send welcome email (fire-and-forget)
+      fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'welcome', to: email, data: { name } }),
+      }).catch(() => {});
+
       if (data.session) {
         window.location.href = 'dashboard.html';
       } else {

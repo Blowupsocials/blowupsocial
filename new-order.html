@@ -609,6 +609,23 @@
         document.getElementById('modal-balance').textContent  = fmtNGN(newBalance);
         document.getElementById('stat-balance').textContent   = fmtNGN(newBalance);
 
+        // 5. Send order confirmation email (fire-and-forget)
+        const { data: { session: s2 } } = await db.auth.getSession();
+        fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'order_placed',
+            to: s2?.user?.email,
+            data: {
+              orderId:  peakerrOrderId,
+              service:  selectedSvc.name,
+              quantity: qty,
+              amount:   fmtNGN(cost),
+            },
+          }),
+        }).catch(() => {});
+
         closeOrder();
         toast(`Order #${peakerrOrderId} placed! Processing will begin shortly.`, 'success');
 
