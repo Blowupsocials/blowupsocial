@@ -3,9 +3,79 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BlowUpSocial – Grow Your Social Media Fast</title>
+  <title>BlowUpSocial – SMM Panel & Digital Store</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Digital Products dark section */
+    .dp-section {
+      position: relative; z-index: 1; padding: 80px 0;
+      background: linear-gradient(135deg, #0a0a18 0%, #130330 55%, #0a0a18 100%);
+    }
+    .dp-section::before {
+      content:''; position:absolute; pointer-events:none;
+      width:500px; height:500px; border-radius:50%;
+      background: radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%);
+      top:-100px; right:-80px;
+    }
+    .dp-eyebrow {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 1.8px;
+      text-transform: uppercase; color: #a78bfa;
+      text-align: center; margin-bottom: 12px;
+    }
+    .dp-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.5rem, 2.8vw, 2rem);
+      font-weight: 800; color: #fff;
+      text-align: center; margin-bottom: 12px; letter-spacing: -0.5px;
+    }
+    .dp-heading-grad {
+      background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .dp-sub {
+      font-size: 0.9rem; color: rgba(255,255,255,0.55); max-width: 520px;
+      margin: 0 auto 48px; text-align: center; line-height: 1.7;
+    }
+    .dp-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    }
+    .dp-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.11);
+      border-radius: 18px; padding: 28px 22px; text-align: center;
+      transition: all .28s;
+    }
+    .dp-card:hover {
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.22);
+      transform: translateY(-5px);
+    }
+    .dp-icon {
+      width: 56px; height: 56px; border-radius: 15px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; color: #fff; margin: 0 auto 18px;
+    }
+    .dp-card h3 { font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .dp-card p  { font-size: 0.78rem; color: rgba(255,255,255,0.52); line-height: 1.65; margin-bottom: 18px; }
+    .dp-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .dp-tag {
+      font-size: 0.65rem; font-weight: 600; padding: 4px 10px; border-radius: 50px;
+      background: rgba(255,255,255,0.10); color: rgba(255,255,255,0.65);
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+    .dp-cta-row { text-align: center; margin-top: 44px; }
+    @media(max-width:768px){
+      .dp-grid { grid-template-columns: repeat(2,1fr); gap:14px; }
+      .dp-section { padding:52px 0; }
+    }
+    @media(max-width:480px){
+      .dp-grid { grid-template-columns: 1fr 1fr; gap:10px; }
+      .dp-card { padding:20px 14px; }
+      .dp-section { padding:44px 0; }
+    }
+  </style>
 </head>
 <body>
 
@@ -25,6 +95,7 @@
       <ul class="nav-links" id="navLinks">
         <li><a href="index.html" class="active">Home</a></li>
         <li><a href="#features">Features</a></li>
+        <li><a href="#digital-store">Digital Store</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
         <li><a href="#reviews">Reviews</a></li>
         <li><a href="#faq">FAQ</a></li>
@@ -54,7 +125,7 @@
           <span>Trusted by <strong>10,000+</strong> creators &amp; brands</span>
         </div>
         <h1>We blow up<br /><span class="hero-grad">your social</span></h1>
-        <p>Blowup Social helps creators and brands grow their audience, boost engagement, and scale on every platform.</p>
+        <p>Followers, views, engagement — and a full digital store: premium accounts, streaming subscriptions, gift cards and VPNs. One wallet, everything instant.</p>
         <div class="hero-btns">
           <a href="register.html" class="btn-hero-primary">Get Started Free</a>
           <a href="#how-it-works" class="btn-hero-ghost">See How It Works <i class="fas fa-arrow-right"></i></a>
@@ -116,7 +187,12 @@
     <div class="container stats-bar-inner">
       <div class="stats-bar-item">
         <span class="stats-bar-num">7+</span>
-        <span class="stats-bar-lbl">Platforms supported</span>
+        <span class="stats-bar-lbl">Social platforms</span>
+      </div>
+      <div class="stats-bar-divider"></div>
+      <div class="stats-bar-item">
+        <span class="stats-bar-num">70+</span>
+        <span class="stats-bar-lbl">Digital products</span>
       </div>
       <div class="stats-bar-divider"></div>
       <div class="stats-bar-item">
@@ -154,28 +230,48 @@
   <!-- FEATURES -->
   <section class="feat-section" id="features">
     <div class="container">
-      <div class="feat-eyebrow sr">Everything you need to grow</div>
-      <h2 class="feat-heading sr sr-d1">Real growth. Real engagement. <span class="feat-purple">Real results.</span></h2>
+      <div class="feat-eyebrow sr">SMM panel &amp; digital store</div>
+      <h2 class="feat-heading sr sr-d1">Everything you need — <span class="feat-purple">all in one place.</span></h2>
       <div class="feat-grid">
         <div class="feat-card sr sr-d1">
           <div class="feat-icon feat-icon-purple"><i class="fas fa-user"></i></div>
           <h3>Real Followers</h3>
-          <p>High-quality, targeted followers that stick.</p>
+          <p>High-quality, targeted followers that stick and boost your credibility.</p>
         </div>
         <div class="feat-card sr sr-d2">
           <div class="feat-icon feat-icon-pink"><i class="fas fa-heart"></i></div>
           <h3>More Engagement</h3>
-          <p>More likes, comments and shares.</p>
+          <p>More likes, comments and shares that push your content to the algorithm.</p>
         </div>
         <div class="feat-card sr sr-d3">
           <div class="feat-icon feat-icon-purple"><i class="fas fa-arrow-trend-up"></i></div>
           <h3>Boost Visibility</h3>
-          <p>Increase reach and get discovered.</p>
+          <p>Increase reach across Instagram, TikTok, YouTube, Facebook and more.</p>
         </div>
         <div class="feat-card sr sr-d4">
           <div class="feat-icon feat-icon-pink"><i class="fas fa-shield-halved"></i></div>
           <h3>Safe &amp; Secure</h3>
-          <p>100% safe methods. No passwords. No risk.</p>
+          <p>100% safe methods. No passwords ever. No bans. No risk.</p>
+        </div>
+        <div class="feat-card sr sr-d1">
+          <div class="feat-icon" style="background:rgba(16,185,129,0.10);color:#10b981"><i class="fas fa-key"></i></div>
+          <h3>Digital Accounts</h3>
+          <p>Aged &amp; verified Instagram, TikTok, Gmail accounts — ready to use instantly.</p>
+        </div>
+        <div class="feat-card sr sr-d2">
+          <div class="feat-icon" style="background:rgba(239,68,68,0.10);color:#ef4444"><i class="fas fa-play-circle"></i></div>
+          <h3>Streaming Subscriptions</h3>
+          <p>Netflix, Spotify, Disney+, YouTube Premium — premium access at great prices.</p>
+        </div>
+        <div class="feat-card sr sr-d3">
+          <div class="feat-icon" style="background:rgba(245,158,11,0.10);color:#f59e0b"><i class="fas fa-gift"></i></div>
+          <h3>Gift Cards</h3>
+          <p>Amazon, Steam, PlayStation, iTunes gift cards — instant digital delivery.</p>
+        </div>
+        <div class="feat-card sr sr-d4">
+          <div class="feat-icon" style="background:rgba(37,99,235,0.10);color:#2563eb"><i class="fas fa-network-wired"></i></div>
+          <h3>VPN &amp; Proxies</h3>
+          <p>Private browsing, residential proxies and secure VPN access worldwide.</p>
         </div>
       </div>
     </div>
@@ -211,6 +307,106 @@
     </div>
   </section>
 
+  <!-- DIGITAL PRODUCTS SHOWCASE -->
+  <section class="dp-section" id="digital-store">
+    <div class="container">
+      <div class="dp-eyebrow sr">Instant digital delivery</div>
+      <h2 class="dp-heading sr sr-d1">Not just social media —<br /><span class="dp-heading-grad">a full digital store</span></h2>
+      <p class="dp-sub sr sr-d2">Premium digital goods delivered straight to your panel. No middleman. No waiting. Buy and receive instantly.</p>
+      <div class="dp-grid">
+
+        <div class="dp-card sr sr-d1">
+          <div class="dp-icon" style="background:linear-gradient(135deg,#f09433,#dc2743);box-shadow:0 6px 20px rgba(220,39,67,0.35)">
+            <i class="fas fa-hashtag"></i>
+          </div>
+          <h3>Social Media Accounts</h3>
+          <p>Aged &amp; verified accounts across every major platform — ready for use the moment you buy.</p>
+          <div class="dp-tags">
+            <span class="dp-tag">Instagram</span>
+            <span class="dp-tag">TikTok</span>
+            <span class="dp-tag">Facebook</span>
+            <span class="dp-tag">Twitter/X</span>
+            <span class="dp-tag">YouTube</span>
+          </div>
+        </div>
+
+        <div class="dp-card sr sr-d2">
+          <div class="dp-icon" style="background:linear-gradient(135deg,#21d4fd,#2563eb);box-shadow:0 6px 20px rgba(37,99,235,0.35)">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <h3>Email Accounts</h3>
+          <p>Verified Gmail, Outlook and Yahoo accounts — perfect for business or personal use.</p>
+          <div class="dp-tags">
+            <span class="dp-tag">Gmail</span>
+            <span class="dp-tag">Outlook</span>
+            <span class="dp-tag">Yahoo</span>
+            <span class="dp-tag">ProtonMail</span>
+          </div>
+        </div>
+
+        <div class="dp-card sr sr-d3">
+          <div class="dp-icon" style="background:linear-gradient(135deg,#e50914,#8b0000);box-shadow:0 6px 20px rgba(229,9,20,0.35)">
+            <i class="fas fa-play-circle"></i>
+          </div>
+          <h3>Streaming Subscriptions</h3>
+          <p>Watch and listen to anything with premium streaming accounts at prices that make sense.</p>
+          <div class="dp-tags">
+            <span class="dp-tag">Netflix</span>
+            <span class="dp-tag">Spotify</span>
+            <span class="dp-tag">Disney+</span>
+            <span class="dp-tag">YouTube Premium</span>
+          </div>
+        </div>
+
+        <div class="dp-card sr sr-d4">
+          <div class="dp-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 6px 20px rgba(217,119,6,0.35)">
+            <i class="fas fa-gift"></i>
+          </div>
+          <h3>Gift Cards</h3>
+          <p>Digital gift cards from top brands delivered instantly to your wallet or email.</p>
+          <div class="dp-tags">
+            <span class="dp-tag">Amazon</span>
+            <span class="dp-tag">Steam</span>
+            <span class="dp-tag">PlayStation</span>
+            <span class="dp-tag">iTunes</span>
+          </div>
+        </div>
+
+        <div class="dp-card sr sr-d5">
+          <div class="dp-icon" style="background:linear-gradient(135deg,#2563eb,#1e40af);box-shadow:0 6px 20px rgba(37,99,235,0.35)">
+            <i class="fas fa-shield-halved"></i>
+          </div>
+          <h3>VPN &amp; Proxies</h3>
+          <p>Browse privately, bypass restrictions, and protect your identity with top-tier VPN plans.</p>
+          <div class="dp-tags">
+            <span class="dp-tag">NordVPN</span>
+            <span class="dp-tag">Residential</span>
+            <span class="dp-tag">Mobile</span>
+            <span class="dp-tag">Datacenter</span>
+          </div>
+        </div>
+
+        <div class="dp-card sr sr-d6">
+          <div class="dp-icon" style="background:linear-gradient(135deg,#db2777,#9d174d);box-shadow:0 6px 20px rgba(219,39,119,0.35)">
+            <i class="fas fa-bag-shopping"></i>
+          </div>
+          <h3>More &amp; More</h3>
+          <p>Dating apps, finance tools, eCommerce accounts and dozens more categories added regularly.</p>
+          <div class="dp-tags">
+            <span class="dp-tag">Dating</span>
+            <span class="dp-tag">Finance</span>
+            <span class="dp-tag">eCommerce</span>
+            <span class="dp-tag">+ lots more</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="dp-cta-row sr sr-d6">
+        <a href="accounts.html" class="btn-neon btn-neon-lg">Browse the Digital Store <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
   <!-- HOW IT WORKS -->
   <section class="how-section" id="how-it-works">
     <div class="container">
@@ -232,8 +428,8 @@
         <div class="how-card sr sr-d4">
           <div class="how-num">Step 03</div>
           <div class="how-icon-wrap"><i class="fas fa-rocket"></i></div>
-          <h3>Place order &amp; grow</h3>
-          <p>Pick your platform, paste your link, and watch your audience grow naturally.</p>
+          <h3>Place order &amp; receive</h3>
+          <p>Pick a social boost or browse the digital store — your order is processed and delivered instantly.</p>
         </div>
       </div>
     </div>
@@ -299,6 +495,9 @@
         <div class="faq-item sr sr-d5"><button class="faq-q">Which platforms do you support? <i class="fas fa-chevron-down"></i></button><div class="faq-a">We support Instagram, TikTok, YouTube, Facebook, X (Twitter), LinkedIn, and Snapchat. New platforms are added regularly.</div></div>
         <div class="faq-item sr sr-d6"><button class="faq-q">Do you need my password? <i class="fas fa-chevron-down"></i></button><div class="faq-a">Never. We only need your public profile or post URL. Your account credentials stay private and secure at all times.</div></div>
         <div class="faq-item sr"><button class="faq-q">How do I pay? <i class="fas fa-chevron-down"></i></button><div class="faq-a">You top up your wallet using a card or bank transfer, then spend your balance on any service. You are never charged more than what you load.</div></div>
+        <div class="faq-item sr"><button class="faq-q">What is in the Digital Store? <i class="fas fa-chevron-down"></i></button><div class="faq-a">The Digital Store gives you access to 70+ categories of digital goods — social media accounts (Instagram, TikTok, Facebook, YouTube and more), email accounts, streaming subscriptions (Netflix, Spotify, Disney+), gift cards (Amazon, Steam, PlayStation), VPN plans, proxies, dating accounts, finance tools, and much more. New products are added regularly.</div></div>
+        <div class="faq-item sr"><button class="faq-q">How fast are digital products delivered? <i class="fas fa-chevron-down"></i></button><div class="faq-a">Digital products are delivered instantly to your account panel the moment your order is processed. You can view and access your purchase right away from your orders page — no waiting, no manual handling.</div></div>
+        <div class="faq-item sr"><button class="faq-q">Are the digital accounts safe to use? <i class="fas fa-chevron-down"></i></button><div class="faq-a">Yes. All accounts in our digital store are verified and aged before listing. They come ready to use with full login credentials delivered securely. As with any digital account, we recommend changing passwords on delivery and using them within the platform's normal-use guidelines.</div></div>
       </div>
     </div>
   </section>
@@ -308,13 +507,14 @@
     <div class="container">
       <div class="cta2-box sr sr-scale">
         <div class="cta2-left">
-          <h2>Ready to blow up<br />your <span class="feat-purple">social</span> accounts?</h2>
-          <p>Join thousands of creators and brands growing faster with Blowup Social.</p>
+          <h2>Your social media. Your <span class="feat-purple">digital store.</span><br />All in one place.</h2>
+          <p>Grow your audience, buy premium accounts, stream, gift — all from a single wallet. Join 10,000+ users already doing it.</p>
         </div>
         <div class="cta2-right">
           <a href="register.html" class="btn-cta2">Get Started Now <i class="fas fa-arrow-right"></i></a>
           <div class="cta2-checks">
             <span><i class="fas fa-circle-check"></i> No password needed</span>
+            <span><i class="fas fa-circle-check"></i> Instant digital delivery</span>
             <span><i class="fas fa-circle-check"></i> Automatic refunds</span>
           </div>
         </div>
@@ -329,9 +529,10 @@
         <img src="img/logo.jpg" alt="BlowUpSocial" class="logo-img" />
       </a>
       <nav class="footer2-nav">
+        <a href="#features">Features</a>
+        <a href="#digital-store">Digital Store</a>
         <a href="#how-it-works">How It Works</a>
         <a href="#reviews">Reviews</a>
-        <a href="#features">Features</a>
         <a href="#faq">FAQ</a>
       </nav>
       <p class="footer2-copy">&copy; 2026 Blowup Social. All rights reserved.</p>
