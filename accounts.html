@@ -403,122 +403,102 @@
     /* ── ALL CATEGORIES (from API) ── */
     let allCategories = [];
 
-    /* ── PLATFORM DETECTION from AccsZone category titles ── */
-    const PLATFORM_RULES = [
-      { key:'instagram',  label:'Instagram',   ico: CAT_ICON[24],  kw:['instagram','ig account','ig pva'] },
-      { key:'tiktok',     label:'TikTok',      ico: CAT_ICON[34],  kw:['tiktok','tik tok'] },
-      { key:'facebook',   label:'Facebook',    ico: CAT_ICON[22],  kw:['facebook','fb account','fb pva'] },
-      { key:'youtube',    label:'YouTube',     ico: CAT_ICON[75],  kw:['youtube'] },
-      { key:'twitter',    label:'X / Twitter', ico: CAT_ICON[38],  kw:['twitter','x account','x-twitter','xtwitter'] },
-      { key:'whatsapp',   label:'WhatsApp',    ico: CAT_ICON[67],  kw:['whatsapp'] },
-      { key:'telegram',   label:'Telegram',    ico: CAT_ICON[40],  kw:['telegram'] },
-      { key:'discord',    label:'Discord',     ico: CAT_ICON[50],  kw:['discord'] },
-      { key:'snapchat',   label:'Snapchat',    ico: CAT_ICON[37],  kw:['snapchat'] },
-      { key:'linkedin',   label:'LinkedIn',    ico: CAT_ICON[23],  kw:['linkedin'] },
-      { key:'reddit',     label:'Reddit',      ico: CAT_ICON[33],  kw:['reddit'] },
-      { key:'pinterest',  label:'Pinterest',   ico: CAT_ICON[81],  kw:['pinterest'] },
-      { key:'twitch',     label:'Twitch',      ico: CAT_ICON[97],  kw:['twitch'] },
-      { key:'threads',    label:'Threads',     ico: CAT_ICON[95],  kw:['threads'] },
-      { key:'bluesky',    label:'Bluesky',     ico: CAT_ICON[90],  kw:['bluesky'] },
-      { key:'quora',      label:'Quora',       ico: CAT_ICON[76],  kw:['quora'] },
-      { key:'google',     label:'Google',      ico: CAT_ICON[80],  kw:['google account','gmail','google pva'] },
-      { key:'trustpilot', label:'Trustpilot',  ico: CAT_ICON[66],  kw:['trustpilot'] },
-      { key:'yelp',       label:'Yelp',        ico: CAT_ICON[98],  kw:['yelp'] },
-      { key:'okru',       label:'OK.ru',       ico: CAT_ICON[114], kw:['ok.ru','odnoklassniki','vkontakte','vk account'] },
-    ];
-    const PLATFORM_ORDER = ['instagram','tiktok','facebook','youtube','twitter','whatsapp','telegram','discord','snapchat','linkedin','reddit','pinterest','twitch','threads','bluesky','quora','google','trustpilot','yelp','okru'];
-
-    function detectPlatform(title) {
-      const t = (title || '').toLowerCase();
-      for (const p of PLATFORM_RULES) {
-        if (p.kw.some(k => t.includes(k))) return p;
-      }
-      return null;
-    }
+    /* Preferred display order by catId */
+    const CAT_ORDER = [24,34,22,75,38,67,40,50,37,23,33,81,97,95,90,76,66,98,114,110,80,92];
+    const SOCIAL_CAT_IDS = new Set([22,24,95,75,38,34,40,23,50,37,81,76,33,97,90,92,66,98,67,114,110,80]);
 
     /* ── TWO-DROPDOWN UI ── */
     function buildUI() {
-      const groups = {};
-      allCategories.forEach(cat => {
-        const name = cat.title || cat.name || '';
-        const plat = detectPlatform(name);
-        if (!plat) return;
-        if (!groups[plat.key]) groups[plat.key] = { ...plat, cats: [] };
-        groups[plat.key].cats.push(cat);
-      });
+      const platCats = allCategories
+        .filter(c => SOCIAL_CAT_IDS.has(Number(c.id)))
+        .sort((a, b) => {
+          const ia = CAT_ORDER.indexOf(Number(a.id));
+          const ib = CAT_ORDER.indexOf(Number(b.id));
+          return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+        });
 
-      const sorted = PLATFORM_ORDER.filter(k => groups[k]).map(k => groups[k]);
-      Object.keys(groups).forEach(k => { if (!PLATFORM_ORDER.includes(k)) sorted.push(groups[k]); });
-
-      if (!sorted.length) {
+      if (!platCats.length) {
         setListingState('<i class="fas fa-box-open"></i><p>No categories found.</p>'); return;
       }
 
-      // Populate platform dropdown
       const platMenu = document.getElementById('plat-menu');
       platMenu.innerHTML = '';
-      sorted.forEach(plat => {
-        const opt = document.createElement('div');
+      platCats.forEach(cat => {
+        const name = cat.title || cat.name || String(cat.id);
+        const ico  = CAT_ICON[Number(cat.id)] || FALLBACK_ICON;
+        const opt  = document.createElement('div');
         opt.className = 'ac-dd-option';
-        opt.innerHTML = `<div class="ac-dd-opt-ico" style="background:${plat.ico.bg};color:${plat.ico.color}"><i class="${plat.ico.icon}"></i></div>${esc(plat.label)}`;
-        opt.dataset.key = plat.key;
-        opt.onclick = () => selectPlatform(plat, opt);
+        opt.innerHTML = `<div class="ac-dd-opt-ico" style="background:${ico.bg};color:${ico.color}"><i class="${ico.icon}"></i></div>${esc(name)}`;
+        opt.onclick = () => selectPlatform(cat, ico, opt);
         platMenu.appendChild(opt);
       });
 
-      // Enable platform dropdown and auto-select first
       document.getElementById('plat-dd-wrap').classList.remove('disabled');
-      selectPlatform(sorted[0], platMenu.firstChild);
+      selectPlatform(platCats[0], CAT_ICON[Number(platCats[0].id)] || FALLBACK_ICON, platMenu.firstChild);
     }
 
-    function selectPlatform(plat, optEl) {
+    async function selectPlatform(cat, ico, optEl) {
       document.querySelectorAll('#plat-menu .ac-dd-option').forEach(o => o.classList.remove('active'));
       optEl.classList.add('active');
 
-      // Update trigger display
+      const name = cat.title || cat.name || String(cat.id);
       const selIco = document.getElementById('plat-sel-ico');
-      selIco.style.background = plat.ico.bg;
-      selIco.style.color      = plat.ico.color;
-      selIco.innerHTML        = `<i class="${plat.ico.icon}"></i>`;
-      document.getElementById('plat-sel-label').textContent = plat.label;
+      selIco.style.background = ico.bg;
+      selIco.style.color      = ico.color;
+      selIco.innerHTML        = `<i class="${ico.icon}"></i>`;
+      document.getElementById('plat-sel-label').textContent = name;
       closeDD('plat');
 
-      // Populate type dropdown
+      // Reset type dropdown while loading
+      const typeWrap = document.getElementById('type-dd-wrap');
       const typeMenu = document.getElementById('type-menu');
+      typeWrap.classList.add('disabled');
+      document.getElementById('type-sel-label').textContent = 'Loading…';
       typeMenu.innerHTML = '';
-      plat.cats.forEach((cat, i) => {
-        const name = cat.title || cat.name || String(cat.id);
-        const opt  = document.createElement('div');
+      setListingState('<i class="fas fa-spinner fa-spin"></i><p>Loading…</p>');
+
+      // Fetch subcategories from AccsZone
+      const res  = await api({ action: 'subcategories', id: cat.id });
+      const data = unwrap(res);
+      const subs = Array.isArray(data) ? data : (data?.subcategories || data?.data || data?.items || data?.categories || []);
+
+      if (!subs.length) {
+        // No subcategories — load listings directly
+        typeWrap.classList.add('disabled');
+        document.getElementById('type-sel-label').textContent = 'All types';
+        loadListings(cat.id);
+        return;
+      }
+
+      subs.forEach((sub, i) => {
+        const subName = sub.title || sub.name || String(sub.id);
+        const opt = document.createElement('div');
         opt.className = 'ac-dd-option' + (i === 0 ? ' active' : '');
-        opt.textContent = name;
-        opt.onclick = () => selectType(cat, name, opt);
+        opt.textContent = subName;
+        opt.onclick = () => selectType(sub, subName, opt);
         typeMenu.appendChild(opt);
       });
 
-      // Enable type dropdown and auto-select first
-      const typeWrap = document.getElementById('type-dd-wrap');
       typeWrap.classList.remove('disabled');
-      if (plat.cats.length > 0) {
-        const first = plat.cats[0];
-        document.getElementById('type-sel-label').textContent = first.title || first.name || String(first.id);
-        loadListings(first.id);
-      }
+      const first     = subs[0];
+      const firstName = first.title || first.name || String(first.id);
+      document.getElementById('type-sel-label').textContent = firstName;
+      loadListings(first.id);
     }
 
-    function selectType(cat, name, optEl) {
+    function selectType(sub, name, optEl) {
       document.querySelectorAll('#type-menu .ac-dd-option').forEach(o => o.classList.remove('active'));
       optEl.classList.add('active');
       document.getElementById('type-sel-label').textContent = name;
       closeDD('type');
-      loadListings(cat.id);
+      loadListings(sub.id);
     }
 
     function toggleDD(which) {
       const menu    = document.getElementById(`${which}-menu`);
       const trigger = document.getElementById(`${which}-trigger`);
       const isOpen  = menu.style.display !== 'none';
-      // Close the other dropdown
-      const other = which === 'plat' ? 'type' : 'plat';
+      const other   = which === 'plat' ? 'type' : 'plat';
       closeDD(other);
       menu.style.display = isOpen ? 'none' : 'block';
       trigger.classList.toggle('open', !isOpen);
