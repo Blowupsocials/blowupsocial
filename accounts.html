@@ -67,6 +67,18 @@
     .ac-dd-opt-ico { width: 26px; height: 26px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 0.82rem; flex-shrink: 0; }
     .ac-dd-wrap.disabled { opacity: 0.45; pointer-events: none; }
 
+    /* SEARCH INPUT */
+    .ac-search-wrap { position: relative; flex: 1; min-width: 0; }
+    .ac-search-wrap i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #8b8fa8; font-size: 0.78rem; pointer-events: none; }
+    .ac-search-input {
+      width: 100%; padding: 10px 12px 10px 34px;
+      background: #f8f9fc; border: 1.5px solid #e8eaf0; border-radius: 11px;
+      font-size: 0.82rem; font-family: inherit; color: #1a1a2e; outline: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .ac-search-input::placeholder { color: #aab0c0; }
+    .ac-search-input:focus { border-color: #7c3aed; background: #f5f3ff; }
+
     /* LISTING AREA */
     .ac-listing-area { padding: 20px; }
 
@@ -145,7 +157,7 @@
       .ac-grid { grid-template-columns: 1fr; }
       .ac-topbar { padding: 0 16px; gap: 10px; }
       .ac-filter-bar { padding: 10px 12px; flex-direction: column; gap: 8px; }
-      .ac-dd-wrap { width: 100%; flex: unset; }
+      .ac-dd-wrap, .ac-search-wrap { width: 100%; flex: unset; }
     }
   </style>
 </head>
@@ -190,6 +202,11 @@
             <i class="fa-solid fa-chevron-down ac-dd-chevron"></i>
           </button>
           <div class="ac-dd-menu" id="type-menu" style="display:none"></div>
+        </div>
+        <!-- Search -->
+        <div class="ac-search-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input class="ac-search-input" id="listing-search" type="text" placeholder="Search accounts…" oninput="filterListings(this.value)" />
         </div>
       </div>
 
@@ -584,8 +601,32 @@
       return CAT_ICON[Number(fallbackCatId)] || FALLBACK_ICON;
     }
 
+    /* ── SEARCH FILTER ── */
+    function filterListings(query) {
+      const q = query.trim().toLowerCase();
+      const cards = document.querySelectorAll('#listing-area .ac-card');
+      let visible = 0;
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        const show = !q || text.includes(q);
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      // Show/hide empty state
+      let empty = document.getElementById('listing-empty');
+      if (!empty) {
+        empty = document.createElement('div');
+        empty.id = 'listing-empty';
+        empty.className = 'ac-state';
+        empty.innerHTML = '<i class="fas fa-magnifying-glass"></i><p>No accounts match your search.</p>';
+        document.getElementById('listing-area').appendChild(empty);
+      }
+      empty.style.display = (cards.length && !visible) ? 'block' : 'none';
+    }
+
     /* ── LOAD LISTINGS ── */
     async function loadListings(id, useSubcat = false) {
+      document.getElementById('listing-search').value = '';
       setListingState('<i class="fas fa-spinner fa-spin"></i><p>Loading…</p>');
 
       const queryParam = useSubcat ? { subcategory_id: id } : { category_id: id };
