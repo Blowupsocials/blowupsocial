@@ -40,30 +40,51 @@
     /* ── PAGE BODY ── */
     .no-page { max-width: 1200px; margin: 0 auto; padding: 24px 20px 80px; }
 
-    /* ── PLATFORM TABS ── */
-    .no-platforms {
-      display: flex; gap: 8px; flex-wrap: nowrap;
-      overflow-x: auto; margin-bottom: 20px; padding-bottom: 4px;
-      -ms-overflow-style: none; scrollbar-width: none;
+    /* ── FILTER BAR ── */
+    .no-filter-bar {
+      display: flex; gap: 10px; margin-bottom: 20px; align-items: stretch; flex-wrap: wrap;
     }
-    .no-platforms::-webkit-scrollbar { display: none; }
-    .no-plat-btn {
-      display: flex; align-items: center; gap: 7px;
-      padding: 8px 16px; border-radius: 50px;
-      border: 1.5px solid #e5e7eb; background: #fff;
-      font-size: 0.78rem; font-weight: 600; color: #6b7080;
-      transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
+    .no-dd-wrap {
+      position: relative; flex: 1; min-width: 160px;
     }
-    .no-plat-btn:hover { border-color: #c4b5fd; color: #7c3aed; }
-    .no-plat-btn.active { background: #7c3aed; border-color: #7c3aed; color: #fff; }
-    .no-plat-btn i { font-size: 0.85rem; }
+    .no-dd-wrap.disabled .no-dd-trigger { opacity: 0.55; pointer-events: none; }
+    .no-dd-trigger {
+      width: 100%; display: flex; align-items: center; gap: 8px;
+      padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px;
+      background: #fff; cursor: pointer; font-family: inherit; transition: border-color 0.15s;
+    }
+    .no-dd-trigger:hover { border-color: #c4b5fd; }
+    .no-dd-sel-ico {
+      width: 24px; height: 24px; border-radius: 6px; display: flex;
+      align-items: center; justify-content: center; font-size: 0.75rem; color: #fff; flex-shrink: 0;
+    }
+    .no-dd-sel-label {
+      flex: 1; text-align: left; font-size: 0.8rem; font-weight: 600; color: #4b5063; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .no-dd-chevron { font-size: 0.7rem; color: #9ca3af; transition: transform 0.15s; }
+    .no-dd-wrap.open .no-dd-chevron { transform: rotate(180deg); }
+    .no-dd-menu {
+      position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 200;
+      background: #fff; border: 1.5px solid #e5e7eb; border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1); max-height: 260px; overflow-y: auto;
+    }
+    .no-dd-opt {
+      display: flex; align-items: center; gap: 9px; padding: 9px 13px;
+      cursor: pointer; transition: background 0.1s; font-size: 0.8rem; font-weight: 500; color: #374151;
+    }
+    .no-dd-opt:hover { background: #f5f3ff; color: #7c3aed; }
+    .no-dd-opt.selected { background: #f5f3ff; color: #7c3aed; font-weight: 700; }
+    .no-dd-opt-ico {
+      width: 22px; height: 22px; border-radius: 6px; display: flex;
+      align-items: center; justify-content: center; font-size: 0.7rem; color: #fff; flex-shrink: 0;
+    }
 
     /* ── SEARCH ── */
-    .no-search-wrap { position: relative; margin-bottom: 20px; }
+    .no-search-wrap { position: relative; }
     .no-search {
-      width: 100%; padding: 11px 16px 11px 42px;
+      width: 100%; height: 100%; padding: 10px 16px 10px 42px;
       border: 1.5px solid #e5e7eb; border-radius: 10px;
-      font-size: 0.85rem; font-family: inherit; outline: none;
+      font-size: 0.82rem; font-family: inherit; outline: none;
       transition: border-color 0.15s; background: #fff;
     }
     .no-search:focus { border-color: #7c3aed; }
@@ -227,7 +248,8 @@
       .no-modal { border-radius: 22px 22px 0 0; padding: 20px; }
     }
     @media (max-width: 480px) {
-      .no-plat-btn { padding: 7px 13px; font-size: 0.74rem; }
+      .no-filter-bar { flex-direction: column; }
+      .no-dd-wrap { min-width: 100%; }
     }
   </style>
 </head>
@@ -313,15 +335,30 @@
       </div>
     </div>
 
-    <!-- Platform tabs -->
-    <div class="no-platforms" id="platform-tabs">
-      <button class="no-plat-btn active" data-plat="all"><i class="fas fa-th-large"></i><span>All</span></button>
-    </div>
-
-    <!-- Search -->
-    <div class="no-search-wrap">
-      <i class="fas fa-magnifying-glass no-search-icon"></i>
-      <input class="no-search" type="text" id="search-input" placeholder="Search services (e.g. Nigeria followers, TikTok views…)" />
+    <!-- Filter bar -->
+    <div class="no-filter-bar">
+      <!-- Dropdown 1: Platform -->
+      <div class="no-dd-wrap" id="plat-dd-wrap">
+        <button class="no-dd-trigger" id="plat-trigger" onclick="toggleNoDD('plat')">
+          <span class="no-dd-sel-ico pi-def" id="plat-sel-ico"><i class="fas fa-th-large"></i></span>
+          <span class="no-dd-sel-label" id="plat-sel-label">All Platforms</span>
+          <i class="fas fa-chevron-down no-dd-chevron"></i>
+        </button>
+        <div class="no-dd-menu" id="plat-menu" style="display:none"></div>
+      </div>
+      <!-- Dropdown 2: Category -->
+      <div class="no-dd-wrap disabled" id="cat-dd-wrap">
+        <button class="no-dd-trigger" id="cat-trigger" onclick="toggleNoDD('cat')">
+          <span class="no-dd-sel-label" id="cat-sel-label">All Categories</span>
+          <i class="fas fa-chevron-down no-dd-chevron"></i>
+        </button>
+        <div class="no-dd-menu" id="cat-menu" style="display:none"></div>
+      </div>
+      <!-- Search -->
+      <div class="no-search-wrap" style="flex:1.5;min-width:180px">
+        <i class="fas fa-magnifying-glass no-search-icon"></i>
+        <input class="no-search" type="text" id="search-input" placeholder="Search services…" />
+      </div>
     </div>
 
     <!-- Services grid -->
@@ -382,10 +419,11 @@
     }
 
     /* ── State ── */
-    let allServices = [];
-    let activePlat  = 'all';
-    let userBalance = 0;
-    let selectedSvc = null;
+    let allServices  = [];
+    let activePlat   = 'all';
+    let activeCat    = 'all';
+    let userBalance  = 0;
+    let selectedSvc  = null;
 
     /* ── SMMFollows API ── */
     async function smmfollows(body) {
@@ -397,13 +435,78 @@
       return r.json();
     }
 
+    /* ── Dropdown helpers ── */
+    function toggleNoDD(which) {
+      const menu = document.getElementById(`${which}-menu`);
+      const wrap = document.getElementById(`${which}-dd-wrap`);
+      const other = which === 'plat' ? 'cat' : 'plat';
+      closeNoDD(other);
+      const open = menu.style.display !== 'none';
+      menu.style.display = open ? 'none' : '';
+      wrap.classList.toggle('open', !open);
+    }
+    function closeNoDD(which) {
+      const menu = document.getElementById(`${which}-menu`);
+      const wrap = document.getElementById(`${which}-dd-wrap`);
+      if (menu) { menu.style.display = 'none'; wrap.classList.remove('open'); }
+    }
+    document.addEventListener('click', e => {
+      if (!e.target.closest('#plat-dd-wrap')) closeNoDD('plat');
+      if (!e.target.closest('#cat-dd-wrap'))  closeNoDD('cat');
+    });
+
+    function selectPlatform(platKey, label, iconClass, iconEl) {
+      activePlat = platKey;
+      activeCat  = 'all';
+      // Update dropdown 1 display
+      const ico = document.getElementById('plat-sel-ico');
+      ico.className = `no-dd-sel-ico ${iconClass}`;
+      ico.innerHTML = iconEl;
+      document.getElementById('plat-sel-label').textContent = label;
+      closeNoDD('plat');
+      // Mark selected
+      document.querySelectorAll('#plat-menu .no-dd-opt').forEach(o => o.classList.remove('selected'));
+      // Build category dropdown for this platform
+      buildCatDropdown();
+      renderServices();
+    }
+
+    function selectCategory(catKey, label) {
+      activeCat = catKey;
+      document.getElementById('cat-sel-label').textContent = label || 'All Categories';
+      closeNoDD('cat');
+      document.querySelectorAll('#cat-menu .no-dd-opt').forEach(o => o.classList.remove('selected'));
+      renderServices();
+    }
+
+    function buildCatDropdown() {
+      const filtered = activePlat === 'all'
+        ? allServices
+        : allServices.filter(s => detectPlatform(s.name, s.category)?.key === activePlat);
+
+      const cats = [...new Set(filtered.map(s => s.category || 'Other'))].sort();
+      const menu = document.getElementById('cat-menu');
+      const wrap = document.getElementById('cat-dd-wrap');
+
+      if (!cats.length) { wrap.classList.add('disabled'); return; }
+      wrap.classList.remove('disabled');
+
+      menu.innerHTML = [
+        `<div class="no-dd-opt selected" onclick="selectCategory('all','All Categories')">All Categories</div>`,
+        ...cats.map(c => `<div class="no-dd-opt" onclick="selectCategory(${JSON.stringify(c)},${JSON.stringify(c)})">${c}</div>`)
+      ].join('');
+      document.getElementById('cat-sel-label').textContent = 'All Categories';
+      activeCat = 'all';
+    }
+
     /* ── Filter & render ── */
     function getFilteredServices() {
       const q = document.getElementById('search-input').value.trim().toLowerCase();
       return allServices.filter(s => {
         const platMatch = activePlat === 'all' || detectPlatform(s.name, s.category)?.key === activePlat;
+        const catMatch  = activeCat  === 'all' || (s.category || 'Other') === activeCat;
         const txtMatch  = !q || s.name.toLowerCase().includes(q) || (s.category||'').toLowerCase().includes(q);
-        return platMatch && txtMatch;
+        return platMatch && catMatch && txtMatch;
       });
     }
 
@@ -484,30 +587,24 @@
       }).join('');
     }
 
-    /* ── Build platform tabs from available services ── */
-    function buildTabs() {
+    /* ── Build platform dropdown from available services ── */
+    function buildDropdowns() {
       const found = new Set();
       allServices.forEach(s => {
         const p = detectPlatform(s.name, s.category);
         if (p) found.add(p.key);
       });
 
-      const tabsEl = document.getElementById('platform-tabs');
-      const existing = `<button class="no-plat-btn active" data-plat="all"><i class="fas fa-th-large"></i><span>All</span></button>`;
-      const platBtns = PLATFORMS
+      const platMenu = document.getElementById('plat-menu');
+      const allOpt = `<div class="no-dd-opt selected" onclick="selectPlatform('all','All Platforms','pi-def','<i class=\\'fas fa-th-large\\'></i>')"><span class="no-dd-opt-ico pi-def"><i class="fas fa-th-large"></i></span>All Platforms</div>`;
+      const platOpts = PLATFORMS
         .filter(p => found.has(p.key))
-        .map(p => `<button class="no-plat-btn" data-plat="${p.key}"><i class="${p.icon}"></i><span>${p.label}</span></button>`)
+        .map(p => `<div class="no-dd-opt" onclick="selectPlatform('${p.key}','${p.label}','${p.css}','<i class=\\'${p.icon}\\'></i>')"><span class="no-dd-opt-ico ${p.css}"><i class="${p.icon}"></i></span>${p.label}</div>`)
         .join('');
-      tabsEl.innerHTML = existing + platBtns;
+      platMenu.innerHTML = allOpt + platOpts;
 
-      tabsEl.querySelectorAll('.no-plat-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          tabsEl.querySelectorAll('.no-plat-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          activePlat = btn.dataset.plat;
-          renderServices();
-        });
-      });
+      // Init category dropdown for "All"
+      buildCatDropdown();
     }
 
     /* ── Order modal ── */
@@ -651,7 +748,7 @@
       document.getElementById('stat-platforms').textContent = platCount;
       document.getElementById('stat-lowest').textContent = prices.length ? `${fmtNGN(Math.min(...prices) / 1000)}/K` : '—';
 
-      buildTabs();
+      buildDropdowns();
       renderServices();
     })();
   </script>
