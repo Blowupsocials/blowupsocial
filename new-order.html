@@ -349,7 +349,7 @@
       <!-- Dropdown 2: Category -->
       <div class="no-dd-wrap disabled" id="cat-dd-wrap">
         <button class="no-dd-trigger" id="cat-trigger" onclick="toggleNoDD('cat')">
-          <span class="no-dd-sel-label" id="cat-sel-label">All Categories</span>
+          <span class="no-dd-sel-label" id="cat-sel-label">All</span>
           <i class="fas fa-chevron-down no-dd-chevron"></i>
         </button>
         <div class="no-dd-menu" id="cat-menu" style="display:none"></div>
@@ -393,6 +393,26 @@
       { key: 'discord',   label: 'Discord',   icon: 'fab fa-discord',   css: 'pi-dc', match: ['discord'] },
       { key: 'pinterest', label: 'Pinterest', icon: 'fab fa-pinterest',  css: 'pi-pin',match: ['pinterest'] },
     ];
+
+    /* ── Action types (second dropdown) ── */
+    const ACTION_TYPES = [
+      { key: 'followers',     label: 'Followers',       match: ['follower', 'subscriber', 'member', 'connection'] },
+      { key: 'likes',         label: 'Likes',           match: ['like', 'heart', 'reaction'] },
+      { key: 'comments',      label: 'Comments',        match: ['comment'] },
+      { key: 'saves',         label: 'Saves',           match: ['save', 'bookmark', 'favourite', 'favorite'] },
+      { key: 'shares',        label: 'Shares',          match: ['share', 'repost', 'retweet', 'reposts'] },
+      { key: 'video_streams', label: 'Video & Streams', match: ['view', 'watch', 'stream', 'play', 'impression', 'reach', 'visit'] },
+      { key: 'others',        label: 'Others',          match: [] },
+    ];
+
+    function detectAction(name) {
+      const hay = name.toLowerCase();
+      for (const a of ACTION_TYPES) {
+        if (a.key === 'others') continue;
+        if (a.match.some(m => hay.includes(m))) return a.key;
+      }
+      return 'others';
+    }
 
     function detectPlatform(name, category) {
       const hay = (name + ' ' + (category || '')).toLowerCase();
@@ -466,8 +486,8 @@
       closeNoDD('plat');
       // Mark selected
       document.querySelectorAll('#plat-menu .no-dd-opt').forEach(o => o.classList.remove('selected'));
-      // Build category dropdown for this platform
-      buildCatDropdown();
+      // Build action dropdown for this platform
+      buildActionDropdown();
       renderServices();
     }
 
@@ -479,23 +499,25 @@
       renderServices();
     }
 
-    function buildCatDropdown() {
+    function buildActionDropdown() {
       const filtered = activePlat === 'all'
         ? allServices
         : allServices.filter(s => detectPlatform(s.name, s.category)?.key === activePlat);
 
-      const cats = [...new Set(filtered.map(s => s.category || 'Other'))].sort();
+      const usedKeys = new Set(filtered.map(s => detectAction(s.name)));
       const menu = document.getElementById('cat-menu');
       const wrap = document.getElementById('cat-dd-wrap');
 
-      if (!cats.length) { wrap.classList.add('disabled'); return; }
+      if (!filtered.length) { wrap.classList.add('disabled'); return; }
       wrap.classList.remove('disabled');
 
       menu.innerHTML = [
-        `<div class="no-dd-opt selected" onclick="selectCategory('all','All Categories')">All Categories</div>`,
-        ...cats.map(c => `<div class="no-dd-opt" onclick="selectCategory(${JSON.stringify(c)},${JSON.stringify(c)})">${c}</div>`)
+        `<div class="no-dd-opt selected" onclick="selectCategory('all','All')">All</div>`,
+        ...ACTION_TYPES
+          .filter(a => usedKeys.has(a.key))
+          .map(a => `<div class="no-dd-opt" onclick="selectCategory('${a.key}','${a.label}')">${a.label}</div>`)
       ].join('');
-      document.getElementById('cat-sel-label').textContent = 'All Categories';
+      document.getElementById('cat-sel-label').textContent = 'All';
       activeCat = 'all';
     }
 
@@ -504,7 +526,7 @@
       const q = document.getElementById('search-input').value.trim().toLowerCase();
       return allServices.filter(s => {
         const platMatch = activePlat === 'all' || detectPlatform(s.name, s.category)?.key === activePlat;
-        const catMatch  = activeCat  === 'all' || (s.category || 'Other') === activeCat;
+        const catMatch  = activeCat  === 'all' || detectAction(s.name) === activeCat;
         const txtMatch  = !q || s.name.toLowerCase().includes(q) || (s.category||'').toLowerCase().includes(q);
         return platMatch && catMatch && txtMatch;
       });
@@ -603,8 +625,8 @@
         .join('');
       platMenu.innerHTML = allOpt + platOpts;
 
-      // Init category dropdown for "All"
-      buildCatDropdown();
+      // Init action dropdown for "All"
+      buildActionDropdown();
     }
 
     /* ── Order modal ── */
