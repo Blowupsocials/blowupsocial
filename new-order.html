@@ -609,7 +609,7 @@
 
     function renderCard(s) {
       const { css, icon } = getPlatformCSS(s.name, s.category);
-      const price      = fmtNGN(parseFloat(s.rate) * MARKUP / 1000);
+      const price      = fmtNGN(parseFloat(s.rate) * MARKUP);
       const refillTag  = s.refill == 1 ? `<span class="no-svc-tag green"><i class="fas fa-rotate-right"></i> Refill</span>` : '';
       const cancelTag  = s.cancel == 1 ? `<span class="no-svc-tag blue"><i class="fas fa-ban"></i> Cancel</span>` : '';
       return `
@@ -845,7 +845,7 @@
       const platCount = new Set(data.map(s => detectPlatform(s.name, s.category)?.key).filter(Boolean)).size;
       document.getElementById('stat-services').textContent = data.length.toLocaleString();
       document.getElementById('stat-platforms').textContent = platCount;
-      document.getElementById('stat-lowest').textContent = prices.length ? `${fmtNGN(Math.min(...prices) / 1000)}/K` : '—';
+      document.getElementById('stat-lowest').textContent = prices.length ? `${fmtNGN(Math.min(...prices))}/K` : '—';
 
       buildDropdowns();
       renderServices();
