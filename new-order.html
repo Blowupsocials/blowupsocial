@@ -380,9 +380,17 @@
   <script src="js/supabase-client.js"></script>
   <script>
     /* ── Config ── */
-    const MARKUP     = 2.0;    // sell at 2x SMMFollows cost
-    const USD_TO_NGN = 1600;   // NGN display rate
+    const MARKUP = 2.0;
+    let USD_TO_NGN = 1600; // fallback; overwritten by live rate below
     const fmtNGN = v => `₦${Math.round(v * USD_TO_NGN).toLocaleString('en-NG')}`;
+
+    async function fetchExchangeRate() {
+      try {
+        const r = await fetch('https://open.er-api.com/v6/latest/USD');
+        const d = await r.json();
+        if (d.rates?.NGN) USD_TO_NGN = d.rates.NGN;
+      } catch (_) { /* use fallback */ }
+    }
 
     /* ── Platform map ── */
     const PLATFORMS = [
@@ -820,7 +828,8 @@
       document.getElementById('topbar-balance').textContent = fmtNGN(userBalance);
       document.getElementById('stat-balance').textContent   = fmtNGN(userBalance);
 
-      // Load services from SMMFollows
+      // Fetch live exchange rate then load services
+      await fetchExchangeRate();
       const data = await smmfollows({ action: 'services' });
 
       if (!Array.isArray(data)) {
