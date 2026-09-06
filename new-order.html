@@ -484,9 +484,9 @@
     let userBalance   = 0;
     let selectedSvc  = null;
 
-    /* ── SMMFollows API ── */
-    async function smmfollows(body) {
-      const r = await fetch('/api/smmfollows', {
+    /* ── Owlet API ── */
+    async function owlet(body) {
+      const r = await fetch('/api/owlet', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
@@ -766,8 +766,8 @@
       btn.textContent = 'Placing order…';
 
       try {
-        // 1. Place on SMMFollows
-        const result = await smmfollows({ action: 'add', service: selectedSvc.service, link, quantity: qty });
+        // 1. Place on Owlet
+        const result = await owlet({ action: 'add', service: selectedSvc.service, link, quantity: qty });
 
         if (result.error || !result.order) {
           errEl.textContent = result.error || 'Order could not be placed. Please try again.';
@@ -830,7 +830,7 @@
 
       // Fetch live exchange rate then load services
       await fetchExchangeRate();
-      const data = await smmfollows({ action: 'services' });
+      const data = await owlet({ action: 'services' });
 
       if (!Array.isArray(data)) {
         document.getElementById('services-grid').innerHTML =
@@ -853,4 +853,5 @@
   </script>
 </body>
 </html>
+
 
