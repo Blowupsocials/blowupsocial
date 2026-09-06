@@ -330,7 +330,7 @@
         <div class="no-stat-val" id="stat-balance">—</div>
       </div>
       <div class="no-stat">
-        <div class="no-stat-label">Lowest Price / 1K</div>
+        <div class="no-stat-label">Lowest per 1,000</div>
         <div class="no-stat-val" id="stat-lowest">—</div>
       </div>
     </div>
@@ -627,7 +627,7 @@
             ${refillTag}${cancelTag}
           </div>
           <div class="no-svc-footer">
-            <div class="no-svc-price">${price}<span class="no-svc-price-sub"> / 1K</span></div>
+            <div class="no-svc-price">${price}<span class="no-svc-price-sub"> per 1,000</span></div>
             <button class="no-svc-order-btn" onclick="event.stopPropagation();openOrder(${s.service})">Order Now</button>
           </div>
         </div>`;
@@ -845,7 +845,7 @@
       const platCount = new Set(data.map(s => detectPlatform(s.name, s.category)?.key).filter(Boolean)).size;
       document.getElementById('stat-services').textContent = data.length.toLocaleString();
       document.getElementById('stat-platforms').textContent = platCount;
-      document.getElementById('stat-lowest').textContent = prices.length ? `${fmtNGN(Math.min(...prices))}/K` : '—';
+      document.getElementById('stat-lowest').textContent = prices.length ? fmtNGN(Math.min(...prices)) : '—';
 
       buildDropdowns();
       renderServices();
