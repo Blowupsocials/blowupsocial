@@ -32,6 +32,21 @@
     .ac-page-tab { padding: 12px 20px; font-size: 0.84rem; font-weight: 600; color: #8b8fa8; background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
     .ac-page-tab.active { color: #7c3aed; border-bottom-color: #7c3aed; }
 
+    /* SERVICE SWITCHER */
+    .svc-switcher {
+      background: #fff; border-bottom: 1px solid #e8eaf0;
+      display: flex; padding: 0 20px; gap: 4px;
+    }
+    .svc-switcher a {
+      display: flex; align-items: center; gap: 7px;
+      padding: 10px 16px; font-size: 0.8rem; font-weight: 600;
+      color: #6b7080; text-decoration: none; border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s; white-space: nowrap;
+    }
+    .svc-switcher a:hover { color: #7c3aed; }
+    .svc-switcher a.active { color: #7c3aed; border-bottom-color: #7c3aed; }
+    .svc-switcher a i { font-size: 0.85rem; }
+
     /* TWO-DROPDOWN FILTER BAR */
     .ac-filter-bar {
       background: #fff; padding: 12px 20px; border-bottom: 1px solid #e8eaf0;
@@ -169,6 +184,11 @@
     <a href="dashboard.html" class="ac-back"><i class="fas fa-arrow-left"></i></a>
     <div class="ac-topbar-title">Social Media Accounts</div>
     <div class="ac-wallet-chip"><span>Balance:</span><strong id="topbar-balance">₦0</strong></div>
+  </div>
+
+  <div class="svc-switcher">
+    <a href="new-order.html"><i class="fas fa-bolt"></i> Social Boost</a>
+    <a href="accounts.html" class="active"><i class="fas fa-store"></i> Accounts Store</a>
   </div>
 
   <div class="ac-page">

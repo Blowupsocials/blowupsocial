@@ -40,6 +40,21 @@
     /* ── PAGE BODY ── */
     .no-page { max-width: 1200px; margin: 0 auto; padding: 24px 20px 80px; }
 
+    /* ── SERVICE SWITCHER ── */
+    .svc-switcher {
+      background: #fff; border-bottom: 1px solid #e8eaf0;
+      display: flex; padding: 0 20px; gap: 4px;
+    }
+    .svc-switcher a {
+      display: flex; align-items: center; gap: 7px;
+      padding: 10px 16px; font-size: 0.8rem; font-weight: 600;
+      color: #6b7080; text-decoration: none; border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s; white-space: nowrap;
+    }
+    .svc-switcher a:hover { color: #7c3aed; }
+    .svc-switcher a.active { color: #7c3aed; border-bottom-color: #7c3aed; }
+    .svc-switcher a i { font-size: 0.85rem; }
+
     /* ── FILTER BAR ── */
     .no-filter-bar {
       display: flex; gap: 10px; margin-bottom: 20px; align-items: stretch; flex-wrap: wrap;
@@ -310,6 +325,11 @@
     <a href="dashboard.html" class="no-back"><i class="fas fa-arrow-left"></i> Dashboard</a>
     <div class="no-title">Social Boost</div>
     <div class="no-wallet"><span>Balance</span><strong id="topbar-balance">₦0</strong></div>
+  </div>
+
+  <div class="svc-switcher">
+    <a href="new-order.html" class="active"><i class="fas fa-bolt"></i> Social Boost</a>
+    <a href="accounts.html"><i class="fas fa-store"></i> Accounts Store</a>
   </div>
 
   <!-- Page body -->
