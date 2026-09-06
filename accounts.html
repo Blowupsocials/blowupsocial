@@ -32,32 +32,32 @@
     .ac-page-tab { padding: 12px 20px; font-size: 0.84rem; font-weight: 600; color: #8b8fa8; background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
     .ac-page-tab.active { color: #7c3aed; border-bottom-color: #7c3aed; }
 
-    /* CATEGORY GROUP TABS */
+    /* PLATFORM TABS */
     .ac-groups-bar { background: #fff; border-bottom: 1px solid #e8eaf0; padding: 0 20px; }
     .ac-groups-scroll { display: flex; gap: 2px; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
     .ac-groups-scroll::-webkit-scrollbar { display: none; }
     .ac-group-tab {
-      display: flex; align-items: center; gap: 6px; padding: 11px 16px;
+      display: flex; align-items: center; gap: 7px; padding: 11px 14px;
       font-size: 0.78rem; font-weight: 600; color: #8b8fa8; background: none; border: none;
       border-bottom: 2px solid transparent; margin-bottom: -1px;
       white-space: nowrap; flex-shrink: 0; cursor: pointer; transition: all 0.15s;
     }
     .ac-group-tab:hover { color: #4b5063; }
     .ac-group-tab.active { color: #7c3aed; border-bottom-color: #7c3aed; }
+    .ac-group-ico { width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; }
 
-    /* PLATFORM CARD GRID */
-    .ac-platforms-area { padding: 14px 20px 12px; background: #f8f9fc; border-bottom: 1px solid #e8eaf0; }
-    .ac-plat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(86px, 1fr)); gap: 10px; }
-    .ac-plat-card {
-      display: flex; flex-direction: column; align-items: center; gap: 7px;
-      padding: 14px 6px 12px; background: #fff; border: 1.5px solid #f0f2f6;
-      border-radius: 14px; cursor: pointer; transition: all 0.15s; text-align: center;
+    /* CATEGORY PILLS */
+    .ac-subcats-wrap { padding: 10px 20px; background: #f8f9fc; border-bottom: 1px solid #e8eaf0; display: none; }
+    .ac-subcats-wrap.visible { display: block; }
+    .ac-subcats { display: flex; gap: 8px; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
+    .ac-subcats::-webkit-scrollbar { display: none; }
+    .ac-sub-btn {
+      padding: 7px 16px; border-radius: 50px; border: 1.5px solid #e5e7eb; background: #fff;
+      font-size: 0.75rem; font-weight: 600; color: #6b7080;
+      white-space: nowrap; flex-shrink: 0; transition: all 0.15s; cursor: pointer;
     }
-    .ac-plat-card:hover { border-color: #c4b5fd; box-shadow: 0 2px 8px rgba(124,58,237,0.1); }
-    .ac-plat-card.active { border-color: #7c3aed; background: #f5f3ff; box-shadow: 0 2px 12px rgba(124,58,237,0.15); }
-    .ac-plat-ico { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-    .ac-plat-name { font-size: 0.68rem; font-weight: 600; color: #4b5063; line-height: 1.3; word-break: break-word; }
-    .ac-plat-card.active .ac-plat-name { color: #7c3aed; }
+    .ac-sub-btn:hover { border-color: #c4b5fd; color: #7c3aed; }
+    .ac-sub-btn.active { background: #7c3aed; border-color: #7c3aed; color: #fff; }
 
     /* LISTING AREA */
     .ac-listing-area { padding: 20px; }
@@ -137,10 +137,7 @@
       .ac-grid { grid-template-columns: 1fr; }
       .ac-topbar { padding: 0 16px; gap: 10px; }
       .ac-groups-bar { padding: 0 12px; }
-      .ac-platforms-area { padding: 12px 12px 10px; }
-      .ac-plat-grid { grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 8px; }
-      .ac-plat-card { padding: 12px 4px 10px; }
-      .ac-plat-ico { width: 36px; height: 36px; font-size: 1rem; }
+      .ac-subcats-wrap { padding: 8px 12px; }
     }
   </style>
 </head>
@@ -167,19 +164,19 @@
 
     <!-- BROWSE VIEW -->
     <div id="view-browse">
-      <!-- CATEGORY GROUP TABS -->
+      <!-- PLATFORM TABS -->
       <div class="ac-groups-bar">
         <div class="ac-groups-scroll" id="groups-scroll"></div>
       </div>
 
-      <!-- PLATFORM CARDS -->
-      <div class="ac-platforms-area" id="platforms-area">
-        <div class="ac-plat-grid" id="plat-grid"></div>
+      <!-- CATEGORY PILLS -->
+      <div class="ac-subcats-wrap" id="subcats-wrap">
+        <div class="ac-subcats" id="subcats-row"></div>
       </div>
 
       <!-- LISTINGS -->
       <div class="ac-listing-area" id="listing-area">
-        <div class="ac-state"><i class="fas fa-hand-pointer"></i><p>Select a platform above to browse accounts.</p></div>
+        <div class="ac-state"><i class="fas fa-spinner fa-spin"></i><p>Loading store…</p></div>
       </div>
     </div>
 
@@ -386,58 +383,96 @@
 
     /* ── ALL CATEGORIES (from API) ── */
     let allCategories = [];
-    let activeCatId   = null;
 
-    /* ── CATEGORY GROUPS ── */
-    const PLATFORM_GROUPS = [
-      { label: 'All',          icon: 'fa-solid fa-border-all', catIds: [24,34,22,75,38,67,40,50,37,23,33,81,97,95,90,76,66,98,114,110,80,92] },
-      { label: 'Popular',      icon: 'fa-solid fa-fire',        catIds: [24,34,22,75,38,67,40,50] },
-      { label: 'Messaging',    icon: 'fa-solid fa-comment',     catIds: [67,40,50,37,92] },
-      { label: 'Video',        icon: 'fa-solid fa-play',        catIds: [75,97] },
-      { label: 'Professional', icon: 'fa-solid fa-briefcase',   catIds: [23,76,66,98] },
-      { label: 'Community',    icon: 'fa-solid fa-users',       catIds: [33,81,95,90] },
-      { label: 'Other',        icon: 'fa-solid fa-ellipsis',    catIds: [114,110,80] },
+    /* ── PLATFORM DETECTION from AccsZone category titles ── */
+    const PLATFORM_RULES = [
+      { key:'instagram',  label:'Instagram',   ico: CAT_ICON[24],  kw:['instagram','ig account','ig pva'] },
+      { key:'tiktok',     label:'TikTok',      ico: CAT_ICON[34],  kw:['tiktok','tik tok'] },
+      { key:'facebook',   label:'Facebook',    ico: CAT_ICON[22],  kw:['facebook','fb account','fb pva'] },
+      { key:'youtube',    label:'YouTube',     ico: CAT_ICON[75],  kw:['youtube'] },
+      { key:'twitter',    label:'X / Twitter', ico: CAT_ICON[38],  kw:['twitter','x account','x-twitter','xtwitter'] },
+      { key:'whatsapp',   label:'WhatsApp',    ico: CAT_ICON[67],  kw:['whatsapp'] },
+      { key:'telegram',   label:'Telegram',    ico: CAT_ICON[40],  kw:['telegram'] },
+      { key:'discord',    label:'Discord',     ico: CAT_ICON[50],  kw:['discord'] },
+      { key:'snapchat',   label:'Snapchat',    ico: CAT_ICON[37],  kw:['snapchat'] },
+      { key:'linkedin',   label:'LinkedIn',    ico: CAT_ICON[23],  kw:['linkedin'] },
+      { key:'reddit',     label:'Reddit',      ico: CAT_ICON[33],  kw:['reddit'] },
+      { key:'pinterest',  label:'Pinterest',   ico: CAT_ICON[81],  kw:['pinterest'] },
+      { key:'twitch',     label:'Twitch',      ico: CAT_ICON[97],  kw:['twitch'] },
+      { key:'threads',    label:'Threads',     ico: CAT_ICON[95],  kw:['threads'] },
+      { key:'bluesky',    label:'Bluesky',     ico: CAT_ICON[90],  kw:['bluesky'] },
+      { key:'quora',      label:'Quora',       ico: CAT_ICON[76],  kw:['quora'] },
+      { key:'google',     label:'Google',      ico: CAT_ICON[80],  kw:['google account','gmail','google pva'] },
+      { key:'trustpilot', label:'Trustpilot',  ico: CAT_ICON[66],  kw:['trustpilot'] },
+      { key:'yelp',       label:'Yelp',        ico: CAT_ICON[98],  kw:['yelp'] },
+      { key:'okru',       label:'OK.ru',       ico: CAT_ICON[114], kw:['ok.ru','odnoklassniki','vkontakte','vk account'] },
     ];
+    const PLATFORM_ORDER = ['instagram','tiktok','facebook','youtube','twitter','whatsapp','telegram','discord','snapchat','linkedin','reddit','pinterest','twitch','threads','bluesky','quora','google','trustpilot','yelp','okru'];
 
-    function buildGroupTabs() {
+    function detectPlatform(title) {
+      const t = (title || '').toLowerCase();
+      for (const p of PLATFORM_RULES) {
+        if (p.kw.some(k => t.includes(k))) return p;
+      }
+      return null;
+    }
+
+    /* ── BUILD PLATFORM TABS + CATEGORY PILLS ── */
+    function buildUI() {
+      const groups = {};
+      allCategories.forEach(cat => {
+        const name = cat.title || cat.name || '';
+        const plat = detectPlatform(name);
+        if (!plat) return;
+        if (!groups[plat.key]) groups[plat.key] = { ...plat, cats: [] };
+        groups[plat.key].cats.push(cat);
+      });
+
+      const sorted = PLATFORM_ORDER.filter(k => groups[k]).map(k => groups[k]);
+      Object.keys(groups).forEach(k => { if (!PLATFORM_ORDER.includes(k)) sorted.push(groups[k]); });
+
+      if (!sorted.length) {
+        setListingState('<i class="fas fa-box-open"></i><p>No categories found.</p>'); return;
+      }
+
       const scroll = document.getElementById('groups-scroll');
       scroll.innerHTML = '';
-      PLATFORM_GROUPS.forEach((g, i) => {
+      sorted.forEach((plat, i) => {
         const tab = document.createElement('button');
         tab.className = 'ac-group-tab' + (i === 0 ? ' active' : '');
-        tab.innerHTML = `<i class="${g.icon}"></i>${g.label}`;
+        tab.innerHTML = `<div class="ac-group-ico" style="background:${plat.ico.bg};color:${plat.ico.color}"><i class="${plat.ico.icon}"></i></div>${esc(plat.label)}`;
         tab.onclick = () => {
           document.querySelectorAll('.ac-group-tab').forEach(t => t.classList.remove('active'));
           tab.classList.add('active');
-          renderPlatformCards(g.catIds);
+          buildCategoryPills(plat.cats);
         };
         scroll.appendChild(tab);
       });
+
+      buildCategoryPills(sorted[0].cats);
     }
 
-    function renderPlatformCards(catIds) {
-      const grid = document.getElementById('plat-grid');
-      const cats = allCategories
-        .filter(c => catIds.includes(Number(c.id)))
-        .sort((a, b) => catIds.indexOf(Number(a.id)) - catIds.indexOf(Number(b.id)));
+    function buildCategoryPills(cats) {
+      const wrap = document.getElementById('subcats-wrap');
+      const row  = document.getElementById('subcats-row');
+      row.innerHTML = '';
 
-      grid.innerHTML = cats.map(cat => {
-        const name    = cat.title || cat.name || String(cat.id);
-        const ico     = CAT_ICON[Number(cat.id)] || FALLBACK_ICON;
-        const isActive = Number(cat.id) === activeCatId;
-        return `<div class="ac-plat-card${isActive ? ' active' : ''}" onclick="selectPlatform(${cat.id}, this)">
-          <div class="ac-plat-ico" style="background:${ico.bg};color:${ico.color}"><i class="${ico.icon}"></i></div>
-          <div class="ac-plat-name">${esc(name)}</div>
-        </div>`;
-      }).join('');
-    }
+      cats.forEach((cat, i) => {
+        const name = cat.title || cat.name || String(cat.id);
+        const btn  = document.createElement('button');
+        btn.className = 'ac-sub-btn' + (i === 0 ? ' active' : '');
+        btn.textContent = name;
+        btn.onclick = () => {
+          document.querySelectorAll('.ac-sub-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          loadListings(cat.id);
+        };
+        row.appendChild(btn);
+      });
 
-    function selectPlatform(catId, cardEl) {
-      activeCatId = catId;
-      document.querySelectorAll('.ac-plat-card').forEach(c => c.classList.remove('active'));
-      cardEl.classList.add('active');
-      loadListings(catId);
-      document.getElementById('listing-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      wrap.classList.toggle('visible', cats.length > 0);
+      if (cats.length > 0) loadListings(cats[0].id);
+      else setListingState('<i class="fas fa-box-open"></i><p>No categories for this platform.</p>');
     }
 
     /* ── DETECT ICON FROM LISTING TITLE ── */
@@ -762,8 +797,7 @@
       const data = unwrap(res);
       allCategories = Array.isArray(data) ? data : (data?.categories || data?.items || []);
 
-      buildGroupTabs();
-      renderPlatformCards(PLATFORM_GROUPS[0].catIds);
+      buildUI();
     })();
   </script>
 </body>
