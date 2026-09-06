@@ -381,16 +381,8 @@
   <script>
     /* ── Config ── */
     const MARKUP = 2.0;
-    let USD_TO_NGN = 1600; // fallback; overwritten by live rate below
-    const fmtNGN = v => `₦${Math.round(v * USD_TO_NGN).toLocaleString('en-NG')}`;
-
-    async function fetchExchangeRate() {
-      try {
-        const r = await fetch('https://open.er-api.com/v6/latest/USD');
-        const d = await r.json();
-        if (d.rates?.NGN) USD_TO_NGN = d.rates.NGN;
-      } catch (_) { /* use fallback */ }
-    }
+    // Owlet API rates are already in NGN — no currency conversion needed
+    const fmtNGN = v => `₦${Math.round(v).toLocaleString('en-NG')}`;
 
     /* ── Platform map ── */
     const PLATFORMS = [
@@ -828,8 +820,6 @@
       document.getElementById('topbar-balance').textContent = fmtNGN(userBalance);
       document.getElementById('stat-balance').textContent   = fmtNGN(userBalance);
 
-      // Fetch live exchange rate then load services
-      await fetchExchangeRate();
       const data = await owlet({ action: 'services' });
 
       if (!Array.isArray(data)) {
