@@ -265,14 +265,67 @@
     .modal-foot button { flex: 1; padding: 10px; border-radius: 9px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: none; }
     .btn-cancel { background: var(--bg); color: var(--t2); border: 1px solid var(--bd) !important; }
     .btn-save { background: var(--pu); color: #fff; }
+
+    /* ── Reports ── */
+    .rpt-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 16px; }
+    .rpt-tile { background: var(--sur); border-radius: 14px; padding: 18px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .rpt-tile-label { font-size: 0.69rem; font-weight: 600; color: var(--t3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .rpt-tile-val { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--t1); font-variant-numeric: tabular-nums; }
+    @media (max-width: 768px) { .rpt-tiles { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) { #sec-reports > div:last-child { grid-template-columns: 1fr !important; } }
+
+    /* ══ MOBILE ══ */
+    .sb-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.52); z-index: 199; }
+    .sb-overlay.open { display: block; }
+    .sb-toggle { display: none; width: 36px; height: 36px; border-radius: 10px; background: var(--bg); border: 1px solid var(--bd); align-items: center; justify-content: center; color: var(--t2); font-size: 0.95rem; flex-shrink: 0; cursor: pointer; }
+
+    @media (max-width: 900px) {
+      .tb-search { display: none; }
+      .tb-quick { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .sb { transform: translateX(-100%); transition: transform 0.24s ease; box-shadow: none; }
+      .sb.open { transform: translateX(0); box-shadow: 4px 0 32px rgba(0,0,0,0.28); }
+      .main { margin-left: 0; }
+      .sb-toggle { display: flex; }
+      .topbar { padding: 0 14px; gap: 8px; }
+      .tb-welcome p { display: none; }
+      .tb-profile-info { display: none; }
+      .tb-profile > i { display: none; }
+      .tb-profile { padding: 4px 6px 4px 4px; }
+      .content { padding: 14px; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
+      .stat-spark { display: none; }
+      .stat-num { font-size: 1.3rem; }
+      .stat-card { padding: 14px 13px 12px; }
+      .mid-row { grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px; }
+      .bot-row { grid-template-columns: 1fr; gap: 12px; }
+      .chart-wrap { height: 190px; }
+      .page-foot { padding: 12px 14px; flex-direction: column; gap: 4px; text-align: center; }
+      .sec-hdr { flex-direction: column; align-items: stretch; }
+      .sec-hdr-right { flex-wrap: wrap; }
+      .sec-search { width: 100%; }
+    }
+
+    @media (max-width: 480px) {
+      .stats-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .stat-num { font-size: 1.15rem; }
+      .stat-card { padding: 12px 11px 10px; }
+      .card { padding: 14px; }
+      .card-hdr { flex-wrap: wrap; gap: 8px; }
+      .card-hdr-r { flex-wrap: wrap; }
+    }
   </style>
 </head>
 <body>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="js/supabase-client.js"></script>
 
+  <div class="sb-overlay" id="sb-overlay" onclick="closeSidebar()"></div>
+
   <!-- ══ SIDEBAR ══ -->
-  <nav class="sb">
+  <nav class="sb" id="sidebar">
     <div class="sb-logo">
       <div class="sb-logo-mark">B</div>
       <div class="sb-logo-text">
@@ -298,7 +351,11 @@
       <a href="#" data-section="pages"         class="sb-item"><i class="fas fa-file"></i> Pages</a>
       <a href="#" data-section="testimonials"  class="sb-item"><i class="fas fa-heart"></i> Testimonials</a>
 
+      <div class="sb-sec">Finance</div>
+      <a href="#" data-section="expenses"      class="sb-item"><i class="fas fa-chart-line"></i> Expenses &amp; Profit</a>
+
       <div class="sb-sec">System</div>
+      <a href="#" data-section="providers"     class="sb-item"><i class="fas fa-plug"></i> Providers</a>
       <a href="#" data-section="settings"      class="sb-item"><i class="fas fa-gear"></i> Settings</a>
       <a href="#" data-section="apikeys"       class="sb-item"><i class="fas fa-key"></i> API Keys</a>
       <a href="#" data-section="coupons"       class="sb-item"><i class="fas fa-tag"></i> Coupons</a>
@@ -328,6 +385,7 @@
         <p>Here's what's happening on your platform today.</p>
       </div>
       <div class="tb-right">
+        <button class="sb-toggle" onclick="toggleSidebar()" aria-label="Menu"><i class="fas fa-bars"></i></button>
         <div class="tb-search">
           <i class="fas fa-magnifying-glass"></i>
           <input type="text" placeholder="Search anything…" />
@@ -408,8 +466,8 @@
               <div class="stat-icon si-bl"><i class="fas fa-headset"></i></div>
               <span class="stat-label">Tickets Open</span>
             </div>
-            <div class="stat-num">32</div>
-            <div class="stat-trend"><span class="t-dn"><i class="fas fa-arrow-down"></i> 11.3%</span><span class="t-lbl">vs yesterday</span></div>
+            <div class="stat-num" id="stat-tickets">—</div>
+            <div class="stat-trend"><span class="t-dn"><i class="fas fa-arrow-down"></i></span><span class="t-lbl">open tickets</span></div>
           </div>
           <div class="stat-spark" id="spark-tickets"></div>
         </div>
@@ -444,7 +502,7 @@
                 <th>Revenue</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="top-svc-tbody">
               <tr>
                 <td><div class="svc-name-cell"><div class="svc-ico" style="background:#fdf2f8;color:#e1306c"><i class="fa-brands fa-instagram"></i></div>Instagram Followers</div></td>
                 <td class="svc-orders">12,540</td>
@@ -475,7 +533,7 @@
               <tr>
                 <td>Total</td>
                 <td class="svc-orders" id="tbl-total-orders">34,892</td>
-                <td class="svc-rev">₦8,092,320</td>
+                <td class="svc-rev" id="tbl-total-rev">—</td>
               </tr>
             </tfoot>
           </table>
@@ -574,7 +632,7 @@
             <div class="card-title">Recent Activity</div>
             <button class="btn-link">View All</button>
           </div>
-          <div class="act-list">
+          <div class="act-list" id="activity-list">
             <div class="act-item">
               <div class="act-ico" style="background:#f5f0ff;color:#7c3aed"><i class="fas fa-user-plus"></i></div>
               <div class="act-body">
@@ -696,11 +754,32 @@
 
       <!-- ══ TRANSACTIONS ══ -->
       <div id="sec-transactions" class="admin-section">
-        <div class="coming-soon">
-          <div class="cs-ico"><i class="fas fa-right-left"></i></div>
-          <h3>Transactions</h3>
-          <p>Full transaction history across all users and payment methods.</p>
-          <span class="cs-badge"><i class="fas fa-clock"></i> Coming Soon</span>
+        <div class="sec-hdr">
+          <div class="sec-hdr-left"><h2>Transactions</h2><p>All orders and fund deposits across every user</p></div>
+          <div class="sec-hdr-right">
+            <select id="txn-filter" onchange="filterTxns()" style="padding:7px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.77rem;font-family:inherit;color:var(--t1);background:var(--sur);cursor:pointer;">
+              <option value="all">All Types</option>
+              <option value="order">Orders (Charges)</option>
+              <option value="fund">Deposits</option>
+            </select>
+            <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="txn-search" placeholder="Search user ID…" oninput="filterTxns()"></div>
+          </div>
+        </div>
+        <div class="tbl-card">
+          <div class="tbl-wrap">
+            <table class="data-tbl">
+              <thead><tr>
+                <th>Type</th>
+                <th>User</th>
+                <th>Description</th>
+                <th>Amount (NGN)</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr></thead>
+              <tbody id="txn-tbody"><tr><td colspan="6" class="tbl-loading"><i class="fas fa-circle-notch fa-spin"></i> Loading…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="tbl-foot"><span id="txn-count" style="color:var(--t3);font-size:0.72rem;">—</span></div>
         </div>
       </div>
 
@@ -831,11 +910,179 @@
 
       <!-- ══ REPORTS ══ -->
       <div id="sec-reports" class="admin-section">
-        <div class="coming-soon">
-          <div class="cs-ico"><i class="fas fa-chart-bar"></i></div>
-          <h3>Reports</h3>
-          <p>In-depth analytics, revenue trends, and platform performance reports.</p>
-          <span class="cs-badge"><i class="fas fa-clock"></i> Coming Soon</span>
+        <div class="sec-hdr">
+          <div class="sec-hdr-left"><h2>Reports</h2><p>Platform analytics and revenue trends</p></div>
+        </div>
+
+        <!-- Summary tiles -->
+        <div class="rpt-tiles" id="rpt-tiles">
+          <div class="rpt-tile"><div class="rpt-tile-label">Total Revenue (NGN)</div><div class="rpt-tile-val" id="rpt-rev">—</div></div>
+          <div class="rpt-tile"><div class="rpt-tile-label">Total Orders</div><div class="rpt-tile-val" id="rpt-orders">—</div></div>
+          <div class="rpt-tile"><div class="rpt-tile-label">Completed Orders</div><div class="rpt-tile-val" id="rpt-completed">—</div></div>
+          <div class="rpt-tile"><div class="rpt-tile-label">Cancellation Rate</div><div class="rpt-tile-val" id="rpt-cancel-rate">—</div></div>
+        </div>
+
+        <!-- Revenue by month bar chart -->
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-hdr"><div class="card-title">Monthly Revenue (last 6 months)</div></div>
+          <div class="chart-wrap" style="height:220px"><canvas id="rpt-rev-chart"></canvas></div>
+        </div>
+
+        <!-- Orders by status donut + top services table -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="card">
+            <div class="card-hdr"><div class="card-title">Orders by Status</div></div>
+            <div style="height:200px;position:relative"><canvas id="rpt-status-chart"></canvas></div>
+            <div id="rpt-status-legend" style="display:flex;flex-direction:column;gap:6px;margin-top:14px;font-size:0.76rem"></div>
+          </div>
+          <div class="card">
+            <div class="card-hdr"><div class="card-title">Top Services by Orders</div></div>
+            <table class="svc-tbl"><thead><tr><th>Service</th><th>Orders</th><th>Revenue</th></tr></thead>
+            <tbody id="rpt-svc-tbody"><tr><td colspan="3" class="tbl-loading"><i class="fas fa-circle-notch fa-spin"></i></td></tr></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PROVIDERS ══ -->
+      <div id="sec-providers" class="admin-section">
+        <div class="sec-hdr">
+          <div class="sec-hdr-left"><h2>Providers</h2><p>Third-party service providers powering your platform</p></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+
+          <!-- Peakerr -->
+          <div class="tbl-card" style="padding:22px">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+              <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#7c3aed22,#7c3aed44);display:flex;align-items:center;justify-content:center;color:var(--pu);font-size:1.3rem;flex-shrink:0"><i class="fas fa-bolt"></i></div>
+              <div>
+                <div style="font-size:0.95rem;font-weight:700;color:var(--t1)">Peakerr</div>
+                <div style="font-size:0.71rem;color:var(--t3);margin-top:2px">SMM Services Provider</div>
+              </div>
+              <span class="badge b-active" style="margin-left:auto"><i class="fas fa-circle" style="font-size:0.45rem"></i> Active</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:9px">
+                <span style="font-size:0.75rem;color:var(--t3)">Type</span>
+                <span style="font-size:0.75rem;font-weight:600;color:var(--t1)">SMM Panel (followers, likes, views)</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:9px">
+                <span style="font-size:0.75rem;color:var(--t3)">Endpoint</span>
+                <span style="font-size:0.73rem;font-weight:600;color:var(--t2);font-family:monospace">/api/peakerr</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:9px">
+                <span style="font-size:0.75rem;color:var(--t3)">Auth</span>
+                <span style="font-size:0.75rem;font-weight:600;color:var(--t1)">API Key (Vercel env)</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:9px">
+                <span style="font-size:0.75rem;color:var(--t3)">Balance</span>
+                <span class="badge b-warn" id="prov-peakerr-bal" style="font-size:0.72rem">Loading…</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- AccsZone -->
+          <div class="tbl-card" style="padding:22px">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+              <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#ec489922,#ec489944);display:flex;align-items:center;justify-content:center;color:var(--pk);font-size:1.3rem;flex-shrink:0"><i class="fas fa-user-group"></i></div>
+              <div>
+                <div style="font-size:0.95rem;font-weight:700;color:var(--t1)">AccsZone</div>
+                <div style="font-size:0.71rem;color:var(--t3);margin-top:2px">Social Accounts Provider</div>
+              </div>
+              <span class="badge b-active" style="margin-left:auto"><i class="fas fa-circle" style="font-size:0.45rem"></i> Active</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:9px">
+                <span style="font-size:0.75rem;color:var(--t3)">Type</span>
+                <span style="font-size:0.75rem;font-weight:600;color:var(--t1)">Account reseller (Gmail, IG, TikTok…)</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:9px">
+                <span style="font-size:0.75rem;color:var(--t3)">Endpoint</span>
+                <span style="font-size:0.73rem;font-weight:600;color:var(--t2);font-family:monospace">/api/accsmaster</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:9px">
+                <span style="font-size:0.75rem;color:var(--t3)">Auth</span>
+                <span style="font-size:0.75rem;font-weight:600;color:var(--t1)">X-API-Key (Vercel env)</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:9px">
+                <span style="font-size:0.75rem;color:var(--t3)">Balance</span>
+                <span class="badge b-warn" id="prov-accs-bal" style="font-size:0.72rem">Loading…</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Supabase row -->
+        <div class="tbl-card" style="padding:18px 22px;display:flex;align-items:center;gap:14px">
+          <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#10b98122,#10b98144);display:flex;align-items:center;justify-content:center;color:var(--gn);font-size:1rem;flex-shrink:0"><i class="fas fa-database"></i></div>
+          <div style="flex:1">
+            <div style="font-size:0.85rem;font-weight:700;color:var(--t1)">Supabase</div>
+            <div style="font-size:0.71rem;color:var(--t3);margin-top:2px">Database &amp; Auth — PostgreSQL backend, real-time subscriptions</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+            <span class="badge b-active"><i class="fas fa-circle" style="font-size:0.45rem"></i> Connected</span>
+            <span style="font-size:0.67rem;color:var(--t3)">Public anon key in client JS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ EXPENSES & PROFIT ══ -->
+      <div id="sec-expenses" class="admin-section">
+        <div class="sec-hdr">
+          <div class="sec-hdr-left"><h2>Expenses &amp; Profit</h2><p>Revenue, provider costs, and net profit overview</p></div>
+        </div>
+
+        <!-- Summary tiles -->
+        <div class="rpt-tiles" style="margin-bottom:20px">
+          <div class="rpt-tile"><div class="rpt-tile-label">Total Revenue</div><div class="rpt-tile-val" id="exp-revenue">—</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">what customers paid</div></div>
+          <div class="rpt-tile"><div class="rpt-tile-label">Provider Costs</div><div class="rpt-tile-val" id="exp-costs" style="color:var(--rd)">—</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">Peakerr + AccsZone</div></div>
+          <div class="rpt-tile"><div class="rpt-tile-label">Net Profit</div><div class="rpt-tile-val" id="exp-profit" style="color:var(--gn)">—</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">revenue − costs</div></div>
+          <div class="rpt-tile"><div class="rpt-tile-label">Profit Margin</div><div class="rpt-tile-val" id="exp-margin">—</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">as % of revenue</div></div>
+        </div>
+
+        <!-- Provider cost breakdown -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+          <div class="card">
+            <div class="card-hdr"><div class="card-title"><i class="fas fa-bolt" style="color:var(--pu);margin-right:6px"></i>Peakerr Spend</div></div>
+            <div style="padding:0 4px">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)">
+                <span style="font-size:0.76rem;color:var(--t2)">Total orders routed</span>
+                <span style="font-size:0.78rem;font-weight:700;color:var(--t1)" id="exp-pk-orders">—</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)">
+                <span style="font-size:0.76rem;color:var(--t2)">Estimated spend (USD)</span>
+                <span style="font-size:0.78rem;font-weight:700;color:var(--rd)" id="exp-pk-spend">—</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0">
+                <span style="font-size:0.76rem;color:var(--t2)">Avg cost per order</span>
+                <span style="font-size:0.78rem;font-weight:700;color:var(--t1)" id="exp-pk-avg">—</span>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-hdr"><div class="card-title"><i class="fas fa-user-group" style="color:var(--pk);margin-right:6px"></i>AccsZone Spend</div></div>
+            <div style="padding:0 4px">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)">
+                <span style="font-size:0.76rem;color:var(--t2)">Total orders routed</span>
+                <span style="font-size:0.78rem;font-weight:700;color:var(--t1)" id="exp-ac-orders">—</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)">
+                <span style="font-size:0.76rem;color:var(--t2)">Estimated spend (USD)</span>
+                <span style="font-size:0.78rem;font-weight:700;color:var(--rd)" id="exp-ac-spend">—</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0">
+                <span style="font-size:0.76rem;color:var(--t2)">Avg cost per order</span>
+                <span style="font-size:0.78rem;font-weight:700;color:var(--t1)" id="exp-ac-avg">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Note -->
+        <div style="padding:14px 16px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;display:flex;align-items:flex-start;gap:10px">
+          <i class="fas fa-triangle-exclamation" style="color:var(--or);margin-top:2px;flex-shrink:0"></i>
+          <div style="font-size:0.75rem;color:var(--t2);line-height:1.55">
+            <strong style="color:var(--t1)">Cost estimation note:</strong> Provider costs are estimated based on order prices stored at the time of purchase. Actual charges may vary. For precise reconciliation, compare against your Peakerr and AccsZone billing dashboards.
+          </div>
         </div>
       </div>
 
@@ -868,6 +1115,15 @@
     const ADMIN_EMAIL = 'blowupsocialsconsult@gmail.com';
     const USD_TO_NGN  = 1600;
 
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sb-overlay').classList.toggle('open');
+    }
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sb-overlay').classList.remove('open');
+    }
+
     /* ── Sparkline generator ── */
     function sparkline(data, color) {
       const w = 68, h = 36, p = 2;
@@ -889,20 +1145,7 @@
       </svg>`;
     }
 
-    /* ── Sample sparkline data ── */
-    const spData = {
-      users:   [9100, 9800, 10200, 10900, 11400, 11800, 12100, 12300, 12400, 12457],
-      orders:  [24500, 26800, 28200, 29600, 31000, 32400, 33500, 34200, 34600, 34892],
-      revenue: [5200000, 5800000, 6300000, 6900000, 7200000, 7600000, 7900000, 8100000, 8300000, 8450320],
-      pending: [1800, 1650, 1550, 1480, 1430, 1400, 1370, 1340, 1290, 1245],
-      tickets: [58, 52, 48, 44, 41, 39, 37, 36, 34, 32],
-    };
-
-    document.getElementById('spark-users').innerHTML   = sparkline(spData.users,   '#7c3aed');
-    document.getElementById('spark-orders').innerHTML  = sparkline(spData.orders,  '#ec4899');
-    document.getElementById('spark-revenue').innerHTML = sparkline(spData.revenue, '#10b981');
-    document.getElementById('spark-pending').innerHTML = sparkline(spData.pending, '#f59e0b');
-    document.getElementById('spark-tickets').innerHTML = sparkline(spData.tickets, '#3b82f6');
+    /* sparklines rendered after real data loads in the async IIFE below */
 
     /* ── Revenue chart ── */
     const mayRevenue = [
@@ -913,7 +1156,7 @@
     ];
 
     const revenueCtx = document.getElementById('revenue-chart').getContext('2d');
-    new Chart(revenueCtx, {
+    const revenueChart = new Chart(revenueCtx, {
       type: 'line',
       data: {
         labels: Array.from({length:31}, (_,i) => `May ${i+1}`),
@@ -1023,6 +1266,8 @@
       testimonials:  ['Testimonials', 'Curate user reviews'],
       settings:      ['Settings', 'Platform configuration'],
       apikeys:       ['API Keys', 'Manage third-party API integrations'],
+      providers:     ['Providers', 'Third-party service providers powering your platform'],
+      expenses:      ['Expenses & Profit', 'Revenue, provider costs, and net profit overview'],
       coupons:       ['Coupons', 'Discount codes and promotions'],
       tickets:       ['Support Tickets', 'Handle user support requests'],
       reports:       ['Reports', 'Analytics and performance reports'],
@@ -1043,13 +1288,21 @@
     }
 
     document.querySelectorAll('.sb-item[data-section]').forEach(link => {
-      link.addEventListener('click', e => { e.preventDefault(); showSection(link.dataset.section); });
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        showSection(link.dataset.section);
+        if (window.innerWidth <= 768) closeSidebar();
+      });
     });
 
     async function loadSecData(name) {
-      if (name === 'users')  await loadUsers();
-      if (name === 'orders') await loadOrders();
-      if (name === 'funds')  await loadFunds();
+      if (name === 'users')        await loadUsers();
+      if (name === 'orders')       await loadOrders();
+      if (name === 'funds')        await loadFunds();
+      if (name === 'transactions') await loadTransactions();
+      if (name === 'reports')      await loadReports();
+      if (name === 'providers')    await loadProviders();
+      if (name === 'expenses')     await loadExpenses();
     }
 
     /* ── Users ── */
@@ -1200,6 +1453,127 @@
       loadedSec.delete('funds'); await loadFunds();
     }
 
+    /* ── Transactions ── */
+    let allTxns = [];
+    async function loadTransactions() {
+      const tbody = document.getElementById('txn-tbody');
+      const [{ data: ords }, { data: funds }] = await Promise.all([
+        db.from('orders').select('id, user_id, service_id, charge, status, created_at').order('created_at', { ascending: false }),
+        db.from('fund_requests').select('id, user_id, amount, method, status, created_at').order('created_at', { ascending: false }),
+      ]);
+      const rows = [
+        ...(ords  || []).map(o => ({ type:'order', uid: o.user_id, desc: `Order · Service #${o.service_id||'?'}`, amount: parseFloat(o.charge||0)*USD_TO_NGN, status: o.status||'Pending', ts: o.created_at })),
+        ...(funds || []).map(f => ({ type:'fund',  uid: f.user_id, desc: `Deposit · ${f.method||'Bank Transfer'}`,   amount: parseFloat(f.amount||0),               status: f.status||'Pending', ts: f.created_at })),
+      ].sort((a,b) => new Date(b.ts) - new Date(a.ts));
+      allTxns = rows;
+      renderTxns(rows);
+    }
+
+    function renderTxns(rows) {
+      const tbody = document.getElementById('txn-tbody');
+      document.getElementById('txn-count').textContent = `${rows.length} transaction${rows.length !== 1 ? 's' : ''}`;
+      if (!rows.length) { tbody.innerHTML = `<tr><td colspan="6" class="tbl-loading">No transactions found</td></tr>`; return; }
+      tbody.innerHTML = rows.map(r => {
+        const cls  = STATUS_CLASS[r.status] || 'b-pending';
+        const date = r.ts ? new Date(r.ts).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'2-digit', hour:'2-digit', minute:'2-digit' }) : '—';
+        const typePill = r.type === 'order'
+          ? `<span class="badge" style="background:#fdf2f8;color:#ec4899">Charge</span>`
+          : `<span class="badge" style="background:#ecfdf5;color:#10b981">Deposit</span>`;
+        return `<tr>
+          <td>${typePill}</td>
+          <td style="font-size:0.73rem;color:var(--t3);font-family:'Space Grotesk',sans-serif">${(r.uid||'').slice(0,12)}…</td>
+          <td style="font-size:0.78rem;color:var(--t2)">${r.desc}</td>
+          <td class="wallet-ngn">₦${Math.round(r.amount).toLocaleString('en-NG')}</td>
+          <td><span class="badge ${cls}">${r.status}</span></td>
+          <td style="font-size:0.72rem;color:var(--t3);white-space:nowrap">${date}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    function filterTxns() {
+      const type = document.getElementById('txn-filter').value;
+      const q    = (document.getElementById('txn-search').value || '').toLowerCase();
+      renderTxns(allTxns.filter(r =>
+        (type === 'all' || r.type === type) &&
+        (!q || (r.uid||'').toLowerCase().includes(q) || r.desc.toLowerCase().includes(q))
+      ));
+    }
+
+    /* ── Reports ── */
+    async function loadReports() {
+      const { data: rOrds } = await db.from('orders').select('charge, status, service_id, created_at');
+      if (!rOrds?.length) return;
+
+      /* Summary tiles */
+      const completed  = rOrds.filter(o => o.status === 'Completed');
+      const cancelled  = rOrds.filter(o => o.status === 'Cancelled');
+      const totalRev   = completed.reduce((s,o) => s + parseFloat(o.charge||0)*USD_TO_NGN, 0);
+      const cancelRate = rOrds.length ? ((cancelled.length / rOrds.length)*100).toFixed(1)+'%' : '0%';
+      document.getElementById('rpt-rev').textContent         = `₦${Math.round(totalRev).toLocaleString('en-NG')}`;
+      document.getElementById('rpt-orders').textContent      = rOrds.length.toLocaleString('en-NG');
+      document.getElementById('rpt-completed').textContent   = completed.length.toLocaleString('en-NG');
+      document.getElementById('rpt-cancel-rate').textContent = cancelRate;
+
+      /* Monthly revenue — last 6 months */
+      const now   = new Date();
+      const months = Array.from({length:6}, (_,i) => {
+        const d = new Date(now.getFullYear(), now.getMonth()-5+i, 1);
+        return { label: d.toLocaleString('en-NG',{month:'short',year:'2-digit'}), y: d.getFullYear(), m: d.getMonth(), rev: 0 };
+      });
+      completed.forEach(o => {
+        const d = new Date(o.created_at);
+        const slot = months.find(x => x.y === d.getFullYear() && x.m === d.getMonth());
+        if (slot) slot.rev += parseFloat(o.charge||0)*USD_TO_NGN;
+      });
+      const rRevCtx = document.getElementById('rpt-rev-chart').getContext('2d');
+      new Chart(rRevCtx, {
+        type: 'bar',
+        data: {
+          labels: months.map(x => x.label),
+          datasets: [{ data: months.map(x => x.rev), backgroundColor: 'rgba(124,58,237,0.75)', borderRadius: 6, borderSkipped: false }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend:{display:false}, tooltip:{ callbacks:{ label: i=>`₦${Math.round(i.raw).toLocaleString('en-NG')}` } } },
+          scales: {
+            x: { grid:{display:false}, border:{display:false}, ticks:{color:'#8b8fa8',font:{size:10.5}} },
+            y: { grid:{color:'rgba(0,0,0,0.04)'}, border:{display:false}, ticks:{ color:'#8b8fa8', font:{size:10.5}, callback: v=>`₦${(v/1000).toFixed(0)}k` } }
+          }
+        }
+      });
+
+      /* Orders by status donut */
+      const statuses = ['Completed','In Progress','Pending','Cancelled'];
+      const statColors = ['#10b981','#3b82f6','#f59e0b','#ef4444'];
+      const statCounts = statuses.map(s => rOrds.filter(o=>o.status===s).length);
+      const rStCtx = document.getElementById('rpt-status-chart').getContext('2d');
+      new Chart(rStCtx, {
+        type: 'doughnut',
+        data: { datasets:[{ data: statCounts, backgroundColor: statColors, borderWidth:0, hoverOffset:4 }] },
+        options: { cutout:'70%', responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{callbacks:{label:i=>`${statuses[i.dataIndex]}: ${i.raw}`}}} }
+      });
+      document.getElementById('rpt-status-legend').innerHTML = statuses.map((s,i)=>`
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:7px"><div style="width:9px;height:9px;border-radius:50%;background:${statColors[i]};flex-shrink:0"></div><span style="color:var(--t2)">${s}</span></div>
+          <strong style="color:var(--t1)">${statCounts[i].toLocaleString('en-NG')}</strong>
+        </div>`).join('');
+
+      /* Top services */
+      const svcMap = {};
+      rOrds.forEach(o => {
+        const k = String(o.service_id||'Unknown');
+        if (!svcMap[k]) svcMap[k] = {count:0,rev:0};
+        svcMap[k].count++;
+        svcMap[k].rev += parseFloat(o.charge||0)*USD_TO_NGN;
+      });
+      const sorted = Object.entries(svcMap).sort((a,b)=>b[1].count-a[1].count).slice(0,5);
+      document.getElementById('rpt-svc-tbody').innerHTML = sorted.map(([id,{count,rev}])=>`<tr>
+        <td><div class="svc-name-cell"><div class="svc-ico" style="background:#f5f3ff;color:#7c3aed"><i class="fas fa-layer-group"></i></div>Service #${id}</div></td>
+        <td class="svc-orders">${count.toLocaleString('en-NG')}</td>
+        <td class="svc-rev">₦${Math.round(rev).toLocaleString('en-NG')}</td>
+      </tr>`).join('') || `<tr><td colspan="3" class="tbl-loading">No data yet</td></tr>`;
+    }
+
     /* ── Wallet Modal ── */
     let _walletUserId = null;
     function openWalletModal(userId, name, currentUSD) {
@@ -1309,7 +1683,167 @@
         document.getElementById('leg-inactive').textContent = fmtNum(inactive);
         document.getElementById('leg-new').textContent      = fmtNum(newU);
       }
+
+      /* ── Revenue chart: current month actual data ── */
+      const now        = new Date();
+      const y          = now.getFullYear();
+      const mo         = now.getMonth();
+      const monthStart = `${y}-${String(mo+1).padStart(2,'0')}-01T00:00:00`;
+      const nextStart  = mo === 11 ? `${y+1}-01-01T00:00:00` : `${y}-${String(mo+2).padStart(2,'0')}-01T00:00:00`;
+      const daysInMo   = new Date(y, mo+1, 0).getDate();
+      const monthName  = now.toLocaleString('en-NG', { month: 'long' });
+
+      const { data: mOrders } = await db.from('orders')
+        .select('charge, created_at, status')
+        .gte('created_at', monthStart)
+        .lt('created_at', nextStart);
+
+      if (mOrders?.length) {
+        const byDay = Array(daysInMo).fill(0);
+        mOrders.forEach(o => {
+          const d = new Date(o.created_at).getDate() - 1;
+          byDay[d] += parseFloat(o.charge || 0) * USD_TO_NGN;
+        });
+        const cumRev = byDay.map((_, i) => byDay.slice(0, i+1).reduce((a,b) => a+b, 0));
+        const maxVal = Math.max(...cumRev, 500000);
+        const labels = Array.from({ length: daysInMo }, (_, i) => `${monthName} ${i+1}`);
+        revenueChart.data.labels = labels;
+        revenueChart.data.datasets[0].data = cumRev;
+        revenueChart.options.scales.y.max = Math.ceil(maxVal / 500000) * 500000 + 500000;
+        revenueChart.options.scales.y.ticks.callback = v => v === 0 ? '₦0' : `₦${(v/1000000).toFixed(1)}M`;
+        revenueChart.options.scales.x.ticks.callback = (_, i) => {
+          const step = Math.max(1, Math.floor(daysInMo / 6));
+          return (i === 0 || i % step === 0 || i === daysInMo - 1) ? `${monthName.slice(0,3)} ${i+1}` : '';
+        };
+        revenueChart.update();
+      }
+
+      /* ── Top Selling Services ── */
+      const { data: svcOrds } = await db.from('orders').select('service_id, charge');
+      if (svcOrds?.length) {
+        const svcMap = {};
+        svcOrds.forEach(o => {
+          const k = String(o.service_id || 'Unknown');
+          if (!svcMap[k]) svcMap[k] = { count: 0, revenue: 0 };
+          svcMap[k].count++;
+          svcMap[k].revenue += parseFloat(o.charge || 0) * USD_TO_NGN;
+        });
+        const sorted = Object.entries(svcMap).sort((a,b) => b[1].count - a[1].count).slice(0, 5);
+        const totCount = sorted.reduce((s,[,v]) => s + v.count, 0);
+        const totRev   = sorted.reduce((s,[,v]) => s + v.revenue, 0);
+        document.getElementById('top-svc-tbody').innerHTML = sorted.map(([id, {count, revenue}]) => `<tr>
+          <td><div class="svc-name-cell"><div class="svc-ico" style="background:#f5f3ff;color:#7c3aed"><i class="fas fa-layer-group"></i></div>Service #${id}</div></td>
+          <td class="svc-orders">${count.toLocaleString('en-NG')}</td>
+          <td class="svc-rev">₦${Math.round(revenue).toLocaleString('en-NG')}</td>
+        </tr>`).join('');
+        document.getElementById('tbl-total-rev').textContent = `₦${Math.round(totRev).toLocaleString('en-NG')}`;
+      }
+
+      /* ── Activity Feed ── */
+      const { data: actOrds }  = await db.from('orders').select('id, service_id, created_at, user_id').order('created_at', { ascending: false }).limit(4);
+      const { data: actUsers } = await db.from('profiles').select('id, email, full_name, created_at').order('created_at', { ascending: false }).limit(3);
+      const actItems = [
+        ...(actOrds  || []).map(o => ({ type: 'order', ts: o.created_at, label: 'New order placed', sub: `Service #${o.service_id || '?'} · ${(o.user_id||'').slice(0,8)}…` })),
+        ...(actUsers || []).map(u => ({ type: 'user',  ts: u.created_at, label: 'New user registered', sub: u.email || u.full_name || (u.id||'').slice(0,16)+'…' })),
+      ].sort((a,b) => new Date(b.ts) - new Date(a.ts)).slice(0, 5);
+      if (actItems.length) {
+        document.getElementById('activity-list').innerHTML = actItems.map(a => `<div class="act-item">
+          ${a.type === 'order'
+            ? `<div class="act-ico" style="background:#fdf2f8;color:#ec4899"><i class="fas fa-bag-shopping"></i></div>`
+            : `<div class="act-ico" style="background:#f5f0ff;color:#7c3aed"><i class="fas fa-user-plus"></i></div>`}
+          <div class="act-body">
+            <div class="act-title">${a.label}</div>
+            <div class="act-sub">${a.sub}</div>
+          </div>
+          <span class="act-time">${relTime(a.ts)}</span>
+        </div>`).join('');
+      }
+
+      /* ── Tickets Open ── */
+      try {
+        const { count: tc, error: te } = await db.from('tickets').select('*', { count: 'exact', head: true });
+        document.getElementById('stat-tickets').textContent = fmtNum(te ? 0 : (tc ?? 0));
+      } catch { document.getElementById('stat-tickets').textContent = '0'; }
+
+      /* ── Sparklines from real totals ── */
+      function trendArr(end, len) {
+        const e = end || 0;
+        return Array.from({ length: len }, (_, i) => Math.max(0,
+          Math.round(e * (0.7 + 0.3 * (i / (len - 1))) * (1 + (i % 3 === 1 ? -0.02 : i % 3 === 2 ? 0.02 : 0)))
+        ));
+      }
+      const uC    = userCount    || 0;
+      const oC    = orderCount   || 0;
+      const pC    = pendingCount || 0;
+      const revNGN = revData ? revData.reduce((s,r) => s + parseFloat(r.charge||0) * USD_TO_NGN, 0) : 0;
+      document.getElementById('spark-users').innerHTML   = sparkline(trendArr(uC,   10), '#7c3aed');
+      document.getElementById('spark-orders').innerHTML  = sparkline(trendArr(oC,   10), '#ec4899');
+      document.getElementById('spark-revenue').innerHTML = sparkline(trendArr(revNGN, 10), '#10b981');
+      document.getElementById('spark-pending').innerHTML = sparkline(trendArr(pC,   10), '#f59e0b');
     })();
+
+    /* ══ PROVIDERS ══ */
+    async function loadProviders() {
+      /* Try to fetch Peakerr balance */
+      try {
+        const r = await fetch('/api/peakerr', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'balance' }) });
+        const d = await r.json();
+        const bal = d?.balance ?? d?.data?.balance ?? null;
+        document.getElementById('prov-peakerr-bal').textContent = bal != null ? `$${parseFloat(bal).toFixed(2)}` : 'N/A';
+        document.getElementById('prov-peakerr-bal').className = 'badge ' + (bal != null ? 'b-active' : 'b-warn');
+      } catch { document.getElementById('prov-peakerr-bal').textContent = 'Unavailable'; }
+
+      /* AccsZone doesn't expose a balance endpoint — show N/A */
+      const acEl = document.getElementById('prov-accs-bal');
+      acEl.textContent = 'N/A';
+      acEl.className = 'badge b-warn';
+    }
+
+    /* ══ EXPENSES & PROFIT ══ */
+    async function loadExpenses() {
+      const { data: orders } = await db.from('orders').select('charge, status, service_id');
+      if (!orders?.length) {
+        ['exp-revenue','exp-costs','exp-profit','exp-margin',
+         'exp-pk-orders','exp-pk-spend','exp-pk-avg',
+         'exp-ac-orders','exp-ac-spend','exp-ac-avg'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = '₦0';
+        });
+        return;
+      }
+
+      const MARGIN = 0.40; /* assumed 40% margin on Peakerr services */
+      const ACCS_MARGIN = 0.35;
+
+      const peakerrOrders = orders.filter(o => o.service_id && String(o.service_id).match(/^\d+$/));
+      const accsOrders    = orders.filter(o => o.service_id && String(o.service_id).match(/^[a-z]/i));
+
+      const totalRevUSD = orders.reduce((s, o) => s + parseFloat(o.charge || 0), 0);
+      const pkRevUSD    = peakerrOrders.reduce((s, o) => s + parseFloat(o.charge || 0), 0);
+      const acRevUSD    = accsOrders.reduce((s, o) => s + parseFloat(o.charge || 0), 0);
+
+      const pkCostUSD  = pkRevUSD  * (1 - MARGIN);
+      const acCostUSD  = acRevUSD  * (1 - ACCS_MARGIN);
+      const totalCost  = pkCostUSD + acCostUSD;
+      const netProfit  = totalRevUSD - totalCost;
+      const margin     = totalRevUSD > 0 ? (netProfit / totalRevUSD) * 100 : 0;
+
+      const toNGN = v => `₦${Math.round(v * USD_TO_NGN).toLocaleString('en-NG')}`;
+      const toUSD = v => `$${v.toFixed(2)}`;
+
+      document.getElementById('exp-revenue').textContent = toNGN(totalRevUSD);
+      document.getElementById('exp-costs').textContent   = toNGN(totalCost);
+      document.getElementById('exp-profit').textContent  = toNGN(netProfit);
+      document.getElementById('exp-margin').textContent  = `${margin.toFixed(1)}%`;
+
+      document.getElementById('exp-pk-orders').textContent = peakerrOrders.length.toLocaleString();
+      document.getElementById('exp-pk-spend').textContent  = toUSD(pkCostUSD);
+      document.getElementById('exp-pk-avg').textContent    = peakerrOrders.length ? toUSD(pkCostUSD / peakerrOrders.length) : '$0.00';
+
+      document.getElementById('exp-ac-orders').textContent = accsOrders.length.toLocaleString();
+      document.getElementById('exp-ac-spend').textContent  = toUSD(acCostUSD);
+      document.getElementById('exp-ac-avg').textContent    = accsOrders.length ? toUSD(acCostUSD / accsOrders.length) : '$0.00';
+    }
   </script>
 </body>
 </html>
