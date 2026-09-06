@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Accounts Store – BlowUpSocial</title>
+  <title>Digital Store – BlowUpSocials</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet" />
   <style>
@@ -13,7 +13,6 @@
     a { text-decoration: none; color: inherit; }
     button { font-family: inherit; cursor: pointer; border: none; }
 
-    /* TOPBAR */
     .ac-topbar {
       background: #fff; height: 62px; display: flex; align-items: center;
       padding: 0 24px; gap: 14px; border-bottom: 1px solid #e8eaf0;
@@ -26,48 +25,60 @@
     .ac-wallet-chip span { color: #6b7280; }
     .ac-wallet-chip strong { color: #7c3aed; font-weight: 700; }
 
-    /* PAGE */
-    .ac-page { max-width: 1200px; margin: 0 auto; padding: 24px 20px 80px; }
-
-    /* SETUP NOTICE */
-    .ac-setup-notice { background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 14px; padding: 20px 22px; margin-bottom: 22px; display: none; }
-    .ac-setup-notice h3 { font-size: 0.88rem; font-weight: 700; color: #92400e; margin-bottom: 6px; }
-    .ac-setup-notice p { font-size: 0.8rem; color: #78350f; line-height: 1.6; }
-    .ac-setup-notice code { background: rgba(0,0,0,0.07); padding: 1px 5px; border-radius: 4px; font-size: 0.77rem; }
+    .ac-page { max-width: 1200px; margin: 0 auto; padding: 0 0 80px; }
 
     /* PAGE TABS */
-    .ac-page-tabs { display: flex; border-bottom: 2px solid #e8eaf0; margin-bottom: 22px; }
-    .ac-page-tab { padding: 10px 20px; font-size: 0.84rem; font-weight: 600; color: #8b8fa8; background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
+    .ac-page-tabs { display: flex; border-bottom: 2px solid #e8eaf0; background: #fff; padding: 0 20px; }
+    .ac-page-tab { padding: 12px 20px; font-size: 0.84rem; font-weight: 600; color: #8b8fa8; background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
     .ac-page-tab.active { color: #7c3aed; border-bottom-color: #7c3aed; }
-    .ac-page-tab:hover:not(.active) { color: #4b5063; }
 
-    /* CATEGORY TABS */
-    .ac-platforms { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-    .ac-plat-btn { display: flex; align-items: center; gap: 7px; padding: 8px 16px; border-radius: 50px; border: 1.5px solid #e5e7eb; background: #fff; font-size: 0.78rem; font-weight: 600; color: #6b7080; transition: all 0.15s; white-space: nowrap; }
-    .ac-plat-btn:hover { border-color: #c4b5fd; color: #7c3aed; }
-    .ac-plat-btn.active { background: #7c3aed; border-color: #7c3aed; color: #fff; }
-    .ac-plat-btn i { font-size: 0.85rem; }
+    /* GROUP TABS */
+    .ac-groups-wrap { background: #fff; border-bottom: 1px solid #e8eaf0; padding: 0 20px; }
+    .ac-groups { display: flex; gap: 2px; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
+    .ac-groups::-webkit-scrollbar { display: none; }
+    .ac-group-btn {
+      display: flex; align-items: center; gap: 6px; padding: 12px 16px;
+      font-size: 0.78rem; font-weight: 600; color: #8b8fa8;
+      background: none; border: none; border-bottom: 2px solid transparent;
+      white-space: nowrap; flex-shrink: 0; transition: all 0.15s; margin-bottom: -1px;
+    }
+    .ac-group-btn:hover { color: #4b5063; }
+    .ac-group-btn.active { color: #7c3aed; border-bottom-color: #7c3aed; }
 
-    /* GRID */
-    .ac-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
+    /* SUBCAT PILLS */
+    .ac-subcats-wrap { padding: 12px 20px; background: #f8f9fc; border-bottom: 1px solid #e8eaf0; display: none; }
+    .ac-subcats-wrap.visible { display: block; }
+    .ac-subcats { display: flex; gap: 8px; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
+    .ac-subcats::-webkit-scrollbar { display: none; }
+    .ac-sub-btn {
+      display: flex; align-items: center; gap: 6px; padding: 6px 14px;
+      border-radius: 50px; border: 1.5px solid #e5e7eb; background: #fff;
+      font-size: 0.74rem; font-weight: 600; color: #6b7080;
+      white-space: nowrap; flex-shrink: 0; transition: all 0.15s;
+    }
+    .ac-sub-btn:hover { border-color: #c4b5fd; color: #7c3aed; }
+    .ac-sub-btn.active { background: #7c3aed; border-color: #7c3aed; color: #fff; }
+    .ac-sub-btn.active i { color: #fff !important; }
 
-    /* CARD */
+    /* LISTING AREA */
+    .ac-listing-area { padding: 20px; }
+
+    .ac-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
     .ac-card { background: #fff; border-radius: 16px; border: 1.5px solid #f0f2f6; padding: 20px; display: flex; flex-direction: column; gap: 12px; transition: border-color 0.15s, box-shadow 0.15s; }
     .ac-card:hover { border-color: #c4b5fd; box-shadow: 0 4px 16px rgba(124,58,237,0.08); }
     .ac-card-top { display: flex; align-items: flex-start; gap: 12px; }
-    .ac-card-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; }
+    .ac-card-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
     .ac-card-plat-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
     .ac-card-title { font-size: 0.85rem; font-weight: 700; color: #1a1a2e; line-height: 1.35; }
     .ac-card-desc { font-size: 0.77rem; color: #6b7080; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .ac-card-foot { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
-    .ac-card-price { font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; font-weight: 800; color: #1a1a2e; }
+    .ac-card-price { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 800; color: #1a1a2e; }
     .ac-card-qty { font-size: 0.71rem; color: #8b8fa8; margin-top: 2px; }
     .ac-btn-buy { background: linear-gradient(135deg, #7c3aed, #ec4899); color: #fff; padding: 9px 18px; border-radius: 10px; font-size: 0.8rem; font-weight: 700; transition: opacity 0.15s; }
     .ac-btn-buy:hover { opacity: 0.88; }
     .ac-btn-buy:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    /* STATE */
-    .ac-state { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #8b8fa8; }
+    .ac-state { text-align: center; padding: 60px 20px; color: #8b8fa8; }
     .ac-state i { font-size: 2rem; margin-bottom: 14px; display: block; }
     .ac-state p { font-size: 0.88rem; line-height: 1.5; }
 
@@ -85,7 +96,6 @@
     .st-complete { background: #f0fdf4; color: #166534; }
     .st-failed   { background: #fef2f2; color: #991b1b; }
     .ac-creds-btn { margin-top: 8px; background: #f5f3ff; color: #7c3aed; border: 1px solid #ddd6fe; padding: 5px 12px; border-radius: 7px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
-    .ac-creds-btn:hover { background: #ede9fe; }
 
     /* MODAL */
     .ac-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; z-index: 500; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
@@ -95,7 +105,6 @@
     .ac-modal-hdr { display: flex; align-items: center; justify-content: space-between; padding: 20px 20px 0; margin-bottom: 18px; }
     .ac-modal-hdr h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 800; }
     .ac-modal-close { width: 30px; height: 30px; border-radius: 8px; background: #f5f6fa; color: #6b7080; display: flex; align-items: center; justify-content: center; border: none; font-size: 0.88rem; }
-    .ac-modal-close:hover { background: #edeef5; }
     .ac-modal-body { padding: 0 20px 20px; }
     .ac-confirm-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f0f2f6; font-size: 0.83rem; }
     .ac-confirm-row:last-of-type { border-bottom: none; }
@@ -105,13 +114,10 @@
     .ac-confirm-row .val.red { color: #ef4444; }
     .ac-modal-actions { display: flex; gap: 10px; margin-top: 18px; }
     .ac-btn-cancel { flex: 1; padding: 11px; border-radius: 10px; border: 1.5px solid #e5e7eb; background: #fff; font-size: 0.83rem; font-weight: 600; color: #6b7080; }
-    .ac-btn-cancel:hover { background: #f9fafb; }
     .ac-btn-confirm { flex: 2; padding: 11px; border-radius: 10px; background: linear-gradient(135deg, #7c3aed, #ec4899); color: #fff; font-size: 0.83rem; font-weight: 700; border: none; }
-    .ac-btn-confirm:hover { opacity: 0.9; }
     .ac-btn-confirm:disabled { opacity: 0.45; cursor: not-allowed; }
     .ac-modal-error { background: #fef2f2; color: #991b1b; border-radius: 8px; padding: 10px 14px; font-size: 0.8rem; margin-top: 12px; display: none; }
 
-    /* CREDENTIALS */
     .ac-success-icon { width: 56px; height: 56px; border-radius: 50%; background: #f0fdf4; color: #16a34a; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin: 0 auto 16px; }
     .ac-creds-box { background: #f9fafb; border-radius: 12px; border: 1px solid #e5e7eb; padding: 14px; margin-top: 10px; }
     .ac-creds-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid #f0f2f6; font-size: 0.81rem; }
@@ -119,20 +125,20 @@
     .ac-creds-key { color: #8b8fa8; min-width: 90px; font-size: 0.75rem; }
     .ac-creds-val { font-weight: 600; color: #1a1a2e; font-family: monospace; flex: 1; word-break: break-all; }
     .ac-copy-btn { background: none; color: #8b8fa8; font-size: 0.75rem; padding: 2px 6px; border-radius: 5px; flex-shrink: 0; }
-    .ac-copy-btn:hover { background: #e5e7eb; color: #1a1a2e; }
+    .ac-copy-btn:hover { background: #e5e7eb; }
     .ac-warn-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 10px 14px; font-size: 0.78rem; color: #92400e; margin-top: 14px; display: flex; gap: 8px; align-items: flex-start; }
-    .ac-warn-box i { flex-shrink: 0; margin-top: 1px; }
 
-    /* TOAST */
     .ac-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); padding: 11px 22px; border-radius: 50px; font-size: 0.82rem; font-weight: 600; color: #fff; z-index: 9999; transition: transform 0.3s; pointer-events: none; white-space: nowrap; }
     .ac-toast.show { transform: translateX(-50%) translateY(0); }
     .ac-toast.success { background: #16a34a; }
     .ac-toast.error   { background: #ef4444; }
 
     @media (max-width: 640px) {
-      .ac-page { padding: 16px 12px 80px; }
+      .ac-listing-area { padding: 14px 12px; }
       .ac-grid { grid-template-columns: 1fr; }
       .ac-topbar { padding: 0 16px; gap: 10px; }
+      .ac-groups-wrap { padding: 0 12px; }
+      .ac-subcats-wrap { padding: 10px 12px; }
     }
   </style>
 </head>
@@ -142,41 +148,45 @@
 
   <div class="ac-topbar">
     <a href="dashboard.html" class="ac-back"><i class="fas fa-arrow-left"></i></a>
-    <div class="ac-topbar-title">Social Media Accounts</div>
+    <div class="ac-topbar-title">Digital Store</div>
     <div class="ac-wallet-chip"><span>Balance:</span><strong id="topbar-balance">₦0</strong></div>
   </div>
 
   <div class="ac-page">
-    <div class="ac-setup-notice" id="setup-notice">
-      <h3><i class="fas fa-circle-info" style="margin-right:6px"></i>Accounts Store Setup Required</h3>
-      <p>Add your API key as a Vercel environment variable: <code>ACCSZONE_API_KEY</code>, then redeploy.</p>
-    </div>
-
+    <!-- PAGE TABS -->
     <div class="ac-page-tabs">
       <button class="ac-page-tab active" id="ptab-browse" onclick="showView('browse')">
-        <i class="fas fa-store" style="margin-right:6px"></i>Browse Accounts
+        <i class="fas fa-store" style="margin-right:6px"></i>Browse
       </button>
       <button class="ac-page-tab" id="ptab-orders" onclick="showView('orders')">
         <i class="fas fa-bag-shopping" style="margin-right:6px"></i>My Purchases
       </button>
     </div>
 
-    <!-- BROWSE -->
+    <!-- BROWSE VIEW -->
     <div id="view-browse">
-      <div class="ac-platforms" id="platforms-row">
-        <button class="ac-plat-btn active" onclick="selectCat(this, null)">
-          <i class="fas fa-th-large"></i> All
-        </button>
+      <!-- GROUP TABS -->
+      <div class="ac-groups-wrap">
+        <div class="ac-groups" id="groups-row"></div>
       </div>
-      <div class="ac-grid" id="offers-grid">
-        <div class="ac-state"><i class="fas fa-spinner fa-spin"></i><p>Loading available accounts…</p></div>
+
+      <!-- SUB-CATEGORY PILLS -->
+      <div class="ac-subcats-wrap" id="subcats-wrap">
+        <div class="ac-subcats" id="subcats-row"></div>
+      </div>
+
+      <!-- LISTINGS -->
+      <div class="ac-listing-area" id="listing-area">
+        <div class="ac-state"><i class="fas fa-spinner fa-spin"></i><p>Loading store…</p></div>
       </div>
     </div>
 
-    <!-- MY ORDERS -->
+    <!-- MY ORDERS VIEW -->
     <div id="view-orders" style="display:none">
-      <div class="ac-orders-list" id="orders-list">
-        <div class="ac-state"><i class="fas fa-spinner fa-spin"></i><p>Loading your purchases…</p></div>
+      <div class="ac-listing-area">
+        <div class="ac-orders-list" id="orders-list">
+          <div class="ac-state"><i class="fas fa-spinner fa-spin"></i><p>Loading your purchases…</p></div>
+        </div>
       </div>
     </div>
   </div>
@@ -189,8 +199,8 @@
         <button class="ac-modal-close" onclick="closeBuyModal()"><i class="fas fa-xmark"></i></button>
       </div>
       <div class="ac-modal-body">
-        <div class="ac-confirm-row"><span class="lbl">Account</span><span class="val" id="bm-name" style="max-width:58%">—</span></div>
-        <div class="ac-confirm-row"><span class="lbl">Platform</span><span class="val" id="bm-platform">—</span></div>
+        <div class="ac-confirm-row"><span class="lbl">Product</span><span class="val" id="bm-name" style="max-width:58%">—</span></div>
+        <div class="ac-confirm-row"><span class="lbl">Category</span><span class="val" id="bm-platform">—</span></div>
         <div class="ac-confirm-row"><span class="lbl">Your Balance</span><span class="val" id="bm-balance">—</span></div>
         <div class="ac-confirm-row"><span class="lbl">Cost</span><span class="val hi" id="bm-price">—</span></div>
         <div class="ac-confirm-row"><span class="lbl">Balance After</span><span class="val" id="bm-after">—</span></div>
@@ -215,7 +225,7 @@
         <div id="creds-content"></div>
         <div class="ac-warn-box" id="creds-warn" style="display:none">
           <i class="fas fa-triangle-exclamation"></i>
-          <span>Save these credentials now and change the password after your first login.</span>
+          <span>Save these credentials now. Change the password after your first login.</span>
         </div>
         <button class="ac-btn-confirm" style="width:100%;margin-top:18px"
           onclick="document.getElementById('creds-modal').classList.remove('show')">Done</button>
@@ -226,51 +236,160 @@
   <div class="ac-toast" id="ac-toast"></div>
 
   <script>
-    const MARKUP     = 1.8;
+    const MARKUP     = 8;
     const USD_TO_NGN = 1600;
     const fmtNGN = v => `₦${Math.round(v * USD_TO_NGN).toLocaleString('en-NG')}`;
 
     let userBalance   = 0;
     let userId        = null;
     let selectedOffer = null;
-    let allListings   = [];
 
-    /* ── PLATFORM MAP ── */
-    const PLAT = [
-      { key:'instagram', label:'Instagram', icon:'fa-brands fa-instagram', color:'#E1306C', bg:'#fdf2f8' },
-      { key:'facebook',  label:'Facebook',  icon:'fa-brands fa-facebook',  color:'#1877F2', bg:'#eff6ff' },
-      { key:'tiktok',    label:'TikTok',    icon:'fa-brands fa-tiktok',    color:'#000',    bg:'#f3f4f6' },
-      { key:'twitter',   label:'Twitter/X', icon:'fa-brands fa-x-twitter', color:'#000',    bg:'#f9fafb' },
-      { key:'youtube',   label:'YouTube',   icon:'fa-brands fa-youtube',   color:'#FF0000', bg:'#fef2f2' },
-      { key:'gmail',     label:'Gmail',     icon:'fa-solid fa-envelope',   color:'#EA4335', bg:'#fef2f2' },
-      { key:'linkedin',  label:'LinkedIn',  icon:'fa-brands fa-linkedin',  color:'#0A66C2', bg:'#eff6ff' },
-      { key:'telegram',  label:'Telegram',  icon:'fa-brands fa-telegram',  color:'#2AABEE', bg:'#f0f9ff' },
-      { key:'reddit',    label:'Reddit',    icon:'fa-brands fa-reddit',    color:'#FF4500', bg:'#fff7ed' },
-      { key:'discord',   label:'Discord',   icon:'fa-brands fa-discord',   color:'#5865F2', bg:'#f5f3ff' },
-      { key:'spotify',   label:'Spotify',   icon:'fa-brands fa-spotify',   color:'#1DB954', bg:'#f0fdf4' },
-      { key:'snapchat',  label:'Snapchat',  icon:'fa-brands fa-snapchat',  color:'#FFFC00', bg:'#fefce8' },
-      { key:'pinterest', label:'Pinterest', icon:'fa-brands fa-pinterest', color:'#E60023', bg:'#fef2f2' },
-      { key:'whatsapp',  label:'WhatsApp',  icon:'fa-brands fa-whatsapp',  color:'#25D366', bg:'#f0fdf4' },
+    /* ── GROUPS: accurate catId lists from AccsZone ── */
+    const GROUPS = [
+      {
+        label: 'Social Media', icon: 'fa-solid fa-hashtag',
+        catIds: [22,24,95,75,38,34,40,23,50,37,81,76,33,97,90,92,66,98,67,114,110,80]
+      },
+      {
+        label: 'Email', icon: 'fa-solid fa-envelope',
+        catIds: [21,26,84,28,79,35,99,86,85,101,100,89,87,104,109]
+      },
+      {
+        label: 'Gift Cards', icon: 'fa-solid fa-gift',
+        catIds: [65,44,68,71,72,70]
+      },
+      {
+        label: 'Streaming', icon: 'fa-solid fa-play-circle',
+        catIds: [69,107,94,105,116,112]
+      },
+      {
+        label: 'VPN & Proxies', icon: 'fa-solid fa-shield-halved',
+        catIds: [59,73,78,103]
+      },
+      {
+        label: 'Dating', icon: 'fa-solid fa-heart',
+        catIds: [48,36,42,88]
+      },
+      {
+        label: 'Finance', icon: 'fa-solid fa-wallet',
+        catIds: [93,51,111]
+      },
+      {
+        label: 'eCommerce', icon: 'fa-solid fa-bag-shopping',
+        catIds: [82,96,83,29,113]
+      },
+      {
+        label: 'Other', icon: 'fa-solid fa-ellipsis',
+        catIds: [64,74,106,108,115,117]
+      },
     ];
-    const FALLBACK_PLAT = { key:'other', label:'Other', icon:'fa-solid fa-user', color:'#6b7080', bg:'#f5f6fa' };
 
-    function detectPlatform(text) {
-      const t = (text || '').toLowerCase();
-      for (const p of PLAT) {
-        if (t.includes(p.key)) return p;
-        if (p.key === 'twitter'  && (t.includes('x-twitter') || t.includes('x (twitter)'))) return p;
-        if (p.key === 'tiktok'   && t.includes('tik tok'))  return p;
-        if (p.key === 'gmail'    && t.includes('google'))   return p;
-        if (p.key === 'facebook' && (t.includes(' fb ') || t.startsWith('fb '))) return p;
-      }
-      return null;
+    /* ── ICON MAP keyed by AccsZone category id ── */
+    const CAT_ICON = {
+      22:  { icon:'fa-brands fa-facebook',      color:'#1877F2', bg:'#eff6ff' },
+      24:  { icon:'fa-brands fa-instagram',      color:'#E1306C', bg:'#fdf2f8' },
+      95:  { icon:'fa-brands fa-threads',        color:'#000',    bg:'#f3f4f6' },
+      75:  { icon:'fa-brands fa-youtube',        color:'#FF0000', bg:'#fef2f2' },
+      38:  { icon:'fa-brands fa-x-twitter',      color:'#000',    bg:'#f9fafb' },
+      34:  { icon:'fa-brands fa-tiktok',         color:'#000',    bg:'#f3f4f6' },
+      40:  { icon:'fa-brands fa-telegram',       color:'#2AABEE', bg:'#f0f9ff' },
+      23:  { icon:'fa-brands fa-linkedin',       color:'#0A66C2', bg:'#eff6ff' },
+      50:  { icon:'fa-brands fa-discord',        color:'#5865F2', bg:'#f5f3ff' },
+      37:  { icon:'fa-brands fa-snapchat',       color:'#FFCA28', bg:'#fefce8' },
+      81:  { icon:'fa-brands fa-pinterest',      color:'#E60023', bg:'#fef2f2' },
+      76:  { icon:'fa-brands fa-quora',          color:'#B92B27', bg:'#fef2f2' },
+      33:  { icon:'fa-brands fa-reddit',         color:'#FF4500', bg:'#fff7ed' },
+      97:  { icon:'fa-brands fa-twitch',         color:'#9146FF', bg:'#f5f3ff' },
+      90:  { icon:'fa-solid fa-cloud',           color:'#0085FF', bg:'#eff6ff' },
+      92:  { icon:'fa-solid fa-comment-dots',    color:'#5C5C99', bg:'#eff6ff' },
+      66:  { icon:'fa-solid fa-star',            color:'#00B67A', bg:'#f0fdf4' },
+      98:  { icon:'fa-brands fa-yelp',           color:'#D32323', bg:'#fef2f2' },
+      67:  { icon:'fa-brands fa-whatsapp',       color:'#25D366', bg:'#f0fdf4' },
+      114: { icon:'fa-brands fa-odnoklassniki',  color:'#ed812b', bg:'#fff7ed' },
+      110: { icon:'fa-solid fa-robot',           color:'#7c3aed', bg:'#f5f3ff' },
+      80:  { icon:'fa-brands fa-google',         color:'#4285F4', bg:'#eff6ff' },
+      // Email
+      21:  { icon:'fa-solid fa-envelope',        color:'#EA4335', bg:'#fef2f2' },
+      26:  { icon:'fa-solid fa-phone',           color:'#4285F4', bg:'#eff6ff' },
+      84:  { icon:'fa-brands fa-yahoo',          color:'#6001D2', bg:'#f5f3ff' },
+      28:  { icon:'fa-solid fa-envelope',        color:'#0078D4', bg:'#eff6ff' },
+      79:  { icon:'fa-solid fa-lock',            color:'#6D4AFF', bg:'#f5f3ff' },
+      35:  { icon:'fa-solid fa-envelope',        color:'#1c5fa8', bg:'#eff6ff' },
+      99:  { icon:'fa-solid fa-envelope',        color:'#005FF9', bg:'#eff6ff' },
+      86:  { icon:'fa-solid fa-envelope',        color:'#E50000', bg:'#fef2f2' },
+      85:  { icon:'fa-solid fa-envelope',        color:'#ff0b00', bg:'#fef2f2' },
+      101: { icon:'fa-solid fa-envelope',        color:'#c00',    bg:'#fef2f2' },
+      100: { icon:'fa-solid fa-envelope',        color:'#FC3F1D', bg:'#fff7ed' },
+      89:  { icon:'fa-solid fa-envelope',        color:'#FFCC00', bg:'#fffbeb' },
+      87:  { icon:'fa-solid fa-envelope',        color:'#d12',    bg:'#fef2f2' },
+      104: { icon:'fa-solid fa-envelope',        color:'#8b8fa8', bg:'#f3f4f6' },
+      109: { icon:'fa-solid fa-envelope',        color:'#00A8E0', bg:'#eff6ff' },
+      // Gift Cards
+      65:  { icon:'fa-brands fa-apple',          color:'#000',    bg:'#f3f4f6' },
+      44:  { icon:'fa-brands fa-apple',          color:'#000',    bg:'#f3f4f6' },
+      68:  { icon:'fa-brands fa-google-play',    color:'#01875F', bg:'#f0fdf4' },
+      71:  { icon:'fa-brands fa-amazon',         color:'#FF9900', bg:'#fffbeb' },
+      72:  { icon:'fa-brands fa-playstation',    color:'#003087', bg:'#eff6ff' },
+      70:  { icon:'fa-brands fa-steam',          color:'#1b2838', bg:'#f3f4f6' },
+      // Streaming
+      69:  { icon:'fa-solid fa-film',            color:'#E50914', bg:'#fef2f2' },
+      107: { icon:'fa-brands fa-spotify',        color:'#1DB954', bg:'#f0fdf4' },
+      94:  { icon:'fa-solid fa-play-circle',     color:'#7c3aed', bg:'#f5f3ff' },
+      105: { icon:'fa-solid fa-tv',              color:'#6366f1', bg:'#f5f3ff' },
+      116: { icon:'fa-solid fa-crown',           color:'#F59E0B', bg:'#fffbeb' },
+      112: { icon:'fa-solid fa-scissors',        color:'#000',    bg:'#f3f4f6' },
+      // VPN & Proxies
+      59:  { icon:'fa-solid fa-shield-halved',   color:'#0EA5E9', bg:'#f0f9ff' },
+      73:  { icon:'fa-solid fa-mobile-screen',   color:'#6366f1', bg:'#f5f3ff' },
+      78:  { icon:'fa-solid fa-desktop',         color:'#0078D4', bg:'#eff6ff' },
+      103: { icon:'fa-brands fa-windows',        color:'#0078D4', bg:'#eff6ff' },
+      // Dating
+      48:  { icon:'fa-solid fa-heart',           color:'#E91E8C', bg:'#fdf2f8' },
+      36:  { icon:'fa-solid fa-heart',           color:'#F60B5A', bg:'#fef2f2' },
+      42:  { icon:'fa-solid fa-heart',           color:'#713DE1', bg:'#f5f3ff' },
+      88:  { icon:'fa-solid fa-heart',           color:'#10B981', bg:'#f0fdf4' },
+      // Finance
+      93:  { icon:'fa-solid fa-coins',           color:'#F0B90B', bg:'#fffbeb' },
+      51:  { icon:'fa-solid fa-dollar-sign',     color:'#00C244', bg:'#f0fdf4' },
+      111: { icon:'fa-brands fa-cc-mastercard',  color:'#EB001B', bg:'#fef2f2' },
+      // eCommerce
+      82:  { icon:'fa-brands fa-amazon',         color:'#FF9900', bg:'#fffbeb' },
+      96:  { icon:'fa-solid fa-store',           color:'#0071DC', bg:'#eff6ff' },
+      83:  { icon:'fa-solid fa-store',           color:'#F16521', bg:'#fff7ed' },
+      29:  { icon:'fa-solid fa-store',           color:'#6B3F99', bg:'#f5f3ff' },
+      113: { icon:'fa-solid fa-bag-shopping',    color:'#7c3aed', bg:'#f5f3ff' },
+      // Other
+      64:  { icon:'fa-solid fa-briefcase',       color:'#2557A7', bg:'#eff6ff' },
+      74:  { icon:'fa-solid fa-database',        color:'#0EA5E9', bg:'#f0f9ff' },
+      106: { icon:'fa-solid fa-gamepad',         color:'#E2231A', bg:'#fef2f2' },
+      108: { icon:'fa-brands fa-github',         color:'#181717', bg:'#f3f4f6' },
+      115: { icon:'fa-solid fa-car',             color:'#000',    bg:'#f3f4f6' },
+      117: { icon:'fa-solid fa-mobile-screen',   color:'#6366f1', bg:'#f5f3ff' },
+    };
+    const FALLBACK_ICON = { icon:'fa-solid fa-box-open', color:'#7c3aed', bg:'#f5f3ff' };
+
+    function iconFor(catId, title) {
+      if (catId && CAT_ICON[Number(catId)]) return CAT_ICON[Number(catId)];
+      // title-based fallback
+      const t = (title || '').toLowerCase();
+      if (t.includes('instagram'))   return CAT_ICON[24];
+      if (t.includes('facebook'))    return CAT_ICON[22];
+      if (t.includes('tiktok'))      return CAT_ICON[34];
+      if (t.includes('youtube'))     return CAT_ICON[75];
+      if (t.includes('twitter') || t.includes('x-twitter')) return CAT_ICON[38];
+      if (t.includes('telegram'))    return CAT_ICON[40];
+      if (t.includes('snapchat'))    return CAT_ICON[37];
+      if (t.includes('netflix'))     return CAT_ICON[69];
+      if (t.includes('spotify'))     return CAT_ICON[107];
+      if (t.includes('vpn'))         return CAT_ICON[59];
+      if (t.includes('gmail'))       return CAT_ICON[21];
+      if (t.includes('apple'))       return CAT_ICON[65];
+      if (t.includes('amazon'))      return CAT_ICON[71];
+      if (t.includes('steam'))       return CAT_ICON[70];
+      return FALLBACK_ICON;
     }
 
-    function platFor(title, category) {
-      return detectPlatform(title) || detectPlatform(category) || FALLBACK_PLAT;
-    }
-
-    /* ── API CALL ── */
+    /* ── API ── */
     async function api(payload) {
       const r = await fetch('/api/accsmaster', {
         method: 'POST',
@@ -280,7 +399,13 @@
       return r.json();
     }
 
-    /* ── VIEW TABS ── */
+    function unwrap(res) {
+      if (!res || res.error) return null;
+      if (res.success === true || res.success === false) return res.data ?? null;
+      return res;
+    }
+
+    /* ── VIEW SWITCH ── */
     function showView(tab) {
       document.getElementById('view-browse').style.display  = tab === 'browse' ? '' : 'none';
       document.getElementById('view-orders').style.display  = tab === 'orders' ? '' : 'none';
@@ -289,103 +414,175 @@
       if (tab === 'orders') loadMyOrders();
     }
 
-    /* ── CATEGORY FILTER ── */
-    function selectCat(btn, catId) {
-      document.querySelectorAll('.ac-plat-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      if (!catId) {
-        renderListings(allListings);
-      } else {
-        loadListings(catId);
-      }
-    }
+    /* ── ALL CATEGORIES (from API) ── */
+    let allCategories = [];
 
-    /* ── UNWRAP AccsZone response ── */
-    function unwrap(res) {
-      if (!res || res.error) return null;
-      // AccsZone: {success, data} — fall back to bare array/object
-      if (res.success === true || res.success === false) return res.data ?? null;
-      return res;
-    }
+    /* ── BUILD GROUP TABS ── */
+    let activeGroupIdx = 0;
 
-    /* ── LOAD CATEGORIES ── */
-    async function loadCategories() {
-      const res  = await api({ action: 'categories' });
-      if (res.error === 'accounts_not_configured') {
-        document.getElementById('setup-notice').style.display = 'block';
-        return;
-      }
-      const data = unwrap(res);
-      const cats = Array.isArray(data) ? data : (data?.categories || data?.items || []);
-      const row  = document.getElementById('platforms-row');
-      const seen = new Set();
-
-      cats.forEach(cat => {
-        const name = cat.name || cat.title || String(cat.id || '');
-        const id   = String(cat.id || cat.slug || name);
-        const plat = detectPlatform(name) || FALLBACK_PLAT;
-        if (seen.has(plat.key)) return;
-        seen.add(plat.key);
-
+    function buildGroups() {
+      const row = document.getElementById('groups-row');
+      row.innerHTML = '';
+      GROUPS.forEach((g, i) => {
         const btn = document.createElement('button');
-        btn.className = 'ac-plat-btn';
-        btn.innerHTML = `<i class="${plat.icon}" style="color:${plat.key !== 'other' ? plat.color : 'inherit'}"></i> ${plat.label !== 'Other' ? plat.label : name}`;
-        btn.onclick = () => selectCat(btn, id);
+        btn.className = 'ac-group-btn' + (i === 0 ? ' active' : '');
+        btn.innerHTML = `<i class="${g.icon}"></i>${g.label}`;
+        btn.onclick = () => selectGroup(btn, i);
         row.appendChild(btn);
       });
     }
 
-    /* ── LOAD LISTINGS ── */
+    function selectGroup(btn, idx) {
+      document.querySelectorAll('.ac-group-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeGroupIdx = idx;
+      buildSubcats(GROUPS[idx].catIds);
+    }
+
+    /* ── BUILD SUB-CATEGORY PILLS ── */
+    function buildSubcats(catIds) {
+      const wrap = document.getElementById('subcats-wrap');
+      const row  = document.getElementById('subcats-row');
+      row.innerHTML = '';
+
+      const cats = allCategories.filter(c => catIds.includes(Number(c.id)));
+
+      cats.forEach((cat, i) => {
+        const name  = cat.title || cat.name || String(cat.id);
+        const ico   = CAT_ICON[Number(cat.id)] || FALLBACK_ICON;
+        const btn   = document.createElement('button');
+        btn.className = 'ac-sub-btn' + (i === 0 ? ' active' : '');
+        btn.innerHTML = `<i class="${ico.icon}" style="color:${ico.color}"></i>${esc(name)}`;
+        btn.onclick = () => {
+          document.querySelectorAll('.ac-sub-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          loadListings(cat.id);
+        };
+        row.appendChild(btn);
+      });
+
+      wrap.classList.toggle('visible', cats.length > 0);
+
+      // auto-load first sub-category
+      if (cats.length > 0) loadListings(cats[0].id);
+      else setListingState('<i class="fas fa-box-open"></i><p>No categories found in this group.</p>');
+    }
+
+    /* ── DETECT ICON FROM LISTING TITLE ── */
+    function iconFromTitle(title, fallbackCatId) {
+      const t = (title || '').toLowerCase();
+      const checks = [
+        [[' ig ','ig accounts','instagram'],                  24],
+        [['facebook',' fb '],                                 22],
+        [['tiktok','tik tok'],                                34],
+        [['youtube'],                                         75],
+        [['twitter','x accounts','x-twitter'],                38],
+        [['telegram'],                                        40],
+        [['snapchat'],                                        37],
+        [['linkedin'],                                        23],
+        [['discord'],                                         50],
+        [['reddit'],                                          33],
+        [['pinterest'],                                       81],
+        [['whatsapp'],                                        67],
+        [['twitch'],                                          97],
+        [['threads'],                                         95],
+        [['bluesky'],                                         90],
+        [['quora'],                                           76],
+        [['yelp'],                                            98],
+        [['trustpilot'],                                      66],
+        [['ok.ru','odnoklassniki'],                          114],
+        [['gmail'],                                           21],
+        [['google voice'],                                    26],
+        [['yahoo','yahoo mail'],                              84],
+        [['outlook','hotmail'],                               28],
+        [['protonmail'],                                      79],
+        [['gmx'],                                             35],
+        [['mail.ru'],                                         99],
+        [['zoho'],                                            86],
+        [['aol'],                                             85],
+        [['rambler'],                                        101],
+        [['yandex'],                                         100],
+        [['netflix'],                                         69],
+        [['spotify'],                                        107],
+        [['iptv'],                                           105],
+        [['capcut'],                                         112],
+        [['vpn'],                                             59],
+        [['mobile proxy','proxy'],                            73],
+        [['rdp','vps','windows vps'],                         78],
+        [['windows key','windows product'],                  103],
+        [['apple id','apple gift','itunes'],                  44],
+        [['google play'],                                     68],
+        [['amazon gift','amazon card'],                       71],
+        [['playstation','psn'],                               72],
+        [['steam'],                                           70],
+        [['binance'],                                         93],
+        [['cashapp'],                                         51],
+        [['mastercard'],                                     111],
+        [['walmart'],                                         96],
+        [['etsy'],                                            83],
+        [['craigslist'],                                      29],
+        [['grindr'],                                          36],
+        [['badoo'],                                           42],
+        [['eharmony'],                                        88],
+        [['tinder','dating','bumble'],                        48],
+        [['roblox'],                                         106],
+        [['github'],                                         108],
+        [['uber'],                                           115],
+        [['ai account','chatgpt','openai'],                  110],
+      ];
+      for (const [keywords, id] of checks) {
+        if (keywords.some(k => t.includes(k))) return CAT_ICON[id] || FALLBACK_ICON;
+      }
+      return CAT_ICON[Number(fallbackCatId)] || FALLBACK_ICON;
+    }
+
+    /* ── LOAD LISTINGS FOR A CATEGORY ── */
     async function loadListings(catId) {
-      const grid = document.getElementById('offers-grid');
-      grid.innerHTML = `<div class="ac-state"><i class="fas fa-spinner fa-spin"></i><p>Loading accounts…</p></div>`;
+      setListingState('<i class="fas fa-spinner fa-spin"></i><p>Loading…</p>');
 
-      const params = { action: 'listings' };
-      if (catId) params.category = catId;
-
-      const res  = await api(params);
-
+      const res = await api({ action: 'listings', category_id: catId });
       if (res.error === 'accounts_not_configured') {
-        grid.innerHTML = `<div class="ac-state"><i class="fas fa-gear"></i><p>Accounts store is not configured yet.</p></div>`;
-        return;
+        setListingState('<i class="fas fa-gear"></i><p>Store not configured.</p>'); return;
       }
       if (res.error) {
-        grid.innerHTML = `<div class="ac-state"><i class="fas fa-triangle-exclamation"></i><p>Could not load accounts. Please try again later.</p></div>`;
-        return;
+        setListingState('<i class="fas fa-triangle-exclamation"></i><p>Could not load listings. Try again.</p>'); return;
       }
 
       const data     = unwrap(res);
       const listings = Array.isArray(data) ? data : (data?.listings || data?.items || data?.results || []);
-      if (!catId) allListings = listings;
-      renderListings(listings);
+      renderListings(listings, catId);
+    }
+
+    function setListingState(html) {
+      document.getElementById('listing-area').innerHTML = `<div class="ac-state">${html}</div>`;
     }
 
     /* ── RENDER LISTINGS ── */
-    function renderListings(listings) {
-      const grid = document.getElementById('offers-grid');
-      if (!listings.length) {
-        grid.innerHTML = `<div class="ac-state"><i class="fas fa-box-open"></i><p>No accounts available right now.<br>Check back soon.</p></div>`;
+    function renderListings(listings, catId) {
+      const area = document.getElementById('listing-area');
+      if (!listings || !listings.length) {
+        area.innerHTML = `<div class="ac-state"><i class="fas fa-box-open"></i><p>No products in this category right now.<br>Check back soon.</p></div>`;
         return;
       }
 
-      grid.innerHTML = listings.map(o => {
-        const title    = o.title || o.name || `Account #${o.id}`;
-        const category = o.category || o.type || o.subcategory || '';
-        const plat     = platFor(title, category);
+      area.innerHTML = `<div class="ac-grid">${listings.map(o => {
+        const title    = o.title || o.name || `Product #${o.id}`;
+        const catName  = o.category_name || o.category || o.type || '';
         const priceUsd = parseFloat(o.price || o.rate || o.cost || 0);
         const sellUsd  = priceUsd * MARKUP;
         const qty      = parseInt(o.quantity || o.stock || o.count || o.available || 0);
         const desc     = o.description || o.desc || o.details || '';
         const slug     = o.slug || o.id;
-        const offerObj = JSON.stringify({ id: o.id, slug, title, platform: plat.label, platKey: plat.key, priceUsd, sellUsd });
+        const ico      = iconFromTitle(title, catId);
+        const offerObj = JSON.stringify({ id: o.id, slug, title, catId, catName, priceUsd, sellUsd });
 
         return `<div class="ac-card">
           <div class="ac-card-top">
-            <div class="ac-card-icon" style="background:${plat.bg};color:${plat.color}">
-              <i class="${plat.icon}"></i>
+            <div class="ac-card-icon" style="background:${ico.bg};color:${ico.color}">
+              <i class="${ico.icon}"></i>
             </div>
-            <div>
-              <div class="ac-card-plat-label" style="color:${plat.color}">${esc(plat.label)}</div>
+            <div style="flex:1;min-width:0">
+              <div class="ac-card-plat-label" style="color:${ico.color}">${esc(catName || 'Digital Product')}</div>
               <div class="ac-card-title">${esc(title)}</div>
             </div>
           </div>
@@ -393,12 +590,12 @@
           <div class="ac-card-foot">
             <div>
               <div class="ac-card-price">${fmtNGN(sellUsd)}</div>
-              <div class="ac-card-qty">${qty > 0 ? qty + ' available' : 'In stock'}</div>
+              <div class="ac-card-qty">${qty > 0 ? qty + ' in stock' : 'In stock'}</div>
             </div>
             <button class="ac-btn-buy" onclick='openBuyModal(${esc(offerObj)})'>Buy Now</button>
           </div>
         </div>`;
-      }).join('');
+      }).join('')}</div>`;
     }
 
     function esc(s) {
@@ -410,9 +607,10 @@
       if (typeof offer === 'string') offer = JSON.parse(offer);
       selectedOffer = offer;
       const notEnough = userBalance < offer.sellUsd;
+      const ico = CAT_ICON[Number(offer.catId)] || FALLBACK_ICON;
 
       document.getElementById('bm-name').textContent     = offer.title;
-      document.getElementById('bm-platform').textContent = offer.platform;
+      document.getElementById('bm-platform').textContent = offer.catName || 'Digital Product';
       document.getElementById('bm-balance').textContent  = fmtNGN(userBalance);
       document.getElementById('bm-price').textContent    = fmtNGN(offer.sellUsd);
 
@@ -443,35 +641,29 @@
       errEl.style.display = 'none';
 
       try {
-        // 1. Purchase from AccsZone
-        const res = await api({ action: 'purchase', listing_id: selectedOffer.id, slug: selectedOffer.slug, quantity: 1 });
+        const res  = await api({ action: 'purchase', listing_id: selectedOffer.id, slug: selectedOffer.slug, quantity: 1 });
         const data = unwrap(res);
-        if (!res || (res.success === false)) throw new Error(res.message || 'Purchase failed');
+        if (!res || res.success === false) throw new Error(res.message || 'Purchase failed');
 
         const orderId     = data?.order_id || data?.id || null;
         const credentials = data?.credentials || data?.account || data?.accounts?.[0] || null;
         const newBalance  = userBalance - selectedOffer.sellUsd;
 
-        // 2. Deduct wallet
         await db.from('profiles').update({ wallet_balance: newBalance }).eq('id', userId);
-
-        // 3. Save order
         await db.from('account_orders').insert({
-          user_id:          userId,
+          user_id:           userId,
           provider_order_id: String(orderId || ''),
-          offer_id:         String(selectedOffer.id || ''),
-          offer_title:      selectedOffer.title,
-          platform:         selectedOffer.platform,
-          price_usd:        selectedOffer.sellUsd,
-          price_ngn:        Math.round(selectedOffer.sellUsd * USD_TO_NGN),
-          status:           credentials ? 'complete' : 'pending',
-          credentials:      credentials || null,
+          offer_id:          String(selectedOffer.id || ''),
+          offer_title:       selectedOffer.title,
+          platform:          selectedOffer.catName || 'Digital Product',
+          price_usd:         selectedOffer.sellUsd,
+          price_ngn:         Math.round(selectedOffer.sellUsd * USD_TO_NGN),
+          status:            credentials ? 'complete' : 'pending',
+          credentials:       credentials || null,
         });
 
-        // 4. Update UI
         userBalance = newBalance;
         document.getElementById('topbar-balance').textContent = fmtNGN(newBalance);
-
         closeBuyModal();
         showCredentials(selectedOffer, credentials, orderId);
 
@@ -492,11 +684,11 @@
         const rows = Object.entries(credentials).map(([k, v]) =>
           `<div class="ac-creds-row">
             <span class="ac-creds-key">${esc(k)}</span>
-            <span class="ac-creds-val" id="cv-${k}">${esc(String(v))}</span>
-            <button class="ac-copy-btn" onclick="copyText('cv-${k}')"><i class="fas fa-copy"></i></button>
+            <span class="ac-creds-val" id="cv-${esc(k)}">${esc(String(v))}</span>
+            <button class="ac-copy-btn" onclick="copyText('cv-${esc(k)}')"><i class="fas fa-copy"></i></button>
           </div>`
         ).join('');
-        content.innerHTML = `<p style="text-align:center;font-size:0.83rem;color:#6b7080;margin-bottom:10px">Your credentials for <strong>${esc(offer.title)}</strong></p><div class="ac-creds-box">${rows}</div>`;
+        content.innerHTML = `<p style="text-align:center;font-size:0.83rem;color:#6b7080;margin-bottom:10px">Your access details for <strong>${esc(offer.title)}</strong></p><div class="ac-creds-box">${rows}</div>`;
         warn.style.display = 'flex';
       } else if (typeof credentials === 'string' && credentials.trim()) {
         content.innerHTML = `<div class="ac-creds-box"><pre style="font-size:0.8rem;white-space:pre-wrap;word-break:break-all">${esc(credentials)}</pre></div>`;
@@ -505,12 +697,11 @@
         content.innerHTML = `
           <p style="text-align:center;font-size:0.9rem;font-weight:700;margin-bottom:8px">Order Placed!</p>
           <p style="text-align:center;font-size:0.83rem;color:#6b7080;line-height:1.55">
-            Your account is being prepared for delivery. Check <strong>My Purchases</strong> for your credentials once ready.
+            Your product is being prepared. Check <strong>My Purchases</strong> for credentials once ready.
             ${orderId ? `<br><br>Reference: <strong>BUS-${esc(String(orderId))}</strong>` : ''}
           </p>`;
         warn.style.display = 'none';
       }
-
       document.getElementById('creds-modal').classList.add('show');
     }
 
@@ -525,31 +716,28 @@
       list.innerHTML = `<div class="ac-state"><i class="fas fa-spinner fa-spin"></i><p>Loading…</p></div>`;
 
       const { data: orders } = await db
-        .from('account_orders')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
+        .from('account_orders').select('*')
+        .eq('user_id', userId).order('created_at', { ascending: false });
 
       if (!orders?.length) {
-        list.innerHTML = `<div class="ac-state"><i class="fas fa-bag-shopping"></i><p>No purchases yet.<br>Browse accounts to get started.</p></div>`;
+        list.innerHTML = `<div class="ac-state"><i class="fas fa-bag-shopping"></i><p>No purchases yet.<br>Browse the store to get started.</p></div>`;
         return;
       }
 
       list.innerHTML = orders.map(o => {
-        const plat    = platFor(o.platform, o.offer_title);
+        const ico     = iconFor(null, o.platform || o.offer_title);
         const date    = new Date(o.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'numeric' });
         const stClass = { pending:'st-pending', complete:'st-complete', failed:'st-failed' }[o.status] || 'st-pending';
         const stLabel = { pending:'Processing', complete:'Delivered', failed:'Failed' }[o.status] || 'Pending';
         const credsBtn = (o.status === 'complete' && o.credentials)
-          ? `<button class="ac-creds-btn" onclick='showStoredCreds(${esc(JSON.stringify({ title: o.offer_title, platform: o.platform, credentials: o.credentials }))})'>
+          ? `<button class="ac-creds-btn" onclick='showStoredCreds(${esc(JSON.stringify({ title: o.offer_title, credentials: o.credentials }))})'>
                <i class="fas fa-key"></i> View Credentials
              </button>`
           : '';
-
         return `<div class="ac-order-card">
-          <div class="ac-order-icon" style="background:${plat.bg};color:${plat.color}"><i class="${plat.icon}"></i></div>
+          <div class="ac-order-icon" style="background:${ico.bg};color:${ico.color}"><i class="${ico.icon}"></i></div>
           <div class="ac-order-info">
-            <div class="ac-order-title">${esc(o.offer_title || 'Account Order')}</div>
+            <div class="ac-order-title">${esc(o.offer_title || 'Product Order')}</div>
             <div class="ac-order-meta">${esc(o.platform || '')} · ${date}</div>
             ${credsBtn}
           </div>
@@ -564,6 +752,16 @@
     function showStoredCreds(data) {
       if (typeof data === 'string') data = JSON.parse(data);
       showCredentials({ title: data.title }, data.credentials, null);
+    }
+
+    function iconFor(catId, title) {
+      if (catId && CAT_ICON[Number(catId)]) return CAT_ICON[Number(catId)];
+      const t = (title || '').toLowerCase();
+      const match = Object.entries(CAT_ICON).find(([id]) => {
+        const cat = allCategories.find(c => Number(c.id) === Number(id));
+        return cat && t.includes((cat.title || '').toLowerCase().split(' ')[0].toLowerCase());
+      });
+      return match ? match[1] : FALLBACK_ICON;
     }
 
     /* ── TOAST ── */
@@ -584,8 +782,17 @@
       userBalance = parseFloat(profile?.wallet_balance || 0);
       document.getElementById('topbar-balance').textContent = fmtNGN(userBalance);
 
-      await loadCategories();
-      await loadListings(null);
+      // Load categories then build UI
+      const res = await api({ action: 'categories' });
+      if (res.error === 'accounts_not_configured') {
+        setListingState('<i class="fas fa-gear"></i><p>Store not configured yet.</p>'); return;
+      }
+      const data = unwrap(res);
+      allCategories = Array.isArray(data) ? data : (data?.categories || data?.items || []);
+
+      buildGroups();
+      // auto-select first group
+      selectGroup(document.querySelector('.ac-group-btn'), 0);
     })();
   </script>
 </body>

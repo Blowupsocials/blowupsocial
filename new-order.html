@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>New Order – BlowUpSocial</title>
+  <title>Social Boost – BlowUpSocials</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet" />
   <style>
@@ -42,14 +42,17 @@
 
     /* ── PLATFORM TABS ── */
     .no-platforms {
-      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+      display: flex; gap: 8px; flex-wrap: nowrap;
+      overflow-x: auto; margin-bottom: 20px; padding-bottom: 4px;
+      -ms-overflow-style: none; scrollbar-width: none;
     }
+    .no-platforms::-webkit-scrollbar { display: none; }
     .no-plat-btn {
       display: flex; align-items: center; gap: 7px;
       padding: 8px 16px; border-radius: 50px;
       border: 1.5px solid #e5e7eb; background: #fff;
       font-size: 0.78rem; font-weight: 600; color: #6b7080;
-      transition: all 0.15s; white-space: nowrap;
+      transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
     }
     .no-plat-btn:hover { border-color: #c4b5fd; color: #7c3aed; }
     .no-plat-btn.active { background: #7c3aed; border-color: #7c3aed; color: #fff; }
@@ -224,8 +227,7 @@
       .no-modal { border-radius: 22px 22px 0 0; padding: 20px; }
     }
     @media (max-width: 480px) {
-      .no-plat-btn span { display: none; }
-      .no-plat-btn { padding: 8px 12px; }
+      .no-plat-btn { padding: 7px 13px; font-size: 0.74rem; }
     }
   </style>
 </head>
@@ -284,7 +286,7 @@
   <!-- Topbar -->
   <div class="no-topbar">
     <a href="dashboard.html" class="no-back"><i class="fas fa-arrow-left"></i> Dashboard</a>
-    <div class="no-title">New Order</div>
+    <div class="no-title">Social Boost</div>
     <div class="no-wallet"><span>Balance</span><strong id="topbar-balance">₦0</strong></div>
   </div>
 

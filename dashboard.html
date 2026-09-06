@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard – BlowUpSocial</title>
+  <title>Dashboard – BlowUpSocials</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet" />
   <style>
@@ -540,6 +540,37 @@
       .ds-bot-item { font-size: 0.58rem; }
       .ds-bot-item i { font-size: 1rem; }
     }
+
+    /* ── Full-page sections (My Orders, Transactions, Settings) ── */
+    .ds-full-sec { display: none; padding: 22px; flex-direction: column; gap: 18px; flex: 1; }
+    .ds-full-sec.active { display: flex; }
+    .ds-sec-back { display: inline-flex; align-items: center; gap: 7px; font-size: 0.78rem; font-weight: 600; color: #7c3aed; cursor: pointer; margin-bottom: 2px; }
+    .ds-sec-back:hover { opacity: 0.75; }
+    .ds-sec-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 800; color: #0f0e1c; }
+    .ds-sec-sub { font-size: 0.74rem; color: #8b8fa8; margin-top: 2px; }
+    .ds-full-card { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .ds-full-hdr { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+    .ds-full-hdr-title { font-family: 'Space Grotesk', sans-serif; font-size: 0.92rem; font-weight: 800; color: #0f0e1c; }
+    .ds-full-search { display: flex; align-items: center; gap: 8px; background: #f0f2f7; border: 1px solid #e8eaf0; border-radius: 9px; padding: 7px 12px; min-width: 200px; }
+    .ds-full-search input { background: none; border: none; outline: none; font-size: 0.77rem; color: #0f0e1c; width: 100%; font-family: inherit; }
+    .ds-full-search i { color: #8b8fa8; font-size: 0.76rem; flex-shrink: 0; }
+    .ds-full-tbl-wrap { overflow-x: auto; }
+    .ds-full-tbl { width: 100%; border-collapse: collapse; min-width: 520px; }
+    .ds-full-tbl th { font-size: 0.59rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #8b8fa8; padding: 10px 14px; border-bottom: 1px solid #e8eaf0; text-align: left; white-space: nowrap; background: #f8f9fc; }
+    .ds-full-tbl td { padding: 11px 14px; border-bottom: 1px solid #e8eaf0; font-size: 0.79rem; color: #0f0e1c; vertical-align: middle; }
+    .ds-full-tbl tr:last-child td { border-bottom: none; }
+    .ds-full-tbl tbody tr:hover { background: rgba(0,0,0,0.012); }
+    .ds-full-count { font-size: 0.71rem; color: #8b8fa8; padding: 10px 14px; border-top: 1px solid #e8eaf0; }
+    /* Settings form */
+    .ds-settings-form { display: flex; flex-direction: column; gap: 18px; max-width: 480px; }
+    .ds-form-group label { display: block; font-size: 0.74rem; font-weight: 600; color: #8b8fa8; margin-bottom: 6px; }
+    .ds-form-group input { width: 100%; padding: 10px 14px; border: 1px solid #e8eaf0; border-radius: 10px; font-size: 0.84rem; font-family: inherit; color: #0f0e1c; background: #f8f9fc; outline: none; transition: border-color 0.13s; }
+    .ds-form-group input:focus { border-color: #7c3aed; background: #fff; }
+    .ds-form-group input:disabled { opacity: 0.55; cursor: not-allowed; }
+    .ds-save-btn { align-self: flex-start; padding: 10px 22px; border-radius: 10px; background: linear-gradient(135deg, #7c3aed, #ec4899); color: #fff; font-size: 0.82rem; font-weight: 700; border: none; cursor: pointer; transition: opacity 0.13s; font-family: inherit; }
+    .ds-save-btn:hover { opacity: 0.88; }
+    .ds-save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    @media (max-width: 768px) { .ds-full-sec { padding: 14px; padding-bottom: calc(62px + 14px); } }
   </style>
 </head>
 <body>
@@ -599,29 +630,29 @@
   <!-- ── SIDEBAR ── -->
   <aside class="ds-sidebar" id="ds-sidebar">
     <div class="ds-logo">
-      <img src="img/logo.jpg" alt="BlowUpSocial" />
-      <span class="ds-logo-text">BlowUpSocial</span>
+      <img src="img/logo.jpg" alt="BlowUpSocials" />
+      <span class="ds-logo-text">BlowUpSocials</span>
     </div>
 
     <nav class="ds-nav">
       <a href="admin.html" id="admin-sidebar-btn" class="ds-nav-item" style="display:none;background:linear-gradient(90deg,rgba(124,58,237,0.22),rgba(236,72,153,0.14));color:#a78bfa;font-weight:700;margin-bottom:6px;border:1px solid rgba(124,58,237,0.25)"><i class="fas fa-shield-halved"></i> Admin Panel</a>
       <div class="ds-nav-label">Main</div>
       <a href="dashboard.html" class="ds-nav-item active"><i class="fas fa-gauge"></i> Dashboard</a>
-      <a href="new-order.html" class="ds-nav-item js-order"><i class="fas fa-plus-circle"></i> New Order</a>
-      <a href="accounts.html" class="ds-nav-item"><i class="fas fa-users"></i> Accounts Store</a>
-      <a href="#" class="ds-nav-item js-coming"><i class="fas fa-bag-shopping"></i> My Orders <span class="ds-nav-badge" id="orders-badge">0</span></a>
+      <a href="new-order.html" class="ds-nav-item js-order"><i class="fas fa-plus-circle"></i> Social Boost</a>
+      <a href="accounts.html" class="ds-nav-item"><i class="fas fa-store"></i> Digital Products</a>
+      <a href="#" class="ds-nav-item" id="nav-orders" onclick="showDsSec('orders');return false"><i class="fas fa-bag-shopping"></i> My Orders <span class="ds-nav-badge" id="orders-badge">0</span></a>
 
       <div class="ds-nav-label">Shop</div>
       <a href="new-order.html" class="ds-nav-item"><i class="fas fa-boxes-stacked"></i> Services</a>
       <a href="#" class="ds-nav-item js-funds"><i class="fas fa-wallet"></i> Add Funds</a>
-      <a href="#" class="ds-nav-item js-coming"><i class="fas fa-right-left"></i> Transactions</a>
+      <a href="#" class="ds-nav-item" id="nav-txns" onclick="showDsSec('txns');return false"><i class="fas fa-right-left"></i> Transactions</a>
 
       <div class="ds-nav-label">Account</div>
       <a href="#" class="ds-nav-item js-coming"><i class="fas fa-users"></i> Referrals</a>
       <a href="#" class="ds-nav-item js-coming"><i class="fas fa-star"></i> Favorites</a>
       <a href="#" class="ds-nav-item js-coming"><i class="fas fa-code"></i> API Access</a>
       <a href="#" class="ds-nav-item js-coming"><i class="fas fa-headset"></i> Support</a>
-      <a href="#" class="ds-nav-item js-coming"><i class="fas fa-gear"></i> Settings</a>
+      <a href="#" class="ds-nav-item" id="nav-settings" onclick="showDsSec('settings');return false"><i class="fas fa-gear"></i> Settings</a>
       <a href="#" class="ds-nav-item danger" id="signout-btn"><i class="fas fa-right-from-bracket"></i> Sign Out</a>
     </nav>
 
@@ -653,7 +684,7 @@
       </div>
       <div class="ds-topbar-right">
         <a href="admin.html" id="admin-panel-btn" class="ds-btn-quick" style="display:none;background:linear-gradient(135deg,#0d0c1d,#3b0764)"><i class="fas fa-gauge"></i> Admin Panel</a>
-        <a href="new-order.html" class="ds-btn-quick"><i class="fas fa-bolt"></i> New Order</a>
+        <a href="new-order.html" class="ds-btn-quick"><i class="fas fa-bolt"></i> Social Boost</a>
         <div class="ds-bell js-coming">
           <i class="fas fa-bell"></i>
           <span class="ds-bell-badge" id="notif-badge">3</span>
@@ -679,7 +710,7 @@
             <div class="ds-dd-divider"></div>
             <a href="admin.html" class="ds-dd-item" id="dd-admin-link" style="display:none;color:#7c3aed"><i class="fas fa-gauge" style="color:#7c3aed"></i> Admin Panel</a>
             <a href="#" class="ds-dd-item js-coming"><i class="fas fa-user"></i> My Profile</a>
-            <a href="#" class="ds-dd-item js-coming"><i class="fas fa-gear"></i> Settings</a>
+            <a href="#" class="ds-dd-item" onclick="showDsSec('settings');return false"><i class="fas fa-gear"></i> Settings</a>
             <a href="#" class="ds-dd-item js-coming"><i class="fas fa-bell"></i> Notifications</a>
             <div class="ds-dd-divider"></div>
             <a href="#" class="ds-dd-item danger" id="dd-signout"><i class="fas fa-right-from-bracket"></i> Sign Out</a>
@@ -689,7 +720,7 @@
     </header>
 
     <!-- CONTENT -->
-    <div class="ds-content">
+    <div class="ds-content" id="ds-content">
 
       <!-- CENTER COLUMN -->
       <div class="ds-center">
@@ -765,7 +796,7 @@
         <div class="ds-card" id="orders-section">
           <div class="ds-card-hdr">
             <span class="ds-card-hdr-title">Recent Orders</span>
-            <a href="#" class="js-coming">View All Orders</a>
+            <a href="#" onclick="showDsSec('orders');return false">View All Orders</a>
           </div>
           <div class="ds-filter-tabs">
             <button class="ds-filter-tab active" data-filter="all">All</button>
@@ -878,7 +909,7 @@
         <div class="ds-panel-card">
           <div class="ds-panel-title">Quick Actions</div>
           <div class="ds-qa-grid">
-            <button class="ds-qa-btn qa-purple" onclick="location.href='new-order.html'"><i class="fas fa-plus"></i>New Order</button>
+            <button class="ds-qa-btn qa-purple" onclick="location.href='new-order.html'"><i class="fas fa-bolt"></i>Social Boost</button>
             <button class="ds-qa-btn qa-green js-funds"><i class="fas fa-wallet"></i>Add Funds</button>
             <button class="ds-qa-btn qa-blue js-coming"><i class="fas fa-headset"></i>Support</button>
             <button class="ds-qa-btn qa-orange js-coming"><i class="fas fa-code"></i>API</button>
@@ -947,6 +978,92 @@
       </aside>
 
     </div><!-- /ds-content -->
+
+    <!-- ══ MY ORDERS SECTION ══ -->
+    <div class="ds-full-sec" id="sec-orders">
+      <div>
+        <div class="ds-sec-back" onclick="showDsSec('home')"><i class="fas fa-arrow-left"></i> Back to Dashboard</div>
+        <div class="ds-sec-title">My Orders</div>
+        <div class="ds-sec-sub">All your orders, past and present</div>
+      </div>
+      <div class="ds-full-card">
+        <div class="ds-full-hdr">
+          <div class="ds-full-hdr-title">Order History</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <select id="ord-status-sel" onchange="filterFullOrders()" style="padding:7px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.77rem;font-family:inherit;color:#0f0e1c;background:#fff;cursor:pointer;">
+              <option value="all">All Statuses</option>
+              <option value="Completed">Completed</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Pending">Pending</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+            <div class="ds-full-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="ord-search" placeholder="Search orders…" oninput="filterFullOrders()"></div>
+          </div>
+        </div>
+        <div class="ds-full-tbl-wrap">
+          <table class="ds-full-tbl">
+            <thead><tr><th>Order ID</th><th>Service</th><th>Link / Target</th><th>Qty</th><th>Charge</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody id="full-orders-body"><tr><td colspan="7" class="ds-empty"><i class="fas fa-circle-notch fa-spin"></i> Loading…</td></tr></tbody>
+          </table>
+        </div>
+        <div class="ds-full-count" id="full-orders-count"></div>
+      </div>
+    </div>
+
+    <!-- ══ TRANSACTIONS SECTION ══ -->
+    <div class="ds-full-sec" id="sec-txns">
+      <div>
+        <div class="ds-sec-back" onclick="showDsSec('home')"><i class="fas fa-arrow-left"></i> Back to Dashboard</div>
+        <div class="ds-sec-title">Transactions</div>
+        <div class="ds-sec-sub">Your order charges and wallet deposits</div>
+      </div>
+      <div class="ds-full-card">
+        <div class="ds-full-hdr">
+          <div class="ds-full-hdr-title">Transaction History</div>
+          <select id="txn-type-sel" onchange="filterUserTxns()" style="padding:7px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.77rem;font-family:inherit;color:#0f0e1c;background:#fff;cursor:pointer;">
+            <option value="all">All Types</option>
+            <option value="charge">Charges (Orders)</option>
+            <option value="deposit">Deposits</option>
+          </select>
+        </div>
+        <div class="ds-full-tbl-wrap">
+          <table class="ds-full-tbl">
+            <thead><tr><th>Type</th><th>Description</th><th>Amount (NGN)</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody id="user-txn-body"><tr><td colspan="5" class="ds-empty"><i class="fas fa-circle-notch fa-spin"></i> Loading…</td></tr></tbody>
+          </table>
+        </div>
+        <div class="ds-full-count" id="user-txn-count"></div>
+      </div>
+    </div>
+
+    <!-- ══ SETTINGS SECTION ══ -->
+    <div class="ds-full-sec" id="sec-settings">
+      <div>
+        <div class="ds-sec-back" onclick="showDsSec('home')"><i class="fas fa-arrow-left"></i> Back to Dashboard</div>
+        <div class="ds-sec-title">Settings</div>
+        <div class="ds-sec-sub">Manage your account details</div>
+      </div>
+      <div class="ds-full-card" style="max-width:560px">
+        <div class="ds-full-hdr-title" style="margin-bottom:20px">Profile Information</div>
+        <div class="ds-settings-form" id="settings-form">
+          <div class="ds-form-group">
+            <label>Full Name</label>
+            <input type="text" id="set-name" placeholder="Your full name" />
+          </div>
+          <div class="ds-form-group">
+            <label>Email Address</label>
+            <input type="email" id="set-email" disabled placeholder="—" />
+          </div>
+          <div class="ds-form-group">
+            <label>User ID</label>
+            <input type="text" id="set-uid" disabled placeholder="—" />
+          </div>
+          <button class="ds-save-btn" id="set-save-btn" onclick="saveUserSettings()">Save Changes</button>
+          <div id="set-msg" style="font-size:0.76rem;font-weight:600;color:#10b981;display:none">Profile updated successfully!</div>
+        </div>
+      </div>
+    </div>
+
   </div><!-- /ds-main -->
 
   <!-- Bottom Navigation (mobile only) -->
@@ -967,7 +1084,7 @@
       <i class="fas fa-wallet"></i>
       <span>Wallet</span>
     </button>
-    <a href="#" class="ds-bot-item js-coming">
+    <a href="#" class="ds-bot-item" onclick="showDsSec('settings');return false">
       <i class="fas fa-user"></i>
       <span>Account</span>
     </a>
@@ -1007,6 +1124,131 @@
       el.addEventListener('click', e => { e.preventDefault(); toast('Coming soon — this feature is under development.', 'info'); });
     });
 
+    /* ── Section switcher ── */
+    const _dsSections = { orders: false, txns: false };
+    function showDsSec(name) {
+      const home = document.getElementById('ds-content');
+      document.querySelectorAll('.ds-full-sec').forEach(s => s.classList.remove('active'));
+      ['orders','txns','settings'].forEach(n => {
+        const lnk = document.getElementById(`nav-${n}`);
+        if (lnk) lnk.classList.remove('active');
+      });
+      if (name === 'home') {
+        home.style.display = '';
+        document.querySelector('.ds-nav-item.active:not([id^="nav-"])');
+      } else {
+        home.style.display = 'none';
+        document.getElementById(`sec-${name}`)?.classList.add('active');
+        const lnk = document.getElementById(`nav-${name}`);
+        if (lnk) lnk.classList.add('active');
+        if (name === 'orders'   && !_dsSections.orders)  { _dsSections.orders = true;  renderFullOrders(window._userOrders || []); }
+        if (name === 'txns'     && !_dsSections.txns)    { _dsSections.txns   = true;  loadUserTxns(); }
+        if (name === 'settings') populateSettings();
+      }
+      // close sidebar on mobile
+      const sb = document.querySelector('.ds-sidebar');
+      const ov = document.querySelector('.ds-overlay');
+      if (sb) sb.classList.remove('open');
+      if (ov) ov.classList.remove('open');
+    }
+
+    /* ── My Orders (full list) ── */
+    let _allFullOrders = [];
+    function renderFullOrders(orders) {
+      _allFullOrders = orders;
+      filterFullOrders();
+    }
+    function filterFullOrders() {
+      const status = document.getElementById('ord-status-sel')?.value || 'all';
+      const q      = (document.getElementById('ord-search')?.value || '').toLowerCase();
+      let rows = _allFullOrders.filter(o =>
+        (status === 'all' || (o.status||'Pending') === status) &&
+        (!q || (o.id||'').toLowerCase().includes(q) || (o.service||'').toLowerCase().includes(q) || (o.link||'').toLowerCase().includes(q))
+      );
+      const tbody = document.getElementById('full-orders-body');
+      document.getElementById('full-orders-count').textContent = `${rows.length} order${rows.length !== 1 ? 's' : ''}`;
+      if (!rows.length) { tbody.innerHTML = `<tr><td colspan="7" class="ds-empty">No orders found</td></tr>`; return; }
+      tbody.innerHTML = rows.map(o => {
+        const ref  = o.order_ref || `#${String(o.id).padStart(5,'0')}`;
+        const link = o.link || o.target_url || '—';
+        const disp = link !== '—' && link.length > 28 ? link.slice(0,28)+'…' : link;
+        const qty  = o.quantity != null ? Number(o.quantity).toLocaleString() : (o.amount ? `$${parseFloat(o.amount).toFixed(2)}` : '—');
+        const amt  = o.amount ? `₦${Math.round(parseFloat(o.amount)*1600).toLocaleString('en-NG')}` : (o.charge ? `₦${Math.round(parseFloat(o.charge)*1600).toLocaleString('en-NG')}` : '—');
+        const st   = o.status || 'Pending';
+        const cls  = { Completed:'badge-completed', 'In Progress':'badge-inprogress', Pending:'badge-pending', Cancelled:'badge-cancelled' }[st] || 'badge-pending';
+        const date = o.created_at ? new Date(o.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'2-digit' }) : '—';
+        return `<tr>
+          <td style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:#8b8fa8;font-size:0.73rem">${ref}</td>
+          <td style="color:#4b5063;font-size:0.76rem">${o.service||'—'}</td>
+          <td style="color:#8b8fa8;font-size:0.72rem" title="${link}">${disp}</td>
+          <td style="font-weight:600">${qty}</td>
+          <td style="font-weight:700;color:#10b981">${amt}</td>
+          <td><span class="ds-badge ${cls}">${st}</span></td>
+          <td style="color:#8b8fa8;font-size:0.72rem;white-space:nowrap">${date}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    /* ── User Transactions ── */
+    let _allUserTxns = [];
+    async function loadUserTxns() {
+      const tbody = document.getElementById('user-txn-body');
+      const uid = window._userId;
+      if (!uid) return;
+      const [{ data: ords }, { data: funds }] = await Promise.all([
+        db.from('orders').select('id, service, charge, amount, status, created_at').eq('user_id', uid).order('created_at', { ascending: false }),
+        db.from('fund_requests').select('id, amount, method, status, created_at').eq('user_id', uid).order('created_at', { ascending: false }),
+      ]);
+      _allUserTxns = [
+        ...(ords  || []).map(o => ({ type:'charge',  desc: `Order · ${o.service||'Service'}`, amount: parseFloat(o.charge||o.amount||0)*1600, status: o.status||'Pending', ts: o.created_at })),
+        ...(funds || []).map(f => ({ type:'deposit', desc: `Deposit · ${f.method||'Bank Transfer'}`,    amount: parseFloat(f.amount||0),              status: f.status||'Pending', ts: f.created_at })),
+      ].sort((a,b) => new Date(b.ts)-new Date(a.ts));
+      filterUserTxns();
+    }
+    function filterUserTxns() {
+      const type = document.getElementById('txn-type-sel')?.value || 'all';
+      const rows = type === 'all' ? _allUserTxns : _allUserTxns.filter(r => r.type === type);
+      const tbody = document.getElementById('user-txn-body');
+      document.getElementById('user-txn-count').textContent = `${rows.length} transaction${rows.length!==1?'s':''}`;
+      if (!rows.length) { tbody.innerHTML = `<tr><td colspan="5" class="ds-empty">No transactions yet</td></tr>`; return; }
+      tbody.innerHTML = rows.map(r => {
+        const pill = r.type === 'charge'
+          ? `<span class="ds-badge badge-cancelled" style="background:#fdf2f8;color:#ec4899;border:none">Charge</span>`
+          : `<span class="ds-badge badge-completed">Deposit</span>`;
+        const cls  = { Completed:'badge-completed', Approved:'badge-completed', 'In Progress':'badge-inprogress', Pending:'badge-pending', Rejected:'badge-cancelled', Cancelled:'badge-cancelled' }[r.status] || 'badge-pending';
+        const date = r.ts ? new Date(r.ts).toLocaleDateString('en-NG',{day:'numeric',month:'short',year:'2-digit'}) : '—';
+        return `<tr>
+          <td>${pill}</td>
+          <td style="color:#4b5063;font-size:0.78rem">${r.desc}</td>
+          <td style="font-weight:700;color:${r.type==='deposit'?'#10b981':'#ef4444'}">₦${Math.round(r.amount).toLocaleString('en-NG')}</td>
+          <td><span class="ds-badge ${cls}">${r.status}</span></td>
+          <td style="color:#8b8fa8;font-size:0.72rem;white-space:nowrap">${date}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    /* ── Settings ── */
+    function populateSettings() {
+      const p = window._userProfile || {};
+      document.getElementById('set-name').value  = p.full_name || '';
+      document.getElementById('set-email').value = p.email || window._userEmail || '';
+      document.getElementById('set-uid').value   = window._userId || '';
+    }
+    async function saveUserSettings() {
+      const btn = document.getElementById('set-save-btn');
+      const msg = document.getElementById('set-msg');
+      const name = document.getElementById('set-name').value.trim();
+      if (!name) { toast('Please enter your name.', 'warn'); return; }
+      btn.textContent = 'Saving…'; btn.disabled = true; msg.style.display = 'none';
+      const { error } = await db.from('profiles').update({ full_name: name }).eq('id', window._userId);
+      btn.textContent = 'Save Changes'; btn.disabled = false;
+      if (error) { toast('Failed to save. Please try again.', 'warn'); return; }
+      if (window._userProfile) window._userProfile.full_name = name;
+      msg.style.display = 'block';
+      setTimeout(() => msg.style.display = 'none', 3000);
+      toast('Profile updated!', 'success');
+    }
+
     /* ── Popular services: live prices from Peakerr ── */
     (async () => {
       const MARKUP     = 5;
@@ -1042,11 +1284,8 @@
       } catch (_) {}
     })();
 
-    /* ── Bottom nav: Orders → scroll to orders section ── */
-    document.getElementById('bot-orders-btn').addEventListener('click', () => {
-      const sec = document.getElementById('orders-section');
-      if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
+    /* ── Bottom nav: Orders ── */
+    document.getElementById('bot-orders-btn').addEventListener('click', () => showDsSec('orders'));
 
     /* ── Wallet modal ── */
     const walletModal = document.getElementById('wallet-modal');
@@ -1176,6 +1415,9 @@
       }
 
       const { data: profile } = await db.from('profiles').select('*').eq('id', user.id).single();
+      window._userProfile = profile;
+      window._userId      = user.id;
+      window._userEmail   = user.email;
 
       const name   = profile?.full_name || user.email.split('@')[0];
       const email  = user.email || '';
@@ -1204,6 +1446,7 @@
       /* Orders */
       const { data: orders } = await db.from('orders').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
       allOrders = orders || [];
+      window._userOrders = allOrders;
 
       const total      = allOrders.length;
       const completed  = allOrders.filter(o => ['Delivered','Completed'].includes(o.status)).length;

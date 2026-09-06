@@ -1,5 +1,5 @@
--- ============================================================
---  BlowUpSocial – Supabase Schema
+﻿-- ============================================================
+--  BlowUpSocials – Supabase Schema
 --  Run this once in: Supabase Dashboard → SQL Editor → Run
 -- ============================================================
 
