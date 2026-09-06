@@ -581,7 +581,7 @@
         `<div class="no-dd-opt selected" onclick="selectCountry('all','All Countries')">All Countries</div>`,
         ...COUNTRIES
           .filter(c => usedKeys.has(c.key))
-          .map(c => `<div class="no-dd-opt" onclick="selectCountry('${c.key}',${JSON.stringify(c.label)})">${c.label}</div>`)
+          .map(c => `<div class="no-dd-opt" onclick="selectCountry('${c.key}','${c.label}')">${c.label}</div>`)
       ].join('');
       document.getElementById('country-sel-label').textContent = 'All Countries';
       activeCountry = 'all';
