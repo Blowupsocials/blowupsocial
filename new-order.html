@@ -354,6 +354,14 @@
         </button>
         <div class="no-dd-menu" id="cat-menu" style="display:none"></div>
       </div>
+      <!-- Dropdown 3: Country -->
+      <div class="no-dd-wrap disabled" id="country-dd-wrap">
+        <button class="no-dd-trigger" id="country-trigger" onclick="toggleNoDD('country')">
+          <span class="no-dd-sel-label" id="country-sel-label">All Countries</span>
+          <i class="fas fa-chevron-down no-dd-chevron"></i>
+        </button>
+        <div class="no-dd-menu" id="country-menu" style="display:none"></div>
+      </div>
       <!-- Search -->
       <div class="no-search-wrap" style="flex:1.5;min-width:180px">
         <i class="fas fa-magnifying-glass no-search-icon"></i>
@@ -414,6 +422,28 @@
       return 'others';
     }
 
+    /* ── Country types (third dropdown) ── */
+    const COUNTRIES = [
+      { key: 'usa',       label: '🇺🇸 USA',            match: ['usa', 'us ', 'american', 'united states'] },
+      { key: 'uk',        label: '🇬🇧 UK',             match: ['uk ', 'united kingdom', 'british'] },
+      { key: 'nigeria',   label: '🇳🇬 Nigeria',        match: ['nigeria', 'nigerian'] },
+      { key: 'india',     label: '🇮🇳 India',          match: ['india', 'indian'] },
+      { key: 'brazil',    label: '🇧🇷 Brazil',         match: ['brazil', 'brazilian'] },
+      { key: 'arab',      label: '🌍 Arab / MENA',     match: ['arab', 'arabic', 'middle east', 'gulf', 'mena'] },
+      { key: 'africa',    label: '🌍 Africa',          match: ['africa', 'african', 'ghana', 'kenya', 'south africa'] },
+      { key: 'global',    label: '🌐 Global / Real',   match: ['global', 'worldwide', 'real', 'international', 'organic', 'hq', 'high quality'] },
+      { key: 'others',    label: 'Others',             match: [] },
+    ];
+
+    function detectCountry(name) {
+      const hay = name.toLowerCase();
+      for (const c of COUNTRIES) {
+        if (c.key === 'others') continue;
+        if (c.match.some(m => hay.includes(m))) return c.key;
+      }
+      return 'others';
+    }
+
     function detectPlatform(name, category) {
       const hay = (name + ' ' + (category || '')).toLowerCase();
       for (const p of PLATFORMS) {
@@ -440,9 +470,10 @@
 
     /* ── State ── */
     let allServices  = [];
-    let activePlat   = 'all';
-    let activeCat    = 'all';
-    let userBalance  = 0;
+    let activePlat    = 'all';
+    let activeCat     = 'all';
+    let activeCountry = 'all';
+    let userBalance   = 0;
     let selectedSvc  = null;
 
     /* ── SMMFollows API ── */
@@ -456,11 +487,11 @@
     }
 
     /* ── Dropdown helpers ── */
+    const DD_IDS = ['plat', 'cat', 'country'];
     function toggleNoDD(which) {
       const menu = document.getElementById(`${which}-menu`);
       const wrap = document.getElementById(`${which}-dd-wrap`);
-      const other = which === 'plat' ? 'cat' : 'plat';
-      closeNoDD(other);
+      DD_IDS.filter(d => d !== which).forEach(closeNoDD);
       const open = menu.style.display !== 'none';
       menu.style.display = open ? 'none' : '';
       wrap.classList.toggle('open', !open);
@@ -471,13 +502,13 @@
       if (menu) { menu.style.display = 'none'; wrap.classList.remove('open'); }
     }
     document.addEventListener('click', e => {
-      if (!e.target.closest('#plat-dd-wrap')) closeNoDD('plat');
-      if (!e.target.closest('#cat-dd-wrap'))  closeNoDD('cat');
+      DD_IDS.forEach(d => { if (!e.target.closest(`#${d}-dd-wrap`)) closeNoDD(d); });
     });
 
     function selectPlatform(platKey, label, iconClass, iconEl) {
-      activePlat = platKey;
-      activeCat  = 'all';
+      activePlat    = platKey;
+      activeCat     = 'all';
+      activeCountry = 'all';
       // Update dropdown 1 display
       const ico = document.getElementById('plat-sel-ico');
       ico.className = `no-dd-sel-ico ${iconClass}`;
@@ -486,16 +517,19 @@
       closeNoDD('plat');
       // Mark selected
       document.querySelectorAll('#plat-menu .no-dd-opt').forEach(o => o.classList.remove('selected'));
-      // Build action dropdown for this platform
+      // Build action + country dropdowns for this platform
       buildActionDropdown();
+      buildCountryDropdown();
       renderServices();
     }
 
     function selectCategory(catKey, label) {
-      activeCat = catKey;
-      document.getElementById('cat-sel-label').textContent = label || 'All Categories';
+      activeCat     = catKey;
+      activeCountry = 'all';
+      document.getElementById('cat-sel-label').textContent = label || 'All';
       closeNoDD('cat');
       document.querySelectorAll('#cat-menu .no-dd-opt').forEach(o => o.classList.remove('selected'));
+      buildCountryDropdown();
       renderServices();
     }
 
@@ -521,14 +555,47 @@
       activeCat = 'all';
     }
 
+    function selectCountry(countryKey, label) {
+      activeCountry = countryKey;
+      document.getElementById('country-sel-label').textContent = label || 'All Countries';
+      closeNoDD('country');
+      document.querySelectorAll('#country-menu .no-dd-opt').forEach(o => o.classList.remove('selected'));
+      renderServices();
+    }
+
+    function buildCountryDropdown() {
+      const filtered = allServices.filter(s => {
+        const platOk = activePlat === 'all' || detectPlatform(s.name, s.category)?.key === activePlat;
+        const catOk  = activeCat  === 'all' || detectAction(s.name) === activeCat;
+        return platOk && catOk;
+      });
+
+      const usedKeys = new Set(filtered.map(s => detectCountry(s.name)));
+      const menu = document.getElementById('country-menu');
+      const wrap = document.getElementById('country-dd-wrap');
+
+      if (!filtered.length) { wrap.classList.add('disabled'); return; }
+      wrap.classList.remove('disabled');
+
+      menu.innerHTML = [
+        `<div class="no-dd-opt selected" onclick="selectCountry('all','All Countries')">All Countries</div>`,
+        ...COUNTRIES
+          .filter(c => usedKeys.has(c.key))
+          .map(c => `<div class="no-dd-opt" onclick="selectCountry('${c.key}',${JSON.stringify(c.label)})">${c.label}</div>`)
+      ].join('');
+      document.getElementById('country-sel-label').textContent = 'All Countries';
+      activeCountry = 'all';
+    }
+
     /* ── Filter & render ── */
     function getFilteredServices() {
       const q = document.getElementById('search-input').value.trim().toLowerCase();
       return allServices.filter(s => {
         const platMatch = activePlat === 'all' || detectPlatform(s.name, s.category)?.key === activePlat;
-        const catMatch  = activeCat  === 'all' || detectAction(s.name) === activeCat;
-        const txtMatch  = !q || s.name.toLowerCase().includes(q) || (s.category||'').toLowerCase().includes(q);
-        return platMatch && catMatch && txtMatch;
+        const catMatch     = activeCat     === 'all' || detectAction(s.name) === activeCat;
+        const countryMatch = activeCountry === 'all' || detectCountry(s.name) === activeCountry;
+        const txtMatch     = !q || s.name.toLowerCase().includes(q) || (s.category||'').toLowerCase().includes(q);
+        return platMatch && catMatch && countryMatch && txtMatch;
       });
     }
 
@@ -625,8 +692,9 @@
         .join('');
       platMenu.innerHTML = allOpt + platOpts;
 
-      // Init action dropdown for "All"
+      // Init action + country dropdowns for "All"
       buildActionDropdown();
+      buildCountryDropdown();
     }
 
     /* ── Order modal ── */
