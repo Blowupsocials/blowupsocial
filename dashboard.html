@@ -604,16 +604,15 @@
       <div class="ds-modal-body">
         <p>Choose an amount to top up your wallet. Funds are credited instantly after payment confirmation.</p>
         <div class="ds-amount-grid">
-          <button class="ds-amount-btn" data-amt="10">$10</button>
-          <button class="ds-amount-btn" data-amt="25">$25</button>
-          <button class="ds-amount-btn selected" data-amt="50">$50</button>
-          <button class="ds-amount-btn" data-amt="100">$100</button>
+          <button class="ds-amount-btn" data-amt="1000">₦1,000</button>
+          <button class="ds-amount-btn" data-amt="5000">₦5,000</button>
+          <button class="ds-amount-btn selected" data-amt="10000">₦10,000</button>
+          <button class="ds-amount-btn" data-amt="20000">₦20,000</button>
         </div>
-        <label class="ds-modal-input-label">Or enter a custom amount</label>
-        <input type="number" class="ds-modal-input" id="custom-amount" placeholder="0.00" min="1" max="10000" />
+        <label class="ds-modal-input-label">Or enter a custom amount (₦)</label>
+        <input type="number" class="ds-modal-input" id="custom-amount" placeholder="₦0.00" min="100" max="10000000" />
         <div class="ds-modal-methods">
-          <button class="ds-method-btn selected" data-method="card"><i class="fas fa-credit-card"></i> Card</button>
-          <button class="ds-method-btn" data-method="paypal"><i class="fab fa-paypal"></i> PayPal</button>
+          <button class="ds-method-btn selected" data-method="bank"><i class="fas fa-university"></i> Bank Transfer</button>
           <button class="ds-method-btn" data-method="crypto"><i class="fab fa-bitcoin"></i> Crypto</button>
         </div>
         <button class="ds-modal-submit" id="modal-submit">Continue to Payment</button>
@@ -1306,8 +1305,8 @@
 
     /* ── Add Funds modal ── */
     const fundsModal  = document.getElementById('funds-modal');
-    let selectedAmt   = 50;
-    let selectedMethod = 'card';
+    let selectedAmt   = 10000;
+    let selectedMethod = 'bank';
 
     function openFundsModal() { fundsModal.classList.add('show'); }
     function closeFundsModal() { fundsModal.classList.remove('show'); }
@@ -1336,7 +1335,7 @@
       const custom = parseFloat(document.getElementById('custom-amount').value);
       const amount = custom > 0 ? custom : selectedAmt;
       closeFundsModal();
-      toast(`Payment gateway coming soon! $${amount} via ${selectedMethod} noted.`, 'warn');
+      toast(`Payment gateway coming soon! ₦${amount.toLocaleString()} via ${selectedMethod} noted.`, 'warn');
     });
 
     /* ── Filter tabs ── */
