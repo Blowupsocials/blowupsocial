@@ -32,32 +32,40 @@
     .ac-page-tab { padding: 12px 20px; font-size: 0.84rem; font-weight: 600; color: #8b8fa8; background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
     .ac-page-tab.active { color: #7c3aed; border-bottom-color: #7c3aed; }
 
-    /* PLATFORM TABS */
-    .ac-groups-bar { background: #fff; border-bottom: 1px solid #e8eaf0; padding: 0 20px; }
-    .ac-groups-scroll { display: flex; gap: 2px; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
-    .ac-groups-scroll::-webkit-scrollbar { display: none; }
-    .ac-group-tab {
-      display: flex; align-items: center; gap: 7px; padding: 11px 14px;
-      font-size: 0.78rem; font-weight: 600; color: #8b8fa8; background: none; border: none;
-      border-bottom: 2px solid transparent; margin-bottom: -1px;
-      white-space: nowrap; flex-shrink: 0; cursor: pointer; transition: all 0.15s;
+    /* TWO-DROPDOWN FILTER BAR */
+    .ac-filter-bar {
+      background: #fff; padding: 12px 20px; border-bottom: 1px solid #e8eaf0;
+      display: flex; gap: 10px; align-items: flex-start;
     }
-    .ac-group-tab:hover { color: #4b5063; }
-    .ac-group-tab.active { color: #7c3aed; border-bottom-color: #7c3aed; }
-    .ac-group-ico { width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; }
-
-    /* CATEGORY PILLS */
-    .ac-subcats-wrap { padding: 10px 20px; background: #f8f9fc; border-bottom: 1px solid #e8eaf0; display: none; }
-    .ac-subcats-wrap.visible { display: block; }
-    .ac-subcats { display: flex; gap: 8px; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
-    .ac-subcats::-webkit-scrollbar { display: none; }
-    .ac-sub-btn {
-      padding: 7px 16px; border-radius: 50px; border: 1.5px solid #e5e7eb; background: #fff;
-      font-size: 0.75rem; font-weight: 600; color: #6b7080;
-      white-space: nowrap; flex-shrink: 0; transition: all 0.15s; cursor: pointer;
+    .ac-dd-wrap { position: relative; flex: 1; min-width: 0; }
+    .ac-dd-trigger {
+      display: flex; align-items: center; gap: 9px; padding: 10px 13px;
+      background: #f8f9fc; border: 1.5px solid #e8eaf0; border-radius: 11px;
+      font-size: 0.82rem; font-weight: 600; color: #1a1a2e; width: 100%;
+      cursor: pointer; transition: border-color 0.15s, background 0.15s; text-align: left;
     }
-    .ac-sub-btn:hover { border-color: #c4b5fd; color: #7c3aed; }
-    .ac-sub-btn.active { background: #7c3aed; border-color: #7c3aed; color: #fff; }
+    .ac-dd-trigger:hover { border-color: #c4b5fd; background: #f5f3ff; }
+    .ac-dd-trigger.open  { border-color: #7c3aed; background: #f5f3ff; }
+    .ac-dd-sel-ico { width: 24px; height: 24px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; flex-shrink: 0; }
+    .ac-dd-sel-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ac-dd-chevron { color: #8b8fa8; font-size: 0.68rem; flex-shrink: 0; transition: transform 0.2s; }
+    .ac-dd-trigger.open .ac-dd-chevron { transform: rotate(180deg); color: #7c3aed; }
+    .ac-dd-menu {
+      position: absolute; top: calc(100% + 5px); left: 0; width: max-content; min-width: 100%;
+      max-width: min(320px, calc(100vw - 32px)); background: #fff;
+      border: 1.5px solid #e8eaf0; border-radius: 13px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10); z-index: 300;
+      max-height: 300px; overflow-y: auto; padding: 6px;
+    }
+    .ac-dd-option {
+      display: flex; align-items: center; gap: 9px; padding: 9px 11px;
+      border-radius: 8px; cursor: pointer; font-size: 0.81rem; font-weight: 600;
+      color: #1a1a2e; transition: background 0.1s;
+    }
+    .ac-dd-option:hover  { background: #f5f3ff; }
+    .ac-dd-option.active { background: #ede9fe; color: #7c3aed; }
+    .ac-dd-opt-ico { width: 26px; height: 26px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 0.82rem; flex-shrink: 0; }
+    .ac-dd-wrap.disabled { opacity: 0.45; pointer-events: none; }
 
     /* LISTING AREA */
     .ac-listing-area { padding: 20px; }
@@ -136,8 +144,8 @@
       .ac-listing-area { padding: 14px 12px; }
       .ac-grid { grid-template-columns: 1fr; }
       .ac-topbar { padding: 0 16px; gap: 10px; }
-      .ac-groups-bar { padding: 0 12px; }
-      .ac-subcats-wrap { padding: 8px 12px; }
+      .ac-filter-bar { padding: 10px 12px; flex-direction: column; gap: 8px; }
+      .ac-dd-wrap { width: 100%; flex: unset; }
     }
   </style>
 </head>
@@ -164,14 +172,25 @@
 
     <!-- BROWSE VIEW -->
     <div id="view-browse">
-      <!-- PLATFORM TABS -->
-      <div class="ac-groups-bar">
-        <div class="ac-groups-scroll" id="groups-scroll"></div>
-      </div>
-
-      <!-- CATEGORY PILLS -->
-      <div class="ac-subcats-wrap" id="subcats-wrap">
-        <div class="ac-subcats" id="subcats-row"></div>
+      <!-- TWO-DROPDOWN FILTER -->
+      <div class="ac-filter-bar">
+        <!-- Dropdown 1: Platform -->
+        <div class="ac-dd-wrap disabled" id="plat-dd-wrap">
+          <button class="ac-dd-trigger" id="plat-trigger" onclick="toggleDD('plat')">
+            <span class="ac-dd-sel-ico" id="plat-sel-ico" style="background:#ede9fe;color:#7c3aed"><i class="fa-solid fa-hashtag"></i></span>
+            <span class="ac-dd-sel-label" id="plat-sel-label">Select Platform</span>
+            <i class="fa-solid fa-chevron-down ac-dd-chevron"></i>
+          </button>
+          <div class="ac-dd-menu" id="plat-menu" style="display:none"></div>
+        </div>
+        <!-- Dropdown 2: Account type -->
+        <div class="ac-dd-wrap disabled" id="type-dd-wrap">
+          <button class="ac-dd-trigger" id="type-trigger" onclick="toggleDD('type')">
+            <span class="ac-dd-sel-label" id="type-sel-label">Select Type</span>
+            <i class="fa-solid fa-chevron-down ac-dd-chevron"></i>
+          </button>
+          <div class="ac-dd-menu" id="type-menu" style="display:none"></div>
+        </div>
       </div>
 
       <!-- LISTINGS -->
@@ -417,7 +436,7 @@
       return null;
     }
 
-    /* ── BUILD PLATFORM TABS + CATEGORY PILLS ── */
+    /* ── TWO-DROPDOWN UI ── */
     function buildUI() {
       const groups = {};
       allCategories.forEach(cat => {
@@ -435,45 +454,87 @@
         setListingState('<i class="fas fa-box-open"></i><p>No categories found.</p>'); return;
       }
 
-      const scroll = document.getElementById('groups-scroll');
-      scroll.innerHTML = '';
-      sorted.forEach((plat, i) => {
-        const tab = document.createElement('button');
-        tab.className = 'ac-group-tab' + (i === 0 ? ' active' : '');
-        tab.innerHTML = `<div class="ac-group-ico" style="background:${plat.ico.bg};color:${plat.ico.color}"><i class="${plat.ico.icon}"></i></div>${esc(plat.label)}`;
-        tab.onclick = () => {
-          document.querySelectorAll('.ac-group-tab').forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-          buildCategoryPills(plat.cats);
-        };
-        scroll.appendChild(tab);
+      // Populate platform dropdown
+      const platMenu = document.getElementById('plat-menu');
+      platMenu.innerHTML = '';
+      sorted.forEach(plat => {
+        const opt = document.createElement('div');
+        opt.className = 'ac-dd-option';
+        opt.innerHTML = `<div class="ac-dd-opt-ico" style="background:${plat.ico.bg};color:${plat.ico.color}"><i class="${plat.ico.icon}"></i></div>${esc(plat.label)}`;
+        opt.dataset.key = plat.key;
+        opt.onclick = () => selectPlatform(plat, opt);
+        platMenu.appendChild(opt);
       });
 
-      buildCategoryPills(sorted[0].cats);
+      // Enable platform dropdown and auto-select first
+      document.getElementById('plat-dd-wrap').classList.remove('disabled');
+      selectPlatform(sorted[0], platMenu.firstChild);
     }
 
-    function buildCategoryPills(cats) {
-      const wrap = document.getElementById('subcats-wrap');
-      const row  = document.getElementById('subcats-row');
-      row.innerHTML = '';
+    function selectPlatform(plat, optEl) {
+      document.querySelectorAll('#plat-menu .ac-dd-option').forEach(o => o.classList.remove('active'));
+      optEl.classList.add('active');
 
-      cats.forEach((cat, i) => {
+      // Update trigger display
+      const selIco = document.getElementById('plat-sel-ico');
+      selIco.style.background = plat.ico.bg;
+      selIco.style.color      = plat.ico.color;
+      selIco.innerHTML        = `<i class="${plat.ico.icon}"></i>`;
+      document.getElementById('plat-sel-label').textContent = plat.label;
+      closeDD('plat');
+
+      // Populate type dropdown
+      const typeMenu = document.getElementById('type-menu');
+      typeMenu.innerHTML = '';
+      plat.cats.forEach((cat, i) => {
         const name = cat.title || cat.name || String(cat.id);
-        const btn  = document.createElement('button');
-        btn.className = 'ac-sub-btn' + (i === 0 ? ' active' : '');
-        btn.textContent = name;
-        btn.onclick = () => {
-          document.querySelectorAll('.ac-sub-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          loadListings(cat.id);
-        };
-        row.appendChild(btn);
+        const opt  = document.createElement('div');
+        opt.className = 'ac-dd-option' + (i === 0 ? ' active' : '');
+        opt.textContent = name;
+        opt.onclick = () => selectType(cat, name, opt);
+        typeMenu.appendChild(opt);
       });
 
-      wrap.classList.toggle('visible', cats.length > 0);
-      if (cats.length > 0) loadListings(cats[0].id);
-      else setListingState('<i class="fas fa-box-open"></i><p>No categories for this platform.</p>');
+      // Enable type dropdown and auto-select first
+      const typeWrap = document.getElementById('type-dd-wrap');
+      typeWrap.classList.remove('disabled');
+      if (plat.cats.length > 0) {
+        const first = plat.cats[0];
+        document.getElementById('type-sel-label').textContent = first.title || first.name || String(first.id);
+        loadListings(first.id);
+      }
     }
+
+    function selectType(cat, name, optEl) {
+      document.querySelectorAll('#type-menu .ac-dd-option').forEach(o => o.classList.remove('active'));
+      optEl.classList.add('active');
+      document.getElementById('type-sel-label').textContent = name;
+      closeDD('type');
+      loadListings(cat.id);
+    }
+
+    function toggleDD(which) {
+      const menu    = document.getElementById(`${which}-menu`);
+      const trigger = document.getElementById(`${which}-trigger`);
+      const isOpen  = menu.style.display !== 'none';
+      // Close the other dropdown
+      const other = which === 'plat' ? 'type' : 'plat';
+      closeDD(other);
+      menu.style.display = isOpen ? 'none' : 'block';
+      trigger.classList.toggle('open', !isOpen);
+    }
+
+    function closeDD(which) {
+      document.getElementById(`${which}-menu`).style.display = 'none';
+      document.getElementById(`${which}-trigger`).classList.remove('open');
+    }
+
+    document.addEventListener('click', e => {
+      ['plat', 'type'].forEach(which => {
+        const wrap = document.getElementById(`${which}-dd-wrap`);
+        if (wrap && !wrap.contains(e.target)) closeDD(which);
+      });
+    });
 
     /* ── DETECT ICON FROM LISTING TITLE ── */
     function iconFromTitle(title, fallbackCatId) {
