@@ -483,7 +483,7 @@
       const first     = subs[0];
       const firstName = first.title || first.name || String(first.id);
       document.getElementById('type-sel-label').textContent = firstName;
-      loadListings(first.id);
+      loadListings(first.id, true);
     }
 
     function selectType(sub, name, optEl) {
@@ -491,7 +491,7 @@
       optEl.classList.add('active');
       document.getElementById('type-sel-label').textContent = name;
       closeDD('type');
-      loadListings(sub.id);
+      loadListings(sub.id, true);
     }
 
     function toggleDD(which) {
@@ -584,21 +584,35 @@
       return CAT_ICON[Number(fallbackCatId)] || FALLBACK_ICON;
     }
 
-    /* ── LOAD LISTINGS FOR A CATEGORY ── */
-    async function loadListings(catId) {
+    /* ── LOAD LISTINGS ── */
+    async function loadListings(id, useSubcat = false) {
       setListingState('<i class="fas fa-spinner fa-spin"></i><p>Loading…</p>');
 
-      const res = await api({ action: 'listings', category_id: catId });
+      const queryParam = useSubcat ? { subcategory_id: id } : { category_id: id };
+      let res = await api({ action: 'listings', ...queryParam });
+
       if (res.error === 'accounts_not_configured') {
         setListingState('<i class="fas fa-gear"></i><p>Store not configured.</p>'); return;
       }
+
+      let data     = unwrap(res);
+      let listings = Array.isArray(data) ? data : (data?.listings || data?.items || data?.results || []);
+
+      // If subcategory_id returned nothing, retry with category_id and vice versa
+      if (!listings.length && !res.error) {
+        const retryParam = useSubcat ? { category_id: id } : { subcategory_id: id };
+        const res2 = await api({ action: 'listings', ...retryParam });
+        if (!res2.error) {
+          const data2 = unwrap(res2);
+          listings = Array.isArray(data2) ? data2 : (data2?.listings || data2?.items || data2?.results || []);
+        }
+      }
+
       if (res.error) {
         setListingState('<i class="fas fa-triangle-exclamation"></i><p>Could not load listings. Try again.</p>'); return;
       }
 
-      const data     = unwrap(res);
-      const listings = Array.isArray(data) ? data : (data?.listings || data?.items || data?.results || []);
-      renderListings(listings, catId);
+      renderListings(listings, id);
     }
 
     function setListingState(html) {
