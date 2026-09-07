@@ -760,6 +760,24 @@
       selectedOffer = null;
     }
 
+    /* ── Parse AccsZone colon-separated account string ── */
+    function parseAccsZoneAccount(str) {
+      if (!str) return null;
+      // Format: username:password:email:email_password:2fa_codes:https://profile_url
+      const parts = str.split(':');
+      const httpsIdx = parts.findIndex((p, i) => i >= 4 && p === 'https');
+      const twofa     = httpsIdx > 4 ? parts.slice(4, httpsIdx).join(':') : (parts[4] || '');
+      const profileUrl = httpsIdx >= 0 ? parts.slice(httpsIdx).join(':') : '';
+      const obj = {};
+      if (parts[0]) obj['Username']       = parts[0];
+      if (parts[1]) obj['Password']       = parts[1];
+      if (parts[2]) obj['Email']          = parts[2];
+      if (parts[3]) obj['Email Password'] = parts[3];
+      if (twofa.trim()) obj['2FA Backup'] = twofa.trim();
+      if (profileUrl)   obj['Profile URL'] = profileUrl;
+      return Object.keys(obj).length ? obj : null;
+    }
+
     /* ── CONFIRM PURCHASE ── */
     async function confirmBuy() {
       if (!selectedOffer) return;
@@ -769,17 +787,26 @@
       btn.textContent = 'Processing…';
       errEl.style.display = 'none';
 
+      let walletDeducted = false;
+      const prevBalance  = userBalance;
+      const newBalance   = userBalance - selectedOffer.sellUsd;
+
       try {
-        const res  = await api({ action: 'purchase', listing_id: selectedOffer.id, slug: selectedOffer.slug, quantity: 1 });
+        const res  = await api({ action: 'purchase', ad_id: selectedOffer.id, quantity: 1 });
         const data = unwrap(res);
-        if (!res || res.success === false) throw new Error(res.message || 'Purchase failed');
+        if (!res || res.error || res.success === false) {
+          const detail = res?.detail ? ` — ${res.detail}` : '';
+          throw new Error((res?.message || (typeof res?.error === 'string' ? res.error : '') || 'Purchase failed') + detail);
+        }
 
         const orderId     = data?.order_id || data?.id || null;
-        const credentials = data?.credentials || data?.account || data?.accounts?.[0] || null;
-        const newBalance  = userBalance - selectedOffer.sellUsd;
+        let credentials   = data?.credentials || data?.account || null;
+        if (!credentials && Array.isArray(data?.accounts) && data.accounts.length) {
+          credentials = parseAccsZoneAccount(data.accounts[0]);
+        }
 
-        await db.from('profiles').update({ wallet_balance: newBalance }).eq('id', userId);
-        await db.from('account_orders').insert({
+        // Save the order FIRST — so the account is never lost even if wallet update fails
+        const { error: orderErr } = await db.from('account_orders').insert({
           user_id:           userId,
           provider_order_id: String(orderId || ''),
           offer_id:          String(selectedOffer.id || ''),
@@ -790,14 +817,30 @@
           status:            credentials ? 'complete' : 'pending',
           credentials:       credentials || null,
         });
+        if (orderErr) console.error('Order save failed:', orderErr.message);
+
+        // Deduct wallet — check for errors explicitly
+        const { error: walletErr } = await db.from('profiles').update({ wallet_balance: newBalance }).eq('id', userId);
+        if (walletErr) throw new Error('Order saved but wallet update failed: ' + walletErr.message);
+        walletDeducted = true;
 
         userBalance = newBalance;
         document.getElementById('topbar-balance').textContent = fmtNGN(newBalance);
         closeBuyModal();
-        showCredentials(selectedOffer, credentials, orderId);
+        if (credentials) {
+          showCredentials(selectedOffer, credentials, orderId);
+        } else {
+          showView('orders');
+          toast('Order placed! Your account details will appear here once ready.', 'success');
+        }
 
       } catch (e) {
-        errEl.textContent   = 'Purchase could not be completed. Please try again.';
+        if (walletDeducted) {
+          await db.from('profiles').update({ wallet_balance: prevBalance }).eq('id', userId);
+          userBalance = prevBalance;
+          document.getElementById('topbar-balance').textContent = fmtNGN(prevBalance);
+        }
+        errEl.textContent   = e.message || 'Purchase could not be completed. Please try again.';
         errEl.style.display = 'block';
         btn.disabled    = false;
         btn.textContent = 'Confirm Purchase';
@@ -826,7 +869,7 @@
         content.innerHTML = `
           <p style="text-align:center;font-size:0.9rem;font-weight:700;margin-bottom:8px">Order Placed!</p>
           <p style="text-align:center;font-size:0.83rem;color:#6b7080;line-height:1.55">
-            Your product is being prepared. Check <strong>My Purchases</strong> for credentials once ready.
+            Your account is being prepared and will appear here shortly.
             ${orderId ? `<br><br>Reference: <strong>BUS-${esc(String(orderId))}</strong>` : ''}
           </p>`;
         warn.style.display = 'none';

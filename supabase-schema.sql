@@ -56,3 +56,26 @@ $$ language plpgsql security definer;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
+
+-- 4. Account Store Orders (AccsZone purchases)
+create table if not exists public.account_orders (
+  id                 bigint generated always as identity primary key,
+  user_id            uuid references public.profiles(id) on delete cascade not null,
+  provider_order_id  text          default '',
+  offer_id           text          default '',
+  offer_title        text          default '',
+  platform           text          default '',
+  price_usd          decimal(10,4) default 0,
+  price_ngn          decimal(12,2) default 0,
+  status             text          default 'pending',
+  credentials        jsonb,
+  created_at         timestamptz   default now()
+);
+
+alter table public.account_orders enable row level security;
+
+create policy "owner_select" on public.account_orders
+  for select using (auth.uid() = user_id);
+
+create policy "owner_insert" on public.account_orders
+  for insert with check (auth.uid() = user_id);

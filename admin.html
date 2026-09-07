@@ -368,6 +368,7 @@
       <div class="sb-sec">Manage</div>
       <a href="#" data-section="users"         class="sb-item">Users</a>
       <a href="#" data-section="orders"        class="sb-item">Orders</a>
+      <a href="#" data-section="acct-orders"   class="sb-item">Acct Store</a>
       <a href="#" data-section="funds"         class="sb-item">Fund Requests</a>
       <a href="#" data-section="transactions"  class="sb-item">Transactions</a>
       <a href="#" data-section="services"      class="sb-item">Services</a>
@@ -737,6 +738,25 @@
             </table>
           </div>
           <div class="tbl-foot"><span id="orders-count">—</span><div class="page-btns" id="orders-pages"></div></div>
+        </div>
+      </div>
+
+      <!-- ══ ACCOUNT STORE ORDERS ══ -->
+      <div id="sec-acct-orders" class="admin-section">
+        <div class="sec-hdr">
+          <div class="sec-hdr-left"><h2>Acct Store Orders</h2><p>Account purchases from the AccsZone store — manage status and issue refunds</p></div>
+          <div class="sec-hdr-right">
+            <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="acct-search" placeholder="Search by user or title…" oninput="filterAcctOrders(this.value)"></div>
+          </div>
+        </div>
+        <div class="tbl-card">
+          <div class="tbl-wrap">
+            <table class="data-tbl">
+              <thead><tr><th>Order</th><th>User</th><th>Item</th><th>Amount</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+              <tbody id="acct-orders-tbody"><tr><td colspan="7" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="tbl-foot"><span id="acct-orders-count">—</span></div>
         </div>
       </div>
 
@@ -1456,6 +1476,7 @@
     async function loadSecData(name) {
       if (name === 'users')         await loadUsers();
       if (name === 'orders')        await loadOrders();
+      if (name === 'acct-orders')   await loadAcctOrders();
       if (name === 'funds')         await loadFunds();
       if (name === 'transactions')  await loadTransactions();
       if (name === 'reports')       await loadReports();
@@ -1857,6 +1878,105 @@
           ['Pending','In Progress','Completed','Cancelled'].map(s=>`<option${s===newStatus?' selected':''}>${s}</option>`).join('')
         }</select>`;
       }
+    }
+
+    /* ── Account Store Orders ── */
+    let allAcctOrders = [];
+    async function loadAcctOrders() {
+      const tbody = document.getElementById('acct-orders-tbody');
+      const { data, error } = await db.from('account_orders').select('*').order('created_at', { ascending: false });
+      if (error || !data?.length) {
+        tbody.innerHTML = `<tr><td colspan="7" class="tbl-loading">No account store orders found</td></tr>`;
+        document.getElementById('acct-orders-count').textContent = '0 orders';
+        return;
+      }
+      allAcctOrders = data;
+      renderAcctOrders(data);
+    }
+
+    function renderAcctOrders(rows) {
+      const tbody = document.getElementById('acct-orders-tbody');
+      document.getElementById('acct-orders-count').textContent = `${rows.length} order${rows.length !== 1 ? 's' : ''}`;
+      if (!rows.length) { tbody.innerHTML = `<tr><td colspan="7" class="tbl-loading">No orders match</td></tr>`; return; }
+      tbody.innerHTML = rows.map(o => {
+        const st   = o.status || 'pending';
+        const cls  = st === 'complete' ? 'b-active' : st === 'refunded' ? 'b-cancelled' : 'b-pending';
+        const ngn  = Math.round(parseFloat(o.price_ngn || 0)).toLocaleString('en-NG');
+        const date = o.created_at ? new Date(o.created_at).toLocaleDateString('en-NG', {day:'numeric',month:'short',year:'2-digit'}) : '—';
+        const uid  = (o.user_id||'').slice(0,12);
+        const hasCreds = o.credentials && (typeof o.credentials === 'object' ? Object.keys(o.credentials).length > 0 : String(o.credentials).trim());
+        return `<tr>
+          <td class="ord-id">#${(o.id||'').toString().slice(0,8).toUpperCase()}</td>
+          <td style="color:var(--t2);font-size:0.74rem;font-family:'Space Grotesk',sans-serif">${uid}…</td>
+          <td class="ord-svc" style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${(o.offer_title||'')}">
+            ${o.offer_title || '—'}<br>
+            <span style="color:var(--t3);font-size:0.68rem">${o.platform||''}</span>
+          </td>
+          <td class="wallet-ngn">₦${ngn}</td>
+          <td><span class="badge ${cls}">${st}</span></td>
+          <td style="color:var(--t3);font-size:0.72rem;white-space:nowrap">${date}</td>
+          <td style="display:flex;gap:6px;flex-wrap:wrap">
+            ${hasCreds ? `<button class="act-btn" style="font-size:0.7rem;padding:4px 9px" onclick="viewAcctCreds('${o.id}')">Creds</button>` : ''}
+            ${st !== 'refunded' ? `<button class="act-btn" style="font-size:0.7rem;padding:4px 9px;background:#fef2f2;color:#dc2626;border-color:#fecaca" onclick="refundAcctOrder('${o.id}','${o.user_id}',${parseFloat(o.price_usd||0)})">Refund</button>` : ''}
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    function filterAcctOrders(q) {
+      const lq = q.toLowerCase();
+      renderAcctOrders(allAcctOrders.filter(o =>
+        (o.user_id||'').toLowerCase().includes(lq) ||
+        (o.offer_title||'').toLowerCase().includes(lq) ||
+        (o.platform||'').toLowerCase().includes(lq) ||
+        (o.status||'').toLowerCase().includes(lq)
+      ));
+    }
+
+    function viewAcctCreds(orderId) {
+      const o = allAcctOrders.find(x => x.id === orderId);
+      if (!o || !o.credentials) return;
+      const creds = typeof o.credentials === 'object'
+        ? Object.entries(o.credentials).map(([k,v]) => `<strong>${k}:</strong> ${v}`).join('<br>')
+        : String(o.credentials).replace(/\n/g, '<br>');
+      const modal = document.createElement('div');
+      modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9000;display:flex;align-items:center;justify-content:center';
+      modal.innerHTML = `<div style="background:#fff;border-radius:14px;padding:28px 24px;max-width:420px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,0.18)">
+        <p style="font-weight:700;font-size:0.95rem;margin:0 0 14px">Order #${orderId.slice(0,8).toUpperCase()} — Credentials</p>
+        <div style="background:#f8f7ff;border-radius:9px;padding:14px;font-size:0.82rem;line-height:1.7;word-break:break-all">${creds}</div>
+        <button onclick="this.closest('[style*=inset]').remove()" style="margin-top:18px;width:100%;background:#7c3aed;color:#fff;border:none;border-radius:9px;padding:10px;font-weight:700;cursor:pointer">Close</button>
+      </div>`;
+      document.body.appendChild(modal);
+    }
+
+    function refundAcctOrder(orderId, userId, priceUsd) {
+      const ngn = Math.round(priceUsd * USD_TO_NGN).toLocaleString('en-NG');
+      const modal = document.createElement('div');
+      modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9000;display:flex;align-items:center;justify-content:center';
+      modal.innerHTML = `<div style="background:#fff;border-radius:14px;padding:28px 24px;max-width:360px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,0.18)">
+        <p style="font-weight:700;font-size:0.95rem;margin:0 0 10px">Confirm Refund</p>
+        <p style="font-size:0.83rem;color:#555;margin:0 0 20px">Issue ₦${ngn} refund to user <code style="font-size:0.75rem">${userId.slice(0,12)}…</code>? This cannot be undone.</p>
+        <div style="display:flex;gap:10px">
+          <button id="rfnd-cancel" style="flex:1;padding:10px;border:1px solid #ddd;border-radius:9px;background:#f8f8f8;font-weight:600;cursor:pointer">Cancel</button>
+          <button id="rfnd-confirm" style="flex:1;padding:10px;border:none;border-radius:9px;background:#dc2626;color:#fff;font-weight:700;cursor:pointer">Refund</button>
+        </div>
+      </div>`;
+      document.body.appendChild(modal);
+      modal.querySelector('#rfnd-cancel').onclick = () => modal.remove();
+      modal.querySelector('#rfnd-confirm').onclick = () => { modal.remove(); _doRefund(orderId, userId, priceUsd); };
+    }
+
+    async function _doRefund(orderId, userId, priceUsd) {
+      const { data: profile, error: pe } = await db.from('profiles').select('wallet_balance').eq('id', userId).single();
+      if (pe || !profile) { adminToast('Could not load user profile', 'error'); return; }
+      const newBal = (parseFloat(profile.wallet_balance) || 0) + priceUsd;
+      const { error: ue } = await db.from('profiles').update({ wallet_balance: newBal }).eq('id', userId);
+      if (ue) { adminToast('Failed to update wallet', 'error'); return; }
+      const { error: oe } = await db.from('account_orders').update({ status: 'refunded' }).eq('id', orderId);
+      if (oe) { adminToast('Wallet updated but order status failed to update', 'warn'); return; }
+      allAcctOrders = allAcctOrders.map(o => o.id === orderId ? { ...o, status: 'refunded' } : o);
+      renderAcctOrders(allAcctOrders);
+      adminToast('Refund issued successfully', 'success');
     }
 
     /* ── Funds Requests ── */

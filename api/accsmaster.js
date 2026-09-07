@@ -36,19 +36,19 @@ export default async function handler(req, res) {
   const path    = buildPath(action, params);
   const headers = { 'X-API-Key': apiKey, 'Content-Type': 'application/json', Accept: 'application/json' };
 
-  // Strip routing fields from forwarded params
-  const { id: _id, slug: _slug, ...forwardParams } = params;
-
   try {
     let upstream;
     if (GET_ACTIONS.has(action)) {
-      const qs = Object.keys(forwardParams).length ? '?' + new URLSearchParams(forwardParams).toString() : '';
+      // Strip URL-routing fields (id, slug) from query params — they're already in the path
+      const { id: _id, slug: _slug, ...qParams } = params;
+      const qs = Object.keys(qParams).length ? '?' + new URLSearchParams(qParams).toString() : '';
       upstream = await fetch(`${BASE}${path}${qs}`, { headers });
     } else {
+      // For POST actions (e.g. purchase), send all params as-is — slug belongs in the body
       upstream = await fetch(`${BASE}${path}`, {
         method: 'POST',
         headers,
-        body: JSON.stringify(forwardParams),
+        body: JSON.stringify(params),
       });
     }
 
