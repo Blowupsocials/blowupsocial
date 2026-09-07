@@ -1955,7 +1955,9 @@
       const normAcct = (acctOrders || []).map(o => {
         let plat = o.platform || '';
         try { plat = JSON.parse(plat).title || JSON.parse(plat).slug || plat; } catch {}
-        plat = plat || 'Acct Store';
+        // Normalise raw platform slug to a human-readable label
+        const platMap = { instagram: 'IG Account', facebook: 'FB Account', tiktok: 'TT Account', twitter: 'X Account', youtube: 'YT Account', snapchat: 'SC Account' };
+        plat = platMap[plat.toLowerCase()] || plat || 'Acct Store';
         return {
           id:         `ACC-${o.id}`,
           order_ref:  `ACC-${o.id}`,

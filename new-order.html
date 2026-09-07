@@ -808,16 +808,16 @@
         await db.from('profiles').update({ wallet_balance: newBalanceUSD }).eq('id', userId);
 
         // 3. Save order to Supabase (amount stored as USD for consistency)
-        await db.from('orders').insert({
+        const { error: ordErr } = await db.from('orders').insert({
           user_id:    userId,
           order_ref:  `BUS-${smmOrderId}`,
-          service:    selectedSvc.name,
+          service:    selectedSvc.name || 'Social Boost',
           link:       link,
           quantity:   qty,
-          amount:     (cost / USD_TO_NGN).toFixed(6),
+          amount:     parseFloat((cost / USD_TO_NGN).toFixed(4)),
           status:     'Pending',
-          created_at: new Date().toISOString()
         });
+        if (ordErr) console.error('[order-save]', ordErr.code, ordErr.message, ordErr.details);
 
         // 4. Update local balance (keep in NGN)
         userBalance = newBalanceNGN;
