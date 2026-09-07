@@ -15,7 +15,7 @@
 
     /* ── SIDEBAR ── */
     .ds-sidebar {
-      width: 220px; background: #fff;
+      width: 250px; background: #fff;
       border-right: 1px solid #ebebeb;
       position: fixed; top: 0; left: 0; bottom: 0;
       display: flex; flex-direction: column;
@@ -23,26 +23,24 @@
     }
     .ds-logo {
       display: flex; align-items: center; gap: 10px;
-      padding: 20px 18px 16px;
+      padding: 22px 20px 18px;
       border-bottom: 1px solid #f0f0f0;
       flex-shrink: 0;
     }
     .ds-logo img { width: 30px; height: 30px; object-fit: contain; }
     .ds-logo-text { font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 800; color: #111; letter-spacing: -0.3px; }
 
-    .ds-nav { flex: 1; padding: 14px 10px; display: flex; flex-direction: column; gap: 2px; }
-    .ds-nav-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #c0c4d0; padding: 10px 12px 4px; }
+    .ds-nav { flex: 1; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
+    .ds-nav-label { display: none; }
     .ds-nav-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 9px 12px; border-radius: 8px;
-      font-size: 0.81rem; font-weight: 500;
-      color: #777;
-      transition: all 0.15s; cursor: pointer;
+      display: flex; align-items: center;
+      padding: 12px 16px; border-radius: 10px;
+      font-size: 0.95rem; font-weight: 400;
+      color: #222; transition: background 0.15s, color 0.15s; cursor: pointer;
     }
-    .ds-nav-item i { width: 15px; text-align: center; font-size: 0.82rem; flex-shrink: 0; }
+    .ds-nav-item i { display: none; }
     .ds-nav-item:hover { background: #f5f3ff; color: #7c3aed; }
-    .ds-nav-item.active { background: #f0eeff; color: #7c3aed; }
-    .ds-nav-item.active i { color: #7c3aed; }
+    .ds-nav-item.active { background: #ece9ff; color: #7c3aed; font-weight: 700; }
     .ds-nav-item.danger { color: #f87171; margin-top: 4px; }
     .ds-nav-item.danger:hover { background: #fef2f2; color: #ef4444; }
 
@@ -52,37 +50,28 @@
       padding: 2px 6px; border-radius: 50px; line-height: 1.4;
     }
 
-    .ds-refer-card {
-      margin: 0 10px 12px;
-      background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
-      border-radius: 14px; padding: 18px 16px; color: #fff; flex-shrink: 0;
+    /* ── SIDEBAR WALLET CARD ── */
+    .ds-sidebar-wallet {
+      margin: 0 12px 16px; flex-shrink: 0;
+      background: #f0fdf4; border-radius: 14px; padding: 16px 18px;
     }
-    .ds-refer-icon { font-size: 1.5rem; margin-bottom: 8px; }
-    .ds-refer-title { font-size: 0.82rem; font-weight: 700; margin-bottom: 4px; }
-    .ds-refer-desc { font-size: 0.7rem; opacity: 0.85; margin-bottom: 12px; line-height: 1.45; }
-    .ds-refer-btn {
-      background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3);
-      color: #fff; padding: 7px 0; border-radius: 8px;
-      font-size: 0.75rem; font-weight: 700; cursor: pointer;
-      transition: background 0.15s; width: 100%;
+    .ds-sidebar-wallet-lbl { font-size: 0.72rem; color: #6b7280; margin-bottom: 6px; }
+    .ds-sidebar-wallet-amt { font-size: 1.5rem; font-weight: 800; color: #16a34a; letter-spacing: -0.5px; line-height: 1; margin-bottom: 10px; }
+    .ds-sidebar-wallet-link {
+      font-size: 0.78rem; font-weight: 700; color: #16a34a;
+      background: none; border: none; cursor: pointer; padding: 0;
+      display: flex; align-items: center; gap: 4px; font-family: inherit;
     }
-    .ds-refer-btn:hover { background: rgba(255,255,255,0.28); }
+    .ds-sidebar-wallet-link:hover { opacity: 0.75; }
 
-    .ds-user-row {
-      display: flex; align-items: center; gap: 10px;
-      padding: 12px 14px; border-top: 1px solid #f0f0f0; flex-shrink: 0;
-    }
-    .ds-user-avatar {
-      width: 32px; height: 32px; border-radius: 50%;
-      background: linear-gradient(135deg, #ec4899, #7c3aed);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.72rem; font-weight: 800; color: #fff; flex-shrink: 0;
-    }
-    .ds-user-name { font-size: 0.78rem; font-weight: 600; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .ds-user-email { font-size: 0.66rem; color: #999; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ds-refer-card { display: none; }
+    .ds-user-row { display: none; }
+    .ds-user-avatar {}
+    .ds-user-name {}
+    .ds-user-email {}
 
     /* ── MAIN ── */
-    .ds-main { margin-left: 220px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; min-width: 0; overflow-x: hidden; }
+    .ds-main { margin-left: 250px; width: calc(100vw - 250px); display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
 
     /* ── TOPBAR ── */
     .ds-topbar {
@@ -737,40 +726,34 @@
     </div>
 
     <nav class="ds-nav">
-      <a href="admin.html" id="admin-sidebar-btn" class="ds-nav-item" style="display:none;background:linear-gradient(90deg,rgba(124,58,237,0.22),rgba(236,72,153,0.14));color:#a78bfa;font-weight:700;margin-bottom:6px;border:1px solid rgba(124,58,237,0.25)"><i class="fas fa-shield-halved"></i> Admin Panel</a>
-      <div class="ds-nav-label">Main</div>
-      <a href="dashboard.html" class="ds-nav-item active"><i class="fas fa-gauge"></i> Dashboard</a>
-      <a href="new-order.html" class="ds-nav-item js-order"><i class="fas fa-plus-circle"></i> Social Boost</a>
-      <a href="accounts.html" class="ds-nav-item"><i class="fas fa-store"></i> Accounts Store</a>
-      <a href="#" class="ds-nav-item" id="nav-orders" onclick="showDsSec('orders');return false"><i class="fas fa-bag-shopping"></i> My Orders <span class="ds-nav-badge" id="orders-badge">0</span></a>
+      <a href="admin.html" id="admin-sidebar-btn" class="ds-nav-item" style="display:none;color:#7c3aed;font-weight:700;margin-bottom:4px">Admin Panel</a>
+      <a href="dashboard.html" class="ds-nav-item active">Home</a>
+      <a href="new-order.html" class="ds-nav-item">New Order</a>
+      <a href="accounts.html" class="ds-nav-item">Accounts Store</a>
+      <a href="#" class="ds-nav-item" id="nav-orders" onclick="showDsSec('orders');return false">My Orders <span class="ds-nav-badge" id="orders-badge" style="display:none">0</span></a>
+      <a href="#" class="ds-nav-item js-funds">Wallet</a>
+      <a href="#" class="ds-nav-item" id="nav-txns" onclick="showDsSec('txns');return false">Transactions</a>
+      <a href="#" class="ds-nav-item" id="nav-support" onclick="showDsSec('support');return false">Support</a>
+      <a href="#" class="ds-nav-item" id="nav-settings" onclick="showDsSec('settings');return false">Account</a>
+      <a href="#" class="ds-nav-item danger" id="signout-btn">Sign Out</a>
 
-      <div class="ds-nav-label">Shop</div>
-      <a href="new-order.html" class="ds-nav-item"><i class="fas fa-boxes-stacked"></i> Services</a>
-      <a href="#" class="ds-nav-item js-funds"><i class="fas fa-wallet"></i> Add Funds</a>
-      <a href="#" class="ds-nav-item" id="nav-txns" onclick="showDsSec('txns');return false"><i class="fas fa-right-left"></i> Transactions</a>
-
-      <div class="ds-nav-label">Account</div>
-      <a href="#" class="ds-nav-item" id="nav-referrals" onclick="showDsSec('referrals');return false"><i class="fas fa-users"></i> Referrals</a>
-      <a href="#" class="ds-nav-item" id="nav-favorites" onclick="showDsSec('favorites');return false"><i class="fas fa-star"></i> Favorites</a>
-      <a href="#" class="ds-nav-item" id="nav-api" onclick="showDsSec('api');return false"><i class="fas fa-code"></i> API Access</a>
-      <a href="#" class="ds-nav-item" id="nav-support" onclick="showDsSec('support');return false"><i class="fas fa-headset"></i> Support</a>
-      <a href="#" class="ds-nav-item" id="nav-settings" onclick="showDsSec('settings');return false"><i class="fas fa-gear"></i> Settings</a>
-      <a href="#" class="ds-nav-item danger" id="signout-btn"><i class="fas fa-right-from-bracket"></i> Sign Out</a>
+      <!-- hidden nav IDs for JS compatibility -->
+      <a hidden id="nav-referrals" href="#"></a>
+      <a hidden id="nav-favorites" href="#"></a>
+      <a hidden id="nav-api" href="#"></a>
     </nav>
 
-    <div class="ds-refer-card">
-      <div class="ds-refer-icon">🚀</div>
-      <div class="ds-refer-title">Refer &amp; Earn</div>
-      <div class="ds-refer-desc">Invite friends and earn 5% commission on every order they place.</div>
-      <button class="ds-refer-btn" onclick="showDsSec('referrals')">Start Earning</button>
+    <div class="ds-sidebar-wallet">
+      <div class="ds-sidebar-wallet-lbl">Wallet balance</div>
+      <div class="ds-sidebar-wallet-amt" id="sidebar-wallet">₦0.00</div>
+      <button class="ds-sidebar-wallet-link js-funds">Add funds →</button>
     </div>
 
-    <div class="ds-user-row">
-      <div class="ds-user-avatar" id="sidebar-avatar">…</div>
-      <div style="min-width:0">
-        <div class="ds-user-name" id="sidebar-name">Loading…</div>
-        <div class="ds-user-email" id="sidebar-email">…</div>
-      </div>
+    <!-- hidden for JS compatibility -->
+    <div hidden>
+      <div id="sidebar-avatar"></div>
+      <div id="sidebar-name"></div>
+      <div id="sidebar-email"></div>
     </div>
   </aside>
 
@@ -1599,10 +1582,12 @@
               const { data: prof } = await db.from('profiles').select('wallet_balance').eq('id', session.user.id).single();
               if (prof) {
                 const ngn = Math.round((prof.wallet_balance || 0) * 1600);
-                document.getElementById('topbar-wallet').textContent = `₦${ngn.toLocaleString('en-NG')}`;
-                document.getElementById('wallet-modal-balance').textContent = `₦${ngn.toLocaleString('en-NG')}`;
+                const fmtd = `₦${ngn.toLocaleString('en-NG')}`;
+                document.getElementById('topbar-wallet').textContent = fmtd;
+                document.getElementById('wallet-modal-balance').textContent = fmtd;
+                document.getElementById('sidebar-wallet').textContent = fmtd;
                 const rw = document.getElementById('right-wallet');
-                if (rw) rw.textContent = `₦${ngn.toLocaleString('en-NG')}`;
+                if (rw) rw.textContent = fmtd;
                 window.userWallet = ngn;
               }
             }
@@ -1760,6 +1745,7 @@
       /* Wallet */
       document.getElementById('topbar-wallet').textContent = fmtNGN(wallet);
       document.getElementById('right-wallet').textContent  = fmtNGN(wallet);
+      document.getElementById('sidebar-wallet').textContent = fmtNGN(wallet);
 
       /* Orders */
       const { data: orders } = await db.from('orders').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
