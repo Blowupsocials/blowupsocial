@@ -80,10 +80,11 @@
     .ds-ann-bar {
       background: linear-gradient(90deg, #7c3aed 0%, #ec4899 100%);
       color: #fff; font-size: 0.8rem; font-weight: 600;
-      padding: 9px 20px; display: flex; align-items: center; justify-content: center;
-      gap: 10px; position: relative; flex-shrink: 0; line-height: 1.4; text-align: center;
+      padding: 9px 48px; display: flex; align-items: center; justify-content: center;
+      position: relative; flex-shrink: 0; line-height: 1.5; text-align: center;
     }
-    .ds-ann-bar a { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
+    .ds-ann-bar span { display: inline; }
+    .ds-ann-bar a { color: #fff; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
     .ds-ann-bar a:hover { opacity: 0.85; }
     .ds-ann-close {
       position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
@@ -819,7 +820,7 @@
 
     <!-- ANNOUNCEMENT BAR -->
     <div class="ds-ann-bar" id="ann-bar">
-      📱 Add BlowUpSocials to your home screen for faster access. <a href="#" onclick="triggerInstall();return false">Get the app →</a>
+      <span>📱 Add BlowUpSocials to your home screen for faster access — <a href="#" onclick="triggerInstall();return false">Get the app →</a></span>
       <button class="ds-ann-close" id="ann-close" aria-label="Dismiss"><i class="fas fa-xmark"></i></button>
     </div>
 
