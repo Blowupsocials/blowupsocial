@@ -94,7 +94,6 @@ ul { list-style: none; }
 .logo-img {
   height: 38px; width: auto;
   object-fit: contain;
-  mix-blend-mode: multiply;
 }
 .auth-card .logo-img { height: 44px; margin-bottom: 4px; }
 

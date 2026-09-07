@@ -400,8 +400,9 @@
   <script src="js/supabase-client.js"></script>
   <script>
     /* ── Config ── */
-    const MARKUP = 2.0;
-    // Owlet API rates are already in NGN — no currency conversion needed
+    const MARKUP       = 2.0;
+    const USD_TO_NGN   = 1600;
+    const MIN_PRICE_PER_K = 10; // hide services below ₦10 per 1,000 (very low quality)
     const fmtNGN = v => `₦${Math.round(v).toLocaleString('en-NG')}`;
 
     /* ── Platform map ── */
@@ -611,7 +612,8 @@
     function getFilteredServices() {
       const q = document.getElementById('search-input').value.trim().toLowerCase();
       return allServices.filter(s => {
-        const platMatch = activePlat === 'all' || detectPlatform(s.name, s.category)?.key === activePlat;
+        if (parseFloat(s.rate) * MARKUP < MIN_PRICE_PER_K) return false; // hide ultra-cheap services
+        const platMatch    = activePlat    === 'all' || detectPlatform(s.name, s.category)?.key === activePlat;
         const catMatch     = activeCat     === 'all' || detectAction(s.name) === activeCat;
         const countryMatch = activeCountry === 'all' || detectCountry(s.name) === activeCountry;
         const txtMatch     = !q || s.name.toLowerCase().includes(q) || (s.category||'').toLowerCase().includes(q);
@@ -791,30 +793,31 @@
 
         const smmOrderId = result.order;
 
-        // 2. Deduct from Supabase wallet
+        // 2. Deduct from Supabase wallet (balance in NGN locally, USD in DB)
         const { data: { session } } = await db.auth.getSession();
-        const userId = session.user.id;
-        const newBalance = parseFloat((userBalance - cost).toFixed(4));
+        const userId        = session.user.id;
+        const newBalanceNGN = parseFloat((userBalance - cost).toFixed(2));
+        const newBalanceUSD = parseFloat((newBalanceNGN / USD_TO_NGN).toFixed(6));
 
-        await db.from('profiles').update({ wallet_balance: newBalance }).eq('id', userId);
+        await db.from('profiles').update({ wallet_balance: newBalanceUSD }).eq('id', userId);
 
-        // 3. Save order to Supabase
+        // 3. Save order to Supabase (amount stored as USD for consistency)
         await db.from('orders').insert({
           user_id:    userId,
           order_ref:  `BUS-${smmOrderId}`,
           service:    selectedSvc.name,
           link:       link,
           quantity:   qty,
-          amount:     cost.toFixed(4),
+          amount:     (cost / USD_TO_NGN).toFixed(6),
           status:     'Pending',
           created_at: new Date().toISOString()
         });
 
-        // 4. Update local balance
-        userBalance = newBalance;
-        document.getElementById('topbar-balance').textContent = fmtNGN(newBalance);
-        document.getElementById('modal-balance').textContent  = fmtNGN(newBalance);
-        document.getElementById('stat-balance').textContent   = fmtNGN(newBalance);
+        // 4. Update local balance (keep in NGN)
+        userBalance = newBalanceNGN;
+        document.getElementById('topbar-balance').textContent = fmtNGN(newBalanceNGN);
+        document.getElementById('modal-balance').textContent  = fmtNGN(newBalanceNGN);
+        document.getElementById('stat-balance').textContent   = fmtNGN(newBalanceNGN);
 
         closeOrder();
         toast(`Order #${smmOrderId} placed! Processing will begin shortly.`, 'success');
@@ -836,7 +839,7 @@
 
       // Load user profile
       const { data: profile } = await db.from('profiles').select('wallet_balance').eq('id', session.user.id).single();
-      userBalance = parseFloat(profile?.wallet_balance || 0);
+      userBalance = parseFloat(profile?.wallet_balance || 0) * USD_TO_NGN;
       document.getElementById('topbar-balance').textContent = fmtNGN(userBalance);
       document.getElementById('stat-balance').textContent   = fmtNGN(userBalance);
 

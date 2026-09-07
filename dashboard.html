@@ -26,7 +26,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.06);
       flex-shrink: 0;
     }
-    .ds-logo img { width: 30px; height: 30px; border-radius: 8px; object-fit: cover; }
+    .ds-logo img { width: 30px; height: 30px; object-fit: contain; }
     .ds-logo-text { font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; font-weight: 800; color: #fff; letter-spacing: -0.3px; }
 
     .ds-nav { flex: 1; padding: 14px 10px; display: flex; flex-direction: column; gap: 2px; }
@@ -409,6 +409,36 @@
     .ds-modal-submit:hover { opacity: 0.88; }
     .ds-modal-note { text-align: center; font-size: 0.7rem; color: #9ca3af; margin-top: 10px; }
 
+    /* ── BANK TRANSFER MODAL ── */
+    .bk-loading { text-align:center; padding: 24px 0; }
+    .bk-spinner { width:36px; height:36px; border:3px solid #e5e7eb; border-top-color:#7c3aed; border-radius:50%; animation:spin .75s linear infinite; margin:0 auto 14px; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .bk-loading p { font-size:0.82rem; color:#6b7280; }
+    .bk-amount-banner {
+      background: linear-gradient(135deg,#7c3aed,#2563eb); border-radius:12px;
+      padding:16px 20px; text-align:center; margin-bottom:16px;
+    }
+    .bk-amount-banner .lbl { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:rgba(255,255,255,0.7); margin-bottom:4px; }
+    .bk-amount-banner .val { font-family:'Space Grotesk',sans-serif; font-size:1.7rem; font-weight:800; color:#fff; letter-spacing:-0.5px; }
+    .bk-field { background:#f8f9fc; border:1.5px solid #e8eaf0; border-radius:10px; padding:12px 14px; margin-bottom:10px; }
+    .bk-field-lbl { font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#9ca3af; margin-bottom:4px; }
+    .bk-field-val { font-size:0.9rem; font-weight:700; color:#1a1a2e; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    .bk-copy-btn { background:none; border:1px solid #e5e7eb; border-radius:6px; padding:3px 9px; font-size:0.68rem; font-weight:600; color:#7c3aed; cursor:pointer; white-space:nowrap; transition:all .15s; flex-shrink:0; }
+    .bk-copy-btn:hover { background:#f5f3ff; border-color:#c4b5fd; }
+    .bk-copy-btn.copied { color:#10b981; border-color:#10b981; }
+    .bk-waiting { display:flex; align-items:center; gap:10px; background:#fffbeb; border:1px solid #fde68a; border-radius:10px; padding:11px 14px; margin-top:14px; }
+    .bk-waiting .bk-spinner-sm { width:16px; height:16px; border-width:2px; border-top-color:#f59e0b; flex-shrink:0; }
+    .bk-waiting p { font-size:0.76rem; color:#92400e; font-weight:500; }
+    .bk-timer { font-size:0.72rem; color:#6b7280; text-align:center; margin-top:10px; }
+    .bk-success-wrap { text-align:center; padding:10px 0 4px; }
+    .bk-success-ico { width:60px; height:60px; background:#d1fae5; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; color:#10b981; margin:0 auto 14px; }
+    .bk-success-wrap h4 { font-family:'Space Grotesk',sans-serif; font-size:1.1rem; font-weight:800; color:#1a1a2e; margin-bottom:6px; }
+    .bk-success-wrap p { font-size:0.8rem; color:#6b7280; line-height:1.5; margin-bottom:18px; }
+    .bk-err-wrap { text-align:center; padding:10px 0 4px; }
+    .bk-err-ico { width:60px; height:60px; background:#fee2e2; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; color:#ef4444; margin:0 auto 14px; }
+    .bk-err-wrap h4 { font-size:1rem; font-weight:800; color:#1a1a2e; margin-bottom:6px; }
+    .bk-err-wrap p  { font-size:0.78rem; color:#6b7280; line-height:1.5; margin-bottom:14px; }
+
     /* ── TOAST ── */
     .ds-toast-wrap { position: fixed; bottom: 24px; right: 24px; z-index: 600; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
     .ds-toast {
@@ -570,7 +600,23 @@
     .ds-save-btn { align-self: flex-start; padding: 10px 22px; border-radius: 10px; background: linear-gradient(135deg, #7c3aed, #ec4899); color: #fff; font-size: 0.82rem; font-weight: 700; border: none; cursor: pointer; transition: opacity 0.13s; font-family: inherit; }
     .ds-save-btn:hover { opacity: 0.88; }
     .ds-save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    @media (max-width: 768px) { .ds-full-sec { padding: 14px; padding-bottom: calc(62px + 14px); } }
+    @media (max-width: 768px) {
+      .ds-full-sec { padding: 14px; padding-bottom: calc(62px + 14px); }
+      /* Collapse inline grids inside full sections */
+      .ds-full-sec [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+      /* Stack flex rows in full sections */
+      .ds-full-sec [style*="display:flex"][style*="gap"] > a[style*="border-radius"] { width: 100%; box-sizing: border-box; }
+      /* Settings card inputs full width */
+      .ds-settings-card input, .ds-settings-card select { width: 100%; box-sizing: border-box; }
+      /* Code blocks in API section */
+      .ds-full-sec code { word-break: break-all; font-size: 0.7rem; }
+      /* Referral link row stays as row but input shrinks */
+      #sec-referrals .ds-form-group > div { flex-wrap: wrap; }
+    }
+    @media (max-width: 480px) {
+      .ds-full-sec { padding: 10px; padding-bottom: calc(62px + 10px); gap: 12px; }
+      .ds-sec-title { font-size: 1rem; }
+    }
   </style>
 </head>
 <body>
@@ -621,6 +667,62 @@
     </div>
   </div>
 
+  <!-- ── BANK TRANSFER MODAL ── -->
+  <div class="ds-modal-overlay" id="bank-modal">
+    <div class="ds-modal">
+      <div class="ds-modal-hdr">
+        <h3><i class="fas fa-university" style="color:#16a34a;margin-right:8px"></i>Bank Transfer</h3>
+        <button class="ds-modal-close" id="bank-modal-close"><i class="fas fa-xmark"></i></button>
+      </div>
+      <div class="ds-modal-body">
+
+        <!-- Loading state -->
+        <div id="bk-loading" class="bk-loading">
+          <div class="bk-spinner"></div>
+          <p>Generating your bank account…</p>
+        </div>
+
+        <!-- Details state -->
+        <div id="bk-details" style="display:none">
+          <div class="bk-amount-banner">
+            <div class="lbl">Amount to pay</div>
+            <div class="val" id="bk-amount-display">₦0</div>
+          </div>
+          <p style="font-size:0.8rem;color:#4b5063;line-height:1.6;margin-bottom:16px">
+            Click the button below to open Korapay's secure checkout in a new tab. Select <strong>Bank Transfer</strong>, complete the payment, then come back — this page will confirm automatically.
+          </p>
+          <a id="bk-checkout-link" href="#" target="_blank" rel="noopener"
+             style="display:block;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;text-align:center;padding:13px;border-radius:11px;font-weight:700;font-size:0.9rem;text-decoration:none;margin-bottom:14px"
+             onclick="this.style.opacity='0.75'">
+            <i class="fas fa-arrow-up-right-from-square" style="margin-right:7px"></i>Open Korapay Checkout
+          </a>
+          <div class="bk-waiting">
+            <div class="bk-spinner" style="width:16px;height:16px;border-width:2px;border-top-color:#f59e0b;flex-shrink:0"></div>
+            <p>Waiting for payment — this page confirms automatically once Korapay detects your transfer.</p>
+          </div>
+          <p class="ds-modal-note" style="margin-top:12px"><i class="fas fa-lock"></i> Secured by Korapay · Do not close this tab.</p>
+        </div>
+
+        <!-- Success state -->
+        <div id="bk-success" style="display:none" class="bk-success-wrap">
+          <div class="bk-success-ico"><i class="fas fa-check"></i></div>
+          <h4>Payment confirmed!</h4>
+          <p>Your wallet has been credited with <strong id="bk-credited-amt"></strong>. Enjoy your services!</p>
+          <button class="ds-modal-submit" onclick="closeBankModal()" style="max-width:200px;margin:0 auto;display:block">Done</button>
+        </div>
+
+        <!-- Error state -->
+        <div id="bk-error" style="display:none" class="bk-err-wrap">
+          <div class="bk-err-ico"><i class="fas fa-circle-exclamation"></i></div>
+          <h4>Something went wrong</h4>
+          <p id="bk-error-msg">Unable to initialise payment. Please try again.</p>
+          <button class="ds-modal-submit" onclick="closeBankModal()" style="max-width:200px;margin:0 auto;display:block;background:#ef4444">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- Mobile overlay -->
   <div class="ds-overlay" id="ds-overlay"></div>
   <!-- Toast container -->
@@ -629,7 +731,7 @@
   <!-- ── SIDEBAR ── -->
   <aside class="ds-sidebar" id="ds-sidebar">
     <div class="ds-logo">
-      <img src="img/logo.jpg" alt="BlowUpSocials" />
+      <img src="img/logo.png" alt="BlowUpSocials" />
       <span class="ds-logo-text">BlowUpSocials</span>
     </div>
 
@@ -647,10 +749,10 @@
       <a href="#" class="ds-nav-item" id="nav-txns" onclick="showDsSec('txns');return false"><i class="fas fa-right-left"></i> Transactions</a>
 
       <div class="ds-nav-label">Account</div>
-      <a href="#" class="ds-nav-item js-coming"><i class="fas fa-users"></i> Referrals</a>
-      <a href="#" class="ds-nav-item js-coming"><i class="fas fa-star"></i> Favorites</a>
-      <a href="#" class="ds-nav-item js-coming"><i class="fas fa-code"></i> API Access</a>
-      <a href="#" class="ds-nav-item js-coming"><i class="fas fa-headset"></i> Support</a>
+      <a href="#" class="ds-nav-item" id="nav-referrals" onclick="showDsSec('referrals');return false"><i class="fas fa-users"></i> Referrals</a>
+      <a href="#" class="ds-nav-item" id="nav-favorites" onclick="showDsSec('favorites');return false"><i class="fas fa-star"></i> Favorites</a>
+      <a href="#" class="ds-nav-item" id="nav-api" onclick="showDsSec('api');return false"><i class="fas fa-code"></i> API Access</a>
+      <a href="#" class="ds-nav-item" id="nav-support" onclick="showDsSec('support');return false"><i class="fas fa-headset"></i> Support</a>
       <a href="#" class="ds-nav-item" id="nav-settings" onclick="showDsSec('settings');return false"><i class="fas fa-gear"></i> Settings</a>
       <a href="#" class="ds-nav-item danger" id="signout-btn"><i class="fas fa-right-from-bracket"></i> Sign Out</a>
     </nav>
@@ -659,7 +761,7 @@
       <div class="ds-refer-icon">🚀</div>
       <div class="ds-refer-title">Refer &amp; Earn</div>
       <div class="ds-refer-desc">Invite friends and earn 5% commission on every order they place.</div>
-      <button class="ds-refer-btn js-coming">Start Earning</button>
+      <button class="ds-refer-btn" onclick="showDsSec('referrals')">Start Earning</button>
     </div>
 
     <div class="ds-user-row">
@@ -684,9 +786,9 @@
       <div class="ds-topbar-right">
         <a href="admin.html" id="admin-panel-btn" class="ds-btn-quick" style="display:none;background:linear-gradient(135deg,#0d0c1d,#3b0764)"><i class="fas fa-gauge"></i> Admin Panel</a>
         <a href="new-order.html" class="ds-btn-quick"><i class="fas fa-bolt"></i> Social Boost</a>
-        <div class="ds-bell js-coming">
+        <div class="ds-bell" onclick="showDsSec('notifs')" style="cursor:pointer">
           <i class="fas fa-bell"></i>
-          <span class="ds-bell-badge" id="notif-badge">3</span>
+          <span class="ds-bell-badge" id="notif-badge" style="display:none">0</span>
         </div>
         <div class="ds-bal-chip">
           <span>Balance</span>
@@ -708,9 +810,9 @@
             </div>
             <div class="ds-dd-divider"></div>
             <a href="admin.html" class="ds-dd-item" id="dd-admin-link" style="display:none;color:#7c3aed"><i class="fas fa-gauge" style="color:#7c3aed"></i> Admin Panel</a>
-            <a href="#" class="ds-dd-item js-coming"><i class="fas fa-user"></i> My Profile</a>
+            <a href="#" class="ds-dd-item" onclick="showDsSec('settings');return false"><i class="fas fa-user"></i> My Profile</a>
             <a href="#" class="ds-dd-item" onclick="showDsSec('settings');return false"><i class="fas fa-gear"></i> Settings</a>
-            <a href="#" class="ds-dd-item js-coming"><i class="fas fa-bell"></i> Notifications</a>
+            <a href="#" class="ds-dd-item" onclick="showDsSec('notifs');return false"><i class="fas fa-bell"></i> Notifications</a>
             <div class="ds-dd-divider"></div>
             <a href="#" class="ds-dd-item danger" id="dd-signout"><i class="fas fa-right-from-bracket"></i> Sign Out</a>
           </div>
@@ -911,7 +1013,7 @@
             <button class="ds-qa-btn qa-purple" onclick="location.href='new-order.html'"><i class="fas fa-bolt"></i>Social Boost</button>
             <button class="ds-qa-btn qa-orange" onclick="location.href='accounts.html'"><i class="fas fa-store"></i>Accounts Store</button>
             <button class="ds-qa-btn qa-green js-funds"><i class="fas fa-wallet"></i>Add Funds</button>
-            <button class="ds-qa-btn qa-blue js-coming"><i class="fas fa-headset"></i>Support</button>
+            <button class="ds-qa-btn qa-blue" onclick="showDsSec('support')"><i class="fas fa-headset"></i>Support</button>
           </div>
         </div>
 
@@ -1063,6 +1165,147 @@
       </div>
     </div>
 
+    <!-- ══ REFERRALS SECTION ══ -->
+    <div class="ds-full-sec" id="sec-referrals">
+      <div>
+        <div class="ds-sec-back" onclick="showDsSec('home')"><i class="fas fa-arrow-left"></i> Back to Dashboard</div>
+        <div class="ds-sec-title">Referrals</div>
+        <div class="ds-sec-sub">Earn 5% commission on every order your friends place</div>
+      </div>
+      <div class="ds-settings-card">
+        <div class="ds-form-group">
+          <label>Your Referral Link</label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="text" id="ref-link" readonly style="flex:1;background:#f5f4ff;color:#5b21b6;font-weight:600;font-size:0.82rem" />
+            <button class="ds-save-btn" style="margin:0;white-space:nowrap" onclick="copyRef()"><i class="fas fa-copy"></i> Copy</button>
+          </div>
+        </div>
+        <p style="font-size:0.78rem;color:#8b8fa8;margin:0">Share your link. When someone signs up and places an order, you automatically earn 5% of their order value added to your wallet.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+        <div class="ds-stat-card" style="background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;gap:4px">
+          <div style="font-size:1.6rem;font-weight:900" id="ref-count">0</div>
+          <div style="font-size:0.74rem;opacity:0.85">Friends Referred</div>
+        </div>
+        <div class="ds-stat-card" style="background:linear-gradient(135deg,#10b981,#34d399);color:#fff;border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;gap:4px">
+          <div style="font-size:1.6rem;font-weight:900" id="ref-earned">₦0</div>
+          <div style="font-size:0.74rem;opacity:0.85">Total Earned</div>
+        </div>
+        <div class="ds-stat-card" style="background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff;border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;gap:4px">
+          <div style="font-size:1.6rem;font-weight:900" id="ref-pending">₦0</div>
+          <div style="font-size:0.74rem;opacity:0.85">Pending Commission</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ FAVORITES SECTION ══ -->
+    <div class="ds-full-sec" id="sec-favorites">
+      <div>
+        <div class="ds-sec-back" onclick="showDsSec('home')"><i class="fas fa-arrow-left"></i> Back to Dashboard</div>
+        <div class="ds-sec-title">Favorites</div>
+        <div class="ds-sec-sub">Services you've saved for quick access</div>
+      </div>
+      <div id="fav-empty" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:60px 20px;text-align:center">
+        <div style="font-size:3rem;opacity:0.3">⭐</div>
+        <div style="font-size:1rem;font-weight:700;color:#0f0e1c">No favorites yet</div>
+        <div style="font-size:0.82rem;color:#8b8fa8;max-width:300px">Browse services and tap the star icon to save them here for quick ordering.</div>
+        <a href="new-order.html" class="ds-save-btn" style="text-decoration:none;text-align:center"><i class="fas fa-bolt"></i> Browse Social Boost</a>
+      </div>
+    </div>
+
+    <!-- ══ API ACCESS SECTION ══ -->
+    <div class="ds-full-sec" id="sec-api">
+      <div>
+        <div class="ds-sec-back" onclick="showDsSec('home')"><i class="fas fa-arrow-left"></i> Back to Dashboard</div>
+        <div class="ds-sec-title">API Access</div>
+        <div class="ds-sec-sub">Automate orders using our developer API</div>
+      </div>
+      <div class="ds-settings-card">
+        <div class="ds-form-group">
+          <label>Your API Key</label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="text" id="api-key-val" readonly style="flex:1;background:#f5f4ff;color:#5b21b6;font-weight:600;font-size:0.78rem;letter-spacing:0.02em" />
+            <button class="ds-save-btn" style="margin:0;white-space:nowrap" onclick="copyApiKey()"><i class="fas fa-copy"></i> Copy</button>
+          </div>
+          <p style="font-size:0.74rem;color:#8b8fa8;margin:8px 0 0">Keep this key secret. It grants full access to your account via API.</p>
+        </div>
+      </div>
+      <div class="ds-settings-card" style="gap:10px">
+        <div style="font-size:0.85rem;font-weight:700;color:#0f0e1c;margin-bottom:4px">Quick Reference</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:0.78rem">
+          <div style="background:#f5f4ff;border-radius:8px;padding:10px 12px">
+            <div style="font-weight:700;color:#7c3aed;margin-bottom:3px">Base URL</div>
+            <code style="color:#5b21b6;font-size:0.75rem">https://blowupsocials.net/api/v2</code>
+          </div>
+          <div style="background:#f5f4ff;border-radius:8px;padding:10px 12px">
+            <div style="font-weight:700;color:#7c3aed;margin-bottom:3px">List Services</div>
+            <code style="color:#5b21b6;font-size:0.75rem">POST &nbsp;action=services&amp;key=YOUR_KEY</code>
+          </div>
+          <div style="background:#f5f4ff;border-radius:8px;padding:10px 12px">
+            <div style="font-weight:700;color:#7c3aed;margin-bottom:3px">Place Order</div>
+            <code style="color:#5b21b6;font-size:0.75rem">POST &nbsp;action=add&amp;key=YOUR_KEY&amp;service=ID&amp;link=URL&amp;quantity=N</code>
+          </div>
+        </div>
+        <p style="font-size:0.74rem;color:#8b8fa8;margin:4px 0 0">Full documentation coming soon. Contact support for assistance.</p>
+      </div>
+    </div>
+
+    <!-- ══ SUPPORT SECTION ══ -->
+    <div class="ds-full-sec" id="sec-support">
+      <div>
+        <div class="ds-sec-back" onclick="showDsSec('home')"><i class="fas fa-arrow-left"></i> Back to Dashboard</div>
+        <div class="ds-sec-title">Support</div>
+        <div class="ds-sec-sub">We're here to help — reach out anytime</div>
+      </div>
+      <!-- Contact channels -->
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+        <a href="https://wa.me/2347000000000" target="_blank" rel="noopener" style="text-decoration:none;background:linear-gradient(135deg,#25d366,#128c7e);border-radius:14px;padding:20px 16px;display:flex;align-items:center;gap:12px;color:#fff">
+          <i class="fab fa-whatsapp" style="font-size:1.6rem"></i>
+          <div><div style="font-weight:700;font-size:0.88rem">WhatsApp</div><div style="font-size:0.72rem;opacity:0.85">Fast replies</div></div>
+        </a>
+        <a href="mailto:support@blowupsocials.net" style="text-decoration:none;background:linear-gradient(135deg,#7c3aed,#ec4899);border-radius:14px;padding:20px 16px;display:flex;align-items:center;gap:12px;color:#fff">
+          <i class="fas fa-envelope" style="font-size:1.4rem"></i>
+          <div><div style="font-weight:700;font-size:0.88rem">Email</div><div style="font-size:0.72rem;opacity:0.85">support@blowupsocials.net</div></div>
+        </a>
+      </div>
+      <!-- FAQ -->
+      <div class="ds-settings-card" style="gap:0">
+        <div style="font-size:0.85rem;font-weight:700;color:#0f0e1c;margin-bottom:12px">Frequently Asked Questions</div>
+        <div style="display:flex;flex-direction:column;gap:0">
+          <details style="border-bottom:1px solid #ede9fe;padding:12px 0">
+            <summary style="font-size:0.82rem;font-weight:600;color:#0f0e1c;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">How long does delivery take? <i class="fas fa-chevron-down" style="font-size:0.7rem;color:#7c3aed"></i></summary>
+            <p style="font-size:0.78rem;color:#4b5063;margin:10px 0 0;line-height:1.6">Most orders start within minutes and complete within 1–24 hours depending on the service. High-quality or country-targeted services may take slightly longer.</p>
+          </details>
+          <details style="border-bottom:1px solid #ede9fe;padding:12px 0">
+            <summary style="font-size:0.82rem;font-weight:600;color:#0f0e1c;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Is my account safe? <i class="fas fa-chevron-down" style="font-size:0.7rem;color:#7c3aed"></i></summary>
+            <p style="font-size:0.78rem;color:#4b5063;margin:10px 0 0;line-height:1.6">Yes. We only need your public profile URL — never your username or password. Our methods are designed to be gradual and organic-looking.</p>
+          </details>
+          <details style="border-bottom:1px solid #ede9fe;padding:12px 0">
+            <summary style="font-size:0.82rem;font-weight:600;color:#0f0e1c;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">What is the refill policy? <i class="fas fa-chevron-down" style="font-size:0.7rem;color:#7c3aed"></i></summary>
+            <p style="font-size:0.78rem;color:#4b5063;margin:10px 0 0;line-height:1.6">Services marked "Refill" are eligible for a free top-up if numbers drop within 30 days. Open a support chat to request a refill on any eligible order.</p>
+          </details>
+          <details style="padding:12px 0">
+            <summary style="font-size:0.82rem;font-weight:600;color:#0f0e1c;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">How do I add funds? <i class="fas fa-chevron-down" style="font-size:0.7rem;color:#7c3aed"></i></summary>
+            <p style="font-size:0.78rem;color:#4b5063;margin:10px 0 0;line-height:1.6">Click "Add Funds" on the dashboard. We accept Bank Transfer with instant confirmation. Minimum deposit is ₦3,000.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ NOTIFICATIONS SECTION ══ -->
+    <div class="ds-full-sec" id="sec-notifs">
+      <div>
+        <div class="ds-sec-back" onclick="showDsSec('home')"><i class="fas fa-arrow-left"></i> Back to Dashboard</div>
+        <div class="ds-sec-title">Notifications</div>
+        <div class="ds-sec-sub">Updates about your orders and account</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:60px 20px;text-align:center">
+        <div style="font-size:3rem;opacity:0.3">🔔</div>
+        <div style="font-size:1rem;font-weight:700;color:#0f0e1c">You're all caught up</div>
+        <div style="font-size:0.82rem;color:#8b8fa8;max-width:300px">No new notifications. Order updates and account alerts will appear here.</div>
+      </div>
+    </div>
+
   </div><!-- /ds-main -->
 
   <!-- Bottom Navigation (mobile only) -->
@@ -1124,27 +1367,26 @@
     });
 
     /* ── Section switcher ── */
-    const _dsSections = { orders: false, txns: false };
+    const _dsSections = {};
+    const ALL_SECS = ['orders','txns','settings','referrals','favorites','api','support','notifs'];
     function showDsSec(name) {
       const home = document.getElementById('ds-content');
       document.querySelectorAll('.ds-full-sec').forEach(s => s.classList.remove('active'));
-      ['orders','txns','settings'].forEach(n => {
-        const lnk = document.getElementById(`nav-${n}`);
-        if (lnk) lnk.classList.remove('active');
-      });
+      ALL_SECS.forEach(n => { const l = document.getElementById(`nav-${n}`); if (l) l.classList.remove('active'); });
       if (name === 'home') {
         home.style.display = '';
-        document.querySelector('.ds-nav-item.active:not([id^="nav-"])');
       } else {
         home.style.display = 'none';
         document.getElementById(`sec-${name}`)?.classList.add('active');
         const lnk = document.getElementById(`nav-${name}`);
         if (lnk) lnk.classList.add('active');
-        if (name === 'orders'   && !_dsSections.orders)  { _dsSections.orders = true;  renderFullOrders(window._userOrders || []); }
-        if (name === 'txns'     && !_dsSections.txns)    { _dsSections.txns   = true;  loadUserTxns(); }
+        if (name === 'orders'    && !_dsSections.orders)    { _dsSections.orders    = true; renderFullOrders(window._userOrders || []); }
+        if (name === 'txns'      && !_dsSections.txns)      { _dsSections.txns      = true; loadUserTxns(); }
         if (name === 'settings') populateSettings();
+        if (name === 'referrals' && !_dsSections.referrals) { _dsSections.referrals = true; initReferrals(); }
+        if (name === 'api'       && !_dsSections.api)       { _dsSections.api       = true; initApiAccess(); }
+        if (name === 'favorites' && !_dsSections.favorites) { _dsSections.favorites = true; initFavorites(); }
       }
-      // close sidebar on mobile
       const sb = document.querySelector('.ds-sidebar');
       const ov = document.querySelector('.ds-overlay');
       if (sb) sb.classList.remove('open');
@@ -1248,6 +1490,29 @@
       toast('Profile updated!', 'success');
     }
 
+    /* ── Referrals ── */
+    function initReferrals() {
+      const uid = window._userId || '';
+      const link = `${location.origin}/register?ref=${uid}`;
+      document.getElementById('ref-link').value = link;
+    }
+    function copyRef() {
+      const el = document.getElementById('ref-link');
+      navigator.clipboard.writeText(el.value).then(() => toast('Referral link copied!', 'success')).catch(() => { el.select(); document.execCommand('copy'); toast('Copied!', 'success'); });
+    }
+
+    /* ── API Access ── */
+    function initApiAccess() {
+      document.getElementById('api-key-val').value = window._userId || 'Sign in to see your key';
+    }
+    function copyApiKey() {
+      const el = document.getElementById('api-key-val');
+      navigator.clipboard.writeText(el.value).then(() => toast('API key copied!', 'success')).catch(() => { el.select(); document.execCommand('copy'); toast('Copied!', 'success'); });
+    }
+
+    /* ── Favorites ── */
+    function initFavorites() { /* empty state — no stored favorites yet */ }
+
     /* ── Popular services: live prices from Peakerr ── */
     (async () => {
       const MARKUP     = 5;
@@ -1331,12 +1596,123 @@
       });
     });
 
-    document.getElementById('modal-submit').addEventListener('click', () => {
+    /* ── Bank Transfer Modal ── */
+    const bankModal = document.getElementById('bank-modal');
+    function openBankModal()  { bankModal.classList.add('show'); }
+    function closeBankModal() {
+      bankModal.classList.remove('show');
+      clearBankPoll();
+      ['bk-details','bk-success','bk-error'].forEach(id => { document.getElementById(id).style.display = 'none'; });
+      document.getElementById('bk-loading').style.display = 'block';
+    }
+    document.getElementById('bank-modal-close').addEventListener('click', closeBankModal);
+
+    function showBkState(state) {
+      document.getElementById('bk-loading').style.display  = state === 'loading'  ? 'block' : 'none';
+      document.getElementById('bk-details').style.display  = state === 'details'  ? 'block' : 'none';
+      document.getElementById('bk-success').style.display  = state === 'success'  ? 'block' : 'none';
+      document.getElementById('bk-error').style.display    = state === 'error'    ? 'block' : 'none';
+    }
+
+    function copyBkField(valId, btnId) {
+      const txt = document.getElementById(valId)?.textContent?.trim() || '';
+      navigator.clipboard.writeText(txt).then(() => {
+        const btn = document.getElementById(btnId);
+        if (btn) { btn.textContent = 'Copied!'; btn.classList.add('copied'); setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000); }
+      });
+    }
+    window.copyBkField = copyBkField;
+    window.closeBankModal = closeBankModal;
+
+    let _pollInterval = null, _pollTimerInterval = null;
+    function clearBankPoll() {
+      if (_pollInterval)      { clearInterval(_pollInterval);      _pollInterval = null; }
+      if (_pollTimerInterval) { clearInterval(_pollTimerInterval); _pollTimerInterval = null; }
+    }
+
+    function startBankPoll(reference, amountNGN, userId) {
+      let attempts = 0;
+      _pollInterval = setInterval(async () => {
+        attempts++;
+        if (attempts > 72) { // 12 mins max
+          clearBankPoll();
+          showBkState('error');
+          document.getElementById('bk-error-msg').textContent = 'Payment not detected after 12 minutes. Contact support if you completed the transfer.';
+          return;
+        }
+        try {
+          const r = await fetch('/api/korapay', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'verify', reference, userId, amount: amountNGN }),
+          });
+          const d = await r.json();
+          if (d.status === 'success') {
+            clearBankPoll();
+            document.getElementById('bk-credited-amt').textContent = `₦${amountNGN.toLocaleString('en-NG')}`;
+            showBkState('success');
+            // Refresh wallet display
+            const { data: { session } } = await db.auth.getSession();
+            if (session) {
+              const { data: prof } = await db.from('profiles').select('wallet_balance').eq('id', session.user.id).single();
+              if (prof) {
+                const ngn = Math.round((prof.wallet_balance || 0) * 1600);
+                document.getElementById('topbar-wallet').textContent = `₦${ngn.toLocaleString('en-NG')}`;
+                document.getElementById('wallet-modal-balance').textContent = `₦${ngn.toLocaleString('en-NG')}`;
+                const rw = document.getElementById('right-wallet');
+                if (rw) rw.textContent = `₦${ngn.toLocaleString('en-NG')}`;
+                window.userWallet = ngn;
+              }
+            }
+          }
+        } catch (e) { /* ignore transient errors */ }
+      }, 10000);
+    }
+
+    document.getElementById('modal-submit').addEventListener('click', async () => {
       const custom = parseFloat(document.getElementById('custom-amount').value);
       const amount = custom > 0 ? custom : selectedAmt;
       if (amount < 3000) { toast('Minimum top-up amount is ₦3,000.', 'warn'); return; }
+      if (selectedMethod !== 'bank') { toast('Only Bank Transfer is available right now.', 'warn'); return; }
+
       closeFundsModal();
-      toast(`Payment gateway coming soon! ₦${amount.toLocaleString()} via ${selectedMethod} noted.`, 'warn');
+      openBankModal();
+      showBkState('loading');
+
+      try {
+        const { data: { session } } = await db.auth.getSession();
+        if (!session) { showBkState('error'); document.getElementById('bk-error-msg').textContent = 'Session expired. Please log in again.'; return; }
+
+        const { data: prof } = await db.from('profiles').select('full_name').eq('id', session.user.id).single();
+
+        const r = await fetch('/api/korapay', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action:  'initialize',
+            amount,
+            email:   session.user.email,
+            name:    prof?.full_name || session.user.email,
+            userId:  session.user.id,
+          }),
+        });
+        const d = await r.json();
+
+        if (!r.ok || d.error) {
+          showBkState('error');
+          document.getElementById('bk-error-msg').textContent = d.error || 'Failed to initialise payment.';
+          return;
+        }
+
+        document.getElementById('bk-amount-display').textContent = `₦${amount.toLocaleString('en-NG')}`;
+        document.getElementById('bk-checkout-link').href = d.checkoutUrl || '#';
+        showBkState('details');
+        startBankPoll(d.reference, amount, session.user.id);
+
+      } catch (err) {
+        showBkState('error');
+        document.getElementById('bk-error-msg').textContent = 'Network error. Please try again.';
+      }
     });
 
     /* ── Filter tabs ── */

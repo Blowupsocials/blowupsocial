@@ -231,6 +231,9 @@
     .u-email-sub { font-size: 0.68rem; color: var(--t3); margin-top: 1px; }
     .b-active { background: #dcfce7; color: #166534; }
     .b-inactive { background: #f3f4f6; color: #4b5563; }
+    .b-warn  { background: #fef9c3; color: #854d0e; }
+    .b-error { background: #fee2e2; color: #991b1b; }
+    .ua-btn  { padding: 4px 9px; border-radius: 6px; border: none; font-size: 0.69rem; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; flex-shrink: 0; }
     .act-btns { display: flex; align-items: center; gap: 6px; }
     .btn-icon { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 0.74rem; transition: all 0.12s; cursor: pointer; border: none; }
     .btn-icon-pu { background: #f5f0ff; color: var(--pu); }
@@ -251,6 +254,8 @@
     .coming-soon h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 800; color: var(--t1); margin-bottom: 7px; }
     .coming-soon p { font-size: 0.77rem; color: var(--t3); max-width: 300px; line-height: 1.65; }
     .cs-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(124,58,237,0.09); border: 1px solid rgba(124,58,237,0.18); color: var(--pu); font-size: 0.69rem; font-weight: 700; padding: 5px 13px; border-radius: 50px; margin-top: 16px; }
+    .pg-tab { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--bd); background: var(--sur); color: var(--t2); font-size: 0.78rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+    .pg-tab.active { background: linear-gradient(135deg,#7c3aed,#ec4899); color: #fff; border-color: transparent; }
 
     /* ── Wallet Modal ── */
     .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.42); z-index: 500; align-items: center; justify-content: center; padding: 16px; }
@@ -294,7 +299,7 @@
       .tb-profile-info { display: none; }
       .tb-profile > i { display: none; }
       .tb-profile { padding: 4px 6px 4px 4px; }
-      .content { padding: 14px; }
+      .content { padding: 12px; }
       .stats-row { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
       .stat-spark { display: none; }
       .stat-num { font-size: 1.3rem; }
@@ -306,15 +311,37 @@
       .sec-hdr { flex-direction: column; align-items: stretch; }
       .sec-hdr-right { flex-wrap: wrap; }
       .sec-search { width: 100%; }
+      /* Collapse all inline 2/3/4-col grids inside admin sections */
+      .admin-section [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+      /* Forms: stack all flex rows */
+      .admin-section [style*="display:flex"][style*="flex-wrap"] { flex-direction: column !important; }
+      .admin-section [style*="display:flex"][style*="flex-wrap"] > * { width: 100% !important; min-width: 0 !important; box-sizing: border-box; }
+      .admin-section [style*="display:flex"][style*="flex-wrap"] input,
+      .admin-section [style*="display:flex"][style*="flex-wrap"] select,
+      .admin-section [style*="display:flex"][style*="flex-wrap"] textarea { width: 100% !important; box-sizing: border-box; }
+      /* rpt-tiles */
+      .rpt-tiles { grid-template-columns: 1fr 1fr !important; gap: 10px; }
+      /* Section headers */
+      .sec-hdr-left h2 { font-size: 1.05rem; }
+      /* Modal */
+      .modal-box { padding: 20px 16px; }
+      /* User modal tabs */
+      #wallet-modal .modal-box > div:nth-child(3) { gap: 6px !important; }
+      .um-tab { font-size: 0.72rem !important; padding: 6px 10px !important; flex: 1; text-align: center; }
+      /* tbl-card padding */
+      .tbl-card[style*="padding"] { padding: 14px !important; }
     }
 
     @media (max-width: 480px) {
+      .content { padding: 10px; }
       .stats-row { grid-template-columns: 1fr 1fr; gap: 8px; }
       .stat-num { font-size: 1.15rem; }
       .stat-card { padding: 12px 11px 10px; }
       .card { padding: 14px; }
       .card-hdr { flex-wrap: wrap; gap: 8px; }
       .card-hdr-r { flex-wrap: wrap; }
+      .rpt-tiles { grid-template-columns: 1fr !important; }
+      .sec-hdr-left h2 { font-size: 0.97rem; }
     }
   </style>
 </head>
@@ -360,9 +387,6 @@
       <a href="#" data-section="apikeys"       class="sb-item"><i class="fas fa-key"></i> API Keys</a>
       <a href="#" data-section="coupons"       class="sb-item"><i class="fas fa-tag"></i> Coupons</a>
 
-      <div class="sb-sec">Support</div>
-      <a href="#" data-section="tickets"       class="sb-item"><i class="fas fa-ticket"></i> Tickets</a>
-      <a href="#" data-section="reports"       class="sb-item"><i class="fas fa-chart-bar"></i> Reports</a>
     </div>
 
     <div class="sb-foot">
@@ -719,21 +743,36 @@
 
       <!-- ══ SERVICES ══ -->
       <div id="sec-services" class="admin-section">
-        <div class="coming-soon">
-          <div class="cs-ico"><i class="fas fa-sliders"></i></div>
-          <h3>Services Management</h3>
-          <p>Add, edit, and manage SMM services and their pricing for your customers.</p>
-          <span class="cs-badge"><i class="fas fa-clock"></i> Coming Soon</span>
+        <div class="sec-hdr">
+          <div class="sec-hdr-left"><h2>Services</h2><p>Live Owlet SMM service catalog (2× markup applied for display)</p></div>
+          <div class="sec-hdr-right">
+            <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="svc-search" placeholder="Search services…" oninput="filterServices()"></div>
+          </div>
+        </div>
+        <div class="tbl-card">
+          <div class="tbl-wrap">
+            <table class="data-tbl">
+              <thead><tr><th>#</th><th>Name</th><th>Category</th><th>Rate / 1K (NGN)</th><th>Min</th><th>Max</th><th>Refill</th></tr></thead>
+              <tbody id="svc-tbody"><tr><td colspan="7" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading services…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="tbl-foot"><span id="svc-count" style="color:var(--t3);font-size:0.72rem;">—</span></div>
         </div>
       </div>
 
       <!-- ══ CATEGORIES ══ -->
       <div id="sec-categories" class="admin-section">
-        <div class="coming-soon">
-          <div class="cs-ico"><i class="fas fa-layer-group"></i></div>
-          <h3>Categories</h3>
-          <p>Organise your SMM services into categories for easier navigation.</p>
-          <span class="cs-badge"><i class="fas fa-clock"></i> Coming Soon</span>
+        <div class="sec-hdr">
+          <div class="sec-hdr-left"><h2>Categories</h2><p>Owlet service categories and their service counts</p></div>
+        </div>
+        <div class="tbl-card">
+          <div class="tbl-wrap">
+            <table class="data-tbl">
+              <thead><tr><th>Category</th><th>Services</th><th>Cheapest (₦/1K)</th><th>Most Expensive (₦/1K)</th></tr></thead>
+              <tbody id="cat-tbody"><tr><td colspan="4" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading categories…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="tbl-foot"><span id="cat-count" style="color:var(--t3);font-size:0.72rem;">—</span></div>
         </div>
       </div>
 
@@ -785,32 +824,72 @@
 
       <!-- ══ ANNOUNCEMENTS ══ -->
       <div id="sec-announcements" class="admin-section">
-        <div class="coming-soon">
-          <div class="cs-ico"><i class="fas fa-bullhorn"></i></div>
-          <h3>Announcements</h3>
-          <p>Post platform-wide announcements and updates visible to all users.</p>
-          <span class="cs-badge"><i class="fas fa-clock"></i> Coming Soon</span>
+        <div class="sec-hdr">
+          <div class="sec-hdr-left"><h2>Announcements</h2><p>Post platform-wide notices visible to all users</p></div>
         </div>
+        <div class="tbl-card" style="padding:22px">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div>
+              <label style="font-size:0.74rem;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px">Title</label>
+              <input type="text" id="ann-title" placeholder="e.g. Scheduled maintenance on Sunday" style="width:100%;padding:10px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.82rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box" />
+            </div>
+            <div>
+              <label style="font-size:0.74rem;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px">Message</label>
+              <textarea id="ann-body" rows="3" placeholder="Write your announcement…" style="width:100%;padding:10px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.82rem;font-family:inherit;color:var(--t1);background:var(--sur);resize:vertical;box-sizing:border-box"></textarea>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center">
+              <select id="ann-type" style="padding:8px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.78rem;font-family:inherit;color:var(--t1);background:var(--sur)">
+                <option value="info">ℹ️ Info</option>
+                <option value="warn">⚠️ Warning</option>
+                <option value="success">✅ Success</option>
+              </select>
+              <button onclick="postAnnouncement()" style="padding:9px 18px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;border-radius:9px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit">Post Announcement</button>
+            </div>
+          </div>
+        </div>
+        <div id="ann-list" style="display:flex;flex-direction:column;gap:10px;margin-top:4px"></div>
       </div>
 
       <!-- ══ PAGES ══ -->
       <div id="sec-pages" class="admin-section">
-        <div class="coming-soon">
-          <div class="cs-ico"><i class="fas fa-file"></i></div>
-          <h3>Pages</h3>
-          <p>Manage static content pages like Terms, Privacy Policy, and FAQ.</p>
-          <span class="cs-badge"><i class="fas fa-clock"></i> Coming Soon</span>
+        <div class="sec-hdr">
+          <div class="sec-hdr-left"><h2>Pages</h2><p>Edit static content pages</p></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+          <button class="pg-tab active" onclick="selectPage('terms')" id="pg-tab-terms">Terms of Service</button>
+          <button class="pg-tab" onclick="selectPage('privacy')" id="pg-tab-privacy">Privacy Policy</button>
+          <button class="pg-tab" onclick="selectPage('faq')" id="pg-tab-faq">FAQ</button>
+        </div>
+        <div class="tbl-card" style="padding:22px;display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:0.78rem;font-weight:700;color:var(--t2)" id="pg-editing-label">Editing: Terms of Service</div>
+          <textarea id="pg-editor" rows="14" style="width:100%;padding:12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);resize:vertical;line-height:1.6;box-sizing:border-box" placeholder="Page content…"></textarea>
+          <div style="display:flex;gap:10px;align-items:center">
+            <button onclick="savePage()" style="padding:9px 20px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;border-radius:9px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit">Save Page</button>
+            <span id="pg-msg" style="font-size:0.75rem;font-weight:600;color:#10b981;display:none">Saved!</span>
+          </div>
         </div>
       </div>
 
       <!-- ══ TESTIMONIALS ══ -->
       <div id="sec-testimonials" class="admin-section">
-        <div class="coming-soon">
-          <div class="cs-ico"><i class="fas fa-heart"></i></div>
-          <h3>Testimonials</h3>
-          <p>Curate user reviews and success stories shown on the landing page.</p>
-          <span class="cs-badge"><i class="fas fa-clock"></i> Coming Soon</span>
+        <div class="sec-hdr">
+          <div class="sec-hdr-left"><h2>Testimonials</h2><p>Manage reviews shown on the landing page</p></div>
         </div>
+        <div class="tbl-card" style="padding:22px;margin-bottom:14px">
+          <div style="font-size:0.8rem;font-weight:700;color:var(--t2);margin-bottom:12px">Add Testimonial</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <input type="text" id="tst-name" placeholder="Name" style="flex:1;min-width:140px;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur)" />
+              <input type="text" id="tst-role" placeholder="e.g. Influencer" style="flex:1;min-width:140px;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur)" />
+              <select id="tst-stars" style="padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur)">
+                <option value="5">⭐⭐⭐⭐⭐</option><option value="4">⭐⭐⭐⭐</option><option value="3">⭐⭐⭐</option>
+              </select>
+            </div>
+            <textarea id="tst-text" rows="2" placeholder="Testimonial text…" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);resize:vertical;box-sizing:border-box"></textarea>
+            <button onclick="addTestimonial()" style="align-self:flex-start;padding:9px 18px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;border-radius:9px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit">Add Testimonial</button>
+          </div>
+        </div>
+        <div id="tst-list" style="display:flex;flex-direction:column;gap:10px"></div>
       </div>
 
       <!-- ══ SETTINGS ══ -->
@@ -845,7 +924,7 @@
                   <span class="badge b-active">Connected</span>
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid var(--bd);border-radius:10px">
-                  <div><div style="font-size:0.8rem;font-weight:600;color:var(--t1)">PEAKERR API</div><div style="font-size:0.69rem;color:var(--t3)">SMM services provider</div></div>
+                  <div><div style="font-size:0.8rem;font-weight:600;color:var(--t1)">Owlet API</div><div style="font-size:0.69rem;color:var(--t3)">SMM services provider</div></div>
                   <span class="badge b-active">Connected</span>
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid var(--bd);border-radius:10px">
@@ -867,7 +946,7 @@
           <div style="padding:16px;border:1px solid var(--bd);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px">
             <div style="display:flex;align-items:center;gap:12px">
               <div style="width:40px;height:40px;border-radius:10px;background:#f5f0ff;display:flex;align-items:center;justify-content:center;color:var(--pu);font-size:1rem"><i class="fas fa-bolt"></i></div>
-              <div><div style="font-size:0.82rem;font-weight:700;color:var(--t1)">PEAKERR API</div><div style="font-size:0.7rem;color:var(--t3)">SMM services — stored securely as Vercel env var</div></div>
+              <div><div style="font-size:0.82rem;font-weight:700;color:var(--t1)">Owlet API</div><div style="font-size:0.7rem;color:var(--t3)">SMM services — stored securely as Vercel env var</div></div>
             </div>
             <span class="badge b-active"><i class="fas fa-check" style="font-size:0.55rem"></i> Active</span>
           </div>
@@ -890,21 +969,57 @@
 
       <!-- ══ COUPONS ══ -->
       <div id="sec-coupons" class="admin-section">
-        <div class="coming-soon">
-          <div class="cs-ico"><i class="fas fa-tag"></i></div>
-          <h3>Coupons</h3>
-          <p>Create discount codes and promotional offers for your users.</p>
-          <span class="cs-badge"><i class="fas fa-clock"></i> Coming Soon</span>
+        <div class="sec-hdr">
+          <div class="sec-hdr-left"><h2>Coupons</h2><p>Create and manage discount codes</p></div>
+        </div>
+        <div class="tbl-card" style="padding:22px;margin-bottom:14px">
+          <div style="font-size:0.8rem;font-weight:700;color:var(--t2);margin-bottom:12px">Create Coupon</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+            <div style="flex:1;min-width:140px">
+              <label style="font-size:0.72rem;font-weight:700;color:var(--t3);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Code</label>
+              <input type="text" id="cpn-code" placeholder="e.g. BLAST20" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box;text-transform:uppercase" oninput="this.value=this.value.toUpperCase()" />
+            </div>
+            <div style="flex:1;min-width:120px">
+              <label style="font-size:0.72rem;font-weight:700;color:var(--t3);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Discount %</label>
+              <input type="number" id="cpn-pct" placeholder="e.g. 20" min="1" max="100" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box" />
+            </div>
+            <div style="flex:1;min-width:120px">
+              <label style="font-size:0.72rem;font-weight:700;color:var(--t3);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Max Uses</label>
+              <input type="number" id="cpn-uses" placeholder="e.g. 100" min="1" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box" />
+            </div>
+            <button onclick="createCoupon()" style="padding:10px 18px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;border-radius:9px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Create Code</button>
+          </div>
+        </div>
+        <div class="tbl-card">
+          <div class="tbl-wrap">
+            <table class="data-tbl">
+              <thead><tr><th>Code</th><th>Discount</th><th>Uses</th><th>Max Uses</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="cpn-tbody"><tr><td colspan="6" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading coupons…</td></tr></tbody>
+            </table>
+          </div>
         </div>
       </div>
 
       <!-- ══ TICKETS ══ -->
       <div id="sec-tickets" class="admin-section">
-        <div class="coming-soon">
-          <div class="cs-ico"><i class="fas fa-ticket"></i></div>
-          <h3>Support Tickets</h3>
-          <p>Handle user support requests and complaints in one place.</p>
-          <span class="cs-badge"><i class="fas fa-clock"></i> Coming Soon</span>
+        <div class="sec-hdr">
+          <div class="sec-hdr-left"><h2>Support Tickets</h2><p>User support requests and enquiries</p></div>
+          <div class="sec-hdr-right">
+            <select id="tkt-filter" onchange="filterTickets()" style="padding:7px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.77rem;font-family:inherit;color:var(--t1);background:var(--sur);cursor:pointer;">
+              <option value="all">All</option>
+              <option value="open">Open</option>
+              <option value="closed">Closed</option>
+            </select>
+          </div>
+        </div>
+        <div class="tbl-card">
+          <div class="tbl-wrap">
+            <table class="data-tbl">
+              <thead><tr><th>ID</th><th>User</th><th>Subject</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+              <tbody id="tkt-tbody"><tr><td colspan="6" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading tickets…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="tbl-foot"><span id="tkt-count" style="color:var(--t3);font-size:0.72rem;">—</span></div>
         </div>
       </div>
 
@@ -955,7 +1070,7 @@
             <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
               <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#7c3aed22,#7c3aed44);display:flex;align-items:center;justify-content:center;color:var(--pu);font-size:1.3rem;flex-shrink:0"><i class="fas fa-bolt"></i></div>
               <div>
-                <div style="font-size:0.95rem;font-weight:700;color:var(--t1)">Peakerr</div>
+                <div style="font-size:0.95rem;font-weight:700;color:var(--t1)">Owlet</div>
                 <div style="font-size:0.71rem;color:var(--t3);margin-top:2px">SMM Services Provider</div>
               </div>
               <span class="badge b-active" style="margin-left:auto"><i class="fas fa-circle" style="font-size:0.45rem"></i> Active</span>
@@ -967,7 +1082,7 @@
               </div>
               <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:9px">
                 <span style="font-size:0.75rem;color:var(--t3)">Endpoint</span>
-                <span style="font-size:0.73rem;font-weight:600;color:var(--t2);font-family:monospace">/api/peakerr</span>
+                <span style="font-size:0.73rem;font-weight:600;color:var(--t2);font-family:monospace">/api/owlet</span>
               </div>
               <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:9px">
                 <span style="font-size:0.75rem;color:var(--t3)">Auth</span>
@@ -1028,61 +1143,57 @@
       <!-- ══ EXPENSES & PROFIT ══ -->
       <div id="sec-expenses" class="admin-section">
         <div class="sec-hdr">
-          <div class="sec-hdr-left"><h2>Expenses &amp; Profit</h2><p>Revenue, provider costs, and net profit overview</p></div>
+          <div class="sec-hdr-left"><h2>Expenses &amp; Profit</h2><p>Log actual expenses and track net profit</p></div>
         </div>
 
         <!-- Summary tiles -->
         <div class="rpt-tiles" style="margin-bottom:20px">
-          <div class="rpt-tile"><div class="rpt-tile-label">Total Revenue</div><div class="rpt-tile-val" id="exp-revenue">—</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">what customers paid</div></div>
-          <div class="rpt-tile"><div class="rpt-tile-label">Provider Costs</div><div class="rpt-tile-val" id="exp-costs" style="color:var(--rd)">—</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">Peakerr + AccsZone</div></div>
-          <div class="rpt-tile"><div class="rpt-tile-label">Net Profit</div><div class="rpt-tile-val" id="exp-profit" style="color:var(--gn)">—</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">revenue − costs</div></div>
+          <div class="rpt-tile"><div class="rpt-tile-label">Total Revenue</div><div class="rpt-tile-val" id="exp-revenue">—</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">from completed orders</div></div>
+          <div class="rpt-tile"><div class="rpt-tile-label">Total Expenses</div><div class="rpt-tile-val" id="exp-costs" style="color:var(--rd)">—</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">logged manually</div></div>
+          <div class="rpt-tile"><div class="rpt-tile-label">Net Profit</div><div class="rpt-tile-val" id="exp-profit" style="color:var(--gn)">—</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">revenue − expenses</div></div>
           <div class="rpt-tile"><div class="rpt-tile-label">Profit Margin</div><div class="rpt-tile-val" id="exp-margin">—</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">as % of revenue</div></div>
         </div>
 
-        <!-- Provider cost breakdown -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-          <div class="card">
-            <div class="card-hdr"><div class="card-title"><i class="fas fa-bolt" style="color:var(--pu);margin-right:6px"></i>Peakerr Spend</div></div>
-            <div style="padding:0 4px">
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)">
-                <span style="font-size:0.76rem;color:var(--t2)">Total orders routed</span>
-                <span style="font-size:0.78rem;font-weight:700;color:var(--t1)" id="exp-pk-orders">—</span>
-              </div>
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)">
-                <span style="font-size:0.76rem;color:var(--t2)">Estimated spend (USD)</span>
-                <span style="font-size:0.78rem;font-weight:700;color:var(--rd)" id="exp-pk-spend">—</span>
-              </div>
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0">
-                <span style="font-size:0.76rem;color:var(--t2)">Avg cost per order</span>
-                <span style="font-size:0.78rem;font-weight:700;color:var(--t1)" id="exp-pk-avg">—</span>
-              </div>
+        <!-- Log expense form -->
+        <div class="tbl-card" style="padding:20px;margin-bottom:16px">
+          <div style="font-size:0.82rem;font-weight:700;color:var(--t2);margin-bottom:14px">Log an Expense</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+            <div style="flex:1;min-width:130px">
+              <label style="font-size:0.71rem;font-weight:700;color:var(--t3);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Category</label>
+              <select id="exp-cat" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur)">
+                <option>Owlet / SMM</option>
+                <option>AccsZone</option>
+                <option>Staff / Salary</option>
+                <option>Marketing / Ads</option>
+                <option>Infrastructure</option>
+                <option>Other</option>
+              </select>
             </div>
-          </div>
-          <div class="card">
-            <div class="card-hdr"><div class="card-title"><i class="fas fa-user-group" style="color:var(--pk);margin-right:6px"></i>AccsZone Spend</div></div>
-            <div style="padding:0 4px">
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)">
-                <span style="font-size:0.76rem;color:var(--t2)">Total orders routed</span>
-                <span style="font-size:0.78rem;font-weight:700;color:var(--t1)" id="exp-ac-orders">—</span>
-              </div>
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)">
-                <span style="font-size:0.76rem;color:var(--t2)">Estimated spend (USD)</span>
-                <span style="font-size:0.78rem;font-weight:700;color:var(--rd)" id="exp-ac-spend">—</span>
-              </div>
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0">
-                <span style="font-size:0.76rem;color:var(--t2)">Avg cost per order</span>
-                <span style="font-size:0.78rem;font-weight:700;color:var(--t1)" id="exp-ac-avg">—</span>
-              </div>
+            <div style="flex:2;min-width:160px">
+              <label style="font-size:0.71rem;font-weight:700;color:var(--t3);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Description</label>
+              <input type="text" id="exp-desc" placeholder="e.g. Monthly Owlet top-up" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box" />
             </div>
+            <div style="flex:1;min-width:120px">
+              <label style="font-size:0.71rem;font-weight:700;color:var(--t3);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Amount (₦)</label>
+              <input type="number" id="exp-amount" placeholder="e.g. 25000" min="1" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box" />
+            </div>
+            <div style="flex:1;min-width:130px">
+              <label style="font-size:0.71rem;font-weight:700;color:var(--t3);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Date</label>
+              <input type="date" id="exp-date" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box" />
+            </div>
+            <button onclick="addExpense()" style="padding:10px 20px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;border-radius:9px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0">Add Expense</button>
           </div>
         </div>
 
-        <!-- Note -->
-        <div style="padding:14px 16px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;display:flex;align-items:flex-start;gap:10px">
-          <i class="fas fa-triangle-exclamation" style="color:var(--or);margin-top:2px;flex-shrink:0"></i>
-          <div style="font-size:0.75rem;color:var(--t2);line-height:1.55">
-            <strong style="color:var(--t1)">Cost estimation note:</strong> Provider costs are estimated based on order prices stored at the time of purchase. Actual charges may vary. For precise reconciliation, compare against your Peakerr and AccsZone billing dashboards.
+        <!-- Expenses log table -->
+        <div class="tbl-card">
+          <div class="tbl-wrap">
+            <table class="data-tbl">
+              <thead><tr><th>Date</th><th>Category</th><th>Description</th><th>Amount (₦)</th><th></th></tr></thead>
+              <tbody id="exp-tbody"><tr><td colspan="5" class="tbl-loading">No expenses logged yet.</td></tr></tbody>
+            </table>
           </div>
+          <div class="tbl-foot"><span id="exp-count" style="color:var(--t3);font-size:0.72rem">—</span></div>
         </div>
       </div>
 
@@ -1094,19 +1205,67 @@
     </footer>
   </div>
 
-  <!-- Wallet Modal -->
+  <!-- User Management Modal -->
   <div class="modal-bg" id="wallet-modal" onclick="if(event.target===this)closeWalletModal()">
-    <div class="modal-box">
-      <h3>Adjust Wallet Balance</h3>
-      <p class="modal-sub">Editing balance for <strong id="wm-name"></strong></p>
-      <div class="modal-field">
-        <label>Balance (USD) — will display as NGN to user</label>
-        <input type="number" id="wm-usd" step="0.01" min="0" placeholder="0.00" />
+    <div class="modal-box" style="max-width:420px">
+      <h3 id="um-title">Manage User</h3>
+      <p class="modal-sub">User: <strong id="wm-name"></strong></p>
+
+      <!-- Action tabs -->
+      <div style="display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap">
+        <button class="um-tab" id="um-tab-credit"  onclick="umTab('credit')"  style="background:linear-gradient(135deg,#10b981,#34d399);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:inherit;opacity:0.45">💰 Credit</button>
+        <button class="um-tab" id="um-tab-debit"   onclick="umTab('debit')"   style="background:linear-gradient(135deg,#ef4444,#f87171);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:inherit;opacity:0.45">💸 Debit</button>
+        <button class="um-tab" id="um-tab-suspend" onclick="umTab('suspend')" style="background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:inherit;opacity:0.45" id="um-tab-suspend">⛔ Suspend</button>
+        <button class="um-tab" id="um-tab-delete"  onclick="umTab('delete')"  style="background:linear-gradient(135deg,#7f1d1d,#ef4444);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:inherit;opacity:0.45">🗑️ Delete</button>
       </div>
-      <div class="modal-foot">
-        <button class="btn-cancel" onclick="closeWalletModal()">Cancel</button>
-        <button class="btn-save" id="wm-save" onclick="saveWallet()">Save Balance</button>
+
+      <!-- Credit panel -->
+      <div id="um-panel-credit" class="um-panel" style="display:none">
+        <div class="modal-field">
+          <label>Amount to Credit (₦)</label>
+          <input type="number" id="um-credit-amt" min="1" step="1" placeholder="e.g. 5000" style="font-size:0.95rem" />
+        </div>
+        <div class="modal-foot">
+          <button class="btn-cancel" onclick="closeWalletModal()">Cancel</button>
+          <button class="btn-save" id="um-credit-btn" onclick="doCredit()" style="background:linear-gradient(135deg,#10b981,#34d399)">Credit Wallet</button>
+        </div>
       </div>
+
+      <!-- Debit panel -->
+      <div id="um-panel-debit" class="um-panel" style="display:none">
+        <div class="modal-field">
+          <label>Amount to Debit (₦)</label>
+          <input type="number" id="um-debit-amt" min="1" step="1" placeholder="e.g. 2000" style="font-size:0.95rem" />
+        </div>
+        <p style="font-size:0.74rem;color:#ef4444;margin:0 0 14px">Current balance: <strong id="um-curr-bal"></strong></p>
+        <div class="modal-foot">
+          <button class="btn-cancel" onclick="closeWalletModal()">Cancel</button>
+          <button class="btn-save" id="um-debit-btn" onclick="doDebit()" style="background:linear-gradient(135deg,#ef4444,#f87171)">Debit Wallet</button>
+        </div>
+      </div>
+
+      <!-- Suspend panel -->
+      <div id="um-panel-suspend" class="um-panel" style="display:none">
+        <p style="font-size:0.82rem;color:var(--t1);line-height:1.6;margin:0 0 18px" id="um-suspend-msg"></p>
+        <div class="modal-foot">
+          <button class="btn-cancel" onclick="closeWalletModal()">Cancel</button>
+          <button class="btn-save" id="um-suspend-btn" onclick="doSuspend()" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">Confirm</button>
+        </div>
+      </div>
+
+      <!-- Delete panel -->
+      <div id="um-panel-delete" class="um-panel" style="display:none">
+        <p style="font-size:0.82rem;color:#ef4444;line-height:1.6;margin:0 0 12px">This will permanently delete the user and all their data. This cannot be undone.</p>
+        <div class="modal-field">
+          <label>Type DELETE to confirm</label>
+          <input type="text" id="um-delete-confirm" placeholder="DELETE" style="font-size:0.9rem;text-transform:uppercase" />
+        </div>
+        <div class="modal-foot">
+          <button class="btn-cancel" onclick="closeWalletModal()">Cancel</button>
+          <button class="btn-save" id="um-delete-btn" onclick="doDelete()" style="background:linear-gradient(135deg,#7f1d1d,#ef4444)">Delete User</button>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1296,13 +1455,290 @@
     });
 
     async function loadSecData(name) {
-      if (name === 'users')        await loadUsers();
-      if (name === 'orders')       await loadOrders();
-      if (name === 'funds')        await loadFunds();
-      if (name === 'transactions') await loadTransactions();
-      if (name === 'reports')      await loadReports();
-      if (name === 'providers')    await loadProviders();
-      if (name === 'expenses')     await loadExpenses();
+      if (name === 'users')         await loadUsers();
+      if (name === 'orders')        await loadOrders();
+      if (name === 'funds')         await loadFunds();
+      if (name === 'transactions')  await loadTransactions();
+      if (name === 'reports')       await loadReports();
+      if (name === 'providers')     await loadProviders();
+      if (name === 'expenses')      await loadExpenses();
+      if (name === 'services')      await loadOwletServices();
+      if (name === 'categories')    await loadOwletCategories();
+      if (name === 'announcements') await loadAnnouncements();
+      if (name === 'pages')         initPages();
+      if (name === 'testimonials')  await loadTestimonials();
+      if (name === 'coupons')       await loadCoupons();
+      if (name === 'tickets')       await loadTickets();
+    }
+
+    /* ── Admin toast ── */
+    function adminToast(msg, type) {
+      let el = document.getElementById('admin-toast');
+      if (!el) {
+        el = document.createElement('div');
+        el.id = 'admin-toast';
+        el.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:10px;font-size:0.8rem;font-weight:700;z-index:9999;pointer-events:none;transition:opacity 0.3s';
+        document.body.appendChild(el);
+      }
+      el.textContent = msg;
+      el.style.background = type === 'success' ? '#10b981' : type === 'warn' ? '#f59e0b' : '#ef4444';
+      el.style.color = '#fff';
+      el.style.opacity = '1';
+      clearTimeout(el._t);
+      el._t = setTimeout(() => el.style.opacity = '0', 2500);
+    }
+
+    /* ── Services (Owlet) ── */
+    let _owletSvcs = [];
+    async function loadOwletServices() {
+      const tbody = document.getElementById('svc-tbody');
+      try {
+        const r = await fetch('/api/owlet', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'services' }) });
+        const svcs = await r.json();
+        if (!Array.isArray(svcs)) throw new Error('bad response');
+        _owletSvcs = svcs;
+        renderServices(svcs);
+      } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="7" class="tbl-loading">Failed to load services: ${e.message}</td></tr>`;
+      }
+    }
+    function renderServices(svcs) {
+      const tbody = document.getElementById('svc-tbody');
+      document.getElementById('svc-count').textContent = `${svcs.length} services`;
+      if (!svcs.length) { tbody.innerHTML = `<tr><td colspan="7" class="tbl-loading">No services</td></tr>`; return; }
+      const MARKUP = 2;
+      tbody.innerHTML = svcs.map(s => {
+        const rate = Math.round(parseFloat(s.rate || 0) * MARKUP);
+        return `<tr>
+          <td style="font-family:monospace;font-size:0.72rem;color:var(--t3)">${s.service}</td>
+          <td style="font-size:0.78rem;color:var(--t1);max-width:260px;white-space:normal;line-height:1.4">${s.name}</td>
+          <td><span class="badge b-warn" style="font-size:0.67rem;white-space:nowrap">${s.category}</span></td>
+          <td style="font-weight:700;color:var(--pu)">₦${rate.toLocaleString('en-NG')}</td>
+          <td style="color:var(--t3);font-size:0.77rem">${s.min}</td>
+          <td style="color:var(--t3);font-size:0.77rem">${s.max}</td>
+          <td>${s.refill ? '<span class="badge b-active">Yes</span>' : '<span style="color:var(--t3);font-size:0.74rem">—</span>'}</td>
+        </tr>`;
+      }).join('');
+    }
+    function filterServices() {
+      const q = document.getElementById('svc-search').value.toLowerCase();
+      renderServices(q ? _owletSvcs.filter(s => s.name.toLowerCase().includes(q) || (s.category||'').toLowerCase().includes(q) || String(s.service).includes(q)) : _owletSvcs);
+    }
+
+    /* ── Categories (Owlet) ── */
+    async function loadOwletCategories() {
+      const tbody = document.getElementById('cat-tbody');
+      try {
+        const r = await fetch('/api/owlet', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'services' }) });
+        const svcs = await r.json();
+        if (!Array.isArray(svcs)) throw new Error('bad response');
+        const MARKUP = 2;
+        const map = {};
+        svcs.forEach(s => {
+          const c = s.category || 'Uncategorised';
+          if (!map[c]) map[c] = [];
+          map[c].push(parseFloat(s.rate || 0));
+        });
+        const cats = Object.entries(map).sort((a,b) => b[1].length - a[1].length);
+        document.getElementById('cat-count').textContent = `${cats.length} categories`;
+        tbody.innerHTML = cats.map(([cat, rates]) => {
+          const min = Math.round(Math.min(...rates) * MARKUP);
+          const max = Math.round(Math.max(...rates) * MARKUP);
+          return `<tr>
+            <td style="font-weight:600;color:var(--t1)">${cat}</td>
+            <td><span class="badge b-active">${rates.length}</span></td>
+            <td style="color:var(--gn);font-weight:700">₦${min.toLocaleString('en-NG')}</td>
+            <td style="color:var(--pu);font-weight:700">₦${max.toLocaleString('en-NG')}</td>
+          </tr>`;
+        }).join('');
+      } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="4" class="tbl-loading">Failed to load categories: ${e.message}</td></tr>`;
+      }
+    }
+
+    /* ── Announcements ── */
+    let _announcements = [];
+    async function loadAnnouncements() {
+      _announcements = JSON.parse(localStorage.getItem('bns_announcements') || '[]');
+      renderAnnouncements();
+    }
+    function renderAnnouncements() {
+      const list = document.getElementById('ann-list');
+      if (!_announcements.length) { list.innerHTML = '<div style="text-align:center;color:var(--t3);font-size:0.78rem;padding:20px">No announcements yet.</div>'; return; }
+      list.innerHTML = _announcements.map((a, i) => `
+        <div class="tbl-card" style="padding:14px 18px;display:flex;align-items:flex-start;gap:12px">
+          <div style="flex:1">
+            <div style="font-size:0.82rem;font-weight:700;color:var(--t1);margin-bottom:3px">${a.title}</div>
+            <div style="font-size:0.76rem;color:var(--t3);line-height:1.5">${a.body}</div>
+            <div style="font-size:0.68rem;color:var(--t3);margin-top:6px">${new Date(a.ts).toLocaleString('en-NG')}</div>
+          </div>
+          <button onclick="deleteAnnouncement(${i})" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:0.8rem;padding:4px"><i class="fas fa-trash"></i></button>
+        </div>`).join('');
+    }
+    function postAnnouncement() {
+      const title = document.getElementById('ann-title').value.trim();
+      const body  = document.getElementById('ann-body').value.trim();
+      if (!title || !body) { adminToast('Please fill in title and message.', 'warn'); return; }
+      _announcements.unshift({ title, body, type: document.getElementById('ann-type').value, ts: Date.now() });
+      localStorage.setItem('bns_announcements', JSON.stringify(_announcements));
+      document.getElementById('ann-title').value = '';
+      document.getElementById('ann-body').value  = '';
+      renderAnnouncements();
+      adminToast('Announcement posted!', 'success');
+    }
+    function deleteAnnouncement(i) {
+      _announcements.splice(i, 1);
+      localStorage.setItem('bns_announcements', JSON.stringify(_announcements));
+      renderAnnouncements();
+    }
+
+    /* ── Pages ── */
+    let _activePage = 'terms';
+    function initPages() {
+      selectPage('terms');
+    }
+    function selectPage(page) {
+      _activePage = page;
+      ['terms','privacy','faq'].forEach(p => {
+        document.getElementById(`pg-tab-${p}`)?.classList.toggle('active', p === page);
+      });
+      const labels = { terms: 'Terms of Service', privacy: 'Privacy Policy', faq: 'FAQ' };
+      document.getElementById('pg-editing-label').textContent = `Editing: ${labels[page]}`;
+      const saved = localStorage.getItem(`bns_page_${page}`) || '';
+      document.getElementById('pg-editor').value = saved;
+    }
+    function savePage() {
+      localStorage.setItem(`bns_page_${_activePage}`, document.getElementById('pg-editor').value);
+      const msg = document.getElementById('pg-msg');
+      msg.style.display = 'inline';
+      setTimeout(() => msg.style.display = 'none', 2000);
+    }
+
+    /* ── Testimonials ── */
+    let _testimonials = [];
+    async function loadTestimonials() {
+      _testimonials = JSON.parse(localStorage.getItem('bns_testimonials') || '[]');
+      renderTestimonials();
+    }
+    function renderTestimonials() {
+      const list = document.getElementById('tst-list');
+      if (!_testimonials.length) { list.innerHTML = '<div style="text-align:center;color:var(--t3);font-size:0.78rem;padding:20px">No testimonials yet.</div>'; return; }
+      list.innerHTML = _testimonials.map((t, i) => `
+        <div class="tbl-card" style="padding:14px 18px;display:flex;align-items:flex-start;gap:12px">
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <span style="font-size:0.82rem;font-weight:700;color:var(--t1)">${t.name}</span>
+              <span style="font-size:0.7rem;color:var(--t3)">${t.role}</span>
+              <span style="font-size:0.72rem;color:#f59e0b">${'⭐'.repeat(parseInt(t.stars||5))}</span>
+            </div>
+            <div style="font-size:0.76rem;color:var(--t3);line-height:1.5">"${t.text}"</div>
+          </div>
+          <button onclick="deleteTestimonial(${i})" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:0.8rem;padding:4px"><i class="fas fa-trash"></i></button>
+        </div>`).join('');
+    }
+    function addTestimonial() {
+      const name = document.getElementById('tst-name').value.trim();
+      const text = document.getElementById('tst-text').value.trim();
+      if (!name || !text) { adminToast('Name and text are required.', 'warn'); return; }
+      _testimonials.unshift({ name, role: document.getElementById('tst-role').value.trim(), stars: document.getElementById('tst-stars').value, text });
+      localStorage.setItem('bns_testimonials', JSON.stringify(_testimonials));
+      ['tst-name','tst-role','tst-text'].forEach(id => document.getElementById(id).value = '');
+      renderTestimonials();
+      adminToast('Testimonial added!', 'success');
+    }
+    function deleteTestimonial(i) {
+      _testimonials.splice(i, 1);
+      localStorage.setItem('bns_testimonials', JSON.stringify(_testimonials));
+      renderTestimonials();
+    }
+
+    /* ── Coupons ── */
+    let _coupons = [];
+    async function loadCoupons() {
+      _coupons = JSON.parse(localStorage.getItem('bns_coupons') || '[]');
+      renderCoupons();
+    }
+    function renderCoupons() {
+      const tbody = document.getElementById('cpn-tbody');
+      if (!_coupons.length) { tbody.innerHTML = '<tr><td colspan="6" class="tbl-loading">No coupons yet. Create one above.</td></tr>'; return; }
+      tbody.innerHTML = _coupons.map((c, i) => `<tr>
+        <td style="font-family:monospace;font-weight:700;color:var(--pu)">${c.code}</td>
+        <td style="font-weight:700;color:var(--gn)">${c.pct}%</td>
+        <td>${c.uses}</td>
+        <td>${c.maxUses ?? '∞'}</td>
+        <td><span class="badge ${c.active ? 'b-active' : 'b-error'}">${c.active ? 'Active' : 'Disabled'}</span></td>
+        <td style="display:flex;gap:6px">
+          <button onclick="toggleCoupon(${i})" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:none;font-size:0.72rem;font-weight:600;cursor:pointer;color:var(--t2)">${c.active ? 'Disable' : 'Enable'}</button>
+          <button onclick="deleteCoupon(${i})" style="padding:4px 10px;border-radius:6px;border:1px solid #fecaca;background:none;font-size:0.72rem;font-weight:600;cursor:pointer;color:#ef4444">Delete</button>
+        </td>
+      </tr>`).join('');
+    }
+    function createCoupon() {
+      const code = document.getElementById('cpn-code').value.trim();
+      const pct  = parseInt(document.getElementById('cpn-pct').value);
+      const uses = parseInt(document.getElementById('cpn-uses').value) || null;
+      if (!code || !pct || pct < 1 || pct > 100) { adminToast('Enter a valid code and discount %.', 'warn'); return; }
+      if (_coupons.find(c => c.code === code)) { adminToast('Code already exists.', 'warn'); return; }
+      _coupons.push({ code, pct, uses: 0, maxUses: uses, active: true });
+      localStorage.setItem('bns_coupons', JSON.stringify(_coupons));
+      ['cpn-code','cpn-pct','cpn-uses'].forEach(id => document.getElementById(id).value = '');
+      renderCoupons();
+      adminToast('Coupon created!', 'success');
+    }
+    function toggleCoupon(i) { _coupons[i].active = !_coupons[i].active; localStorage.setItem('bns_coupons', JSON.stringify(_coupons)); renderCoupons(); }
+    function deleteCoupon(i)  { _coupons.splice(i, 1); localStorage.setItem('bns_coupons', JSON.stringify(_coupons)); renderCoupons(); }
+
+    /* ── Tickets ── */
+    let _tickets = [], _ticketsFiltered = [];
+    async function loadTickets() {
+      const tbody = document.getElementById('tkt-tbody');
+      // Try Supabase support_tickets table; fall back to empty state
+      try {
+        const { data, error } = await db.from('support_tickets').select('*').order('created_at', { ascending: false });
+        if (error) throw error;
+        _tickets = data || [];
+      } catch {
+        _tickets = [];
+      }
+      filterTickets();
+    }
+    function filterTickets() {
+      const filter = document.getElementById('tkt-filter')?.value || 'all';
+      _ticketsFiltered = filter === 'all' ? _tickets : _tickets.filter(t => t.status === filter);
+      renderTickets();
+    }
+    function renderTickets() {
+      const tbody = document.getElementById('tkt-tbody');
+      const count = document.getElementById('tkt-count');
+      count.textContent = `${_ticketsFiltered.length} ticket${_ticketsFiltered.length !== 1 ? 's' : ''}`;
+      if (!_ticketsFiltered.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="tbl-loading">${_tickets.length ? 'No tickets match filter' : 'No support tickets yet'}</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = _ticketsFiltered.map(t => {
+        const date = t.created_at ? new Date(t.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'numeric' }) : '—';
+        const statusCls = t.status === 'open' ? 'b-warn' : 'b-active';
+        return `<tr>
+          <td style="font-family:monospace;font-size:0.72rem;color:var(--t3)">${t.id?.slice(0,8)||'—'}</td>
+          <td style="font-size:0.78rem;color:var(--t2)">${t.user_id?.slice(0,8)||'—'}</td>
+          <td style="font-size:0.78rem;color:var(--t1);max-width:200px;white-space:normal">${t.subject||'No subject'}</td>
+          <td><span class="badge ${statusCls}">${t.status||'open'}</span></td>
+          <td style="font-size:0.74rem;color:var(--t3)">${date}</td>
+          <td>
+            <button onclick="closeTicket('${t.id}')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:none;font-size:0.72rem;font-weight:600;cursor:pointer;color:var(--t2)">${t.status==='open'?'Close':'Reopen'}</button>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+    async function closeTicket(id) {
+      const t = _tickets.find(t => t.id === id);
+      if (!t) return;
+      const newStatus = t.status === 'open' ? 'closed' : 'open';
+      try {
+        await db.from('support_tickets').update({ status: newStatus }).eq('id', id);
+        t.status = newStatus;
+        filterTickets();
+      } catch { adminToast('Failed to update ticket.', 'warn'); }
     }
 
     /* ── Users ── */
@@ -1319,29 +1755,36 @@
       renderUsers(data);
     }
 
+    const _suspendedUsers = new Set(JSON.parse(localStorage.getItem('bns_suspended') || '[]'));
+
     function renderUsers(users) {
       const tbody = document.getElementById('users-tbody');
       document.getElementById('users-count').textContent = `${users.length} user${users.length !== 1 ? 's' : ''}`;
       if (!users.length) { tbody.innerHTML = `<tr><td colspan="5" class="tbl-loading">No users match your search</td></tr>`; return; }
       tbody.innerHTML = users.map((u, i) => {
-        const name   = u.full_name || 'User';
-        const ini    = initials(u.email || name);
-        const wallet = parseFloat(u.wallet_balance || 0);
-        const ngn    = Math.round(wallet * USD_TO_NGN);
-        const date   = u.created_at ? new Date(u.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'numeric' }) : '—';
+        const name      = u.full_name || 'User';
+        const ini       = initials(u.email || name);
+        const wallet    = parseFloat(u.wallet_balance || 0);
+        const ngn       = Math.round(wallet * USD_TO_NGN);
+        const date      = u.created_at ? new Date(u.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'numeric' }) : '—';
+        const suspended = _suspendedUsers.has(u.id);
         const walletCell = ngn > 0
           ? `<span class="wallet-ngn">₦${ngn.toLocaleString('en-NG')}</span>`
           : `<span class="wallet-zero">₦0</span>`;
-        return `<tr>
+        const safeName = name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+        return `<tr style="${suspended ? 'opacity:0.6' : ''}">
           <td><div class="u-cell">
             <div class="u-ava" style="background:${COLORS[i%COLORS.length]}">${ini}</div>
             <div><div class="u-name">${name}</div><div class="u-email-sub">${u.email || u.id?.slice(0,20)+'…'}</div></div>
           </div></td>
           <td>${walletCell}</td>
-          <td><span class="badge b-active">Active</span></td>
+          <td><span class="badge ${suspended ? 'b-error' : 'b-active'}">${suspended ? 'Suspended' : 'Active'}</span></td>
           <td style="color:var(--t2);font-size:0.74rem">${date}</td>
-          <td><div class="act-btns">
-            <button class="btn-icon btn-icon-gn" title="Adjust Wallet" onclick='openWalletModal("${u.id}","${name.replace(/"/g,"'")}", ${wallet})'><i class="fas fa-wallet"></i></button>
+          <td style="white-space:nowrap"><div class="act-btns" style="gap:4px;flex-wrap:nowrap">
+            <button class="ua-btn" style="color:#166534;background:#dcfce7" onclick='openUserModal("${u.id}","${safeName}",${wallet},"credit")'>Credit</button>
+            <button class="ua-btn" style="color:#991b1b;background:#fee2e2" onclick='openUserModal("${u.id}","${safeName}",${wallet},"debit")'>Debit</button>
+            <button class="ua-btn" style="color:#92400e;background:#fef3c7" onclick='openUserModal("${u.id}","${safeName}",${wallet},"suspend")'>${suspended ? 'Unsuspend' : 'Suspend'}</button>
+            <button class="ua-btn" style="color:#991b1b;background:#fee2e2" onclick='openUserModal("${u.id}","${safeName}",${wallet},"delete")'>Delete</button>
           </div></td>
         </tr>`;
       }).join('');
@@ -1574,30 +2017,98 @@
       </tr>`).join('') || `<tr><td colspan="3" class="tbl-loading">No data yet</td></tr>`;
     }
 
-    /* ── Wallet Modal ── */
-    let _walletUserId = null;
-    function openWalletModal(userId, name, currentUSD) {
-      _walletUserId = userId;
-      document.getElementById('wm-name').textContent  = name;
-      document.getElementById('wm-usd').value         = currentUSD.toFixed(2);
+    /* ── User Management Modal ── */
+    let _umUserId = null, _umWalletUSD = 0, _umAction = 'credit';
+
+    function openUserModal(userId, name, currentUSD, action) {
+      _umUserId     = userId;
+      _umWalletUSD  = currentUSD;
+      _umAction     = action;
+      document.getElementById('wm-name').textContent = name;
+      // Reset inputs
+      ['um-credit-amt','um-debit-amt','um-delete-confirm'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+      // Show current balance in debit panel
+      const ngn = Math.round(currentUSD * USD_TO_NGN);
+      document.getElementById('um-curr-bal').textContent = `₦${ngn.toLocaleString('en-NG')}`;
+      // Suspend label
+      const suspended = _suspendedUsers.has(userId);
+      document.getElementById('um-suspend-msg').textContent = suspended
+        ? `User is currently SUSPENDED. Click Confirm to unsuspend and restore their access.`
+        : `This will suspend the user's account. They will not be able to log in or place orders.`;
+      document.getElementById('um-suspend-btn').textContent = suspended ? 'Unsuspend User' : 'Suspend User';
+      umTab(action);
       document.getElementById('wallet-modal').classList.add('open');
     }
+
+    function umTab(action) {
+      _umAction = action;
+      document.querySelectorAll('.um-panel').forEach(p => p.style.display = 'none');
+      document.querySelectorAll('.um-tab').forEach(b => b.style.opacity = '0.45');
+      const panel = document.getElementById(`um-panel-${action}`);
+      const tab   = document.getElementById(`um-tab-${action}`);
+      if (panel) panel.style.display = 'block';
+      if (tab)   tab.style.opacity   = '1';
+    }
+
     function closeWalletModal() {
       document.getElementById('wallet-modal').classList.remove('open');
-      _walletUserId = null;
+      _umUserId = null;
     }
-    async function saveWallet() {
-      if (!_walletUserId) return;
-      const btn = document.getElementById('wm-save');
-      btn.textContent = 'Saving…'; btn.disabled = true;
-      const usd = parseFloat(document.getElementById('wm-usd').value);
-      if (!isNaN(usd) && usd >= 0) {
-        await db.from('profiles').update({ wallet_balance: usd }).eq('id', _walletUserId);
-      }
-      btn.textContent = 'Save'; btn.disabled = false;
+
+    /* backward-compat alias kept in case anything still calls openWalletModal */
+    function openWalletModal(userId, name, currentUSD) { openUserModal(userId, name, currentUSD, 'credit'); }
+
+    async function doCredit() {
+      const amt = parseFloat(document.getElementById('um-credit-amt').value);
+      if (!amt || amt <= 0) { adminToast('Enter a valid NGN amount.', 'warn'); return; }
+      const btn = document.getElementById('um-credit-btn');
+      btn.textContent = 'Crediting…'; btn.disabled = true;
+      const newUSD = _umWalletUSD + amt / USD_TO_NGN;
+      const { error } = await db.from('profiles').update({ wallet_balance: newUSD }).eq('id', _umUserId);
+      btn.textContent = 'Credit Wallet'; btn.disabled = false;
+      if (error) { adminToast('Failed to credit wallet.', 'error'); return; }
+      adminToast(`₦${Math.round(amt).toLocaleString('en-NG')} credited!`, 'success');
       closeWalletModal();
-      loadedSec.delete('users');
-      await loadUsers();
+      loadedSec.delete('users'); await loadUsers();
+    }
+
+    async function doDebit() {
+      const amt = parseFloat(document.getElementById('um-debit-amt').value);
+      if (!amt || amt <= 0) { adminToast('Enter a valid NGN amount.', 'warn'); return; }
+      const btn = document.getElementById('um-debit-btn');
+      btn.textContent = 'Debiting…'; btn.disabled = true;
+      const deductUSD = amt / USD_TO_NGN;
+      const newUSD    = Math.max(0, _umWalletUSD - deductUSD);
+      const { error } = await db.from('profiles').update({ wallet_balance: newUSD }).eq('id', _umUserId);
+      btn.textContent = 'Debit Wallet'; btn.disabled = false;
+      if (error) { adminToast('Failed to debit wallet.', 'error'); return; }
+      adminToast(`₦${Math.round(amt).toLocaleString('en-NG')} debited.`, 'success');
+      closeWalletModal();
+      loadedSec.delete('users'); await loadUsers();
+    }
+
+    function doSuspend() {
+      const suspended = _suspendedUsers.has(_umUserId);
+      if (suspended) _suspendedUsers.delete(_umUserId); else _suspendedUsers.add(_umUserId);
+      localStorage.setItem('bns_suspended', JSON.stringify([..._suspendedUsers]));
+      adminToast(suspended ? 'User unsuspended.' : 'User suspended.', 'success');
+      closeWalletModal();
+      loadedSec.delete('users'); loadUsers();
+    }
+
+    async function doDelete() {
+      const confirm = document.getElementById('um-delete-confirm').value.trim().toUpperCase();
+      if (confirm !== 'DELETE') { adminToast('Type DELETE to confirm.', 'warn'); return; }
+      const btn = document.getElementById('um-delete-btn');
+      btn.textContent = 'Deleting…'; btn.disabled = true;
+      const { error } = await db.from('profiles').delete().eq('id', _umUserId);
+      btn.textContent = 'Delete User'; btn.disabled = false;
+      if (error) { adminToast('Failed to delete user.', 'error'); return; }
+      _suspendedUsers.delete(_umUserId);
+      localStorage.setItem('bns_suspended', JSON.stringify([..._suspendedUsers]));
+      adminToast('User deleted.', 'success');
+      closeWalletModal();
+      loadedSec.delete('users'); await loadUsers();
     }
 
     /* ── Supabase data ── */
@@ -1784,12 +2295,12 @@
 
     /* ══ PROVIDERS ══ */
     async function loadProviders() {
-      /* Try to fetch Peakerr balance */
+      /* Try to fetch Owlet balance */
       try {
-        const r = await fetch('/api/peakerr', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'balance' }) });
+        const r = await fetch('/api/owlet', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'balance' }) });
         const d = await r.json();
         const bal = d?.balance ?? d?.data?.balance ?? null;
-        document.getElementById('prov-peakerr-bal').textContent = bal != null ? `$${parseFloat(bal).toFixed(2)}` : 'N/A';
+        document.getElementById('prov-peakerr-bal').textContent = bal != null ? `₦${Math.round(parseFloat(bal)).toLocaleString('en-NG')}` : 'N/A';
         document.getElementById('prov-peakerr-bal').className = 'badge ' + (bal != null ? 'b-active' : 'b-warn');
       } catch { document.getElementById('prov-peakerr-bal').textContent = 'Unavailable'; }
 
@@ -1800,49 +2311,73 @@
     }
 
     /* ══ EXPENSES & PROFIT ══ */
+    let _expenses = [];
+
     async function loadExpenses() {
-      const { data: orders } = await db.from('orders').select('charge, status, service_id');
-      if (!orders?.length) {
-        ['exp-revenue','exp-costs','exp-profit','exp-margin',
-         'exp-pk-orders','exp-pk-spend','exp-pk-avg',
-         'exp-ac-orders','exp-ac-spend','exp-ac-avg'].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) el.textContent = '₦0';
-        });
+      _expenses = JSON.parse(localStorage.getItem('bns_expenses') || '[]');
+      // Set today as default date
+      document.getElementById('exp-date').value = new Date().toISOString().slice(0,10);
+      // Pull revenue from completed orders
+      const { data: orders } = await db.from('orders').select('charge, status');
+      const totalRevNGN = (orders || [])
+        .filter(o => o.status === 'Completed')
+        .reduce((s, o) => s + parseFloat(o.charge || 0) * USD_TO_NGN, 0);
+      renderExpenses(totalRevNGN);
+    }
+
+    function renderExpenses(totalRevNGN) {
+      const totalExp = _expenses.reduce((s, e) => s + e.amount, 0);
+      const profit   = totalRevNGN - totalExp;
+      const margin   = totalRevNGN > 0 ? (profit / totalRevNGN) * 100 : 0;
+      const fmt      = v => `₦${Math.round(v).toLocaleString('en-NG')}`;
+
+      document.getElementById('exp-revenue').textContent = fmt(totalRevNGN);
+      document.getElementById('exp-costs').textContent   = fmt(totalExp);
+      document.getElementById('exp-profit').textContent  = fmt(profit);
+      document.getElementById('exp-margin').textContent  = `${margin.toFixed(1)}%`;
+      document.getElementById('exp-profit').style.color  = profit >= 0 ? 'var(--gn)' : 'var(--rd)';
+
+      const tbody = document.getElementById('exp-tbody');
+      document.getElementById('exp-count').textContent = `${_expenses.length} expense${_expenses.length !== 1 ? 's' : ''}`;
+      if (!_expenses.length) {
+        tbody.innerHTML = `<tr><td colspan="5" class="tbl-loading">No expenses logged yet.</td></tr>`;
         return;
       }
+      const sorted = [..._expenses].sort((a,b) => new Date(b.date) - new Date(a.date));
+      tbody.innerHTML = sorted.map((e, i) => {
+        const realIdx = _expenses.indexOf(e);
+        const date = new Date(e.date).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'numeric' });
+        return `<tr>
+          <td style="font-size:0.75rem;color:var(--t3);white-space:nowrap">${date}</td>
+          <td><span class="badge b-warn" style="font-size:0.67rem">${e.category}</span></td>
+          <td style="font-size:0.8rem;color:var(--t1)">${e.desc}</td>
+          <td style="font-weight:700;color:var(--rd)">₦${Math.round(e.amount).toLocaleString('en-NG')}</td>
+          <td><button onclick="deleteExpense(${realIdx})" class="ua-btn" style="color:#991b1b;background:#fee2e2">Delete</button></td>
+        </tr>`;
+      }).join('');
+    }
 
-      const MARGIN = 0.40; /* assumed 40% margin on Peakerr services */
-      const ACCS_MARGIN = 0.35;
+    function addExpense() {
+      const cat    = document.getElementById('exp-cat').value;
+      const desc   = document.getElementById('exp-desc').value.trim();
+      const amount = parseFloat(document.getElementById('exp-amount').value);
+      const date   = document.getElementById('exp-date').value;
+      if (!desc)        { adminToast('Enter a description.', 'warn'); return; }
+      if (!amount || amount <= 0) { adminToast('Enter a valid amount.', 'warn'); return; }
+      if (!date)        { adminToast('Select a date.', 'warn'); return; }
+      _expenses.push({ category: cat, desc, amount, date });
+      localStorage.setItem('bns_expenses', JSON.stringify(_expenses));
+      document.getElementById('exp-desc').value   = '';
+      document.getElementById('exp-amount').value = '';
+      // re-fetch revenue and re-render
+      loadExpenses();
+      adminToast('Expense logged!', 'success');
+    }
 
-      const peakerrOrders = orders.filter(o => o.service_id && String(o.service_id).match(/^\d+$/));
-      const accsOrders    = orders.filter(o => o.service_id && String(o.service_id).match(/^[a-z]/i));
-
-      const totalRevUSD = orders.reduce((s, o) => s + parseFloat(o.charge || 0), 0);
-      const pkRevUSD    = peakerrOrders.reduce((s, o) => s + parseFloat(o.charge || 0), 0);
-      const acRevUSD    = accsOrders.reduce((s, o) => s + parseFloat(o.charge || 0), 0);
-
-      const pkCostUSD  = pkRevUSD  * (1 - MARGIN);
-      const acCostUSD  = acRevUSD  * (1 - ACCS_MARGIN);
-      const totalCost  = pkCostUSD + acCostUSD;
-      const netProfit  = totalRevUSD - totalCost;
-      const margin     = totalRevUSD > 0 ? (netProfit / totalRevUSD) * 100 : 0;
-
-      const toNGN = v => `₦${Math.round(v * USD_TO_NGN).toLocaleString('en-NG')}`;
-      const toUSD = v => `$${v.toFixed(2)}`;
-
-      document.getElementById('exp-revenue').textContent = toNGN(totalRevUSD);
-      document.getElementById('exp-costs').textContent   = toNGN(totalCost);
-      document.getElementById('exp-profit').textContent  = toNGN(netProfit);
-      document.getElementById('exp-margin').textContent  = `${margin.toFixed(1)}%`;
-
-      document.getElementById('exp-pk-orders').textContent = peakerrOrders.length.toLocaleString();
-      document.getElementById('exp-pk-spend').textContent  = toUSD(pkCostUSD);
-      document.getElementById('exp-pk-avg').textContent    = peakerrOrders.length ? toUSD(pkCostUSD / peakerrOrders.length) : '$0.00';
-
-      document.getElementById('exp-ac-orders').textContent = accsOrders.length.toLocaleString();
-      document.getElementById('exp-ac-spend').textContent  = toUSD(acCostUSD);
-      document.getElementById('exp-ac-avg').textContent    = accsOrders.length ? toUSD(acCostUSD / accsOrders.length) : '$0.00';
+    function deleteExpense(i) {
+      _expenses.splice(i, 1);
+      localStorage.setItem('bns_expenses', JSON.stringify(_expenses));
+      loadExpenses();
     }
   </script>
 </body>

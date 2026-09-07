@@ -1,9 +1,12 @@
 {
   "version": 2,
+  "cleanUrls": true,
   "routes": [
-    { "src": "/api/peakerr",     "dest": "/api/peakerr.js" },
-    { "src": "/api/accsmaster", "dest": "/api/accsmaster.js" },
-    { "src": "/api/send-email", "dest": "/api/send-email.js" },
+    { "src": "/api/peakerr",          "dest": "/api/peakerr.js" },
+    { "src": "/api/accsmaster",       "dest": "/api/accsmaster.js" },
+    { "src": "/api/send-email",       "dest": "/api/send-email.js" },
+    { "src": "/api/korapay",          "dest": "/api/korapay.js" },
+    { "src": "/api/korapay-webhook",  "dest": "/api/korapay-webhook.js" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }
