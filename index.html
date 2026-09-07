@@ -250,7 +250,11 @@
     .acct-btn:hover { background: #ddd6fe; }
     .acct-cta-row { text-align: center; margin-top: 44px; }
     @media (max-width: 960px) { .acct-grid { grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 600px) { .acct-grid { grid-template-columns: 1fr 1fr; gap: 14px; } }
+    @media (max-width: 600px) {
+      .acct-grid { grid-template-columns: 1fr; gap: 12px; }
+      .acct-card { padding: 16px 14px; flex-direction: row; align-items: center; gap: 14px; }
+      .acct-tags { flex: 1; }
+    }
 
     /* ─── TESTIMONIALS ─────────────────── */
     .testimonials { padding: 80px 0; }
@@ -558,7 +562,6 @@
           <span class="acct-tag">Verified</span>
           <span class="acct-tag">With Followers</span>
         </div>
-        <a href="accounts.html" class="acct-btn">Shop Now →</a>
       </div>
 
       <div class="acct-card">
@@ -573,7 +576,6 @@
           <span class="acct-tag">High Followers</span>
           <span class="acct-tag">USA/NG</span>
         </div>
-        <a href="accounts.html" class="acct-btn">Shop Now →</a>
       </div>
 
       <div class="acct-card">
@@ -588,7 +590,6 @@
           <span class="acct-tag">Marketplace Ready</span>
           <span class="acct-tag">USA</span>
         </div>
-        <a href="accounts.html" class="acct-btn">Shop Now →</a>
       </div>
 
       <div class="acct-card">
@@ -603,7 +604,6 @@
           <span class="acct-tag">Blue Verified</span>
           <span class="acct-tag">USA</span>
         </div>
-        <a href="accounts.html" class="acct-btn">Shop Now →</a>
       </div>
 
       <div class="acct-card">
@@ -618,7 +618,6 @@
           <span class="acct-tag">Phone Verified</span>
           <span class="acct-tag">USA</span>
         </div>
-        <a href="accounts.html" class="acct-btn">Shop Now →</a>
       </div>
 
       <div class="acct-card">
@@ -633,7 +632,6 @@
           <span class="acct-tag">1K+ Subs</span>
           <span class="acct-tag">4K Watch Hrs</span>
         </div>
-        <a href="accounts.html" class="acct-btn">Shop Now →</a>
       </div>
 
     </div>
