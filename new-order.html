@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="BlowUpSocials" />
   <link rel="apple-touch-icon" href="/img/icon-192.png" />
-  <title>Social Boost – BlowUpSocials</title>
+  <title>Social Boost � BlowUpSocials</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet" />
   <style>
@@ -19,7 +19,7 @@
     a { text-decoration: none; color: inherit; }
     button { font-family: inherit; cursor: pointer; }
 
-    /* ── TOPBAR ── */
+    /* -- TOPBAR -- */
     .no-topbar {
       background: #fff; height: 62px; display: flex; align-items: center;
       padding: 0 24px; gap: 14px; border-bottom: 1px solid #e8eaf0;
@@ -43,10 +43,10 @@
     .no-wallet span { color: #6b7280; }
     .no-wallet strong { color: #16a34a; font-weight: 700; }
 
-    /* ── PAGE BODY ── */
+    /* -- PAGE BODY -- */
     .no-page { max-width: 1200px; margin: 0 auto; padding: 24px 20px 80px; }
 
-    /* ── SERVICE SWITCHER ── */
+    /* -- SERVICE SWITCHER -- */
     .svc-switcher {
       background: #fff; border-bottom: 1px solid #e8eaf0;
       display: flex; padding: 0 20px; gap: 4px;
@@ -61,7 +61,7 @@
     .svc-switcher a.active { color: #7c3aed; border-bottom-color: #7c3aed; }
     .svc-switcher a i { font-size: 0.85rem; }
 
-    /* ── FILTER BAR ── */
+    /* -- FILTER BAR -- */
     .no-filter-bar {
       display: flex; gap: 10px; margin-bottom: 20px; align-items: stretch; flex-wrap: wrap;
     }
@@ -100,7 +100,7 @@
       align-items: center; justify-content: center; font-size: 0.7rem; color: #fff; flex-shrink: 0;
     }
 
-    /* ── SEARCH ── */
+    /* -- SEARCH -- */
     .no-search-wrap { position: relative; }
     .no-search {
       width: 100%; height: 100%; padding: 10px 16px 10px 42px;
@@ -111,13 +111,13 @@
     .no-search:focus { border-color: #7c3aed; }
     .no-search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 0.85rem; pointer-events: none; }
 
-    /* ── STATS BAR ── */
+    /* -- STATS BAR -- */
     .no-stats { display: flex; gap: 14px; margin-bottom: 20px; }
     .no-stat { background: #fff; border-radius: 10px; padding: 12px 18px; flex: 1; border: 1px solid #f0f2f6; }
     .no-stat-label { font-size: 0.68rem; color: #8b8fa8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
     .no-stat-val { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 800; color: #1a1a2e; margin-top: 2px; }
 
-    /* ── CATEGORY SECTIONS ── */
+    /* -- CATEGORY SECTIONS -- */
     .no-grid { display: flex; flex-direction: column; gap: 12px; }
     .no-cat-section { background: #fff; border: 1.5px solid #f0f2f6; border-radius: 14px; overflow: hidden; }
     .no-cat-hdr {
@@ -176,7 +176,7 @@
     .pi-dc  { background: #5865f2; }
     .pi-def { background: linear-gradient(135deg, #7c3aed, #ec4899); }
 
-    /* ── EMPTY / LOADING ── */
+    /* -- EMPTY / LOADING -- */
     .no-empty {
       grid-column: 1 / -1; text-align: center;
       padding: 60px 20px; color: #8b8fa8;
@@ -186,7 +186,7 @@
     .no-spinner i { font-size: 1.5rem; animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── ORDER MODAL ── */
+    /* -- ORDER MODAL -- */
     .no-modal-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.45);
       z-index: 500; display: flex; align-items: flex-end;
@@ -245,7 +245,7 @@
 
     .no-modal-note { text-align: center; font-size: 0.7rem; color: #9ca3af; margin-top: 10px; }
 
-    /* ── TOAST ── */
+    /* -- TOAST -- */
     .no-toast-wrap { position: fixed; bottom: 24px; right: 24px; z-index: 600; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
     .no-toast {
       background: #1a1a2e; color: #fff; padding: 11px 16px; border-radius: 10px;
@@ -260,7 +260,7 @@
     @keyframes tIn  { from { opacity:0; transform:translateX(20px); } to { opacity:1; transform:translateX(0); } }
     @keyframes tOut { to   { opacity:0; transform:translateX(20px); } }
 
-    /* ── RESPONSIVE ── */
+    /* -- RESPONSIVE -- */
     @media (max-width: 768px) {
       .no-topbar { padding: 0 14px; }
       .no-page { padding: 16px 14px 100px; }
@@ -304,18 +304,18 @@
         <label class="no-label">Quantity</label>
         <div class="no-qty-row">
           <input class="no-input" type="number" id="order-qty" placeholder="1000" min="1" />
-          <span class="no-qty-info" id="qty-range">Min: — / Max: —</span>
+          <span class="no-qty-info" id="qty-range">Min: � / Max: �</span>
         </div>
       </div>
 
       <div class="no-cost-bar">
         <div class="no-cost-left">
           <strong>Total cost</strong>
-          <div id="cost-display">₦0</div>
+          <div id="cost-display">?0</div>
         </div>
         <div class="no-cost-bal">
           Your balance<br>
-          <span id="modal-balance">₦0</span>
+          <span id="modal-balance">?0</span>
         </div>
       </div>
 
@@ -330,7 +330,7 @@
   <div class="no-topbar">
     <a href="dashboard.html" class="no-back"><i class="fas fa-arrow-left"></i> Dashboard</a>
     <div class="no-title">Social Boost</div>
-    <div class="no-wallet"><span>Balance</span><strong id="topbar-balance">₦0</strong></div>
+    <div class="no-wallet"><span>Balance</span><strong id="topbar-balance">?0</strong></div>
   </div>
 
   <div class="svc-switcher">
@@ -345,19 +345,19 @@
     <div class="no-stats">
       <div class="no-stat">
         <div class="no-stat-label">Services Available</div>
-        <div class="no-stat-val" id="stat-services">—</div>
+        <div class="no-stat-val" id="stat-services">�</div>
       </div>
       <div class="no-stat">
         <div class="no-stat-label">Platforms</div>
-        <div class="no-stat-val" id="stat-platforms">—</div>
+        <div class="no-stat-val" id="stat-platforms">�</div>
       </div>
       <div class="no-stat">
         <div class="no-stat-label">Your Balance</div>
-        <div class="no-stat-val" id="stat-balance">—</div>
+        <div class="no-stat-val" id="stat-balance">�</div>
       </div>
       <div class="no-stat">
         <div class="no-stat-label">Lowest per 1,000</div>
-        <div class="no-stat-val" id="stat-lowest">—</div>
+        <div class="no-stat-val" id="stat-lowest">�</div>
       </div>
     </div>
 
@@ -391,27 +391,27 @@
       <!-- Search -->
       <div class="no-search-wrap" style="flex:1.5;min-width:180px">
         <i class="fas fa-magnifying-glass no-search-icon"></i>
-        <input class="no-search" type="text" id="search-input" placeholder="Search services…" />
+        <input class="no-search" type="text" id="search-input" placeholder="Search services�" />
       </div>
     </div>
 
     <!-- Services grid -->
     <div class="no-grid" id="services-grid">
-      <div class="no-spinner"><i class="fas fa-circle-notch"></i> Loading services…</div>
+      <div class="no-spinner"><i class="fas fa-circle-notch"></i> Loading services�</div>
     </div>
 
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/supabase.min.js"></script>
   <script src="js/supabase-client.js"></script>
   <script>
-    /* ── Config ── */
+    /* -- Config -- */
     const MARKUP       = 2.0;
     const USD_TO_NGN   = 1600;
-    const MIN_PRICE_PER_K = 10; // hide services below ₦10 per 1,000 (very low quality)
-    const fmtNGN = v => `₦${Math.round(v).toLocaleString('en-NG')}`;
+    const MIN_PRICE_PER_K = 10; // hide services below ?10 per 1,000 (very low quality)
+    const fmtNGN = v => `?${Math.round(v).toLocaleString('en-NG')}`;
 
-    /* ── Platform map ── */
+    /* -- Platform map -- */
     const PLATFORMS = [
       { key: 'instagram', label: 'Instagram', icon: 'fab fa-instagram', css: 'pi-ig', match: ['instagram'] },
       { key: 'tiktok',    label: 'TikTok',    icon: 'fab fa-tiktok',    css: 'pi-tt', match: ['tiktok'] },
@@ -429,7 +429,7 @@
       { key: 'pinterest', label: 'Pinterest', icon: 'fab fa-pinterest',  css: 'pi-pin',match: ['pinterest'] },
     ];
 
-    /* ── Action types (second dropdown) ── */
+    /* -- Action types (second dropdown) -- */
     const ACTION_TYPES = [
       { key: 'followers',     label: 'Followers',       match: ['follower', 'subscriber', 'member', 'connection'] },
       { key: 'likes',         label: 'Likes',           match: ['like', 'heart', 'reaction'] },
@@ -449,16 +449,16 @@
       return 'others';
     }
 
-    /* ── Country types (third dropdown) ── */
+    /* -- Country types (third dropdown) -- */
     const COUNTRIES = [
-      { key: 'usa',       label: '🇺🇸 USA',            match: ['usa', 'us ', 'american', 'united states'] },
-      { key: 'uk',        label: '🇬🇧 UK',             match: ['uk ', 'united kingdom', 'british'] },
-      { key: 'nigeria',   label: '🇳🇬 Nigeria',        match: ['nigeria', 'nigerian'] },
-      { key: 'india',     label: '🇮🇳 India',          match: ['india', 'indian'] },
-      { key: 'brazil',    label: '🇧🇷 Brazil',         match: ['brazil', 'brazilian'] },
-      { key: 'arab',      label: '🌍 Arab / MENA',     match: ['arab', 'arabic', 'middle east', 'gulf', 'mena'] },
-      { key: 'africa',    label: '🌍 Africa',          match: ['africa', 'african', 'ghana', 'kenya', 'south africa'] },
-      { key: 'global',    label: '🌐 Global / Real',   match: ['global', 'worldwide', 'real', 'international', 'organic', 'hq', 'high quality'] },
+      { key: 'usa',       label: '???? USA',            match: ['usa', 'us ', 'american', 'united states'] },
+      { key: 'uk',        label: '???? UK',             match: ['uk ', 'united kingdom', 'british'] },
+      { key: 'nigeria',   label: '???? Nigeria',        match: ['nigeria', 'nigerian'] },
+      { key: 'india',     label: '???? India',          match: ['india', 'indian'] },
+      { key: 'brazil',    label: '???? Brazil',         match: ['brazil', 'brazilian'] },
+      { key: 'arab',      label: '?? Arab / MENA',     match: ['arab', 'arabic', 'middle east', 'gulf', 'mena'] },
+      { key: 'africa',    label: '?? Africa',          match: ['africa', 'african', 'ghana', 'kenya', 'south africa'] },
+      { key: 'global',    label: '?? Global / Real',   match: ['global', 'worldwide', 'real', 'international', 'organic', 'hq', 'high quality'] },
       { key: 'others',    label: 'Others',             match: [] },
     ];
 
@@ -484,7 +484,7 @@
       return p ? { css: p.css, icon: p.icon } : { css: 'pi-def', icon: 'fas fa-star' };
     }
 
-    /* ── Toast ── */
+    /* -- Toast -- */
     function toast(msg, type = 'info') {
       const icons = { info: 'fa-circle-info', success: 'fa-circle-check', error: 'fa-circle-xmark' };
       const wrap = document.getElementById('toast-wrap');
@@ -495,7 +495,7 @@
       setTimeout(() => { el.style.animation = 'tOut 0.25s ease forwards'; setTimeout(() => el.remove(), 250); }, 3500);
     }
 
-    /* ── State ── */
+    /* -- State -- */
     let allServices  = [];
     let activePlat    = 'all';
     let activeCat     = 'all';
@@ -503,7 +503,7 @@
     let userBalance   = 0;
     let selectedSvc  = null;
 
-    /* ── Owlet API ── */
+    /* -- Owlet API -- */
     async function owlet(body) {
       const r = await fetch('/api/owlet', {
         method: 'POST',
@@ -513,7 +513,7 @@
       return r.json();
     }
 
-    /* ── Dropdown helpers ── */
+    /* -- Dropdown helpers -- */
     const DD_IDS = ['plat', 'cat', 'country'];
     function toggleNoDD(which) {
       const menu = document.getElementById(`${which}-menu`);
@@ -614,7 +614,7 @@
       activeCountry = 'all';
     }
 
-    /* ── Filter & render ── */
+    /* -- Filter & render -- */
     function getFilteredServices() {
       const q = document.getElementById('search-input').value.trim().toLowerCase();
       return allServices.filter(s => {
@@ -638,7 +638,7 @@
             <div class="no-svc-icon ${css}"><i class="${icon}"></i></div>
             <div class="no-svc-info">
               <div class="no-svc-name">${s.name}</div>
-              <div class="no-svc-cat">${s.category || '—'}</div>
+              <div class="no-svc-cat">${s.category || '�'}</div>
             </div>
           </div>
           <div class="no-svc-meta">
@@ -704,7 +704,7 @@
       }).join('');
     }
 
-    /* ── Build platform dropdown from available services ── */
+    /* -- Build platform dropdown from available services -- */
     function buildDropdowns() {
       const found = new Set();
       allServices.forEach(s => {
@@ -725,7 +725,7 @@
       buildCountryDropdown();
     }
 
-    /* ── Order modal ── */
+    /* -- Order modal -- */
     function openOrder(serviceId) {
       selectedSvc = allServices.find(s => s.service == serviceId);
       if (!selectedSvc) return;
@@ -761,7 +761,7 @@
     document.getElementById('order-modal').addEventListener('click', e => { if (e.target.id === 'order-modal') closeOrder(); });
     document.getElementById('search-input').addEventListener('input', renderServices);
 
-    /* ── Place order ── */
+    /* -- Place order -- */
     document.getElementById('order-submit').addEventListener('click', async () => {
       if (!selectedSvc) return;
       const link = document.getElementById('order-link').value.trim();
@@ -783,7 +783,7 @@
 
       const btn = document.getElementById('order-submit');
       btn.disabled = true;
-      btn.textContent = 'Placing order…';
+      btn.textContent = 'Placing order�';
 
       try {
         // 1. Place on Owlet
@@ -837,7 +837,7 @@
       btn.innerHTML = 'Place Order <i class="fas fa-arrow-right"></i>';
     });
 
-    /* ── Main init ── */
+    /* -- Main init -- */
     (async () => {
       // Auth check
       const { data: { session } } = await db.auth.getSession();
@@ -864,7 +864,7 @@
       const platCount = new Set(data.map(s => detectPlatform(s.name, s.category)?.key).filter(Boolean)).size;
       document.getElementById('stat-services').textContent = data.length.toLocaleString();
       document.getElementById('stat-platforms').textContent = platCount;
-      document.getElementById('stat-lowest').textContent = prices.length ? fmtNGN(Math.min(...prices)) : '—';
+      document.getElementById('stat-lowest').textContent = prices.length ? fmtNGN(Math.min(...prices)) : '�';
 
       buildDropdowns();
       renderServices();

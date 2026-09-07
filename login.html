@@ -1,4 +1,4 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="BlowUpSocials" />
   <link rel="apple-touch-icon" href="/img/icon-192.png" />
-  <title>Sign In â€“ BlowUpSocials</title>
+  <title>Sign In – BlowUpSocials</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -206,7 +206,7 @@
     </div>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/supabase.min.js"></script>
   <script src="js/supabase-client.js"></script>
   <script src="js/main.js"></script>
   <script>
@@ -246,7 +246,7 @@
       const email = document.getElementById('email').value.trim();
       const pwd   = document.getElementById('password').value;
 
-      btn.textContent = 'Signing inâ€¦';
+      btn.textContent = 'Signing in…';
       btn.disabled = true;
 
       await db.auth.signOut();

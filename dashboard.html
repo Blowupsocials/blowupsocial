@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="BlowUpSocials" />
   <link rel="apple-touch-icon" href="/img/icon-192.png" />
-  <title>Dashboard – BlowUpSocials</title>
+  <title>Dashboard � BlowUpSocials</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet" />
   <style>
@@ -19,7 +19,7 @@
     a { text-decoration: none; color: inherit; }
     button { font-family: inherit; }
 
-    /* ── SIDEBAR ── */
+    /* -- SIDEBAR -- */
     .ds-sidebar {
       width: 250px; background: #fff;
       border-right: 1px solid #ebebeb;
@@ -56,7 +56,7 @@
       padding: 2px 6px; border-radius: 50px; line-height: 1.4;
     }
 
-    /* ── SIDEBAR WALLET CARD ── */
+    /* -- SIDEBAR WALLET CARD -- */
     .ds-sidebar-wallet {
       margin: 0 12px 16px; flex-shrink: 0;
       background: #f0fdf4; border-radius: 14px; padding: 16px 18px;
@@ -76,7 +76,7 @@
     .ds-user-name {}
     .ds-user-email {}
 
-    /* ── ANNOUNCEMENT BAR ── */
+    /* -- ANNOUNCEMENT BAR -- */
     .ds-ann-bar {
       background: linear-gradient(90deg, #7c3aed 0%, #ec4899 100%);
       color: #fff; font-size: 0.8rem; font-weight: 600;
@@ -95,7 +95,7 @@
     }
     .ds-ann-close:hover { background: rgba(255,255,255,0.35); }
 
-    /* ── FAQ ITEMS ── */
+    /* -- FAQ ITEMS -- */
     .faq-item { border-bottom: 1px solid #f0f0f6; }
     .faq-q {
       display: flex; align-items: center; justify-content: space-between;
@@ -112,7 +112,7 @@
       line-height: 1.7; border-top: 1px solid #f5f3ff;
     }
 
-    /* ── INSTALL PROMPT MODAL (iOS) ── */
+    /* -- INSTALL PROMPT MODAL (iOS) -- */
     .ds-install-modal {
       position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 600;
       display: flex; align-items: flex-end; justify-content: center;
@@ -132,10 +132,10 @@
     .ds-install-done { width: 100%; padding: 11px; background: #7c3aed; color: #fff; border: none; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; margin-top: 6px; font-family: inherit; }
     .ds-install-done:hover { opacity: 0.88; }
 
-    /* ── MAIN ── */
+    /* -- MAIN -- */
     .ds-main { margin-left: 250px; width: calc(100vw - 250px); display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
 
-    /* ── TOPBAR ── */
+    /* -- TOPBAR -- */
     .ds-topbar {
       background: #fff; display: flex; align-items: center;
       padding: 0 24px; height: 62px;
@@ -234,12 +234,12 @@
     .ds-dd-item.danger i { color: #ef4444; }
     .ds-dd-item.danger:hover { background: #fef2f2; }
 
-    /* ── CONTENT ── */
+    /* -- CONTENT -- */
     .ds-content { display: flex; gap: 18px; padding: 22px; flex: 1; align-items: flex-start; }
     .ds-center { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
     .ds-right  { width: 278px; flex-shrink: 0; display: flex; flex-direction: column; gap: 14px; }
 
-    /* ── STAT CARDS ── */
+    /* -- STAT CARDS -- */
     .ds-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
     .ds-stat-card { background: #fff; border-radius: 14px; padding: 18px 16px 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
     .ds-stat-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
@@ -255,7 +255,7 @@
     .ds-sparkline { margin-top: 10px; overflow: hidden; }
     .ds-sparkline svg { width: 100%; height: 28px; display: block; }
 
-    /* ── CARD SHELL ── */
+    /* -- CARD SHELL -- */
     .ds-card { background: #fff; border-radius: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: clip; }
     .ds-card-hdr { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid #f0f2f6; }
     .ds-card-hdr-title { font-family: 'Space Grotesk', sans-serif; font-size: 0.88rem; font-weight: 700; color: #1a1a2e; }
@@ -272,7 +272,7 @@
     .ds-filter-tab:hover { background: #f5f3ff; color: #7c3aed; }
     .ds-filter-tab.active { background: #f5f3ff; color: #7c3aed; border-color: #ddd6fe; }
 
-    /* ── ORDERS TABLE ── */
+    /* -- ORDERS TABLE -- */
     .ds-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .ds-table { width: 100%; border-collapse: collapse; min-width: 540px; }
     .ds-table th {
@@ -297,7 +297,7 @@
     .ds-empty { text-align: center; padding: 36px 20px; color: #8b8fa8; font-size: 0.82rem; }
     .ds-empty i { font-size: 1.8rem; display: block; margin-bottom: 10px; opacity: 0.3; }
 
-    /* ── SERVICES GRID ── */
+    /* -- SERVICES GRID -- */
     .ds-services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding: 16px 20px; }
     .ds-svc-card {
       border: 1px solid #eff0f5; border-radius: 12px; padding: 14px;
@@ -323,7 +323,7 @@
     }
     .ds-svc-btn:hover { opacity: 0.85; }
 
-    /* ── SUPPORT BAR ── */
+    /* -- SUPPORT BAR -- */
     .ds-support {
       background: linear-gradient(135deg, #f5f3ff, #fff); border: 1px solid #ede9fe;
       border-radius: 14px; padding: 16px 20px;
@@ -342,7 +342,7 @@
     }
     .ds-support-btn:hover { opacity: 0.88; }
 
-    /* ── RIGHT PANEL ── */
+    /* -- RIGHT PANEL -- */
     .ds-bal-card {
       background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
       border-radius: 16px; padding: 20px 18px; color: #fff;
@@ -393,7 +393,7 @@
     .ds-ann-title { font-size: 0.76rem; font-weight: 600; color: #1a1a2e; margin-bottom: 2px; }
     .ds-ann-desc { font-size: 0.69rem; color: #8b8fa8; line-height: 1.4; }
 
-    /* ── RECENT ACTIVITY (right panel) ── */
+    /* -- RECENT ACTIVITY (right panel) -- */
     .ds-activity-list { display: flex; flex-direction: column; }
     .ds-act-item {
       display: flex; align-items: center; gap: 10px;
@@ -406,7 +406,7 @@
     .ds-act-time { font-size: 0.67rem; color: #8b8fa8; margin-top: 1px; }
     .ds-act-amount { font-size: 0.76rem; font-weight: 700; color: #1a1a2e; flex-shrink: 0; }
 
-    /* ── ADD FUNDS MODAL ── */
+    /* -- ADD FUNDS MODAL -- */
     .ds-modal-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.45);
       z-index: 500; display: flex; align-items: center; justify-content: center;
@@ -461,7 +461,7 @@
     .ds-modal-submit:hover { opacity: 0.88; }
     .ds-modal-note { text-align: center; font-size: 0.7rem; color: #9ca3af; margin-top: 10px; }
 
-    /* ── BANK TRANSFER MODAL ── */
+    /* -- BANK TRANSFER MODAL -- */
     .bk-loading { text-align:center; padding: 24px 0; }
     .bk-spinner { width:36px; height:36px; border:3px solid #e5e7eb; border-top-color:#7c3aed; border-radius:50%; animation:spin .75s linear infinite; margin:0 auto 14px; }
     @keyframes spin { to { transform:rotate(360deg); } }
@@ -491,7 +491,7 @@
     .bk-err-wrap h4 { font-size:1rem; font-weight:800; color:#1a1a2e; margin-bottom:6px; }
     .bk-err-wrap p  { font-size:0.78rem; color:#6b7280; line-height:1.5; margin-bottom:14px; }
 
-    /* ── TOAST ── */
+    /* -- TOAST -- */
     .ds-toast-wrap { position: fixed; bottom: 24px; right: 24px; z-index: 600; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
     .ds-toast {
       background: #1a1a2e; color: #fff; padding: 11px 16px;
@@ -507,11 +507,11 @@
     @keyframes toastIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
     @keyframes toastOut { to { opacity: 0; transform: translateX(20px); } }
 
-    /* ── MOBILE ── */
+    /* -- MOBILE -- */
     .ds-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 150; }
     .ds-overlay.show { display: block; }
 
-    /* ── BOTTOM NAV (mobile only) ── */
+    /* -- BOTTOM NAV (mobile only) -- */
     .ds-bot-nav {
       display: none;
       position: fixed; bottom: 0; left: 0; right: 0;
@@ -541,7 +541,7 @@
       .ds-services-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
-    /* ── TABLET / MOBILE ── */
+    /* -- TABLET / MOBILE -- */
     @media (max-width: 768px) {
       /* Sidebar: off-canvas slide-in (hamburger opens it) */
       .ds-sidebar { transform: translateX(-100%); transition: transform 0.28s cubic-bezier(.4,0,.2,1); width: 260px; display: flex; }
@@ -590,7 +590,7 @@
       .ds-toast-wrap { right: 10px; left: 10px; bottom: calc(62px + 10px); }
     }
 
-    /* ── PHONE ── */
+    /* -- PHONE -- */
     @media (max-width: 560px) {
       .ds-topbar { padding: 0 12px; height: 52px; }
       .ds-topbar-left h2 { font-size: 0.88rem; }
@@ -614,7 +614,7 @@
       .ds-bal-card-amt { font-size: 1.9rem; }
     }
 
-    /* ── SMALL PHONE ── */
+    /* -- SMALL PHONE -- */
     @media (max-width: 380px) {
       .ds-stats { grid-template-columns: 1fr 1fr; }
       .ds-qa-btn { font-size: 0.6rem; padding: 10px 2px; }
@@ -624,7 +624,7 @@
       .ds-bot-item i { font-size: 1rem; }
     }
 
-    /* ── Full-page sections (My Orders, Transactions, Settings) ── */
+    /* -- Full-page sections (My Orders, Transactions, Settings) -- */
     .ds-full-sec { display: none; padding: 22px; flex-direction: column; gap: 18px; flex: 1; }
     .ds-full-sec.active { display: flex; }
     .ds-sec-back {
@@ -681,7 +681,7 @@
 </head>
 <body>
 
-  <!-- ── WALLET MODAL ── -->
+  <!-- -- WALLET MODAL -- -->
   <div class="ds-modal-overlay" id="wallet-modal">
     <div class="ds-modal">
       <div class="ds-modal-hdr">
@@ -691,7 +691,7 @@
       <div class="ds-modal-body">
         <div style="background:linear-gradient(135deg,#7c3aed,#ec4899);border-radius:14px;padding:22px 20px;color:#fff;margin-bottom:20px;text-align:center;">
           <div style="font-size:0.75rem;opacity:0.8;margin-bottom:6px;letter-spacing:0.04em;">AVAILABLE BALANCE</div>
-          <div style="font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:800;letter-spacing:-0.5px;" id="wallet-modal-balance">₦0</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:800;letter-spacing:-0.5px;" id="wallet-modal-balance">?0</div>
         </div>
         <button class="ds-modal-submit" id="wallet-add-funds-btn">
           <i class="fas fa-plus" style="margin-right:6px"></i>Add Funds
@@ -700,7 +700,7 @@
     </div>
   </div>
 
-  <!-- ── ADD FUNDS MODAL ── -->
+  <!-- -- ADD FUNDS MODAL -- -->
   <div class="ds-modal-overlay" id="funds-modal">
     <div class="ds-modal">
       <div class="ds-modal-hdr">
@@ -710,13 +710,13 @@
       <div class="ds-modal-body">
         <p>Choose an amount to top up your wallet. Funds are credited instantly after payment confirmation.</p>
         <div class="ds-amount-grid">
-          <button class="ds-amount-btn" data-amt="3000">₦3,000</button>
-          <button class="ds-amount-btn" data-amt="5000">₦5,000</button>
-          <button class="ds-amount-btn selected" data-amt="10000">₦10,000</button>
-          <button class="ds-amount-btn" data-amt="20000">₦20,000 <span style="display:block;font-size:0.6rem;font-weight:700;color:#16a34a;letter-spacing:0.02em;margin-top:2px;">+10% bonus</span></button>
+          <button class="ds-amount-btn" data-amt="3000">?3,000</button>
+          <button class="ds-amount-btn" data-amt="5000">?5,000</button>
+          <button class="ds-amount-btn selected" data-amt="10000">?10,000</button>
+          <button class="ds-amount-btn" data-amt="20000">?20,000 <span style="display:block;font-size:0.6rem;font-weight:700;color:#16a34a;letter-spacing:0.02em;margin-top:2px;">+10% bonus</span></button>
         </div>
-        <label class="ds-modal-input-label">Or enter a custom amount (₦)</label>
-        <input type="number" class="ds-modal-input" id="custom-amount" placeholder="₦0.00" min="3000" max="10000000" />
+        <label class="ds-modal-input-label">Or enter a custom amount (?)</label>
+        <input type="number" class="ds-modal-input" id="custom-amount" placeholder="?0.00" min="3000" max="10000000" />
         <div class="ds-modal-methods">
           <button class="ds-method-btn selected" data-method="bank"><i class="fas fa-university"></i> Bank Transfer</button>
           <button class="ds-method-btn" data-method="crypto"><i class="fab fa-bitcoin"></i> Crypto</button>
@@ -727,7 +727,7 @@
     </div>
   </div>
 
-  <!-- ── BANK TRANSFER MODAL ── -->
+  <!-- -- BANK TRANSFER MODAL -- -->
   <div class="ds-modal-overlay" id="bank-modal">
     <div class="ds-modal">
       <div class="ds-modal-hdr">
@@ -739,17 +739,17 @@
         <!-- Loading state -->
         <div id="bk-loading" class="bk-loading">
           <div class="bk-spinner"></div>
-          <p>Generating your bank account…</p>
+          <p>Generating your bank account�</p>
         </div>
 
         <!-- Details state -->
         <div id="bk-details" style="display:none">
           <div class="bk-amount-banner">
             <div class="lbl">Amount to pay</div>
-            <div class="val" id="bk-amount-display">₦0</div>
+            <div class="val" id="bk-amount-display">?0</div>
           </div>
           <p style="font-size:0.8rem;color:#4b5063;line-height:1.6;margin-bottom:16px">
-            Click the button below to open Korapay's secure checkout in a new tab. Select <strong>Bank Transfer</strong>, complete the payment, then come back — this page will confirm automatically.
+            Click the button below to open Korapay's secure checkout in a new tab. Select <strong>Bank Transfer</strong>, complete the payment, then come back � this page will confirm automatically.
           </p>
           <a id="bk-checkout-link" href="#" target="_blank" rel="noopener"
              style="display:block;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;text-align:center;padding:13px;border-radius:11px;font-weight:700;font-size:0.9rem;text-decoration:none;margin-bottom:14px"
@@ -758,9 +758,9 @@
           </a>
           <div class="bk-waiting">
             <div class="bk-spinner" style="width:16px;height:16px;border-width:2px;border-top-color:#f59e0b;flex-shrink:0"></div>
-            <p>Waiting for payment — this page confirms automatically once Korapay detects your transfer.</p>
+            <p>Waiting for payment � this page confirms automatically once Korapay detects your transfer.</p>
           </div>
-          <p class="ds-modal-note" style="margin-top:12px"><i class="fas fa-lock"></i> Secured by Korapay · Do not close this tab.</p>
+          <p class="ds-modal-note" style="margin-top:12px"><i class="fas fa-lock"></i> Secured by Korapay � Do not close this tab.</p>
         </div>
 
         <!-- Success state -->
@@ -788,7 +788,7 @@
   <!-- Toast container -->
   <div class="ds-toast-wrap" id="toast-wrap"></div>
 
-  <!-- ── SIDEBAR ── -->
+  <!-- -- SIDEBAR -- -->
   <aside class="ds-sidebar" id="ds-sidebar">
     <div class="ds-logo">
       <img src="img/logo.png" alt="BlowUpSocials" />
@@ -816,8 +816,8 @@
 
     <div class="ds-sidebar-wallet">
       <div class="ds-sidebar-wallet-lbl">Wallet balance</div>
-      <div class="ds-sidebar-wallet-amt" id="sidebar-wallet">₦0.00</div>
-      <button class="ds-sidebar-wallet-link js-funds">Add funds →</button>
+      <div class="ds-sidebar-wallet-amt" id="sidebar-wallet">?0.00</div>
+      <button class="ds-sidebar-wallet-link js-funds">Add funds ?</button>
     </div>
 
     <!-- hidden for JS compatibility -->
@@ -828,24 +828,24 @@
     </div>
   </aside>
 
-  <!-- ── iOS INSTALL MODAL ── -->
+  <!-- -- iOS INSTALL MODAL -- -->
   <div class="ds-install-modal" id="ios-install-modal">
     <div class="ds-install-box">
       <h3>Add BlowUpSocials to your Home Screen</h3>
-      <p>Install the app for a faster, full-screen experience — no App Store needed.</p>
+      <p>Install the app for a faster, full-screen experience � no App Store needed.</p>
       <div class="ds-install-step"><i class="fas fa-arrow-up-from-bracket"></i><span>Tap the <strong>Share</strong> button at the bottom of Safari</span></div>
       <div class="ds-install-step"><i class="fas fa-plus-square"></i><span>Scroll down and tap <strong>"Add to Home Screen"</strong></span></div>
-      <div class="ds-install-step"><i class="fas fa-check"></i><span>Tap <strong>Add</strong> — the app icon will appear on your home screen</span></div>
+      <div class="ds-install-step"><i class="fas fa-check"></i><span>Tap <strong>Add</strong> � the app icon will appear on your home screen</span></div>
       <button class="ds-install-done" onclick="document.getElementById('ios-install-modal').classList.remove('show')">Got it</button>
     </div>
   </div>
 
-  <!-- ── MAIN ── -->
+  <!-- -- MAIN -- -->
   <div class="ds-main">
 
     <!-- ANNOUNCEMENT BAR -->
     <div class="ds-ann-bar" id="ann-bar">
-      <span>📱 Add BlowUpSocials to your home screen for faster access — <a href="#" onclick="triggerInstall();return false">Get the app →</a></span>
+      <span>?? Add BlowUpSocials to your home screen for faster access � <a href="#" onclick="triggerInstall();return false">Get the app ?</a></span>
       <button class="ds-ann-close" id="ann-close" aria-label="Dismiss"><i class="fas fa-xmark"></i></button>
     </div>
 
@@ -853,7 +853,7 @@
     <header class="ds-topbar">
       <button class="ds-mob-toggle" id="mob-toggle" aria-label="Open sidebar"><i class="fas fa-bars"></i></button>
       <div class="ds-topbar-left">
-        <h2 id="greeting-text">Welcome back! 👋</h2>
+        <h2 id="greeting-text">Welcome back! ??</h2>
         <p>Here's what's happening with your account today.</p>
       </div>
       <div class="ds-topbar-right">
@@ -865,21 +865,21 @@
         </div>
         <div class="ds-bal-chip">
           <span>Balance</span>
-          <strong id="topbar-wallet">₦0</strong>
+          <strong id="topbar-wallet">?0</strong>
         </div>
         <button class="ds-btn-addfunds js-funds">+ Add Funds</button>
 
         <!-- Profile button -->
         <div class="ds-profile-wrap" id="profile-wrap">
           <button class="ds-profile-btn" id="profile-btn">
-            <div class="ds-topbar-avatar" id="topbar-avatar">…</div>
+            <div class="ds-topbar-avatar" id="topbar-avatar">�</div>
             <i class="fas fa-chevron-down ds-profile-chevron"></i>
           </button>
           <div class="ds-dropdown" id="profile-dropdown">
             <div class="ds-dd-hdr">
-              <div class="ds-dd-avatar" id="dd-avatar">…</div>
-              <div class="ds-dd-name" id="dd-name">Loading…</div>
-              <div class="ds-dd-email" id="dd-email">…</div>
+              <div class="ds-dd-avatar" id="dd-avatar">�</div>
+              <div class="ds-dd-name" id="dd-name">Loading�</div>
+              <div class="ds-dd-email" id="dd-email">�</div>
             </div>
             <div class="ds-dd-divider"></div>
             <a href="admin.html" class="ds-dd-item" id="dd-admin-link" style="display:none;color:#7c3aed"><i class="fas fa-gauge" style="color:#7c3aed"></i> Admin Panel</a>
@@ -938,7 +938,7 @@
                 <tr>
                   <td colspan="6" class="ds-empty">
                     <i class="fas fa-circle-notch fa-spin"></i>
-                    Loading your orders…
+                    Loading your orders�
                   </td>
                 </tr>
               </tbody>
@@ -956,37 +956,37 @@
             <div class="ds-svc-card">
               <div class="ds-svc-icon svc-ig"><i class="fab fa-instagram"></i></div>
               <div><div class="ds-svc-name">Instagram</div><div class="ds-svc-type" id="svc-type-ig">Followers</div></div>
-              <div class="ds-svc-price">From <strong id="svc-price-ig">…</strong></div>
+              <div class="ds-svc-price">From <strong id="svc-price-ig">�</strong></div>
               <button class="ds-svc-btn" onclick="location.href='new-order.html'">Order Now</button>
             </div>
             <div class="ds-svc-card">
               <div class="ds-svc-icon svc-tt"><i class="fab fa-tiktok"></i></div>
               <div><div class="ds-svc-name">TikTok</div><div class="ds-svc-type" id="svc-type-tt">Views</div></div>
-              <div class="ds-svc-price">From <strong id="svc-price-tt">…</strong></div>
+              <div class="ds-svc-price">From <strong id="svc-price-tt">�</strong></div>
               <button class="ds-svc-btn" onclick="location.href='new-order.html'">Order Now</button>
             </div>
             <div class="ds-svc-card">
               <div class="ds-svc-icon svc-yt"><i class="fab fa-youtube"></i></div>
               <div><div class="ds-svc-name">YouTube</div><div class="ds-svc-type" id="svc-type-yt">Subscribers</div></div>
-              <div class="ds-svc-price">From <strong id="svc-price-yt">…</strong></div>
+              <div class="ds-svc-price">From <strong id="svc-price-yt">�</strong></div>
               <button class="ds-svc-btn" onclick="location.href='new-order.html'">Order Now</button>
             </div>
             <div class="ds-svc-card">
               <div class="ds-svc-icon svc-sp"><i class="fab fa-spotify"></i></div>
               <div><div class="ds-svc-name">Spotify</div><div class="ds-svc-type" id="svc-type-sp">Plays</div></div>
-              <div class="ds-svc-price">From <strong id="svc-price-sp">…</strong></div>
+              <div class="ds-svc-price">From <strong id="svc-price-sp">�</strong></div>
               <button class="ds-svc-btn" onclick="location.href='new-order.html'">Order Now</button>
             </div>
             <div class="ds-svc-card">
               <div class="ds-svc-icon svc-x"><i class="fab fa-x-twitter"></i></div>
               <div><div class="ds-svc-name">X (Twitter)</div><div class="ds-svc-type" id="svc-type-x">Followers</div></div>
-              <div class="ds-svc-price">From <strong id="svc-price-x">…</strong></div>
+              <div class="ds-svc-price">From <strong id="svc-price-x">�</strong></div>
               <button class="ds-svc-btn" onclick="location.href='new-order.html'">Order Now</button>
             </div>
             <div class="ds-svc-card">
               <div class="ds-svc-icon svc-fb"><i class="fab fa-facebook-f"></i></div>
               <div><div class="ds-svc-name">Facebook</div><div class="ds-svc-type" id="svc-type-fb">Page Likes</div></div>
-              <div class="ds-svc-price">From <strong id="svc-price-fb">…</strong></div>
+              <div class="ds-svc-price">From <strong id="svc-price-fb">�</strong></div>
               <button class="ds-svc-btn" onclick="location.href='new-order.html'">Order Now</button>
             </div>
           </div>
@@ -998,7 +998,7 @@
             <div class="ds-support-icon"><i class="fas fa-headset"></i></div>
             <div class="ds-support-text">
               <strong>Need Help?</strong>
-              <span>Our support team is available 24/7 — average response time under 10 minutes.</span>
+              <span>Our support team is available 24/7 � average response time under 10 minutes.</span>
             </div>
           </div>
           <a href="mailto:support@blowupsocials.net" class="ds-support-btn"><i class="fas fa-envelope"></i> support@blowupsocials.net</a>
@@ -1015,10 +1015,10 @@
           <div class="ds-bal-orb-2"></div>
           <div class="ds-mini-card">
             <div class="ds-mini-card-chip"></div>
-            <div class="ds-mini-card-num">•••• 4891</div>
+            <div class="ds-mini-card-num">���� 4891</div>
           </div>
           <div class="ds-bal-card-lbl">Account Balance</div>
-          <div class="ds-bal-card-amt" id="right-wallet">₦0</div>
+          <div class="ds-bal-card-amt" id="right-wallet">?0</div>
           <div style="display:flex;gap:8px;margin-top:14px">
             <button class="ds-bal-card-btn js-funds" style="flex:1">+ Add Funds</button>
             <a href="new-order.html" class="ds-bal-card-btn" style="flex:1;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:5px"><i class="fas fa-bolt"></i> New Order</a>
@@ -1044,25 +1044,25 @@
               <div class="ds-act-icon" style="background:linear-gradient(135deg,#f09433,#bc1888)"><i class="fab fa-instagram"></i></div>
               <div class="ds-act-info">
                 <div class="ds-act-name">Instagram Followers</div>
-                <div class="ds-act-time">Delivered · 2h ago</div>
+                <div class="ds-act-time">Delivered � 2h ago</div>
               </div>
-              <div class="ds-act-amount" style="color:#16a34a">✓</div>
+              <div class="ds-act-amount" style="color:#16a34a">?</div>
             </div>
             <div class="ds-act-item">
               <div class="ds-act-icon" style="background:#010101"><i class="fab fa-tiktok"></i></div>
               <div class="ds-act-info">
                 <div class="ds-act-name">TikTok Views</div>
-                <div class="ds-act-time">In progress · 5h ago</div>
+                <div class="ds-act-time">In progress � 5h ago</div>
               </div>
-              <div class="ds-act-amount" style="color:#d97706">⋯</div>
+              <div class="ds-act-amount" style="color:#d97706">?</div>
             </div>
             <div class="ds-act-item">
               <div class="ds-act-icon" style="background:#1db954"><i class="fab fa-spotify"></i></div>
               <div class="ds-act-info">
                 <div class="ds-act-name">Spotify Plays</div>
-                <div class="ds-act-time">Delivered · 1d ago</div>
+                <div class="ds-act-time">Delivered � 1d ago</div>
               </div>
-              <div class="ds-act-amount" style="color:#16a34a">✓</div>
+              <div class="ds-act-amount" style="color:#16a34a">?</div>
             </div>
           </div>
         </div>
@@ -1089,7 +1089,7 @@
               <div class="ds-ann-dot" style="background:#d97706"></div>
               <div>
                 <div class="ds-ann-title">Maintenance Notice</div>
-                <div class="ds-ann-desc">Brief downtime planned Sep 5 · 2–4 AM UTC.</div>
+                <div class="ds-ann-desc">Brief downtime planned Sep 5 � 2�4 AM UTC.</div>
               </div>
             </div>
           </div>
@@ -1099,7 +1099,7 @@
 
     </div><!-- /ds-content -->
 
-    <!-- ══ MY ORDERS SECTION ══ -->
+    <!-- -- MY ORDERS SECTION -- -->
     <div class="ds-full-sec" id="sec-orders">
       <div>
         <div class="ds-sec-back" onclick="showDsSec('home')"><i class="fas fa-arrow-left"></i> Back to Dashboard</div>
@@ -1117,20 +1117,20 @@
               <option value="Pending">Pending</option>
               <option value="Cancelled">Cancelled</option>
             </select>
-            <div class="ds-full-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="ord-search" placeholder="Search orders…" oninput="filterFullOrders()"></div>
+            <div class="ds-full-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="ord-search" placeholder="Search orders�" oninput="filterFullOrders()"></div>
           </div>
         </div>
         <div class="ds-full-tbl-wrap">
           <table class="ds-full-tbl">
             <thead><tr><th>Order ID</th><th>Service</th><th>Link / Target</th><th>Qty</th><th>Charge</th><th>Status</th><th>Date</th></tr></thead>
-            <tbody id="full-orders-body"><tr><td colspan="7" class="ds-empty"><i class="fas fa-circle-notch fa-spin"></i> Loading…</td></tr></tbody>
+            <tbody id="full-orders-body"><tr><td colspan="7" class="ds-empty"><i class="fas fa-circle-notch fa-spin"></i> Loading�</td></tr></tbody>
           </table>
         </div>
         <div class="ds-full-count" id="full-orders-count"></div>
       </div>
     </div>
 
-    <!-- ══ TRANSACTIONS SECTION ══ -->
+    <!-- -- TRANSACTIONS SECTION -- -->
     <div class="ds-full-sec" id="sec-txns">
       <div>
         <div class="ds-sec-back" onclick="showDsSec('home')"><i class="fas fa-arrow-left"></i> Back to Dashboard</div>
@@ -1149,14 +1149,14 @@
         <div class="ds-full-tbl-wrap">
           <table class="ds-full-tbl">
             <thead><tr><th>Type</th><th>Description</th><th>Amount (NGN)</th><th>Status</th><th>Date</th></tr></thead>
-            <tbody id="user-txn-body"><tr><td colspan="5" class="ds-empty"><i class="fas fa-circle-notch fa-spin"></i> Loading…</td></tr></tbody>
+            <tbody id="user-txn-body"><tr><td colspan="5" class="ds-empty"><i class="fas fa-circle-notch fa-spin"></i> Loading�</td></tr></tbody>
           </table>
         </div>
         <div class="ds-full-count" id="user-txn-count"></div>
       </div>
     </div>
 
-    <!-- ══ SETTINGS SECTION ══ -->
+    <!-- -- SETTINGS SECTION -- -->
     <div class="ds-full-sec" id="sec-settings">
       <div>
         <div class="ds-sec-back" onclick="showDsSec('home')"><i class="fas fa-arrow-left"></i> Back to Dashboard</div>
@@ -1172,11 +1172,11 @@
           </div>
           <div class="ds-form-group">
             <label>Email Address</label>
-            <input type="email" id="set-email" disabled placeholder="—" />
+            <input type="email" id="set-email" disabled placeholder="�" />
           </div>
           <div class="ds-form-group">
             <label>User ID</label>
-            <input type="text" id="set-uid" disabled placeholder="—" />
+            <input type="text" id="set-uid" disabled placeholder="�" />
           </div>
           <button class="ds-save-btn" id="set-save-btn" onclick="saveUserSettings()">Save Changes</button>
           <div id="set-msg" style="font-size:0.76rem;font-weight:600;color:#10b981;display:none">Profile updated successfully!</div>
@@ -1184,7 +1184,7 @@
       </div>
     </div>
 
-    <!-- ══ REFERRALS SECTION ══ -->
+    <!-- -- REFERRALS SECTION -- -->
     <div class="ds-full-sec" id="sec-referrals">
       <div>
         <div class="ds-sec-back" onclick="showDsSec('home')"><i class="fas fa-arrow-left"></i> Back to Dashboard</div>
@@ -1207,17 +1207,17 @@
           <div style="font-size:0.74rem;opacity:0.85">Friends Referred</div>
         </div>
         <div class="ds-stat-card" style="background:linear-gradient(135deg,#10b981,#34d399);color:#fff;border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;gap:4px">
-          <div style="font-size:1.6rem;font-weight:900" id="ref-earned">₦0</div>
+          <div style="font-size:1.6rem;font-weight:900" id="ref-earned">?0</div>
           <div style="font-size:0.74rem;opacity:0.85">Total Earned</div>
         </div>
         <div class="ds-stat-card" style="background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff;border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;gap:4px">
-          <div style="font-size:1.6rem;font-weight:900" id="ref-pending">₦0</div>
+          <div style="font-size:1.6rem;font-weight:900" id="ref-pending">?0</div>
           <div style="font-size:0.74rem;opacity:0.85">Pending Commission</div>
         </div>
       </div>
     </div>
 
-    <!-- ══ FAVORITES SECTION ══ -->
+    <!-- -- FAVORITES SECTION -- -->
     <div class="ds-full-sec" id="sec-favorites">
       <div>
         <div class="ds-sec-back" onclick="showDsSec('home')"><i class="fas fa-arrow-left"></i> Back to Dashboard</div>
@@ -1225,14 +1225,14 @@
         <div class="ds-sec-sub">Services you've saved for quick access</div>
       </div>
       <div id="fav-empty" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:60px 20px;text-align:center">
-        <div style="font-size:3rem;opacity:0.3">⭐</div>
+        <div style="font-size:3rem;opacity:0.3">?</div>
         <div style="font-size:1rem;font-weight:700;color:#0f0e1c">No favorites yet</div>
         <div style="font-size:0.82rem;color:#8b8fa8;max-width:300px">Browse services and tap the star icon to save them here for quick ordering.</div>
         <a href="new-order.html" class="ds-save-btn" style="text-decoration:none;text-align:center"><i class="fas fa-bolt"></i> Browse Social Boost</a>
       </div>
     </div>
 
-    <!-- ══ API ACCESS SECTION ══ -->
+    <!-- -- API ACCESS SECTION -- -->
     <div class="ds-full-sec" id="sec-api">
       <div>
         <div class="ds-sec-back" onclick="showDsSec('home')"><i class="fas fa-arrow-left"></i> Back to Dashboard</div>
@@ -1269,12 +1269,12 @@
       </div>
     </div>
 
-    <!-- ══ SUPPORT SECTION ══ -->
+    <!-- -- SUPPORT SECTION -- -->
     <div class="ds-full-sec" id="sec-support">
       <div>
         <div class="ds-sec-back" onclick="showDsSec('home')"><i class="fas fa-arrow-left"></i> Back to Dashboard</div>
         <div class="ds-sec-title">Support</div>
-        <div class="ds-sec-sub">We're here to help — reach out anytime</div>
+        <div class="ds-sec-sub">We're here to help � reach out anytime</div>
       </div>
 
       <!-- Contact channel -->
@@ -1300,12 +1300,12 @@
 
           <details class="faq-item">
             <summary class="faq-q">How long does delivery take? <i class="fas fa-chevron-down faq-icon"></i></summary>
-            <div class="faq-a">Most orders start within minutes and complete within 1–24 hours. Some high-quality or geo-targeted services may take up to 72 hours. You can track progress in <strong>My Orders</strong>.</div>
+            <div class="faq-a">Most orders start within minutes and complete within 1�24 hours. Some high-quality or geo-targeted services may take up to 72 hours. You can track progress in <strong>My Orders</strong>.</div>
           </details>
 
           <details class="faq-item">
             <summary class="faq-q">Is my account safe to use these services? <i class="fas fa-chevron-down faq-icon"></i></summary>
-            <div class="faq-a">Yes. We only need your public profile URL — never your password or login details. Our delivery methods are gradual and organic-looking to keep your account safe.</div>
+            <div class="faq-a">Yes. We only need your public profile URL � never your password or login details. Our delivery methods are gradual and organic-looking to keep your account safe.</div>
           </details>
 
           <details class="faq-item">
@@ -1315,7 +1315,7 @@
 
           <details class="faq-item">
             <summary class="faq-q">How do I fund my wallet? <i class="fas fa-chevron-down faq-icon"></i></summary>
-            <div class="faq-a">Click <strong>Add Funds</strong> anywhere on the dashboard. We accept Bank Transfer via Korapay. Minimum deposit is ₦3,000 and funds are credited instantly after payment confirmation.</div>
+            <div class="faq-a">Click <strong>Add Funds</strong> anywhere on the dashboard. We accept Bank Transfer via Korapay. Minimum deposit is ?3,000 and funds are credited instantly after payment confirmation.</div>
           </details>
 
           <details class="faq-item">
@@ -1325,24 +1325,24 @@
 
           <details class="faq-item">
             <summary class="faq-q">Which platforms do you support? <i class="fas fa-chevron-down faq-icon"></i></summary>
-            <div class="faq-a">We currently support Instagram, TikTok, Facebook, X (Twitter), YouTube, Snapchat, and Telegram. New platforms are added regularly — check the Social Boost page for the latest list.</div>
+            <div class="faq-a">We currently support Instagram, TikTok, Facebook, X (Twitter), YouTube, Snapchat, and Telegram. New platforms are added regularly � check the Social Boost page for the latest list.</div>
           </details>
 
           <details class="faq-item">
             <summary class="faq-q">Why is my order still pending? <i class="fas fa-chevron-down faq-icon"></i></summary>
-            <div class="faq-a">Orders move from Pending → In Progress → Completed automatically. If an order has been Pending for more than 2 hours, email us your order ID and we'll investigate right away.</div>
+            <div class="faq-a">Orders move from Pending ? In Progress ? Completed automatically. If an order has been Pending for more than 2 hours, email us your order ID and we'll investigate right away.</div>
           </details>
 
           <details class="faq-item" style="border-bottom:none">
             <summary class="faq-q">Is there a minimum order amount? <i class="fas fa-chevron-down faq-icon"></i></summary>
-            <div class="faq-a">Minimum order value varies by service — most start from as little as ₦200. Check the service listing on the Social Boost page for exact pricing and minimums.</div>
+            <div class="faq-a">Minimum order value varies by service � most start from as little as ?200. Check the service listing on the Social Boost page for exact pricing and minimums.</div>
           </details>
 
         </div>
       </div>
     </div>
 
-    <!-- ══ NOTIFICATIONS SECTION ══ -->
+    <!-- -- NOTIFICATIONS SECTION -- -->
     <div class="ds-full-sec" id="sec-notifs">
       <div>
         <div class="ds-sec-back" onclick="showDsSec('home')"><i class="fas fa-arrow-left"></i> Back to Dashboard</div>
@@ -1350,7 +1350,7 @@
         <div class="ds-sec-sub">Updates about your orders and account</div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:60px 20px;text-align:center">
-        <div style="font-size:3rem;opacity:0.3">🔔</div>
+        <div style="font-size:3rem;opacity:0.3">??</div>
         <div style="font-size:1rem;font-weight:700;color:#0f0e1c">You're all caught up</div>
         <div style="font-size:0.82rem;color:#8b8fa8;max-width:300px">No new notifications. Order updates and account alerts will appear here.</div>
       </div>
@@ -1382,12 +1382,12 @@
     </a>
   </nav>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/supabase.min.js"></script>
   <script src="js/supabase-client.js"></script>
   <script>
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
 
-    /* ── Announcement bar dismiss ── */
+    /* -- Announcement bar dismiss -- */
     (function() {
       const bar = document.getElementById('ann-bar');
       if (localStorage.getItem('ann-dismissed')) { bar.style.display = 'none'; return; }
@@ -1397,7 +1397,7 @@
       });
     })();
 
-    /* ── PWA Install prompt ── */
+    /* -- PWA Install prompt -- */
     let _installPrompt = null;
     const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
@@ -1424,18 +1424,18 @@
       } else if (isIOS) {
         document.getElementById('ios-install-modal').classList.add('show');
       } else {
-        // Android/Chrome but prompt not yet available — show manual instructions
+        // Android/Chrome but prompt not yet available � show manual instructions
         document.getElementById('ios-install-modal').querySelector('h3').textContent = 'Add to Home Screen';
         document.getElementById('ios-install-modal').querySelector('p').textContent = 'Use your browser menu to install the app:';
-        document.getElementById('ios-install-modal').querySelectorAll('.ds-install-step')[0].querySelector('span').innerHTML = 'Tap the <strong>⋮ menu</strong> (three dots) at the top right of Chrome';
+        document.getElementById('ios-install-modal').querySelectorAll('.ds-install-step')[0].querySelector('span').innerHTML = 'Tap the <strong>? menu</strong> (three dots) at the top right of Chrome';
         document.getElementById('ios-install-modal').querySelectorAll('.ds-install-step')[1].querySelector('span').innerHTML = 'Tap <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong>';
-        document.getElementById('ios-install-modal').querySelectorAll('.ds-install-step')[2].querySelector('span').innerHTML = 'Tap <strong>Install</strong> — the app icon will appear on your home screen';
+        document.getElementById('ios-install-modal').querySelectorAll('.ds-install-step')[2].querySelector('span').innerHTML = 'Tap <strong>Install</strong> � the app icon will appear on your home screen';
         document.getElementById('ios-install-modal').classList.add('show');
       }
     }
   </script>
   <script>
-    /* ── Toast ── */
+    /* -- Toast -- */
     function toast(msg, type = 'info') {
       const icons = { info: 'fa-circle-info', success: 'fa-circle-check', warn: 'fa-triangle-exclamation' };
       const wrap = document.getElementById('toast-wrap');
@@ -1446,7 +1446,7 @@
       setTimeout(() => { el.style.animation = 'toastOut 0.25s ease forwards'; setTimeout(() => el.remove(), 250); }, 3000);
     }
 
-    /* ── Mobile sidebar ── */
+    /* -- Mobile sidebar -- */
     const sidebar = document.getElementById('ds-sidebar');
     const overlay = document.getElementById('ds-overlay');
     document.getElementById('mob-toggle').addEventListener('click', () => {
@@ -1454,19 +1454,19 @@
     });
     overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('show'); });
 
-    /* ── Profile dropdown ── */
+    /* -- Profile dropdown -- */
     const profileWrap = document.getElementById('profile-wrap');
     document.getElementById('profile-btn').addEventListener('click', e => {
       e.stopPropagation(); profileWrap.classList.toggle('open');
     });
     document.addEventListener('click', () => profileWrap.classList.remove('open'));
 
-    /* ── Coming soon handler ── */
+    /* -- Coming soon handler -- */
     document.querySelectorAll('.js-coming').forEach(el => {
-      el.addEventListener('click', e => { e.preventDefault(); toast('Coming soon — this feature is under development.', 'info'); });
+      el.addEventListener('click', e => { e.preventDefault(); toast('Coming soon � this feature is under development.', 'info'); });
     });
 
-    /* ── Section switcher ── */
+    /* -- Section switcher -- */
     const _dsSections = {};
     const ALL_SECS = ['orders','txns','settings','referrals','favorites','api','support','notifs'];
     function showDsSec(name) {
@@ -1493,7 +1493,7 @@
       if (ov) ov.classList.remove('open');
     }
 
-    /* ── My Orders (full list) ── */
+    /* -- My Orders (full list) -- */
     let _allFullOrders = [];
     function renderFullOrders(orders) {
       _allFullOrders = orders;
@@ -1511,16 +1511,16 @@
       if (!rows.length) { tbody.innerHTML = `<tr><td colspan="7" class="ds-empty">No orders found</td></tr>`; return; }
       tbody.innerHTML = rows.map(o => {
         const ref  = o.order_ref || `#${String(o.id).padStart(5,'0')}`;
-        const link = o.link || o.target_url || '—';
-        const disp = link !== '—' && link.length > 28 ? link.slice(0,28)+'…' : link;
-        const qty  = o.quantity != null ? Number(o.quantity).toLocaleString() : (o.amount ? `$${parseFloat(o.amount).toFixed(2)}` : '—');
-        const amt  = o.amount ? `₦${Math.round(parseFloat(o.amount)*1600).toLocaleString('en-NG')}` : (o.charge ? `₦${Math.round(parseFloat(o.charge)*1600).toLocaleString('en-NG')}` : '—');
+        const link = o.link || o.target_url || '�';
+        const disp = link !== '�' && link.length > 28 ? link.slice(0,28)+'�' : link;
+        const qty  = o.quantity != null ? Number(o.quantity).toLocaleString() : (o.amount ? `$${parseFloat(o.amount).toFixed(2)}` : '�');
+        const amt  = o.amount ? `?${Math.round(parseFloat(o.amount)*1600).toLocaleString('en-NG')}` : (o.charge ? `?${Math.round(parseFloat(o.charge)*1600).toLocaleString('en-NG')}` : '�');
         const st   = o.status || 'Pending';
         const cls  = { Completed:'badge-completed', 'In Progress':'badge-inprogress', Pending:'badge-pending', Cancelled:'badge-cancelled' }[st] || 'badge-pending';
-        const date = o.created_at ? new Date(o.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'2-digit' }) : '—';
+        const date = o.created_at ? new Date(o.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'2-digit' }) : '�';
         return `<tr>
           <td style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:#8b8fa8;font-size:0.73rem">${ref}</td>
-          <td style="color:#4b5063;font-size:0.76rem">${o.service||'—'}</td>
+          <td style="color:#4b5063;font-size:0.76rem">${o.service||'�'}</td>
           <td style="color:#8b8fa8;font-size:0.72rem" title="${link}">${disp}</td>
           <td style="font-weight:600">${qty}</td>
           <td style="font-weight:700;color:#10b981">${amt}</td>
@@ -1530,7 +1530,7 @@
       }).join('');
     }
 
-    /* ── User Transactions ── */
+    /* -- User Transactions -- */
     let _allUserTxns = [];
     async function loadUserTxns() {
       const tbody = document.getElementById('user-txn-body');
@@ -1541,8 +1541,8 @@
         db.from('fund_requests').select('id, amount, method, status, created_at').eq('user_id', uid).order('created_at', { ascending: false }),
       ]);
       _allUserTxns = [
-        ...(ords  || []).map(o => ({ type:'charge',  desc: `Order · ${o.service||'Service'}`, amount: parseFloat(o.charge||o.amount||0)*1600, status: o.status||'Pending', ts: o.created_at })),
-        ...(funds || []).map(f => ({ type:'deposit', desc: `Deposit · ${f.method||'Bank Transfer'}`,    amount: parseFloat(f.amount||0),              status: f.status||'Pending', ts: f.created_at })),
+        ...(ords  || []).map(o => ({ type:'charge',  desc: `Order � ${o.service||'Service'}`, amount: parseFloat(o.charge||o.amount||0)*1600, status: o.status||'Pending', ts: o.created_at })),
+        ...(funds || []).map(f => ({ type:'deposit', desc: `Deposit � ${f.method||'Bank Transfer'}`,    amount: parseFloat(f.amount||0),              status: f.status||'Pending', ts: f.created_at })),
       ].sort((a,b) => new Date(b.ts)-new Date(a.ts));
       filterUserTxns();
     }
@@ -1557,18 +1557,18 @@
           ? `<span class="ds-badge badge-cancelled" style="background:#fdf2f8;color:#ec4899;border:none">Charge</span>`
           : `<span class="ds-badge badge-completed">Deposit</span>`;
         const cls  = { Completed:'badge-completed', Approved:'badge-completed', 'In Progress':'badge-inprogress', Pending:'badge-pending', Rejected:'badge-cancelled', Cancelled:'badge-cancelled' }[r.status] || 'badge-pending';
-        const date = r.ts ? new Date(r.ts).toLocaleDateString('en-NG',{day:'numeric',month:'short',year:'2-digit'}) : '—';
+        const date = r.ts ? new Date(r.ts).toLocaleDateString('en-NG',{day:'numeric',month:'short',year:'2-digit'}) : '�';
         return `<tr>
           <td>${pill}</td>
           <td style="color:#4b5063;font-size:0.78rem">${r.desc}</td>
-          <td style="font-weight:700;color:${r.type==='deposit'?'#10b981':'#ef4444'}">₦${Math.round(r.amount).toLocaleString('en-NG')}</td>
+          <td style="font-weight:700;color:${r.type==='deposit'?'#10b981':'#ef4444'}">?${Math.round(r.amount).toLocaleString('en-NG')}</td>
           <td><span class="ds-badge ${cls}">${r.status}</span></td>
           <td style="color:#8b8fa8;font-size:0.72rem;white-space:nowrap">${date}</td>
         </tr>`;
       }).join('');
     }
 
-    /* ── Settings ── */
+    /* -- Settings -- */
     function populateSettings() {
       const p = window._userProfile || {};
       document.getElementById('set-name').value  = p.full_name || '';
@@ -1580,7 +1580,7 @@
       const msg = document.getElementById('set-msg');
       const name = document.getElementById('set-name').value.trim();
       if (!name) { toast('Please enter your name.', 'warn'); return; }
-      btn.textContent = 'Saving…'; btn.disabled = true; msg.style.display = 'none';
+      btn.textContent = 'Saving�'; btn.disabled = true; msg.style.display = 'none';
       const { error } = await db.from('profiles').update({ full_name: name }).eq('id', window._userId);
       btn.textContent = 'Save Changes'; btn.disabled = false;
       if (error) { toast('Failed to save. Please try again.', 'warn'); return; }
@@ -1590,7 +1590,7 @@
       toast('Profile updated!', 'success');
     }
 
-    /* ── Referrals ── */
+    /* -- Referrals -- */
     function initReferrals() {
       const uid = window._userId || '';
       const link = `${location.origin}/register?ref=${uid}`;
@@ -1601,7 +1601,7 @@
       navigator.clipboard.writeText(el.value).then(() => toast('Referral link copied!', 'success')).catch(() => { el.select(); document.execCommand('copy'); toast('Copied!', 'success'); });
     }
 
-    /* ── API Access ── */
+    /* -- API Access -- */
     function initApiAccess() {
       document.getElementById('api-key-val').value = window._userId || 'Sign in to see your key';
     }
@@ -1610,10 +1610,10 @@
       navigator.clipboard.writeText(el.value).then(() => toast('API key copied!', 'success')).catch(() => { el.select(); document.execCommand('copy'); toast('Copied!', 'success'); });
     }
 
-    /* ── Favorites ── */
-    function initFavorites() { /* empty state — no stored favorites yet */ }
+    /* -- Favorites -- */
+    function initFavorites() { /* empty state � no stored favorites yet */ }
 
-    /* ── Popular services: live prices from Peakerr ── */
+    /* -- Popular services: live prices from Peakerr -- */
     (async () => {
       const MARKUP     = 5;
       const USD_TO_NGN = 1600;
@@ -1642,22 +1642,22 @@
           const ngn   = Math.round(parseFloat(cheap.rate) * MARKUP * USD_TO_NGN);
           const priceEl = document.getElementById(`svc-price-${id}`);
           const typeEl  = document.getElementById(`svc-type-${id}`);
-          if (priceEl) priceEl.textContent = `₦${ngn.toLocaleString('en-NG')}`;
+          if (priceEl) priceEl.textContent = `?${ngn.toLocaleString('en-NG')}`;
           if (typeEl)  typeEl.textContent  = cheap.name.replace(/^(Instagram|TikTok|YouTube|Spotify|Twitter|Facebook|X)\s*/i, '').split(' ').slice(0,3).join(' ') || typeEl.textContent;
         });
       } catch (_) {}
     })();
 
-    /* ── Bottom nav: Orders ── */
+    /* -- Bottom nav: Orders -- */
     document.getElementById('bot-orders-btn').addEventListener('click', () => showDsSec('orders'));
 
-    /* ── Wallet modal ── */
+    /* -- Wallet modal -- */
     const walletModal = document.getElementById('wallet-modal');
     function openWalletModal() {
       const USD_TO_NGN = 1600;
       const bal = window.userWallet || 0;
       document.getElementById('wallet-modal-balance').textContent =
-        `₦${Math.round(bal * USD_TO_NGN).toLocaleString('en-NG')}`;
+        `?${Math.round(bal * USD_TO_NGN).toLocaleString('en-NG')}`;
       walletModal.classList.add('show');
     }
     document.getElementById('bot-wallet-btn').addEventListener('click', openWalletModal);
@@ -1668,7 +1668,7 @@
       openFundsModal();
     });
 
-    /* ── Add Funds modal ── */
+    /* -- Add Funds modal -- */
     const fundsModal  = document.getElementById('funds-modal');
     let selectedAmt   = 10000; /* default matches selected preset */
     let selectedMethod = 'bank';
@@ -1696,7 +1696,7 @@
       });
     });
 
-    /* ── Bank Transfer Modal ── */
+    /* -- Bank Transfer Modal -- */
     const bankModal = document.getElementById('bank-modal');
     function openBankModal()  { bankModal.classList.add('show'); }
     function closeBankModal() {
@@ -1749,7 +1749,7 @@
           const d = await r.json();
           if (d.status === 'success') {
             clearBankPoll();
-            document.getElementById('bk-credited-amt').textContent = `₦${amountNGN.toLocaleString('en-NG')}`;
+            document.getElementById('bk-credited-amt').textContent = `?${amountNGN.toLocaleString('en-NG')}`;
             showBkState('success');
             // Refresh wallet display
             const { data: { session } } = await db.auth.getSession();
@@ -1757,7 +1757,7 @@
               const { data: prof } = await db.from('profiles').select('wallet_balance').eq('id', session.user.id).single();
               if (prof) {
                 const ngn = Math.round((prof.wallet_balance || 0) * 1600);
-                const fmtd = `₦${ngn.toLocaleString('en-NG')}`;
+                const fmtd = `?${ngn.toLocaleString('en-NG')}`;
                 document.getElementById('topbar-wallet').textContent = fmtd;
                 document.getElementById('wallet-modal-balance').textContent = fmtd;
                 document.getElementById('sidebar-wallet').textContent = fmtd;
@@ -1774,7 +1774,7 @@
     document.getElementById('modal-submit').addEventListener('click', async () => {
       const custom = parseFloat(document.getElementById('custom-amount').value);
       const amount = custom > 0 ? custom : selectedAmt;
-      if (amount < 3000) { toast('Minimum top-up amount is ₦3,000.', 'warn'); return; }
+      if (amount < 3000) { toast('Minimum top-up amount is ?3,000.', 'warn'); return; }
       if (selectedMethod !== 'bank') { toast('Only Bank Transfer is available right now.', 'warn'); return; }
 
       closeFundsModal();
@@ -1806,7 +1806,7 @@
           return;
         }
 
-        document.getElementById('bk-amount-display').textContent = `₦${amount.toLocaleString('en-NG')}`;
+        document.getElementById('bk-amount-display').textContent = `?${amount.toLocaleString('en-NG')}`;
         document.getElementById('bk-checkout-link').href = d.checkoutUrl || '#';
         showBkState('details');
         startBankPoll(d.reference, amount, session.user.id);
@@ -1817,7 +1817,7 @@
       }
     });
 
-    /* ── Filter tabs ── */
+    /* -- Filter tabs -- */
     let allOrders = [];
     let _activeType   = 'all';
     let _activeStatus = 'all';
@@ -1852,7 +1852,7 @@
       });
     });
 
-    /* ── Helpers ── */
+    /* -- Helpers -- */
     function timeGreeting() {
       const h = new Date().getHours();
       return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
@@ -1880,21 +1880,21 @@
     function renderOrders(orders) {
       const tbody = document.getElementById('orders-body');
       if (!orders || orders.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="ds-empty"><i class="fas fa-bag-shopping"></i>No orders here yet.<br><a href="new-order.html" style="color:#7c3aed;font-weight:600;text-decoration:underline;">Browse the store to get started →</a></td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="ds-empty"><i class="fas fa-bag-shopping"></i>No orders here yet.<br><a href="new-order.html" style="color:#7c3aed;font-weight:600;text-decoration:underline;">Browse the store to get started ?</a></td></tr>`;
         return;
       }
       tbody.innerHTML = orders.slice(0, 10).map(o => {
         const ref   = o.order_ref || `#${String(o.id).padStart(5,'0')}`;
-        const link  = o.link || o.target_url || '—';
-        const disp  = link !== '—' && link.length > 28 ? link.slice(0,28)+'…' : link;
+        const link  = o.link || o.target_url || '�';
+        const disp  = link !== '�' && link.length > 28 ? link.slice(0,28)+'�' : link;
         const qty   = o._isAcct
           ? `<a href="accounts" style="color:#7c3aed;font-size:.8rem"><i class="fas fa-key"></i> View</a>`
-          : (o.quantity != null ? Number(o.quantity).toLocaleString() : (o.amount ? `$${parseFloat(o.amount).toFixed(2)}` : '—'));
+          : (o.quantity != null ? Number(o.quantity).toLocaleString() : (o.amount ? `$${parseFloat(o.amount).toFixed(2)}` : '�'));
         const st    = o.status || 'Pending';
         return `<tr>
           <td class="td-order">${ref}</td>
           <td class="td-link" title="${link}">${disp}</td>
-          <td class="td-service">${o.service || '—'}</td>
+          <td class="td-service">${o.service || '�'}</td>
           <td>${qty}</td>
           <td><span class="ds-badge ${badgeClass(st)}">${st}</span></td>
           <td>${formatDate(o.created_at)}</td>
@@ -1902,7 +1902,7 @@
       }).join('');
     }
 
-    /* ── Main init ── */
+    /* -- Main init -- */
     (async () => {
       const { data: { session } } = await db.auth.getSession();
       if (!session) { window.location.href = 'login.html'; return; }
@@ -1928,10 +1928,10 @@
 
       /* Currency */
       const USD_TO_NGN = 1600;
-      const fmtNGN = v => `₦${Math.round(v * USD_TO_NGN).toLocaleString('en-NG')}`;
+      const fmtNGN = v => `?${Math.round(v * USD_TO_NGN).toLocaleString('en-NG')}`;
 
       /* Populate names & avatars */
-      document.getElementById('greeting-text').textContent  = `${timeGreeting()}, ${name.split(' ')[0]}! 👋`;
+      document.getElementById('greeting-text').textContent  = `${timeGreeting()}, ${name.split(' ')[0]}! ??`;
       document.getElementById('sidebar-avatar').textContent = inits;
       document.getElementById('sidebar-name').textContent   = name;
       document.getElementById('sidebar-email').textContent  = email;
@@ -1945,7 +1945,7 @@
       document.getElementById('right-wallet').textContent  = fmtNGN(wallet);
       document.getElementById('sidebar-wallet').textContent = fmtNGN(wallet);
 
-      /* Orders — SMM + Acct Store combined */
+      /* Orders � SMM + Acct Store combined */
       const [{ data: orders }, { data: acctOrders }] = await Promise.all([
         db.from('orders').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
         db.from('account_orders').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
@@ -1985,7 +1985,7 @@
       document.getElementById('stat-completed').textContent = completed;
       document.getElementById('stat-progress').textContent  = inProgress;
       document.getElementById('stat-spent').textContent     = fmtNGN(spent);
-      document.getElementById('trend-completed').textContent = `↑ ${pct}% rate`;
+      document.getElementById('trend-completed').textContent = `? ${pct}% rate`;
       document.getElementById('trend-total').textContent     = `${total} orders total`;
       document.getElementById('orders-badge').textContent    = total;
 

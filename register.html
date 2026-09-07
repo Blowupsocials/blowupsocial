@@ -1,4 +1,4 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="BlowUpSocials" />
   <link rel="apple-touch-icon" href="/img/icon-192.png" />
-  <title>Create Account â€“ BlowUpSocials</title>
+  <title>Create Account – BlowUpSocials</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -254,7 +254,7 @@
 
       <!-- STEP 2: OTP verification -->
       <div class="otp-screen" id="verifyStep">
-        <div class="otp-email-icon">ðŸ“§</div>
+        <div class="otp-email-icon">??</div>
         <h2 style="margin-bottom:10px;">Verify your email</h2>
         <p class="otp-sent-to">We sent a 6-digit code to<br><strong id="otp-display-email"></strong></p>
 
@@ -285,7 +285,7 @@
     </div>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/supabase.min.js"></script>
   <script src="js/supabase-client.js"></script>
   <script src="js/main.js"></script>
   <script>
@@ -400,7 +400,7 @@
       if (pwd !== pwd2)   { showMsg('Passwords do not match.'); return; }
       if (pwd.length < 6) { showMsg('Password must be at least 6 characters.'); return; }
 
-      btn.innerHTML = 'Creating accountâ€¦';
+      btn.innerHTML = 'Creating account…';
       btn.disabled = true;
 
       const { data, error } = await db.auth.signUp({
@@ -435,7 +435,7 @@
       if (code.length < 6) { showOtpMsg('Please enter all 6 digits.'); return; }
 
       const btn = document.getElementById('otp-submit-btn');
-      btn.innerHTML = 'Verifyingâ€¦';
+      btn.innerHTML = 'Verifying…';
       btn.disabled = true;
 
       const { data, error } = await db.auth.verifyOtp({
@@ -451,7 +451,7 @@
         return;
       }
 
-      showOtpMsg('Email verified! Redirectingâ€¦', false);
+      showOtpMsg('Email verified! Redirecting…', false);
       setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
     }
 

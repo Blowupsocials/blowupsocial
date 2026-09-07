@@ -1,4 +1,4 @@
-const CACHE = 'blowupsocials-v2';
+const CACHE = 'blowupsocials-v3';
 const SHELL = [
   '/',
   '/dashboard',
@@ -6,6 +6,7 @@ const SHELL = [
   '/register',
   '/new-order',
   '/accounts',
+  '/js/supabase.min.js',
   '/img/logo.png',
   '/img/icon-192.png',
   '/img/icon-512.png',
