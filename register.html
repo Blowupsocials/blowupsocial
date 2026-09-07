@@ -1,72 +1,204 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Create Account – BlowUpSocials</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
-
-  <div class="orbs">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-  </div>
-
-  <nav class="navbar">
-    <div class="container nav-inner">
-      <a href="index.html" class="logo">
-        <img src="img/logo.png" alt="BlowUpSocials" class="logo-img" />
-      </a>
-      <div style="flex:1"></div>
-      <div class="nav-right">
-        <span style="font-size:0.82rem;color:var(--text-muted);">Have an account?</span>
-        <a href="login.html" class="btn-ghost">Sign In</a>
-      </div>
-    </div>
-  </nav>
-
   <style>
-    /* OTP verification screen */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fafafa;
+      color: #111;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* NAV */
+    nav {
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #f0f0f0;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-inner {
+      max-width: 1140px; margin: 0 auto; padding: 0 28px;
+      display: flex; align-items: center; height: 62px; gap: 16px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; margin-right: auto; }
+    .nav-logo img { height: 34px; width: auto; display: block; }
+    .nav-brand { font-size: 0.95rem; font-weight: 800; color: #111; letter-spacing: -0.3px; }
+    .nav-meta { font-size: 0.82rem; color: #888; }
+    .nav-link {
+      display: inline-flex; align-items: center; gap: 7px;
+      border: 1.5px solid #e5e7eb; color: #333;
+      font-size: 0.82rem; font-weight: 600;
+      padding: 8px 18px; border-radius: 8px;
+      transition: border-color .15s, background .15s;
+    }
+    .nav-link:hover { border-color: #c4b5fd; background: #faf8ff; }
+
+    /* PAGE */
+    .auth-page {
+      display: flex; align-items: center; justify-content: center;
+      min-height: calc(100vh - 62px);
+      padding: 32px 16px;
+    }
+
+    /* CARD */
+    .auth-card {
+      background: #fff;
+      border: 1px solid #ececec;
+      border-radius: 18px;
+      padding: 40px 36px;
+      width: 100%; max-width: 440px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+    .card-logo {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 28px;
+    }
+    .card-logo img { height: 32px; width: auto; }
+    .card-logo span { font-size: 0.9rem; font-weight: 800; color: #111; letter-spacing: -0.3px; }
+
+    .auth-card h2 {
+      font-size: 1.45rem; font-weight: 800; color: #111;
+      letter-spacing: -0.5px; margin-bottom: 6px;
+    }
+    .auth-sub { font-size: 0.84rem; color: #777; margin-bottom: 28px; }
+
+    /* FORM */
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block; font-size: 0.79rem; font-weight: 600;
+      color: #444; margin-bottom: 7px;
+    }
+    .form-input {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid #e5e7eb; border-radius: 10px;
+      font-family: inherit; font-size: 0.875rem; color: #111;
+      background: #fff; outline: none;
+      transition: border-color .18s;
+    }
+    .form-input:focus { border-color: #7c3aed; }
+    .form-input::placeholder { color: #bbb; }
+    .form-input-wrap { position: relative; }
+    .form-input-wrap .form-input { padding-right: 40px; }
+    .input-icon {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      color: #aaa; cursor: pointer; font-size: 0.82rem;
+    }
+    .input-icon:hover { color: #555; }
+
+    .terms-row {
+      display: flex; align-items: flex-start; gap: 9px;
+      font-size: 0.79rem; color: #666; margin-bottom: 22px; cursor: pointer;
+    }
+    .terms-row input { accent-color: #7c3aed; margin-top: 2px; flex-shrink: 0; }
+    .terms-row a { color: #7c3aed; font-weight: 600; }
+
+    .btn-auth {
+      width: 100%; padding: 13px;
+      background: #7c3aed; color: #fff;
+      font-family: inherit; font-size: 0.9rem; font-weight: 700;
+      border: none; border-radius: 10px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background .18s;
+    }
+    .btn-auth:hover { background: #6d28d9; }
+    .btn-auth:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* DIVIDER */
+    .auth-divider {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 0.75rem; color: #bbb; font-weight: 500;
+      margin: 22px 0;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: ''; flex: 1; height: 1px; background: #ececec;
+    }
+
+    /* SOCIAL BUTTONS */
+    .btn-social {
+      width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 11px; border: 1.5px solid #e5e7eb; border-radius: 10px;
+      background: #fff; font-family: inherit; font-size: 0.84rem; font-weight: 600;
+      color: #333; cursor: pointer; transition: border-color .15s, background .15s;
+      margin-bottom: 10px;
+    }
+    .btn-social:hover { border-color: #c4b5fd; background: #faf8ff; }
+
+    .auth-switch { font-size: 0.8rem; color: #888; text-align: center; margin-top: 20px; }
+    .auth-switch a { color: #7c3aed; font-weight: 600; }
+    .auth-switch a:hover { text-decoration: underline; }
+
+    /* OTP SCREEN */
     .otp-screen { display: none; text-align: center; }
     .otp-screen.show { display: block; }
     .otp-email-icon {
       width: 64px; height: 64px; border-radius: 50%;
-      background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(236,72,153,0.12));
+      background: #f5f3ff;
       display: flex; align-items: center; justify-content: center;
       font-size: 1.6rem; margin: 0 auto 18px;
     }
-    .otp-sent-to { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
-    .otp-sent-to strong { color: var(--text-primary); }
+    .otp-sent-to { font-size: 0.82rem; color: #777; margin-bottom: 24px; line-height: 1.55; }
+    .otp-sent-to strong { color: #111; }
     .otp-boxes {
       display: flex; gap: 10px; justify-content: center;
       margin: 0 auto 24px; max-width: 320px;
     }
     .otp-box {
       flex: 1; max-width: 48px; height: 58px;
-      border: 2px solid #e5e7eb; border-radius: 12px;
+      border: 1.5px solid #e5e7eb; border-radius: 12px;
       text-align: center; font-size: 1.5rem; font-weight: 800;
-      color: var(--text-primary); outline: none;
+      color: #111; outline: none;
       transition: border-color 0.15s, box-shadow 0.15s;
-      font-family: 'Space Grotesk', 'Inter', sans-serif;
-      background: #fff; caret-color: transparent;
+      font-family: inherit; background: #fff; caret-color: transparent;
     }
-    .otp-box:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,0.12); }
+    .otp-box:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
     .otp-box.filled { border-color: #7c3aed; background: #faf8ff; }
-    .otp-resend { font-size: 0.8rem; color: var(--text-muted); margin-top: 18px; }
-    .otp-resend a { color: #a78bfa; font-weight: 600; cursor: pointer; }
+    .otp-resend { font-size: 0.8rem; color: #999; margin-top: 18px; }
+    .otp-resend a { color: #7c3aed; font-weight: 600; cursor: pointer; }
     .otp-resend a:hover { text-decoration: underline; }
-    .otp-back { background: none; border: none; color: var(--text-muted); font-size: 0.8rem; cursor: pointer; margin-top: 10px; display: inline-flex; align-items: center; gap: 5px; font-family: inherit; }
-    .otp-back:hover { color: var(--text-primary); }
-    .otp-timer { color: #8b8fa8; }
+    .otp-back {
+      background: none; border: none; color: #999; font-size: 0.8rem;
+      cursor: pointer; margin-top: 10px; display: inline-flex;
+      align-items: center; gap: 5px; font-family: inherit;
+    }
+    .otp-back:hover { color: #111; }
+    .otp-timer { color: #bbb; }
+
+    @media (max-width: 480px) {
+      .auth-card { padding: 28px 20px; }
+      .nav-meta { display: none; }
+    }
   </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="img/logo.png" alt="BlowUpSocials" />
+        <span class="nav-brand">BlowUpSocials</span>
+      </a>
+      <span class="nav-meta">Have an account?</span>
+      <a href="login.html" class="nav-link">Sign In</a>
+    </div>
+  </nav>
 
   <main class="auth-page">
     <div class="auth-card">
 
-      <a href="index.html" class="logo"><img src="img/logo.png" alt="BlowUpSocials" class="logo-img" /></a>
+      <div class="card-logo">
+        <img src="img/logo.png" alt="BlowUpSocials" />
+        <span>BlowUpSocials</span>
+      </div>
 
       <!-- STEP 1: Registration form -->
       <div id="signupStep">
@@ -100,14 +232,14 @@
             </div>
           </div>
 
-          <div style="margin-bottom:22px;">
-            <label class="remember-row" style="font-size:0.79rem;color:var(--text-muted);">
-              <input type="checkbox" required />
-              I agree to the <a href="#" style="color:#a78bfa;">Terms of Service</a> and <a href="#" style="color:#a78bfa;">Privacy Policy</a>
-            </label>
-          </div>
+          <label class="terms-row">
+            <input type="checkbox" required />
+            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+          </label>
 
-          <button type="submit" class="btn-auth" id="registerBtn">Create Account <i class="fas fa-arrow-right"></i></button>
+          <button type="submit" class="btn-auth" id="registerBtn">
+            Create Account <i class="fas fa-arrow-right"></i>
+          </button>
         </form>
 
         <div class="auth-divider">or sign up with</div>
@@ -166,7 +298,6 @@
     let pendingEmail = '';
     let resendCooldown = null;
 
-    /* ── Password toggle ── */
     function togglePassword(id, iconId) {
       const input = document.getElementById(id);
       const icon  = document.getElementById(iconId);
@@ -177,7 +308,6 @@
       }
     }
 
-    /* ── Signup form message ── */
     function showMsg(msg, isError = true) {
       let el = document.getElementById('auth-msg');
       if (!el) {
@@ -186,21 +316,19 @@
         document.getElementById('registerForm').prepend(el);
       }
       el.style.cssText = isError
-        ? 'background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.25);color:#ef4444;padding:11px 14px;border-radius:9px;font-size:.82rem;margin-bottom:16px;text-align:center;'
-        : 'background:rgba(5,150,105,.10);border:1px solid rgba(5,150,105,.25);color:#059669;padding:11px 14px;border-radius:9px;font-size:.82rem;margin-bottom:16px;text-align:center;';
+        ? 'background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#dc2626;padding:11px 14px;border-radius:9px;font-size:.82rem;margin-bottom:16px;text-align:center;'
+        : 'background:rgba(5,150,105,.08);border:1px solid rgba(5,150,105,.2);color:#059669;padding:11px 14px;border-radius:9px;font-size:.82rem;margin-bottom:16px;text-align:center;';
       el.textContent = msg;
     }
 
-    /* ── OTP screen message ── */
     function showOtpMsg(msg, isError = true) {
       const el = document.getElementById('otp-msg');
       el.style.cssText = isError
-        ? 'background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.25);color:#ef4444;padding:11px 14px;border-radius:9px;font-size:.82rem;margin-bottom:16px;text-align:center;'
-        : 'background:rgba(5,150,105,.10);border:1px solid rgba(5,150,105,.25);color:#059669;padding:11px 14px;border-radius:9px;font-size:.82rem;margin-bottom:16px;text-align:center;';
+        ? 'background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#dc2626;padding:11px 14px;border-radius:9px;font-size:.82rem;margin-bottom:16px;text-align:center;'
+        : 'background:rgba(5,150,105,.08);border:1px solid rgba(5,150,105,.2);color:#059669;padding:11px 14px;border-radius:9px;font-size:.82rem;margin-bottom:16px;text-align:center;';
       el.textContent = msg;
     }
 
-    /* ── Switch to OTP screen ── */
     function showVerifyStep(email) {
       pendingEmail = email;
       document.getElementById('otp-display-email').textContent = email;
@@ -219,7 +347,6 @@
       document.getElementById('resend-timer').textContent = '';
     }
 
-    /* ── Resend cooldown timer ── */
     function startResendTimer(seconds) {
       const link  = document.getElementById('resend-link');
       const timer = document.getElementById('resend-timer');
@@ -238,7 +365,6 @@
       }, 1000);
     }
 
-    /* ── OTP box keyboard navigation ── */
     document.querySelectorAll('.otp-box').forEach((box, i, boxes) => {
       box.addEventListener('input', () => {
         box.value = box.value.replace(/\D/g, '').slice(-1);
@@ -265,7 +391,6 @@
       });
     });
 
-    /* ── Step 1: Sign up ── */
     async function handleRegister(e) {
       e.preventDefault();
       const btn  = document.getElementById('registerBtn');
@@ -277,7 +402,7 @@
       if (pwd !== pwd2)   { showMsg('Passwords do not match.'); return; }
       if (pwd.length < 6) { showMsg('Password must be at least 6 characters.'); return; }
 
-      btn.textContent = 'Creating account…';
+      btn.innerHTML = 'Creating account…';
       btn.disabled = true;
 
       const { data, error } = await db.auth.signUp({
@@ -293,7 +418,6 @@
         return;
       }
 
-      // Send welcome email (fire-and-forget)
       fetch('/api/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -307,14 +431,13 @@
       }
     }
 
-    /* ── Step 2: Verify OTP ── */
     async function handleVerify() {
       const boxes = document.querySelectorAll('.otp-box');
       const code  = [...boxes].map(b => b.value).join('');
       if (code.length < 6) { showOtpMsg('Please enter all 6 digits.'); return; }
 
       const btn = document.getElementById('otp-submit-btn');
-      btn.textContent = 'Verifying…';
+      btn.innerHTML = 'Verifying…';
       btn.disabled = true;
 
       const { data, error } = await db.auth.verifyOtp({
@@ -334,7 +457,6 @@
       setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
     }
 
-    /* ── Resend OTP ── */
     async function resendCode() {
       if (!pendingEmail) return;
       const { error } = await db.auth.resend({ type: 'signup', email: pendingEmail });

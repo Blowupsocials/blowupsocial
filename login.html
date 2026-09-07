@@ -1,37 +1,172 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign In – BlowUpSocials</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fafafa;
+      color: #111;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* NAV */
+    nav {
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #f0f0f0;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-inner {
+      max-width: 1140px; margin: 0 auto; padding: 0 28px;
+      display: flex; align-items: center; height: 62px; gap: 16px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; margin-right: auto; }
+    .nav-logo img { height: 34px; width: auto; display: block; }
+    .nav-brand { font-size: 0.95rem; font-weight: 800; color: #111; letter-spacing: -0.3px; }
+    .nav-meta { font-size: 0.82rem; color: #888; }
+    .nav-link {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: #7c3aed; color: #fff;
+      font-size: 0.82rem; font-weight: 600;
+      padding: 8px 18px; border-radius: 8px;
+      transition: background .18s;
+    }
+    .nav-link:hover { background: #6d28d9; }
+
+    /* PAGE */
+    .auth-page {
+      display: flex; align-items: center; justify-content: center;
+      min-height: calc(100vh - 62px);
+      padding: 32px 16px;
+    }
+
+    /* CARD */
+    .auth-card {
+      background: #fff;
+      border: 1px solid #ececec;
+      border-radius: 18px;
+      padding: 40px 36px;
+      width: 100%; max-width: 420px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+    .card-logo {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 28px;
+    }
+    .card-logo img { height: 32px; width: auto; }
+    .card-logo span { font-size: 0.9rem; font-weight: 800; color: #111; letter-spacing: -0.3px; }
+
+    .auth-card h2 {
+      font-size: 1.45rem; font-weight: 800; color: #111;
+      letter-spacing: -0.5px; margin-bottom: 6px;
+    }
+    .auth-sub { font-size: 0.84rem; color: #777; margin-bottom: 28px; }
+
+    /* FORM */
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block; font-size: 0.79rem; font-weight: 600;
+      color: #444; margin-bottom: 7px;
+    }
+    .form-input {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid #e5e7eb; border-radius: 10px;
+      font-family: inherit; font-size: 0.875rem; color: #111;
+      background: #fff; outline: none;
+      transition: border-color .18s;
+    }
+    .form-input:focus { border-color: #7c3aed; }
+    .form-input::placeholder { color: #bbb; }
+    .form-input-wrap { position: relative; }
+    .form-input-wrap .form-input { padding-right: 40px; }
+    .input-icon {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      color: #aaa; cursor: pointer; font-size: 0.82rem;
+    }
+    .input-icon:hover { color: #555; }
+
+    .form-footer-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 22px;
+    }
+    .remember-row {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.79rem; color: #555; cursor: pointer;
+    }
+    .remember-row input { accent-color: #7c3aed; }
+    .forgot-link { font-size: 0.79rem; color: #7c3aed; font-weight: 600; }
+    .forgot-link:hover { text-decoration: underline; }
+
+    .btn-auth {
+      width: 100%; padding: 13px;
+      background: #7c3aed; color: #fff;
+      font-family: inherit; font-size: 0.9rem; font-weight: 700;
+      border: none; border-radius: 10px; cursor: pointer;
+      transition: background .18s;
+    }
+    .btn-auth:hover { background: #6d28d9; }
+    .btn-auth:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* DIVIDER */
+    .auth-divider {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 0.75rem; color: #bbb; font-weight: 500;
+      margin: 22px 0;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: ''; flex: 1; height: 1px; background: #ececec;
+    }
+
+    /* SOCIAL BUTTONS */
+    .btn-social {
+      width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 11px; border: 1.5px solid #e5e7eb; border-radius: 10px;
+      background: #fff; font-family: inherit; font-size: 0.84rem; font-weight: 600;
+      color: #333; cursor: pointer; transition: border-color .15s, background .15s;
+      margin-bottom: 10px;
+    }
+    .btn-social:hover { border-color: #c4b5fd; background: #faf8ff; }
+
+    .auth-switch { font-size: 0.8rem; color: #888; text-align: center; margin-top: 20px; }
+    .auth-switch a { color: #7c3aed; font-weight: 600; }
+    .auth-switch a:hover { text-decoration: underline; }
+
+    @media (max-width: 480px) {
+      .auth-card { padding: 28px 20px; }
+      .nav-meta { display: none; }
+    }
+  </style>
 </head>
 <body>
 
-  <div class="orbs">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-  </div>
-
-  <nav class="navbar">
-    <div class="container nav-inner">
-      <a href="index.html" class="logo">
-        <img src="img/logo.png" alt="BlowUpSocials" class="logo-img" />
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="img/logo.png" alt="BlowUpSocials" />
+        <span class="nav-brand">BlowUpSocials</span>
       </a>
-      <div style="flex:1"></div>
-      <div class="nav-right">
-        <span style="font-size:0.82rem;color:var(--text-muted);">No account?</span>
-        <a href="register.html" class="btn-neon">Get Started Free</a>
-      </div>
+      <span class="nav-meta">No account?</span>
+      <a href="register.html" class="nav-link">Get Started Free</a>
     </div>
   </nav>
 
   <main class="auth-page">
     <div class="auth-card">
 
-      <a href="index.html" class="logo"><img src="img/logo.png" alt="BlowUpSocials" class="logo-img" /></a>
+      <div class="card-logo">
+        <img src="img/logo.png" alt="BlowUpSocials" />
+        <span>BlowUpSocials</span>
+      </div>
 
       <h2>Welcome back</h2>
       <p class="auth-sub">Sign in to your account to continue</p>
@@ -83,7 +218,6 @@
       window.location.href = (email || '').toLowerCase() === ADMIN_EMAIL ? 'admin.html' : 'dashboard.html';
     }
 
-    // Always sign out on visiting login page — ensures fresh login every time
     db.auth.signOut();
 
     function togglePassword(id, iconId) {
@@ -103,7 +237,7 @@
       if (!el) {
         el = document.createElement('div');
         el.id = 'auth-error';
-        el.style.cssText = 'background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.25);color:#ef4444;padding:11px 14px;border-radius:9px;font-size:.82rem;margin-bottom:16px;text-align:center;';
+        el.style.cssText = 'background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#dc2626;padding:11px 14px;border-radius:9px;font-size:.82rem;margin-bottom:16px;text-align:center;';
         document.getElementById('loginForm').prepend(el);
       }
       el.textContent = msg;
