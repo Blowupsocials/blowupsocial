@@ -40,32 +40,32 @@
     :focus-visible { outline: 2px solid var(--pu); outline-offset: 2px; }
 
     /* ══ SIDEBAR ══ */
-    .sb { width: 220px; background: var(--sb); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 200; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+    .sb { width: 250px; background: #fff; border-right: 1px solid #ebebeb; position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 200; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
     .sb::-webkit-scrollbar { display: none; }
 
-    .sb-logo { display: flex; align-items: center; gap: 10px; padding: 18px 16px 15px; border-bottom: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
+    .sb-logo { display: flex; align-items: center; gap: 10px; padding: 22px 20px 18px; border-bottom: 1px solid #f0f0f0; flex-shrink: 0; }
     .sb-logo-mark { width: 32px; height: 32px; border-radius: 9px; background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 800; color: #fff; flex-shrink: 0; }
     .sb-logo-text { line-height: 1.15; }
-    .sb-logo-name { font-family: 'Space Grotesk', sans-serif; font-size: 0.86rem; font-weight: 800; color: #fff; letter-spacing: -0.2px; }
-    .sb-logo-sub { font-family: 'Space Grotesk', sans-serif; font-size: 0.62rem; font-weight: 700; background: linear-gradient(90deg, #7c3aed, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 0.3px; }
+    .sb-logo-name { font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; font-weight: 800; color: #111; letter-spacing: -0.3px; }
+    .sb-logo-sub { font-size: 0.62rem; font-weight: 700; color: #7c3aed; letter-spacing: 0.3px; }
 
-    .sb-nav { flex: 1; padding: 10px 10px; display: flex; flex-direction: column; gap: 1px; }
-    .sb-sec { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.1px; color: rgba(255,255,255,0.22); padding: 10px 9px 4px; }
-    .sb-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; font-size: 0.79rem; font-weight: 500; color: rgba(255,255,255,0.4); transition: all 0.12s; white-space: nowrap; }
-    .sb-item i { width: 14px; text-align: center; font-size: 0.76rem; flex-shrink: 0; }
-    .sb-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.82); }
-    .sb-item.active { background: linear-gradient(90deg, rgba(124,58,237,0.9) 0%, rgba(168,85,247,0.75) 100%); color: #fff; font-weight: 600; }
+    .sb-nav { flex: 1; padding: 10px 12px; display: flex; flex-direction: column; gap: 1px; }
+    .sb-sec { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #c0c4d0; padding: 10px 16px 4px; }
+    .sb-item { display: flex; align-items: center; padding: 11px 16px; border-radius: 10px; font-size: 0.92rem; font-weight: 400; color: #222; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+    .sb-item i { display: none; }
+    .sb-item:hover { background: #f5f3ff; color: #7c3aed; }
+    .sb-item.active { background: #ece9ff; color: #7c3aed; font-weight: 700; }
 
-    .sb-foot { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-top: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
-    .sb-ava { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #ec4899, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 0.68rem; font-weight: 800; color: #fff; flex-shrink: 0; position: relative; }
-    .sb-ava-online { position: absolute; bottom: -1px; right: -1px; width: 9px; height: 9px; border-radius: 50%; background: #10b981; border: 1.5px solid var(--sb); }
+    .sb-foot { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-top: 1px solid #f0f0f0; flex-shrink: 0; }
+    .sb-ava { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #ec4899, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 0.68rem; font-weight: 800; color: #fff; flex-shrink: 0; position: relative; }
+    .sb-ava-online { position: absolute; bottom: -1px; right: -1px; width: 9px; height: 9px; border-radius: 50%; background: #10b981; border: 1.5px solid #fff; }
     .sb-foot-info { flex: 1; min-width: 0; }
-    .sb-foot-name { font-size: 0.76rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .sb-foot-role { font-size: 0.61rem; color: rgba(255,255,255,0.38); margin-top: 1px; }
-    .sb-foot i { color: rgba(255,255,255,0.28); font-size: 0.62rem; }
+    .sb-foot-name { font-size: 0.78rem; font-weight: 700; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sb-foot-role { font-size: 0.61rem; color: #999; margin-top: 1px; }
+    .sb-foot > i { color: #ccc; font-size: 0.62rem; }
 
     /* ══ MAIN ══ */
-    .main { margin-left: 220px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; min-width: 0; }
+    .main { margin-left: 250px; width: calc(100vw - 250px); display: flex; flex-direction: column; min-height: 100vh; }
 
     /* ══ TOPBAR ══ */
     .topbar { background: var(--sur); border-bottom: 1px solid var(--bd); padding: 0 28px; height: 68px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; flex-shrink: 0; }
@@ -290,9 +290,9 @@
     }
 
     @media (max-width: 768px) {
-      .sb { transform: translateX(-100%); transition: transform 0.24s ease; box-shadow: none; }
-      .sb.open { transform: translateX(0); box-shadow: 4px 0 32px rgba(0,0,0,0.28); }
-      .main { margin-left: 0; }
+      .sb { transform: translateX(-100%); transition: transform 0.24s ease; box-shadow: none; width: 270px; }
+      .sb.open { transform: translateX(0); box-shadow: 4px 0 32px rgba(0,0,0,0.12); }
+      .main { margin-left: 0; width: 100vw; }
       .sb-toggle { display: flex; }
       .topbar { padding: 0 14px; gap: 8px; }
       .tb-welcome p { display: none; }
@@ -362,31 +362,30 @@
     </div>
 
     <div class="sb-nav">
-      <div class="sb-sec">Admin Panel</div>
-      <a href="#" data-section="dashboard"     class="sb-item active"><i class="fas fa-gauge"></i> Dashboard</a>
+      <div class="sb-sec">Overview</div>
+      <a href="#" data-section="dashboard"     class="sb-item active">Dashboard</a>
 
       <div class="sb-sec">Manage</div>
-      <a href="#" data-section="users"         class="sb-item"><i class="fas fa-users"></i> Users</a>
-      <a href="#" data-section="orders"        class="sb-item"><i class="fas fa-bag-shopping"></i> Orders</a>
-      <a href="#" data-section="services"      class="sb-item"><i class="fas fa-sliders"></i> Services</a>
-      <a href="#" data-section="categories"    class="sb-item"><i class="fas fa-layer-group"></i> Categories</a>
-      <a href="#" data-section="funds"         class="sb-item"><i class="fas fa-wallet"></i> Add Funds Requests</a>
-      <a href="#" data-section="transactions"  class="sb-item"><i class="fas fa-right-left"></i> Transactions</a>
+      <a href="#" data-section="users"         class="sb-item">Users</a>
+      <a href="#" data-section="orders"        class="sb-item">Orders</a>
+      <a href="#" data-section="funds"         class="sb-item">Fund Requests</a>
+      <a href="#" data-section="transactions"  class="sb-item">Transactions</a>
+      <a href="#" data-section="services"      class="sb-item">Services</a>
+      <a href="#" data-section="categories"    class="sb-item">Categories</a>
 
       <div class="sb-sec">Content</div>
-      <a href="#" data-section="announcements" class="sb-item"><i class="fas fa-bullhorn"></i> Announcements</a>
-      <a href="#" data-section="pages"         class="sb-item"><i class="fas fa-file"></i> Pages</a>
-      <a href="#" data-section="testimonials"  class="sb-item"><i class="fas fa-heart"></i> Testimonials</a>
+      <a href="#" data-section="announcements" class="sb-item">Announcements</a>
+      <a href="#" data-section="testimonials"  class="sb-item">Testimonials</a>
 
       <div class="sb-sec">Finance</div>
-      <a href="#" data-section="expenses"      class="sb-item"><i class="fas fa-chart-line"></i> Expenses &amp; Profit</a>
+      <a href="#" data-section="expenses"      class="sb-item">Expenses &amp; Profit</a>
 
       <div class="sb-sec">System</div>
-      <a href="#" data-section="providers"     class="sb-item"><i class="fas fa-plug"></i> Providers</a>
-      <a href="#" data-section="settings"      class="sb-item"><i class="fas fa-gear"></i> Settings</a>
-      <a href="#" data-section="apikeys"       class="sb-item"><i class="fas fa-key"></i> API Keys</a>
-      <a href="#" data-section="coupons"       class="sb-item"><i class="fas fa-tag"></i> Coupons</a>
-
+      <a href="#" data-section="providers"     class="sb-item">Providers</a>
+      <a href="#" data-section="settings"      class="sb-item">Settings</a>
+      <a href="#" data-section="apikeys"       class="sb-item">API Keys</a>
+      <a href="#" data-section="coupons"       class="sb-item">Coupons</a>
+      <a href="dashboard.html" class="sb-item" style="color:#7c3aed;font-weight:600;margin-top:8px">← User Dashboard</a>
     </div>
 
     <div class="sb-foot">
