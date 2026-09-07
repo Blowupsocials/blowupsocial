@@ -626,8 +626,15 @@
     /* ── Full-page sections (My Orders, Transactions, Settings) ── */
     .ds-full-sec { display: none; padding: 22px; flex-direction: column; gap: 18px; flex: 1; }
     .ds-full-sec.active { display: flex; }
-    .ds-sec-back { display: inline-flex; align-items: center; gap: 7px; font-size: 0.78rem; font-weight: 600; color: #7c3aed; cursor: pointer; margin-bottom: 2px; }
-    .ds-sec-back:hover { opacity: 0.75; }
+    .ds-sec-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #f0eeff; color: #7c3aed;
+      font-size: 0.76rem; font-weight: 700;
+      padding: 6px 13px 6px 10px; border-radius: 50px;
+      cursor: pointer; transition: background 0.15s, transform 0.15s;
+      margin-bottom: 2px; width: fit-content;
+    }
+    .ds-sec-back:hover { background: #e5deff; transform: translateX(-2px); }
     .ds-sec-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 800; color: #0f0e1c; }
     .ds-sec-sub { font-size: 0.74rem; color: #8b8fa8; margin-top: 2px; }
     .ds-full-card { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
