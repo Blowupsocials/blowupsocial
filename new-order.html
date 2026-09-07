@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="BlowUpSocials" />
   <link rel="apple-touch-icon" href="/img/icon-192.png" />
-  <title>Social Boost – BlowUpSocials</title>
+  <title>Social Boost â€“ BlowUpSocials</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet" />
   <style>
@@ -304,18 +304,18 @@
         <label class="no-label">Quantity</label>
         <div class="no-qty-row">
           <input class="no-input" type="number" id="order-qty" placeholder="1000" min="1" />
-          <span class="no-qty-info" id="qty-range">Min: — / Max: —</span>
+          <span class="no-qty-info" id="qty-range">Min: â€” / Max: â€”</span>
         </div>
       </div>
 
       <div class="no-cost-bar">
         <div class="no-cost-left">
           <strong>Total cost</strong>
-          <div id="cost-display">?0</div>
+          <div id="cost-display">â‚¦0</div>
         </div>
         <div class="no-cost-bal">
           Your balance<br>
-          <span id="modal-balance">?0</span>
+          <span id="modal-balance">â‚¦0</span>
         </div>
       </div>
 
@@ -330,7 +330,7 @@
   <div class="no-topbar">
     <a href="dashboard.html" class="no-back"><i class="fas fa-arrow-left"></i> Dashboard</a>
     <div class="no-title">Social Boost</div>
-    <div class="no-wallet"><span>Balance</span><strong id="topbar-balance">?0</strong></div>
+    <div class="no-wallet"><span>Balance</span><strong id="topbar-balance">â‚¦0</strong></div>
   </div>
 
   <div class="svc-switcher">
@@ -345,19 +345,19 @@
     <div class="no-stats">
       <div class="no-stat">
         <div class="no-stat-label">Services Available</div>
-        <div class="no-stat-val" id="stat-services">—</div>
+        <div class="no-stat-val" id="stat-services">â€”</div>
       </div>
       <div class="no-stat">
         <div class="no-stat-label">Platforms</div>
-        <div class="no-stat-val" id="stat-platforms">—</div>
+        <div class="no-stat-val" id="stat-platforms">â€”</div>
       </div>
       <div class="no-stat">
         <div class="no-stat-label">Your Balance</div>
-        <div class="no-stat-val" id="stat-balance">—</div>
+        <div class="no-stat-val" id="stat-balance">â€”</div>
       </div>
       <div class="no-stat">
         <div class="no-stat-label">Lowest per 1,000</div>
-        <div class="no-stat-val" id="stat-lowest">—</div>
+        <div class="no-stat-val" id="stat-lowest">â€”</div>
       </div>
     </div>
 
@@ -391,13 +391,13 @@
       <!-- Search -->
       <div class="no-search-wrap" style="flex:1.5;min-width:180px">
         <i class="fas fa-magnifying-glass no-search-icon"></i>
-        <input class="no-search" type="text" id="search-input" placeholder="Search services…" />
+        <input class="no-search" type="text" id="search-input" placeholder="Search servicesâ€¦" />
       </div>
     </div>
 
     <!-- Services grid -->
     <div class="no-grid" id="services-grid">
-      <div class="no-spinner"><i class="fas fa-circle-notch"></i> Loading services…</div>
+      <div class="no-spinner"><i class="fas fa-circle-notch"></i> Loading servicesâ€¦</div>
     </div>
 
   </div>
@@ -409,7 +409,7 @@
     const MARKUP       = 2.0;
     const USD_TO_NGN   = 1600;
     const MIN_PRICE_PER_K = 10; // hide services below ?10 per 1,000 (very low quality)
-    const fmtNGN = v => `?${Math.round(v).toLocaleString('en-NG')}`;
+    const fmtNGN = v => `â‚¦${Math.round(v).toLocaleString('en-NG')}`;
 
     /* -- Platform map -- */
     const PLATFORMS = [
@@ -638,7 +638,7 @@
             <div class="no-svc-icon ${css}"><i class="${icon}"></i></div>
             <div class="no-svc-info">
               <div class="no-svc-name">${s.name}</div>
-              <div class="no-svc-cat">${s.category || '—'}</div>
+              <div class="no-svc-cat">${s.category || 'â€”'}</div>
             </div>
           </div>
           <div class="no-svc-meta">
@@ -783,7 +783,7 @@
 
       const btn = document.getElementById('order-submit');
       btn.disabled = true;
-      btn.textContent = 'Placing order…';
+      btn.textContent = 'Placing orderâ€¦';
 
       try {
         // 1. Place on Owlet
@@ -864,7 +864,7 @@
       const platCount = new Set(data.map(s => detectPlatform(s.name, s.category)?.key).filter(Boolean)).size;
       document.getElementById('stat-services').textContent = data.length.toLocaleString();
       document.getElementById('stat-platforms').textContent = platCount;
-      document.getElementById('stat-lowest').textContent = prices.length ? fmtNGN(Math.min(...prices)) : '—';
+      document.getElementById('stat-lowest').textContent = prices.length ? fmtNGN(Math.min(...prices)) : 'â€”';
 
       buildDropdowns();
       renderServices();
@@ -872,5 +872,6 @@
   </script>
 </body>
 </html>
+
 
 
