@@ -576,11 +576,12 @@
       /* Stats 2-column */
       .ds-stats { grid-template-columns: 1fr 1fr; gap: 12px; }
 
-      /* Orders table: hide Link and Qty columns on mobile, force overflow for swipe */
+      /* Orders table: hide Link and Qty columns on mobile */
       .ds-table th:nth-child(2), .ds-table td:nth-child(2),
       .ds-table th:nth-child(4), .ds-table td:nth-child(4) { display: none; }
-      .ds-table { min-width: 420px; }
-      .ds-table-wrap { width: 100%; }
+      .ds-table { min-width: 0; }
+      /* Force the orders table specifically to overflow so swipe works */
+      #orders-section .ds-table { min-width: 420px; }
 
       /* Services: 2 columns */
       .ds-services-grid { grid-template-columns: 1fr 1fr; }
@@ -2024,6 +2025,24 @@
           }
           if (changed) applyFilters();
         } catch(e) { /* silent */ }
+      })();
+
+      /* Touch-scroll for orders table (iOS fallback) */
+      (() => {
+        const wrap = document.querySelector('#orders-section .ds-table-wrap');
+        if (!wrap) return;
+        let startX = 0, startScroll = 0, active = false;
+        wrap.addEventListener('touchstart', e => {
+          startX = e.touches[0].clientX;
+          startScroll = wrap.scrollLeft;
+          active = true;
+        }, { passive: true });
+        wrap.addEventListener('touchmove', e => {
+          if (!active) return;
+          const dx = startX - e.touches[0].clientX;
+          wrap.scrollLeft = startScroll + dx;
+        }, { passive: true });
+        wrap.addEventListener('touchend', () => { active = false; });
       })();
 
       /* Sign out (sidebar + dropdown) */
