@@ -576,10 +576,11 @@
       /* Stats 2-column */
       .ds-stats { grid-template-columns: 1fr 1fr; gap: 12px; }
 
-      /* Orders table: hide Link and Qty columns */
+      /* Orders table: hide Link and Qty columns on mobile, force overflow for swipe */
       .ds-table th:nth-child(2), .ds-table td:nth-child(2),
       .ds-table th:nth-child(4), .ds-table td:nth-child(4) { display: none; }
-      .ds-table { min-width: 0; }
+      .ds-table { min-width: 420px; }
+      .ds-table-wrap { width: 100%; }
 
       /* Services: 2 columns */
       .ds-services-grid { grid-template-columns: 1fr 1fr; }
