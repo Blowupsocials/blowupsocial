@@ -691,7 +691,7 @@
       <div class="ds-modal-body">
         <div style="background:linear-gradient(135deg,#7c3aed,#ec4899);border-radius:14px;padding:22px 20px;color:#fff;margin-bottom:20px;text-align:center;">
           <div style="font-size:0.75rem;opacity:0.8;margin-bottom:6px;letter-spacing:0.04em;">AVAILABLE BALANCE</div>
-          <div style="font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:800;letter-spacing:-0.5px;" id="wallet-modal-balance">â‚¦0</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:800;letter-spacing:-0.5px;" id="wallet-modal-balance"></div>
         </div>
         <button class="ds-modal-submit" id="wallet-add-funds-btn">
           <i class="fas fa-plus" style="margin-right:6px"></i>Add Funds
@@ -710,13 +710,13 @@
       <div class="ds-modal-body">
         <p>Choose an amount to top up your wallet. Funds are credited instantly after payment confirmation.</p>
         <div class="ds-amount-grid">
-          <button class="ds-amount-btn" data-amt="3000">â‚¦3,000</button>
-          <button class="ds-amount-btn" data-amt="5000">â‚¦5,000</button>
-          <button class="ds-amount-btn selected" data-amt="10000">â‚¦10,000</button>
-          <button class="ds-amount-btn" data-amt="20000">â‚¦20,000 <span style="display:block;font-size:0.6rem;font-weight:700;color:#16a34a;letter-spacing:0.02em;margin-top:2px;">+10% bonus</span></button>
+          <button class="ds-amount-btn" data-amt="3000">₦3,000</button>
+          <button class="ds-amount-btn" data-amt="5000">₦5,000</button>
+          <button class="ds-amount-btn selected" data-amt="10000">₦10,000</button>
+          <button class="ds-amount-btn" data-amt="20000">₦20,000 <span style="display:block;font-size:0.6rem;font-weight:700;color:#16a34a;letter-spacing:0.02em;margin-top:2px;">+10% bonus</span></button>
         </div>
-        <label class="ds-modal-input-label">Or enter a custom amount (â‚¦)</label>
-        <input type="number" class="ds-modal-input" id="custom-amount" placeholder="â‚¦0.00" min="3000" max="10000000" />
+        <label class="ds-modal-input-label">Or enter a custom amount (₦)</label>
+        <input type="number" class="ds-modal-input" id="custom-amount" placeholder="₦0.00" min="3000" max="10000000" />
         <div class="ds-modal-methods">
           <button class="ds-method-btn selected" data-method="bank"><i class="fas fa-university"></i> Bank Transfer</button>
           <button class="ds-method-btn" data-method="crypto"><i class="fab fa-bitcoin"></i> Crypto</button>
@@ -746,7 +746,7 @@
         <div id="bk-details" style="display:none">
           <div class="bk-amount-banner">
             <div class="lbl">Amount to pay</div>
-            <div class="val" id="bk-amount-display">â‚¦0</div>
+            <div class="val" id="bk-amount-display"></div>
           </div>
           <p style="font-size:0.8rem;color:#4b5063;line-height:1.6;margin-bottom:16px">
             Click the button below to open Korapay's secure checkout in a new tab. Select <strong>Bank Transfer</strong>, complete the payment, then come back — this page will confirm automatically.
@@ -816,8 +816,8 @@
 
     <div class="ds-sidebar-wallet">
       <div class="ds-sidebar-wallet-lbl">Wallet balance</div>
-      <div class="ds-sidebar-wallet-amt" id="sidebar-wallet">â‚¦0.00</div>
-      <button class="ds-sidebar-wallet-link js-funds">Add funds â‚¦</button>
+      <div class="ds-sidebar-wallet-amt" id="sidebar-wallet"></div>
+      <button class="ds-sidebar-wallet-link js-funds">Add funds ₦</button>
     </div>
 
     <!-- hidden for JS compatibility -->
@@ -845,7 +845,7 @@
 
     <!-- ANNOUNCEMENT BAR -->
     <div class="ds-ann-bar" id="ann-bar">
-      <span>?? Add BlowUpSocials to your home screen for faster access — <a href="#" onclick="triggerInstall();return false">Get the app ?</a></span>
+      <span><i class="fas fa-mobile-screen" style="margin-right:5px"></i>Add BlowUpSocials to your home screen for faster access — <a href="#" onclick="triggerInstall();return false">Get the app</a></span>
       <button class="ds-ann-close" id="ann-close" aria-label="Dismiss"><i class="fas fa-xmark"></i></button>
     </div>
 
@@ -853,7 +853,7 @@
     <header class="ds-topbar">
       <button class="ds-mob-toggle" id="mob-toggle" aria-label="Open sidebar"><i class="fas fa-bars"></i></button>
       <div class="ds-topbar-left">
-        <h2 id="greeting-text">Welcome back! ??</h2>
+        <h2 id="greeting-text">Welcome back!</h2>
         <p>Here's what's happening with your account today.</p>
       </div>
       <div class="ds-topbar-right">
@@ -865,7 +865,7 @@
         </div>
         <div class="ds-bal-chip">
           <span>Balance</span>
-          <strong id="topbar-wallet">â‚¦0</strong>
+          <strong id="topbar-wallet"></strong>
         </div>
         <button class="ds-btn-addfunds js-funds">+ Add Funds</button>
 
@@ -1018,7 +1018,7 @@
             <div class="ds-mini-card-num">———— 4891</div>
           </div>
           <div class="ds-bal-card-lbl">Account Balance</div>
-          <div class="ds-bal-card-amt" id="right-wallet">â‚¦0</div>
+          <div class="ds-bal-card-amt" id="right-wallet"></div>
           <div style="display:flex;gap:8px;margin-top:14px">
             <button class="ds-bal-card-btn js-funds" style="flex:1">+ Add Funds</button>
             <a href="new-order.html" class="ds-bal-card-btn" style="flex:1;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:5px"><i class="fas fa-bolt"></i> New Order</a>
@@ -1046,7 +1046,7 @@
                 <div class="ds-act-name">Instagram Followers</div>
                 <div class="ds-act-time">Delivered — 2h ago</div>
               </div>
-              <div class="ds-act-amount" style="color:#16a34a">â‚¦</div>
+              <div class="ds-act-amount" style="color:#16a34a">₦</div>
             </div>
             <div class="ds-act-item">
               <div class="ds-act-icon" style="background:#010101"><i class="fab fa-tiktok"></i></div>
@@ -1054,7 +1054,7 @@
                 <div class="ds-act-name">TikTok Views</div>
                 <div class="ds-act-time">In progress Â· 5h ago</div>
               </div>
-              <div class="ds-act-amount" style="color:#d97706">â‚¦</div>
+              <div class="ds-act-amount" style="color:#d97706">₦</div>
             </div>
             <div class="ds-act-item">
               <div class="ds-act-icon" style="background:#1db954"><i class="fab fa-spotify"></i></div>
@@ -1062,7 +1062,7 @@
                 <div class="ds-act-name">Spotify Plays</div>
                 <div class="ds-act-time">Delivered Â· 1d ago</div>
               </div>
-              <div class="ds-act-amount" style="color:#16a34a">â‚¦</div>
+              <div class="ds-act-amount" style="color:#16a34a">₦</div>
             </div>
           </div>
         </div>
@@ -1207,11 +1207,11 @@
           <div style="font-size:0.74rem;opacity:0.85">Friends Referred</div>
         </div>
         <div class="ds-stat-card" style="background:linear-gradient(135deg,#10b981,#34d399);color:#fff;border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;gap:4px">
-          <div style="font-size:1.6rem;font-weight:900" id="ref-earned">â‚¦0</div>
+          <div style="font-size:1.6rem;font-weight:900" id="ref-earned"></div>
           <div style="font-size:0.74rem;opacity:0.85">Total Earned</div>
         </div>
         <div class="ds-stat-card" style="background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff;border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;gap:4px">
-          <div style="font-size:1.6rem;font-weight:900" id="ref-pending">â‚¦0</div>
+          <div style="font-size:1.6rem;font-weight:900" id="ref-pending"></div>
           <div style="font-size:0.74rem;opacity:0.85">Pending Commission</div>
         </div>
       </div>
@@ -1315,7 +1315,7 @@
 
           <details class="faq-item">
             <summary class="faq-q">How do I fund my wallet? <i class="fas fa-chevron-down faq-icon"></i></summary>
-            <div class="faq-a">Click <strong>Add Funds</strong> anywhere on the dashboard. We accept Bank Transfer via Korapay. Minimum deposit is â‚¦3,000 and funds are credited instantly after payment confirmation.</div>
+            <div class="faq-a">Click <strong>Add Funds</strong> anywhere on the dashboard. We accept Bank Transfer via Korapay. Minimum deposit is ₦3,000 and funds are credited instantly after payment confirmation.</div>
           </details>
 
           <details class="faq-item">
@@ -1335,7 +1335,7 @@
 
           <details class="faq-item" style="border-bottom:none">
             <summary class="faq-q">Is there a minimum order amount? <i class="fas fa-chevron-down faq-icon"></i></summary>
-            <div class="faq-a">Minimum order value varies by service â€” most start from as little as â‚¦200. Check the service listing on the Social Boost page for exact pricing and minimums.</div>
+            <div class="faq-a">Minimum order value varies by service â€” most start from as little as ₦200. Check the service listing on the Social Boost page for exact pricing and minimums.</div>
           </details>
 
         </div>
@@ -1931,7 +1931,7 @@
       const fmtNGN = v => `₦${Math.round(v * USD_TO_NGN).toLocaleString('en-NG')}`;
 
       /* Populate names & avatars */
-      document.getElementById('greeting-text').textContent  = `${timeGreeting()}, ${name.split(' ')[0]}! ??`;
+      document.getElementById('greeting-text').textContent  = `${timeGreeting()}, ${name.split(' ')[0]}!`;
       document.getElementById('sidebar-avatar').textContent = inits;
       document.getElementById('sidebar-name').textContent   = name;
       document.getElementById('sidebar-email').textContent  = email;
