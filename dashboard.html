@@ -273,8 +273,9 @@
     .ds-filter-tab.active { background: #f5f3ff; color: #7c3aed; border-color: #ddd6fe; }
 
     /* -- ORDERS TABLE -- */
-    .ds-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .ds-table-wrap { overflow-x: auto; overflow-y: auto; -webkit-overflow-scrolling: touch; max-height: 340px; }
     .ds-table { width: 100%; border-collapse: collapse; min-width: 540px; }
+    .ds-table thead th { position: sticky; top: 0; z-index: 1; }
     .ds-table th {
       text-align: left; font-size: 0.68rem; font-weight: 700;
       text-transform: uppercase; letter-spacing: 0.6px; color: #8b8fa8;
