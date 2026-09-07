@@ -1859,8 +1859,10 @@
       tbody.innerHTML = orders.slice(0, 10).map(o => {
         const ref   = o.order_ref || `#${String(o.id).padStart(5,'0')}`;
         const link  = o.link || o.target_url || '—';
-        const disp  = link !== '—' && link.length > 24 ? link.slice(0,24)+'…' : link;
-        const qty   = o.quantity != null ? Number(o.quantity).toLocaleString() : (o.amount ? `$${parseFloat(o.amount).toFixed(2)}` : '—');
+        const disp  = link !== '—' && link.length > 28 ? link.slice(0,28)+'…' : link;
+        const qty   = o._isAcct
+          ? `<a href="accounts" style="color:#7c3aed;font-size:.8rem"><i class="fas fa-key"></i> View</a>`
+          : (o.quantity != null ? Number(o.quantity).toLocaleString() : (o.amount ? `$${parseFloat(o.amount).toFixed(2)}` : '—'));
         const st    = o.status || 'Pending';
         return `<tr>
           <td class="td-order">${ref}</td>
@@ -1916,9 +1918,27 @@
       document.getElementById('right-wallet').textContent  = fmtNGN(wallet);
       document.getElementById('sidebar-wallet').textContent = fmtNGN(wallet);
 
-      /* Orders */
-      const { data: orders } = await db.from('orders').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
-      allOrders = orders || [];
+      /* Orders — SMM + Acct Store combined */
+      const [{ data: orders }, { data: acctOrders }] = await Promise.all([
+        db.from('orders').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
+        db.from('account_orders').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
+      ]);
+
+      // Normalise account_orders rows to match the SMM orders shape
+      const normAcct = (acctOrders || []).map(o => ({
+        id:         `ACC-${o.id}`,
+        order_ref:  `ACC-${o.id}`,
+        service:    o.platform || 'Acct Store',
+        link:       o.offer_title || 'Account Purchase',
+        quantity:   1,
+        amount:     parseFloat(o.price_usd || 0),
+        status:     o.status === 'complete' ? 'Completed' : o.status === 'failed' ? 'Cancelled' : 'Processing',
+        created_at: o.created_at,
+        _isAcct:    true,
+        _creds:     o.credentials,
+      }));
+
+      allOrders = [...(orders || []), ...normAcct].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
       window._userOrders = allOrders;
 
       const total      = allOrders.length;
