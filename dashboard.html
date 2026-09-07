@@ -256,7 +256,7 @@
     .ds-sparkline svg { width: 100%; height: 28px; display: block; }
 
     /* -- CARD SHELL -- */
-    .ds-card { background: #fff; border-radius: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: clip; }
+    .ds-card { background: #fff; border-radius: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; }
     .ds-card-hdr { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid #f0f2f6; }
     .ds-card-hdr-title { font-family: 'Space Grotesk', sans-serif; font-size: 0.88rem; font-weight: 700; color: #1a1a2e; }
     .ds-card-hdr a { font-size: 0.73rem; color: #7c3aed; font-weight: 600; }
@@ -2027,10 +2027,19 @@
         } catch(e) { /* silent */ }
       })();
 
-      /* Touch-scroll for orders table (iOS fallback) */
+      /* Touch-scroll for orders table */
       (() => {
-        const wrap = document.querySelector('#orders-section .ds-table-wrap');
-        if (!wrap) return;
+        const card = document.getElementById('orders-section');
+        const wrap = card?.querySelector('.ds-table-wrap');
+        if (!wrap || !card) return;
+        // Pin wrap width to the card's actual rendered width so table always overflows it
+        function pinWidth() {
+          const w = card.clientWidth;
+          if (w > 0) { wrap.style.width = w + 'px'; wrap.style.maxWidth = w + 'px'; }
+        }
+        pinWidth();
+        window.addEventListener('resize', pinWidth);
+        // JS-driven horizontal swipe (reliable on all mobile browsers)
         let startX = 0, startScroll = 0, active = false;
         wrap.addEventListener('touchstart', e => {
           startX = e.touches[0].clientX;
@@ -2040,7 +2049,7 @@
         wrap.addEventListener('touchmove', e => {
           if (!active) return;
           const dx = startX - e.touches[0].clientX;
-          wrap.scrollLeft = startScroll + dx;
+          if (Math.abs(dx) > 3) wrap.scrollLeft = startScroll + dx;
         }, { passive: true });
         wrap.addEventListener('touchend', () => { active = false; });
       })();
