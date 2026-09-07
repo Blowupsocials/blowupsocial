@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin – BlowUpSocials</title>
+  <title>Admin ï¿½ BlowUpSocials</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet" />
   <style>
@@ -412,7 +413,7 @@
         <button class="sb-toggle" onclick="toggleSidebar()" aria-label="Menu"><i class="fas fa-bars"></i></button>
         <div class="tb-search">
           <i class="fas fa-magnifying-glass"></i>
-          <input type="text" placeholder="Search anything…" />
+          <input type="text" placeholder="Search anythingï¿½" />
         </div>
         <button class="tb-quick"><i class="fas fa-bolt"></i> Quick Actions</button>
         <button class="tb-bell">
@@ -442,7 +443,7 @@
               <div class="stat-icon si-pu"><i class="fas fa-users"></i></div>
               <span class="stat-label">Total Users</span>
             </div>
-            <div class="stat-num" id="stat-users">—</div>
+            <div class="stat-num" id="stat-users">ï¿½</div>
             <div class="stat-trend"><span class="t-up"><i class="fas fa-arrow-up"></i> 18.6%</span><span class="t-lbl">vs last month</span></div>
           </div>
           <div class="stat-spark" id="spark-users"></div>
@@ -454,7 +455,7 @@
               <div class="stat-icon si-pk"><i class="fas fa-cart-shopping"></i></div>
               <span class="stat-label">Total Orders</span>
             </div>
-            <div class="stat-num" id="stat-orders">—</div>
+            <div class="stat-num" id="stat-orders">ï¿½</div>
             <div class="stat-trend"><span class="t-up"><i class="fas fa-arrow-up"></i> 24.3%</span><span class="t-lbl">vs last month</span></div>
           </div>
           <div class="stat-spark" id="spark-orders"></div>
@@ -466,7 +467,7 @@
               <div class="stat-icon si-gn"><i class="fas fa-naira-sign"></i></div>
               <span class="stat-label">Total Revenue</span>
             </div>
-            <div class="stat-num" id="stat-revenue">—</div>
+            <div class="stat-num" id="stat-revenue">ï¿½</div>
             <div class="stat-trend"><span class="t-up"><i class="fas fa-arrow-up"></i> 31.7%</span><span class="t-lbl">vs last month</span></div>
           </div>
           <div class="stat-spark" id="spark-revenue"></div>
@@ -478,7 +479,7 @@
               <div class="stat-icon si-or"><i class="far fa-clock"></i></div>
               <span class="stat-label">Pending Orders</span>
             </div>
-            <div class="stat-num" id="stat-pending">—</div>
+            <div class="stat-num" id="stat-pending">ï¿½</div>
             <div class="stat-trend"><span class="t-dn"><i class="fas fa-arrow-down"></i> 6.2%</span><span class="t-lbl">vs yesterday</span></div>
           </div>
           <div class="stat-spark" id="spark-pending"></div>
@@ -490,7 +491,7 @@
               <div class="stat-icon si-bl"><i class="fas fa-headset"></i></div>
               <span class="stat-label">Tickets Open</span>
             </div>
-            <div class="stat-num" id="stat-tickets">—</div>
+            <div class="stat-num" id="stat-tickets">ï¿½</div>
             <div class="stat-trend"><span class="t-dn"><i class="fas fa-arrow-down"></i></span><span class="t-lbl">open tickets</span></div>
           </div>
           <div class="stat-spark" id="spark-tickets"></div>
@@ -557,7 +558,7 @@
               <tr>
                 <td>Total</td>
                 <td class="svc-orders" id="tbl-total-orders">34,892</td>
-                <td class="svc-rev" id="tbl-total-rev">—</td>
+                <td class="svc-rev" id="tbl-total-rev">ï¿½</td>
               </tr>
             </tfoot>
           </table>
@@ -708,17 +709,17 @@
         <div class="sec-hdr">
           <div class="sec-hdr-left"><h2>Users</h2><p>Manage all registered users on the platform</p></div>
           <div class="sec-hdr-right">
-            <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="user-search" placeholder="Search by name…" oninput="filterUsers(this.value)"></div>
+            <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="user-search" placeholder="Search by nameï¿½" oninput="filterUsers(this.value)"></div>
           </div>
         </div>
         <div class="tbl-card">
           <div class="tbl-wrap">
             <table class="data-tbl">
               <thead><tr><th>User</th><th>Wallet Balance</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead>
-              <tbody id="users-tbody"><tr><td colspan="5" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading users…</td></tr></tbody>
+              <tbody id="users-tbody"><tr><td colspan="5" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading usersï¿½</td></tr></tbody>
             </table>
           </div>
-          <div class="tbl-foot"><span id="users-count">—</span><div class="page-btns" id="users-pages"></div></div>
+          <div class="tbl-foot"><span id="users-count">ï¿½</span><div class="page-btns" id="users-pages"></div></div>
         </div>
       </div>
 
@@ -727,55 +728,55 @@
         <div class="sec-hdr">
           <div class="sec-hdr-left"><h2>Orders</h2><p>View and manage all customer orders</p></div>
           <div class="sec-hdr-right">
-            <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="order-search" placeholder="Search orders…" oninput="filterOrders(this.value)"></div>
+            <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="order-search" placeholder="Search ordersï¿½" oninput="filterOrders(this.value)"></div>
           </div>
         </div>
         <div class="tbl-card">
           <div class="tbl-wrap">
             <table class="data-tbl">
               <thead><tr><th>Order ID</th><th>User</th><th>Service</th><th>Qty</th><th>Charge</th><th>Status</th><th>Date</th></tr></thead>
-              <tbody id="orders-tbody"><tr><td colspan="7" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading orders…</td></tr></tbody>
+              <tbody id="orders-tbody"><tr><td colspan="7" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading ordersï¿½</td></tr></tbody>
             </table>
           </div>
-          <div class="tbl-foot"><span id="orders-count">—</span><div class="page-btns" id="orders-pages"></div></div>
+          <div class="tbl-foot"><span id="orders-count">ï¿½</span><div class="page-btns" id="orders-pages"></div></div>
         </div>
       </div>
 
       <!-- -- ACCOUNT STORE ORDERS -- -->
       <div id="sec-acct-orders" class="admin-section">
         <div class="sec-hdr">
-          <div class="sec-hdr-left"><h2>Acct Store Orders</h2><p>Account purchases from the AccsZone store — manage status and issue refunds</p></div>
+          <div class="sec-hdr-left"><h2>Acct Store Orders</h2><p>Account purchases from the AccsZone store ï¿½ manage status and issue refunds</p></div>
           <div class="sec-hdr-right">
-            <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="acct-search" placeholder="Search by user or title…" oninput="filterAcctOrders(this.value)"></div>
+            <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="acct-search" placeholder="Search by user or titleï¿½" oninput="filterAcctOrders(this.value)"></div>
           </div>
         </div>
         <div class="tbl-card">
           <div class="tbl-wrap">
             <table class="data-tbl">
               <thead><tr><th>Order</th><th>User</th><th>Item</th><th>Amount</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
-              <tbody id="acct-orders-tbody"><tr><td colspan="7" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading…</td></tr></tbody>
+              <tbody id="acct-orders-tbody"><tr><td colspan="7" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loadingï¿½</td></tr></tbody>
             </table>
           </div>
-          <div class="tbl-foot"><span id="acct-orders-count">—</span></div>
+          <div class="tbl-foot"><span id="acct-orders-count">ï¿½</span></div>
         </div>
       </div>
 
       <!-- -- SERVICES -- -->
       <div id="sec-services" class="admin-section">
         <div class="sec-hdr">
-          <div class="sec-hdr-left"><h2>Services</h2><p>Live Owlet SMM service catalog (2× markup applied for display)</p></div>
+          <div class="sec-hdr-left"><h2>Services</h2><p>Live Owlet SMM service catalog (2ï¿½ markup applied for display)</p></div>
           <div class="sec-hdr-right">
-            <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="svc-search" placeholder="Search services…" oninput="filterServices()"></div>
+            <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="svc-search" placeholder="Search servicesï¿½" oninput="filterServices()"></div>
           </div>
         </div>
         <div class="tbl-card">
           <div class="tbl-wrap">
             <table class="data-tbl">
               <thead><tr><th>#</th><th>Name</th><th>Category</th><th>Rate / 1K (NGN)</th><th>Min</th><th>Max</th><th>Refill</th></tr></thead>
-              <tbody id="svc-tbody"><tr><td colspan="7" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading services…</td></tr></tbody>
+              <tbody id="svc-tbody"><tr><td colspan="7" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading servicesï¿½</td></tr></tbody>
             </table>
           </div>
-          <div class="tbl-foot"><span id="svc-count" style="color:var(--t3);font-size:0.72rem;">—</span></div>
+          <div class="tbl-foot"><span id="svc-count" style="color:var(--t3);font-size:0.72rem;">ï¿½</span></div>
         </div>
       </div>
 
@@ -788,10 +789,10 @@
           <div class="tbl-wrap">
             <table class="data-tbl">
               <thead><tr><th>Category</th><th>Services</th><th>Cheapest (?/1K)</th><th>Most Expensive (?/1K)</th></tr></thead>
-              <tbody id="cat-tbody"><tr><td colspan="4" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading categories…</td></tr></tbody>
+              <tbody id="cat-tbody"><tr><td colspan="4" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading categoriesï¿½</td></tr></tbody>
             </table>
           </div>
-          <div class="tbl-foot"><span id="cat-count" style="color:var(--t3);font-size:0.72rem;">—</span></div>
+          <div class="tbl-foot"><span id="cat-count" style="color:var(--t3);font-size:0.72rem;">ï¿½</span></div>
         </div>
       </div>
 
@@ -804,7 +805,7 @@
           <div class="tbl-wrap">
             <table class="data-tbl">
               <thead><tr><th>User</th><th>Amount</th><th>Method</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody id="funds-tbody"><tr><td colspan="6" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading requests…</td></tr></tbody>
+              <tbody id="funds-tbody"><tr><td colspan="6" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading requestsï¿½</td></tr></tbody>
             </table>
           </div>
         </div>
@@ -820,7 +821,7 @@
               <option value="order">Orders (Charges)</option>
               <option value="fund">Deposits</option>
             </select>
-            <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="txn-search" placeholder="Search user ID…" oninput="filterTxns()"></div>
+            <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="txn-search" placeholder="Search user IDï¿½" oninput="filterTxns()"></div>
           </div>
         </div>
         <div class="tbl-card">
@@ -834,10 +835,10 @@
                 <th>Status</th>
                 <th>Date</th>
               </tr></thead>
-              <tbody id="txn-tbody"><tr><td colspan="6" class="tbl-loading"><i class="fas fa-circle-notch fa-spin"></i> Loading…</td></tr></tbody>
+              <tbody id="txn-tbody"><tr><td colspan="6" class="tbl-loading"><i class="fas fa-circle-notch fa-spin"></i> Loadingï¿½</td></tr></tbody>
             </table>
           </div>
-          <div class="tbl-foot"><span id="txn-count" style="color:var(--t3);font-size:0.72rem;">—</span></div>
+          <div class="tbl-foot"><span id="txn-count" style="color:var(--t3);font-size:0.72rem;">ï¿½</span></div>
         </div>
       </div>
 
@@ -854,7 +855,7 @@
             </div>
             <div>
               <label style="font-size:0.74rem;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px">Message</label>
-              <textarea id="ann-body" rows="3" placeholder="Write your announcement…" style="width:100%;padding:10px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.82rem;font-family:inherit;color:var(--t1);background:var(--sur);resize:vertical;box-sizing:border-box"></textarea>
+              <textarea id="ann-body" rows="3" placeholder="Write your announcementï¿½" style="width:100%;padding:10px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.82rem;font-family:inherit;color:var(--t1);background:var(--sur);resize:vertical;box-sizing:border-box"></textarea>
             </div>
             <div style="display:flex;gap:10px;align-items:center">
               <select id="ann-type" style="padding:8px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.78rem;font-family:inherit;color:var(--t1);background:var(--sur)">
@@ -881,7 +882,7 @@
         </div>
         <div class="tbl-card" style="padding:22px;display:flex;flex-direction:column;gap:12px">
           <div style="font-size:0.78rem;font-weight:700;color:var(--t2)" id="pg-editing-label">Editing: Terms of Service</div>
-          <textarea id="pg-editor" rows="14" style="width:100%;padding:12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);resize:vertical;line-height:1.6;box-sizing:border-box" placeholder="Page content…"></textarea>
+          <textarea id="pg-editor" rows="14" style="width:100%;padding:12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);resize:vertical;line-height:1.6;box-sizing:border-box" placeholder="Page contentï¿½"></textarea>
           <div style="display:flex;gap:10px;align-items:center">
             <button onclick="savePage()" style="padding:9px 20px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;border-radius:9px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit">Save Page</button>
             <span id="pg-msg" style="font-size:0.75rem;font-weight:600;color:#10b981;display:none">Saved!</span>
@@ -904,7 +905,7 @@
                 <option value="5">?????</option><option value="4">????</option><option value="3">???</option>
               </select>
             </div>
-            <textarea id="tst-text" rows="2" placeholder="Testimonial text…" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);resize:vertical;box-sizing:border-box"></textarea>
+            <textarea id="tst-text" rows="2" placeholder="Testimonial textï¿½" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);resize:vertical;box-sizing:border-box"></textarea>
             <button onclick="addTestimonial()" style="align-self:flex-start;padding:9px 18px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;border-radius:9px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit">Add Testimonial</button>
           </div>
         </div>
@@ -965,21 +966,21 @@
           <div style="padding:16px;border:1px solid var(--bd);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px">
             <div style="display:flex;align-items:center;gap:12px">
               <div style="width:40px;height:40px;border-radius:10px;background:#f5f0ff;display:flex;align-items:center;justify-content:center;color:var(--pu);font-size:1rem"><i class="fas fa-bolt"></i></div>
-              <div><div style="font-size:0.82rem;font-weight:700;color:var(--t1)">Owlet API</div><div style="font-size:0.7rem;color:var(--t3)">SMM services — stored securely as Vercel env var</div></div>
+              <div><div style="font-size:0.82rem;font-weight:700;color:var(--t1)">Owlet API</div><div style="font-size:0.7rem;color:var(--t3)">SMM services ï¿½ stored securely as Vercel env var</div></div>
             </div>
             <span class="badge b-active"><i class="fas fa-check" style="font-size:0.55rem"></i> Active</span>
           </div>
           <div style="padding:16px;border:1px solid var(--bd);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px">
             <div style="display:flex;align-items:center;gap:12px">
               <div style="width:40px;height:40px;border-radius:10px;background:#fdf2f8;display:flex;align-items:center;justify-content:center;color:var(--pk);font-size:1rem"><i class="fas fa-user-group"></i></div>
-              <div><div style="font-size:0.82rem;font-weight:700;color:var(--t1)">AccsZone API</div><div style="font-size:0.7rem;color:var(--t3)">Social accounts reselling — stored securely as Vercel env var</div></div>
+              <div><div style="font-size:0.82rem;font-weight:700;color:var(--t1)">AccsZone API</div><div style="font-size:0.7rem;color:var(--t3)">Social accounts reselling ï¿½ stored securely as Vercel env var</div></div>
             </div>
             <span class="badge b-active"><i class="fas fa-check" style="font-size:0.55rem"></i> Active</span>
           </div>
           <div style="padding:16px;border:1px solid var(--bd);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px">
             <div style="display:flex;align-items:center;gap:12px">
               <div style="width:40px;height:40px;border-radius:10px;background:#ecfdf5;display:flex;align-items:center;justify-content:center;color:var(--gn);font-size:1rem"><i class="fas fa-database"></i></div>
-              <div><div style="font-size:0.82rem;font-weight:700;color:var(--t1)">Supabase</div><div style="font-size:0.7rem;color:var(--t3)">Database & Auth — public anon key in client JS</div></div>
+              <div><div style="font-size:0.82rem;font-weight:700;color:var(--t1)">Supabase</div><div style="font-size:0.7rem;color:var(--t3)">Database & Auth ï¿½ public anon key in client JS</div></div>
             </div>
             <span class="badge b-active"><i class="fas fa-check" style="font-size:0.55rem"></i> Active</span>
           </div>
@@ -1013,7 +1014,7 @@
           <div class="tbl-wrap">
             <table class="data-tbl">
               <thead><tr><th>Code</th><th>Discount</th><th>Uses</th><th>Max Uses</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody id="cpn-tbody"><tr><td colspan="6" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading coupons…</td></tr></tbody>
+              <tbody id="cpn-tbody"><tr><td colspan="6" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading couponsï¿½</td></tr></tbody>
             </table>
           </div>
         </div>
@@ -1035,10 +1036,10 @@
           <div class="tbl-wrap">
             <table class="data-tbl">
               <thead><tr><th>ID</th><th>User</th><th>Subject</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
-              <tbody id="tkt-tbody"><tr><td colspan="6" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading tickets…</td></tr></tbody>
+              <tbody id="tkt-tbody"><tr><td colspan="6" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading ticketsï¿½</td></tr></tbody>
             </table>
           </div>
-          <div class="tbl-foot"><span id="tkt-count" style="color:var(--t3);font-size:0.72rem;">—</span></div>
+          <div class="tbl-foot"><span id="tkt-count" style="color:var(--t3);font-size:0.72rem;">ï¿½</span></div>
         </div>
       </div>
 
@@ -1050,10 +1051,10 @@
 
         <!-- Summary tiles -->
         <div class="rpt-tiles" id="rpt-tiles">
-          <div class="rpt-tile"><div class="rpt-tile-label">Total Revenue (NGN)</div><div class="rpt-tile-val" id="rpt-rev">—</div></div>
-          <div class="rpt-tile"><div class="rpt-tile-label">Total Orders</div><div class="rpt-tile-val" id="rpt-orders">—</div></div>
-          <div class="rpt-tile"><div class="rpt-tile-label">Completed Orders</div><div class="rpt-tile-val" id="rpt-completed">—</div></div>
-          <div class="rpt-tile"><div class="rpt-tile-label">Cancellation Rate</div><div class="rpt-tile-val" id="rpt-cancel-rate">—</div></div>
+          <div class="rpt-tile"><div class="rpt-tile-label">Total Revenue (NGN)</div><div class="rpt-tile-val" id="rpt-rev">ï¿½</div></div>
+          <div class="rpt-tile"><div class="rpt-tile-label">Total Orders</div><div class="rpt-tile-val" id="rpt-orders">ï¿½</div></div>
+          <div class="rpt-tile"><div class="rpt-tile-label">Completed Orders</div><div class="rpt-tile-val" id="rpt-completed">ï¿½</div></div>
+          <div class="rpt-tile"><div class="rpt-tile-label">Cancellation Rate</div><div class="rpt-tile-val" id="rpt-cancel-rate">ï¿½</div></div>
         </div>
 
         <!-- Revenue by month bar chart -->
@@ -1109,7 +1110,7 @@
               </div>
               <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:9px">
                 <span style="font-size:0.75rem;color:var(--t3)">Balance</span>
-                <span class="badge b-warn" id="prov-peakerr-bal" style="font-size:0.72rem">Loading…</span>
+                <span class="badge b-warn" id="prov-peakerr-bal" style="font-size:0.72rem">Loadingï¿½</span>
               </div>
             </div>
           </div>
@@ -1127,7 +1128,7 @@
             <div style="display:flex;flex-direction:column;gap:10px">
               <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:9px">
                 <span style="font-size:0.75rem;color:var(--t3)">Type</span>
-                <span style="font-size:0.75rem;font-weight:600;color:var(--t1)">Account reseller (Gmail, IG, TikTok…)</span>
+                <span style="font-size:0.75rem;font-weight:600;color:var(--t1)">Account reseller (Gmail, IG, TikTokï¿½)</span>
               </div>
               <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:9px">
                 <span style="font-size:0.75rem;color:var(--t3)">Endpoint</span>
@@ -1139,7 +1140,7 @@
               </div>
               <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:9px">
                 <span style="font-size:0.75rem;color:var(--t3)">Balance</span>
-                <span class="badge b-warn" id="prov-accs-bal" style="font-size:0.72rem">Loading…</span>
+                <span class="badge b-warn" id="prov-accs-bal" style="font-size:0.72rem">Loadingï¿½</span>
               </div>
             </div>
           </div>
@@ -1150,7 +1151,7 @@
           <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#10b98122,#10b98144);display:flex;align-items:center;justify-content:center;color:var(--gn);font-size:1rem;flex-shrink:0"><i class="fas fa-database"></i></div>
           <div style="flex:1">
             <div style="font-size:0.85rem;font-weight:700;color:var(--t1)">Supabase</div>
-            <div style="font-size:0.71rem;color:var(--t3);margin-top:2px">Database &amp; Auth — PostgreSQL backend, real-time subscriptions</div>
+            <div style="font-size:0.71rem;color:var(--t3);margin-top:2px">Database &amp; Auth ï¿½ PostgreSQL backend, real-time subscriptions</div>
           </div>
           <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
             <span class="badge b-active"><i class="fas fa-circle" style="font-size:0.45rem"></i> Connected</span>
@@ -1167,10 +1168,10 @@
 
         <!-- Summary tiles -->
         <div class="rpt-tiles" style="margin-bottom:20px">
-          <div class="rpt-tile"><div class="rpt-tile-label">Total Revenue</div><div class="rpt-tile-val" id="exp-revenue">—</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">from completed orders</div></div>
-          <div class="rpt-tile"><div class="rpt-tile-label">Total Expenses</div><div class="rpt-tile-val" id="exp-costs" style="color:var(--rd)">—</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">logged manually</div></div>
-          <div class="rpt-tile"><div class="rpt-tile-label">Net Profit</div><div class="rpt-tile-val" id="exp-profit" style="color:var(--gn)">—</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">revenue - expenses</div></div>
-          <div class="rpt-tile"><div class="rpt-tile-label">Profit Margin</div><div class="rpt-tile-val" id="exp-margin">—</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">as % of revenue</div></div>
+          <div class="rpt-tile"><div class="rpt-tile-label">Total Revenue</div><div class="rpt-tile-val" id="exp-revenue">ï¿½</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">from completed orders</div></div>
+          <div class="rpt-tile"><div class="rpt-tile-label">Total Expenses</div><div class="rpt-tile-val" id="exp-costs" style="color:var(--rd)">ï¿½</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">logged manually</div></div>
+          <div class="rpt-tile"><div class="rpt-tile-label">Net Profit</div><div class="rpt-tile-val" id="exp-profit" style="color:var(--gn)">ï¿½</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">revenue - expenses</div></div>
+          <div class="rpt-tile"><div class="rpt-tile-label">Profit Margin</div><div class="rpt-tile-val" id="exp-margin">ï¿½</div><div style="font-size:0.69rem;color:var(--t3);margin-top:4px">as % of revenue</div></div>
         </div>
 
         <!-- Log expense form -->
@@ -1212,14 +1213,14 @@
               <tbody id="exp-tbody"><tr><td colspan="5" class="tbl-loading">No expenses logged yet.</td></tr></tbody>
             </table>
           </div>
-          <div class="tbl-foot"><span id="exp-count" style="color:var(--t3);font-size:0.72rem">—</span></div>
+          <div class="tbl-foot"><span id="exp-count" style="color:var(--t3);font-size:0.72rem">ï¿½</span></div>
         </div>
       </div>
 
     </div><!-- /content -->
 
     <footer class="page-foot">
-      <span>© 2026 BlowUpSocials. All rights reserved.</span>
+      <span>ï¿½ 2026 BlowUpSocials. All rights reserved.</span>
       <span>Crafted with ?? for growth</span>
     </footer>
   </div>
@@ -1536,7 +1537,7 @@
           <td style="font-weight:700;color:var(--pu)">?${rate.toLocaleString('en-NG')}</td>
           <td style="color:var(--t3);font-size:0.77rem">${s.min}</td>
           <td style="color:var(--t3);font-size:0.77rem">${s.max}</td>
-          <td>${s.refill ? '<span class="badge b-active">Yes</span>' : '<span style="color:var(--t3);font-size:0.74rem">—</span>'}</td>
+          <td>${s.refill ? '<span class="badge b-active">Yes</span>' : '<span style="color:var(--t3);font-size:0.74rem">ï¿½</span>'}</td>
         </tr>`;
       }).join('');
     }
@@ -1736,11 +1737,11 @@
         return;
       }
       tbody.innerHTML = _ticketsFiltered.map(t => {
-        const date = t.created_at ? new Date(t.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'numeric' }) : '—';
+        const date = t.created_at ? new Date(t.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'numeric' }) : 'ï¿½';
         const statusCls = t.status === 'open' ? 'b-warn' : 'b-active';
         return `<tr>
-          <td style="font-family:monospace;font-size:0.72rem;color:var(--t3)">${t.id?.slice(0,8)||'—'}</td>
-          <td style="font-size:0.78rem;color:var(--t2)">${t.user_id?.slice(0,8)||'—'}</td>
+          <td style="font-family:monospace;font-size:0.72rem;color:var(--t3)">${t.id?.slice(0,8)||'ï¿½'}</td>
+          <td style="font-size:0.78rem;color:var(--t2)">${t.user_id?.slice(0,8)||'ï¿½'}</td>
           <td style="font-size:0.78rem;color:var(--t1);max-width:200px;white-space:normal">${t.subject||'No subject'}</td>
           <td><span class="badge ${statusCls}">${t.status||'open'}</span></td>
           <td style="font-size:0.74rem;color:var(--t3)">${date}</td>
@@ -1786,7 +1787,7 @@
         const ini       = initials(u.email || name);
         const wallet    = parseFloat(u.wallet_balance || 0);
         const ngn       = Math.round(wallet * USD_TO_NGN);
-        const date      = u.created_at ? new Date(u.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'numeric' }) : '—';
+        const date      = u.created_at ? new Date(u.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'numeric' }) : 'ï¿½';
         const suspended = _suspendedUsers.has(u.id);
         const walletCell = ngn > 0
           ? `<span class="wallet-ngn">?${ngn.toLocaleString('en-NG')}</span>`
@@ -1795,7 +1796,7 @@
         return `<tr style="${suspended ? 'opacity:0.6' : ''}">
           <td><div class="u-cell">
             <div class="u-ava" style="background:${COLORS[i%COLORS.length]}">${ini}</div>
-            <div><div class="u-name">${name}</div><div class="u-email-sub">${u.email || u.id?.slice(0,20)+'…'}</div></div>
+            <div><div class="u-name">${name}</div><div class="u-email-sub">${u.email || u.id?.slice(0,20)+'ï¿½'}</div></div>
           </div></td>
           <td>${walletCell}</td>
           <td><span class="badge ${suspended ? 'b-error' : 'b-active'}">${suspended ? 'Suspended' : 'Active'}</span></td>
@@ -1841,12 +1842,12 @@
         const cls    = STATUS_CLASS[st] || 'b-pending';
         const charge = parseFloat(o.charge || 0);
         const ngn    = Math.round(charge * USD_TO_NGN);
-        const date   = o.created_at ? new Date(o.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'2-digit' }) : '—';
+        const date   = o.created_at ? new Date(o.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'2-digit' }) : 'ï¿½';
         const ordId  = (o.id || '').toString().slice(0,8).toUpperCase();
         return `<tr>
           <td class="ord-id">#${ordId}</td>
-          <td style="color:var(--t2);font-size:0.74rem;font-family:'Space Grotesk',sans-serif">${(o.user_id||'').slice(0,8)}…</td>
-          <td class="ord-svc">${o.service_id ? 'Svc #'+o.service_id : '—'}</td>
+          <td style="color:var(--t2);font-size:0.74rem;font-family:'Space Grotesk',sans-serif">${(o.user_id||'').slice(0,8)}ï¿½</td>
+          <td class="ord-svc">${o.service_id ? 'Svc #'+o.service_id : 'ï¿½'}</td>
           <td class="ord-qty">${Number(o.quantity||0).toLocaleString()}</td>
           <td class="wallet-ngn">?${ngn.toLocaleString('en-NG')}</td>
           <td>
@@ -1902,14 +1903,14 @@
         const st   = o.status || 'pending';
         const cls  = st === 'complete' ? 'b-active' : st === 'refunded' ? 'b-cancelled' : 'b-pending';
         const ngn  = Math.round(parseFloat(o.price_ngn || 0)).toLocaleString('en-NG');
-        const date = o.created_at ? new Date(o.created_at).toLocaleDateString('en-NG', {day:'numeric',month:'short',year:'2-digit'}) : '—';
+        const date = o.created_at ? new Date(o.created_at).toLocaleDateString('en-NG', {day:'numeric',month:'short',year:'2-digit'}) : 'ï¿½';
         const uid  = (o.user_id||'').slice(0,12);
         const hasCreds = o.credentials && (typeof o.credentials === 'object' ? Object.keys(o.credentials).length > 0 : String(o.credentials).trim());
         return `<tr>
           <td class="ord-id">#${(o.id||'').toString().slice(0,8).toUpperCase()}</td>
-          <td style="color:var(--t2);font-size:0.74rem;font-family:'Space Grotesk',sans-serif">${uid}…</td>
+          <td style="color:var(--t2);font-size:0.74rem;font-family:'Space Grotesk',sans-serif">${uid}ï¿½</td>
           <td class="ord-svc" style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${(o.offer_title||'')}">
-            ${o.offer_title || '—'}<br>
+            ${o.offer_title || 'ï¿½'}<br>
             <span style="color:var(--t3);font-size:0.68rem">${o.platform||''}</span>
           </td>
           <td class="wallet-ngn">?${ngn}</td>
@@ -1942,7 +1943,7 @@
       const modal = document.createElement('div');
       modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9000;display:flex;align-items:center;justify-content:center';
       modal.innerHTML = `<div style="background:#fff;border-radius:14px;padding:28px 24px;max-width:420px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,0.18)">
-        <p style="font-weight:700;font-size:0.95rem;margin:0 0 14px">Order #${orderId.slice(0,8).toUpperCase()} — Credentials</p>
+        <p style="font-weight:700;font-size:0.95rem;margin:0 0 14px">Order #${orderId.slice(0,8).toUpperCase()} ï¿½ Credentials</p>
         <div style="background:#f8f7ff;border-radius:9px;padding:14px;font-size:0.82rem;line-height:1.7;word-break:break-all">${creds}</div>
         <button onclick="this.closest('[style*=inset]').remove()" style="margin-top:18px;width:100%;background:#7c3aed;color:#fff;border:none;border-radius:9px;padding:10px;font-weight:700;cursor:pointer">Close</button>
       </div>`;
@@ -1955,7 +1956,7 @@
       modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9000;display:flex;align-items:center;justify-content:center';
       modal.innerHTML = `<div style="background:#fff;border-radius:14px;padding:28px 24px;max-width:360px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,0.18)">
         <p style="font-weight:700;font-size:0.95rem;margin:0 0 10px">Confirm Refund</p>
-        <p style="font-size:0.83rem;color:#555;margin:0 0 20px">Issue ?${ngn} refund to user <code style="font-size:0.75rem">${userId.slice(0,12)}…</code>? This cannot be undone.</p>
+        <p style="font-size:0.83rem;color:#555;margin:0 0 20px">Issue ?${ngn} refund to user <code style="font-size:0.75rem">${userId.slice(0,12)}ï¿½</code>? This cannot be undone.</p>
         <div style="display:flex;gap:10px">
           <button id="rfnd-cancel" style="flex:1;padding:10px;border:1px solid #ddd;border-radius:9px;background:#f8f8f8;font-weight:600;cursor:pointer">Cancel</button>
           <button id="rfnd-confirm" style="flex:1;padding:10px;border:none;border-radius:9px;background:#dc2626;color:#fff;font-weight:700;cursor:pointer">Refund</button>
@@ -1989,11 +1990,11 @@
       }
       tbody.innerHTML = data.map(r => {
         const ngn  = Math.round(parseFloat(r.amount||0)).toLocaleString('en-NG');
-        const date = r.created_at ? new Date(r.created_at).toLocaleDateString('en-NG',{day:'numeric',month:'short',year:'2-digit'}) : '—';
+        const date = r.created_at ? new Date(r.created_at).toLocaleDateString('en-NG',{day:'numeric',month:'short',year:'2-digit'}) : 'ï¿½';
         const st   = r.status || 'Pending';
         const cls  = st === 'Approved' ? 'b-active' : st === 'Rejected' ? 'b-cancelled' : 'b-pending';
         return `<tr>
-          <td style="color:var(--t2);font-size:0.74rem">${(r.user_id||'').slice(0,12)}…</td>
+          <td style="color:var(--t2);font-size:0.74rem">${(r.user_id||'').slice(0,12)}ï¿½</td>
           <td class="wallet-ngn">?${ngn}</td>
           <td style="color:var(--t2)">${r.method || 'Bank Transfer'}</td>
           <td style="color:var(--t3);font-size:0.72rem">${date}</td>
@@ -2024,8 +2025,8 @@
         db.from('fund_requests').select('id, user_id, amount, method, status, created_at').order('created_at', { ascending: false }),
       ]);
       const rows = [
-        ...(ords  || []).map(o => ({ type:'order', uid: o.user_id, desc: `Order · Service #${o.service_id||'?'}`, amount: parseFloat(o.charge||0)*USD_TO_NGN, status: o.status||'Pending', ts: o.created_at })),
-        ...(funds || []).map(f => ({ type:'fund',  uid: f.user_id, desc: `Deposit · ${f.method||'Bank Transfer'}`,   amount: parseFloat(f.amount||0),               status: f.status||'Pending', ts: f.created_at })),
+        ...(ords  || []).map(o => ({ type:'order', uid: o.user_id, desc: `Order ï¿½ Service #${o.service_id||'?'}`, amount: parseFloat(o.charge||0)*USD_TO_NGN, status: o.status||'Pending', ts: o.created_at })),
+        ...(funds || []).map(f => ({ type:'fund',  uid: f.user_id, desc: `Deposit ï¿½ ${f.method||'Bank Transfer'}`,   amount: parseFloat(f.amount||0),               status: f.status||'Pending', ts: f.created_at })),
       ].sort((a,b) => new Date(b.ts) - new Date(a.ts));
       allTxns = rows;
       renderTxns(rows);
@@ -2037,13 +2038,13 @@
       if (!rows.length) { tbody.innerHTML = `<tr><td colspan="6" class="tbl-loading">No transactions found</td></tr>`; return; }
       tbody.innerHTML = rows.map(r => {
         const cls  = STATUS_CLASS[r.status] || 'b-pending';
-        const date = r.ts ? new Date(r.ts).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'2-digit', hour:'2-digit', minute:'2-digit' }) : '—';
+        const date = r.ts ? new Date(r.ts).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'2-digit', hour:'2-digit', minute:'2-digit' }) : 'ï¿½';
         const typePill = r.type === 'order'
           ? `<span class="badge" style="background:#fdf2f8;color:#ec4899">Charge</span>`
           : `<span class="badge" style="background:#ecfdf5;color:#10b981">Deposit</span>`;
         return `<tr>
           <td>${typePill}</td>
-          <td style="font-size:0.73rem;color:var(--t3);font-family:'Space Grotesk',sans-serif">${(r.uid||'').slice(0,12)}…</td>
+          <td style="font-size:0.73rem;color:var(--t3);font-family:'Space Grotesk',sans-serif">${(r.uid||'').slice(0,12)}ï¿½</td>
           <td style="font-size:0.78rem;color:var(--t2)">${r.desc}</td>
           <td class="wallet-ngn">?${Math.round(r.amount).toLocaleString('en-NG')}</td>
           <td><span class="badge ${cls}">${r.status}</span></td>
@@ -2076,7 +2077,7 @@
       document.getElementById('rpt-completed').textContent   = completed.length.toLocaleString('en-NG');
       document.getElementById('rpt-cancel-rate').textContent = cancelRate;
 
-      /* Monthly revenue — last 6 months */
+      /* Monthly revenue ï¿½ last 6 months */
       const now   = new Date();
       const months = Array.from({length:6}, (_,i) => {
         const d = new Date(now.getFullYear(), now.getMonth()-5+i, 1);
@@ -2181,7 +2182,7 @@
       const amt = parseFloat(document.getElementById('um-credit-amt').value);
       if (!amt || amt <= 0) { adminToast('Enter a valid NGN amount.', 'warn'); return; }
       const btn = document.getElementById('um-credit-btn');
-      btn.textContent = 'Crediting…'; btn.disabled = true;
+      btn.textContent = 'Creditingï¿½'; btn.disabled = true;
       const newUSD = _umWalletUSD + amt / USD_TO_NGN;
       const { error } = await db.from('profiles').update({ wallet_balance: newUSD }).eq('id', _umUserId);
       btn.textContent = 'Credit Wallet'; btn.disabled = false;
@@ -2195,7 +2196,7 @@
       const amt = parseFloat(document.getElementById('um-debit-amt').value);
       if (!amt || amt <= 0) { adminToast('Enter a valid NGN amount.', 'warn'); return; }
       const btn = document.getElementById('um-debit-btn');
-      btn.textContent = 'Debiting…'; btn.disabled = true;
+      btn.textContent = 'Debitingï¿½'; btn.disabled = true;
       const deductUSD = amt / USD_TO_NGN;
       const newUSD    = Math.max(0, _umWalletUSD - deductUSD);
       const { error } = await db.from('profiles').update({ wallet_balance: newUSD }).eq('id', _umUserId);
@@ -2219,7 +2220,7 @@
       const confirm = document.getElementById('um-delete-confirm').value.trim().toUpperCase();
       if (confirm !== 'DELETE') { adminToast('Type DELETE to confirm.', 'warn'); return; }
       const btn = document.getElementById('um-delete-btn');
-      btn.textContent = 'Deleting…'; btn.disabled = true;
+      btn.textContent = 'Deletingï¿½'; btn.disabled = true;
       const { error } = await db.from('profiles').delete().eq('id', _umUserId);
       btn.textContent = 'Delete User'; btn.disabled = false;
       if (error) { adminToast('Failed to delete user.', 'error'); return; }
@@ -2253,7 +2254,7 @@
     const STATUS_CLASS = { Completed:'b-completed', 'In Progress':'b-progress', Pending:'b-pending', Cancelled:'b-cancelled' };
 
     (async () => {
-      /* Auth check only — no email redirect */
+      /* Auth check only ï¿½ no email redirect */
       const { data: { session } } = await db.auth.getSession();
       if (!session) { window.location.href = 'login.html'; return; }
 
@@ -2293,9 +2294,9 @@
           return `<tr>
             <td><div class="ord-user">
               <div class="ord-ava" style="background:${COLORS[i % COLORS.length]}">${ini}</div>
-              <span class="ord-uname">${o.user_id?.slice(0,8) || 'User'}…</span>
+              <span class="ord-uname">${o.user_id?.slice(0,8) || 'User'}ï¿½</span>
             </div></td>
-            <td class="ord-svc">${o.service_id ? `Service #${o.service_id}` : '—'}</td>
+            <td class="ord-svc">${o.service_id ? `Service #${o.service_id}` : 'ï¿½'}</td>
             <td class="ord-qty">${Number(o.quantity || 0).toLocaleString('en-NG')}</td>
             <td><span class="badge ${cls}">${st}</span></td>
             <td class="ord-time">${relTime(o.created_at)}</td>
@@ -2373,8 +2374,8 @@
       const { data: actOrds }  = await db.from('orders').select('id, service_id, created_at, user_id').order('created_at', { ascending: false }).limit(4);
       const { data: actUsers } = await db.from('profiles').select('id, email, full_name, created_at').order('created_at', { ascending: false }).limit(3);
       const actItems = [
-        ...(actOrds  || []).map(o => ({ type: 'order', ts: o.created_at, label: 'New order placed', sub: `Service #${o.service_id || '?'} · ${(o.user_id||'').slice(0,8)}…` })),
-        ...(actUsers || []).map(u => ({ type: 'user',  ts: u.created_at, label: 'New user registered', sub: u.email || u.full_name || (u.id||'').slice(0,16)+'…' })),
+        ...(actOrds  || []).map(o => ({ type: 'order', ts: o.created_at, label: 'New order placed', sub: `Service #${o.service_id || '?'} ï¿½ ${(o.user_id||'').slice(0,8)}ï¿½` })),
+        ...(actUsers || []).map(u => ({ type: 'user',  ts: u.created_at, label: 'New user registered', sub: u.email || u.full_name || (u.id||'').slice(0,16)+'ï¿½' })),
       ].sort((a,b) => new Date(b.ts) - new Date(a.ts)).slice(0, 5);
       if (actItems.length) {
         document.getElementById('activity-list').innerHTML = actItems.map(a => `<div class="act-item">
@@ -2423,7 +2424,7 @@
         document.getElementById('prov-peakerr-bal').className = 'badge ' + (bal != null ? 'b-active' : 'b-warn');
       } catch { document.getElementById('prov-peakerr-bal').textContent = 'Unavailable'; }
 
-      /* AccsZone doesn't expose a balance endpoint — show N/A */
+      /* AccsZone doesn't expose a balance endpoint ï¿½ show N/A */
       const acEl = document.getElementById('prov-accs-bal');
       acEl.textContent = 'N/A';
       acEl.className = 'badge b-warn';

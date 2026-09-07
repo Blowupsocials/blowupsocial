@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /register
+Disallow: /dashboard
+Disallow: /new-order
+Disallow: /accounts
+Disallow: /admin
+Disallow: /admin-login
+Disallow: /api/
+
+Sitemap: https://blowupsocials.net/sitemap.xml
