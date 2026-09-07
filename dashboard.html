@@ -1417,6 +1417,14 @@
         _installPrompt.userChoice.then(() => { _installPrompt = null; });
       } else if (isIOS) {
         document.getElementById('ios-install-modal').classList.add('show');
+      } else {
+        // Android/Chrome but prompt not yet available — show manual instructions
+        document.getElementById('ios-install-modal').querySelector('h3').textContent = 'Add to Home Screen';
+        document.getElementById('ios-install-modal').querySelector('p').textContent = 'Use your browser menu to install the app:';
+        document.getElementById('ios-install-modal').querySelectorAll('.ds-install-step')[0].querySelector('span').innerHTML = 'Tap the <strong>⋮ menu</strong> (three dots) at the top right of Chrome';
+        document.getElementById('ios-install-modal').querySelectorAll('.ds-install-step')[1].querySelector('span').innerHTML = 'Tap <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong>';
+        document.getElementById('ios-install-modal').querySelectorAll('.ds-install-step')[2].querySelector('span').innerHTML = 'Tap <strong>Install</strong> — the app icon will appear on your home screen';
+        document.getElementById('ios-install-modal').classList.add('show');
       }
     }
   </script>

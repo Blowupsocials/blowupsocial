@@ -2,7 +2,7 @@
   "name": "BlowUpSocials",
   "short_name": "BlowUpSocials",
   "description": "Social media growth services — followers, likes, views and more.",
-  "start_url": "/dashboard.html",
+  "start_url": "/dashboard",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
