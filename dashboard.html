@@ -273,7 +273,7 @@
     .ds-filter-tab.active { background: #f5f3ff; color: #7c3aed; border-color: #ddd6fe; }
 
     /* ── ORDERS TABLE ── */
-    .ds-table-wrap { overflow-x: auto; }
+    .ds-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .ds-table { width: 100%; border-collapse: collapse; min-width: 540px; }
     .ds-table th {
       text-align: left; font-size: 0.68rem; font-weight: 700;
@@ -909,7 +909,12 @@
             <span class="ds-card-hdr-title">Recent Orders</span>
             <a href="#" onclick="showDsSec('orders');return false">View All Orders</a>
           </div>
-          <div class="ds-filter-tabs">
+          <div class="ds-filter-tabs" id="type-tabs">
+            <button class="ds-filter-tab active" data-type="all">All Orders</button>
+            <button class="ds-filter-tab" data-type="smm">Social Boost</button>
+            <button class="ds-filter-tab" data-type="acct">Acct Store</button>
+          </div>
+          <div class="ds-filter-tabs" id="status-tabs">
             <button class="ds-filter-tab active" data-filter="all">All</button>
             <button class="ds-filter-tab" data-filter="completed">Completed</button>
             <button class="ds-filter-tab" data-filter="in-progress">In Progress</button>
@@ -1813,15 +1818,36 @@
 
     /* ── Filter tabs ── */
     let allOrders = [];
-    document.querySelectorAll('.ds-filter-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.ds-filter-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        const f = tab.dataset.filter;
-        if (f === 'all') { renderOrders(allOrders); return; }
+    let _activeType   = 'all';
+    let _activeStatus = 'all';
+
+    function applyFilters() {
+      let rows = allOrders;
+      if (_activeType === 'smm')  rows = rows.filter(o => !o._isAcct);
+      if (_activeType === 'acct') rows = rows.filter(o =>  o._isAcct);
+      if (_activeStatus !== 'all') {
         const map = { completed: ['delivered','completed'], 'in-progress': ['in progress','processing'], pending: ['pending'], cancelled: ['cancelled'] };
-        const keys = map[f] || [];
-        renderOrders(allOrders.filter(o => keys.includes((o.status || '').toLowerCase())));
+        const keys = map[_activeStatus] || [];
+        rows = rows.filter(o => keys.includes((o.status || '').toLowerCase()));
+      }
+      renderOrders(rows);
+    }
+
+    document.getElementById('type-tabs').querySelectorAll('.ds-filter-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.getElementById('type-tabs').querySelectorAll('.ds-filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        _activeType = tab.dataset.type;
+        applyFilters();
+      });
+    });
+
+    document.getElementById('status-tabs').querySelectorAll('.ds-filter-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.getElementById('status-tabs').querySelectorAll('.ds-filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        _activeStatus = tab.dataset.filter;
+        applyFilters();
       });
     });
 
@@ -1955,7 +1981,7 @@
       document.getElementById('trend-total').textContent     = `${total} orders total`;
       document.getElementById('orders-badge').textContent    = total;
 
-      renderOrders(allOrders);
+      applyFilters();
 
       /* Sign out (sidebar + dropdown) */
       async function doSignOut(e) {
