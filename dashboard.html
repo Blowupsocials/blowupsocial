@@ -95,6 +95,23 @@
     }
     .ds-ann-close:hover { background: rgba(255,255,255,0.35); }
 
+    /* ── FAQ ITEMS ── */
+    .faq-item { border-bottom: 1px solid #f0f0f6; }
+    .faq-q {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px; font-size: 0.84rem; font-weight: 600; color: #111;
+      cursor: pointer; list-style: none; gap: 12px; user-select: none;
+    }
+    .faq-q::-webkit-details-marker { display: none; }
+    .faq-q:hover { background: #fafbff; }
+    .faq-icon { font-size: 0.68rem; color: #7c3aed; flex-shrink: 0; transition: transform 0.2s; }
+    details[open] .faq-icon { transform: rotate(180deg); }
+    details[open] .faq-q { color: #7c3aed; }
+    .faq-a {
+      padding: 0 20px 16px; font-size: 0.8rem; color: #555;
+      line-height: 1.7; border-top: 1px solid #f5f3ff;
+    }
+
     /* ── INSTALL PROMPT MODAL (iOS) ── */
     .ds-install-modal {
       position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 600;
@@ -1246,37 +1263,68 @@
         <div class="ds-sec-title">Support</div>
         <div class="ds-sec-sub">We're here to help — reach out anytime</div>
       </div>
-      <!-- Contact channels -->
-      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
-        <a href="https://wa.me/2347000000000" target="_blank" rel="noopener" style="text-decoration:none;background:linear-gradient(135deg,#25d366,#128c7e);border-radius:14px;padding:20px 16px;display:flex;align-items:center;gap:12px;color:#fff">
-          <i class="fab fa-whatsapp" style="font-size:1.6rem"></i>
-          <div><div style="font-weight:700;font-size:0.88rem">WhatsApp</div><div style="font-size:0.72rem;opacity:0.85">Fast replies</div></div>
-        </a>
-        <a href="mailto:support@blowupsocials.net" style="text-decoration:none;background:linear-gradient(135deg,#7c3aed,#ec4899);border-radius:14px;padding:20px 16px;display:flex;align-items:center;gap:12px;color:#fff">
-          <i class="fas fa-envelope" style="font-size:1.4rem"></i>
-          <div><div style="font-weight:700;font-size:0.88rem">Email</div><div style="font-size:0.72rem;opacity:0.85">support@blowupsocials.net</div></div>
-        </a>
-      </div>
+
+      <!-- Contact channel -->
+      <a href="mailto:support@blowupsocials.net" style="text-decoration:none;display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,#7c3aed,#ec4899);border-radius:16px;padding:22px 24px;color:#fff;max-width:480px">
+        <div style="width:48px;height:48px;background:rgba(255,255,255,0.18);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i class="fas fa-envelope" style="font-size:1.3rem"></i>
+        </div>
+        <div>
+          <div style="font-weight:700;font-size:0.95rem;margin-bottom:3px">Email Support</div>
+          <div style="font-size:0.78rem;opacity:0.85">support@blowupsocials.net</div>
+          <div style="font-size:0.72rem;opacity:0.7;margin-top:2px">We reply within 24 hours</div>
+        </div>
+        <i class="fas fa-arrow-right" style="margin-left:auto;opacity:0.7;font-size:0.85rem"></i>
+      </a>
+
       <!-- FAQ -->
-      <div class="ds-settings-card" style="gap:0">
-        <div style="font-size:0.85rem;font-weight:700;color:#0f0e1c;margin-bottom:12px">Frequently Asked Questions</div>
-        <div style="display:flex;flex-direction:column;gap:0">
-          <details style="border-bottom:1px solid #ede9fe;padding:12px 0">
-            <summary style="font-size:0.82rem;font-weight:600;color:#0f0e1c;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">How long does delivery take? <i class="fas fa-chevron-down" style="font-size:0.7rem;color:#7c3aed"></i></summary>
-            <p style="font-size:0.78rem;color:#4b5063;margin:10px 0 0;line-height:1.6">Most orders start within minutes and complete within 1–24 hours depending on the service. High-quality or country-targeted services may take slightly longer.</p>
+      <div class="ds-settings-card" style="padding:0;overflow:hidden">
+        <div style="padding:18px 20px 14px;border-bottom:1px solid #f0f0f6">
+          <div style="font-size:0.92rem;font-weight:800;color:#0f0e1c">Frequently Asked Questions</div>
+          <div style="font-size:0.74rem;color:#8b8fa8;margin-top:2px">Everything you need to know about BlowUpSocials</div>
+        </div>
+        <div>
+
+          <details class="faq-item">
+            <summary class="faq-q">How long does delivery take? <i class="fas fa-chevron-down faq-icon"></i></summary>
+            <div class="faq-a">Most orders start within minutes and complete within 1–24 hours. Some high-quality or geo-targeted services may take up to 72 hours. You can track progress in <strong>My Orders</strong>.</div>
           </details>
-          <details style="border-bottom:1px solid #ede9fe;padding:12px 0">
-            <summary style="font-size:0.82rem;font-weight:600;color:#0f0e1c;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Is my account safe? <i class="fas fa-chevron-down" style="font-size:0.7rem;color:#7c3aed"></i></summary>
-            <p style="font-size:0.78rem;color:#4b5063;margin:10px 0 0;line-height:1.6">Yes. We only need your public profile URL — never your username or password. Our methods are designed to be gradual and organic-looking.</p>
+
+          <details class="faq-item">
+            <summary class="faq-q">Is my account safe to use these services? <i class="fas fa-chevron-down faq-icon"></i></summary>
+            <div class="faq-a">Yes. We only need your public profile URL — never your password or login details. Our delivery methods are gradual and organic-looking to keep your account safe.</div>
           </details>
-          <details style="border-bottom:1px solid #ede9fe;padding:12px 0">
-            <summary style="font-size:0.82rem;font-weight:600;color:#0f0e1c;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">What is the refill policy? <i class="fas fa-chevron-down" style="font-size:0.7rem;color:#7c3aed"></i></summary>
-            <p style="font-size:0.78rem;color:#4b5063;margin:10px 0 0;line-height:1.6">Services marked "Refill" are eligible for a free top-up if numbers drop within 30 days. Open a support chat to request a refill on any eligible order.</p>
+
+          <details class="faq-item">
+            <summary class="faq-q">What happens if my numbers drop after delivery? <i class="fas fa-chevron-down faq-icon"></i></summary>
+            <div class="faq-a">Services labelled <strong>Refill</strong> include a free top-up guarantee if counts drop within 30 days of completion. Email support with your order ID to request a refill.</div>
           </details>
-          <details style="padding:12px 0">
-            <summary style="font-size:0.82rem;font-weight:600;color:#0f0e1c;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">How do I add funds? <i class="fas fa-chevron-down" style="font-size:0.7rem;color:#7c3aed"></i></summary>
-            <p style="font-size:0.78rem;color:#4b5063;margin:10px 0 0;line-height:1.6">Click "Add Funds" on the dashboard. We accept Bank Transfer with instant confirmation. Minimum deposit is ₦3,000.</p>
+
+          <details class="faq-item">
+            <summary class="faq-q">How do I fund my wallet? <i class="fas fa-chevron-down faq-icon"></i></summary>
+            <div class="faq-a">Click <strong>Add Funds</strong> anywhere on the dashboard. We accept Bank Transfer via Korapay. Minimum deposit is ₦3,000 and funds are credited instantly after payment confirmation.</div>
           </details>
+
+          <details class="faq-item">
+            <summary class="faq-q">Can I get a refund? <i class="fas fa-chevron-down faq-icon"></i></summary>
+            <div class="faq-a">Wallet top-ups are non-refundable once funds are credited. However, if an order fails to start within 24 hours, the charge is automatically reversed to your wallet balance.</div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-q">Which platforms do you support? <i class="fas fa-chevron-down faq-icon"></i></summary>
+            <div class="faq-a">We currently support Instagram, TikTok, Facebook, X (Twitter), YouTube, Snapchat, and Telegram. New platforms are added regularly — check the Social Boost page for the latest list.</div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-q">Why is my order still pending? <i class="fas fa-chevron-down faq-icon"></i></summary>
+            <div class="faq-a">Orders move from Pending → In Progress → Completed automatically. If an order has been Pending for more than 2 hours, email us your order ID and we'll investigate right away.</div>
+          </details>
+
+          <details class="faq-item" style="border-bottom:none">
+            <summary class="faq-q">Is there a minimum order amount? <i class="fas fa-chevron-down faq-icon"></i></summary>
+            <div class="faq-a">Minimum order value varies by service — most start from as little as ₦200. Check the service listing on the Social Boost page for exact pricing and minimums.</div>
+          </details>
+
         </div>
       </div>
     </div>
