@@ -34,7 +34,9 @@
       display: flex; align-items: center; height: 66px;
     }
     .nav-logo { margin-right: auto; }
-    .nav-logo img { height: 38px; width: auto; display: block; }
+    .nav-logo a { display: flex; align-items: center; gap: 10px; }
+    .nav-logo img { height: 36px; width: auto; display: block; }
+    .nav-brand { font-size: 1rem; font-weight: 800; color: #111; letter-spacing: -0.3px; white-space: nowrap; }
     .nav-links { display: flex; gap: 36px; margin-right: 40px; }
     .nav-links a { font-size: 0.875rem; font-weight: 500; color: #555; }
     .nav-links a:hover { color: #111; }
@@ -77,16 +79,9 @@
       width: 32px; height: 32px; border-radius: 50%;
       border: 2.5px solid #fff;
       margin-right: -10px;
-      background: #ddd;
-      overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0;
+      overflow: hidden; flex-shrink: 0;
     }
-    /* photo-style colored avatars */
-    .hav:nth-child(1) { background: linear-gradient(135deg,#f59e0b,#ef4444); }
-    .hav:nth-child(2) { background: linear-gradient(135deg,#06b6d4,#3b82f6); }
-    .hav:nth-child(3) { background: linear-gradient(135deg,#10b981,#059669); }
-    .hav:nth-child(4) { background: linear-gradient(135deg,#8b5cf6,#ec4899); }
+    .hav img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; }
     .hero-trust-text { font-size: 0.82rem; font-weight: 500; color: #666; margin-left: 16px; }
 
     .hero-left h1 {
@@ -292,6 +287,7 @@
     /* ─── RESPONSIVE ──────────────────── */
     @media (max-width: 960px) {
       .hero-grid { grid-template-columns: 1fr; gap: 44px; }
+      .hero-card { display: none; }
       .feat-grid { grid-template-columns: repeat(2,1fr); }
       .testi-grid { grid-template-columns: repeat(2,1fr); }
       .cta-grid { grid-template-columns: 1fr; gap: 36px; }
@@ -313,7 +309,7 @@
 <nav>
   <div class="nav-inner">
     <div class="nav-logo">
-      <a href="/"><img src="img/logo.png" alt="BlowUpSocials" /></a>
+      <a href="/"><img src="img/logo.png" alt="BlowUpSocials" /><span class="nav-brand">BlowUpSocials</span></a>
     </div>
     <div class="nav-links">
       <a href="#how-it-works">How It Works</a>
@@ -334,10 +330,10 @@
       <div class="hero-left">
         <div class="hero-trust">
           <div class="hero-avs">
-            <div class="hav"></div>
-            <div class="hav"></div>
-            <div class="hav"></div>
-            <div class="hav"></div>
+            <div class="hav"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="creator" /></div>
+            <div class="hav"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="creator" /></div>
+            <div class="hav"><img src="https://randomuser.me/api/portraits/women/68.jpg" alt="creator" /></div>
+            <div class="hav"><img src="https://randomuser.me/api/portraits/men/55.jpg" alt="creator" /></div>
           </div>
           <span class="hero-trust-text">Trusted by 10,000+ creators &amp; brands</span>
         </div>
@@ -446,7 +442,7 @@
   <div class="container">
     <p class="brand-strip-lbl">Trusted by creators and brands worldwide</p>
     <div class="brand-logos">
-      <span class="bl bl-mrbeast">MrBeast</span>
+      <span class="bl bl-mrbeast">HypeKing</span>
       <span class="bl bl-gymshark">GYMSHARK <span style="font-weight:300;font-style:italic">∕</span></span>
       <span class="bl bl-dude">DudePerfect</span>
       <span class="bl bl-glossier">Glossier.</span>
@@ -571,7 +567,7 @@
   <div class="container">
     <div class="foot-inner">
       <div class="foot-logo">
-        <a href="/"><img src="img/logo.png" alt="BlowUpSocials" /></a>
+        <a href="/" style="display:flex;align-items:center;gap:9px"><img src="img/logo.png" alt="BlowUpSocials" /><span style="font-size:0.92rem;font-weight:800;color:#111;letter-spacing:-0.3px">BlowUpSocials</span></a>
       </div>
       <div class="foot-links">
         <a href="#how-it-works">How It Works</a>
