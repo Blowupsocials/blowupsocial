@@ -214,6 +214,44 @@
     .feat-card h3 { font-size: 0.95rem; font-weight: 700; color: #111; margin-bottom: 8px; }
     .feat-card p { font-size: 0.82rem; color: #666; line-height: 1.65; }
 
+    /* ─── ACCOUNTS STORE ────────────────── */
+    .accounts { padding: 88px 0; background: #fafafa; }
+    .acct-sub {
+      font-size: 0.95rem; color: #666; line-height: 1.72;
+      max-width: 520px; margin: -40px auto 52px; text-align: center;
+    }
+    .acct-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    .acct-card {
+      background: #fff; border: 1.5px solid #e5e7eb;
+      border-radius: 18px; padding: 22px 20px;
+      display: flex; flex-direction: column; gap: 16px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .acct-card:hover { border-color: #c4b5fd; box-shadow: 0 8px 28px rgba(124,58,237,0.10); }
+    .acct-card-top { display: flex; align-items: center; gap: 14px; }
+    .acct-ico {
+      width: 46px; height: 46px; border-radius: 13px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+    }
+    .acct-name { font-size: 0.95rem; font-weight: 700; color: #111; }
+    .acct-from { font-size: 0.72rem; color: #7c3aed; font-weight: 600; margin-top: 2px; }
+    .acct-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .acct-tag {
+      font-size: 0.65rem; font-weight: 600; padding: 4px 10px; border-radius: 50px;
+      background: #f3f4f6; color: #555; border: 1px solid #e5e7eb;
+    }
+    .acct-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.82rem; font-weight: 700; color: #7c3aed;
+      background: #ede9fe; border: none; cursor: pointer;
+      padding: 9px 16px; border-radius: 9px;
+      font-family: inherit; transition: background .18s; align-self: flex-start;
+    }
+    .acct-btn:hover { background: #ddd6fe; }
+    .acct-cta-row { text-align: center; margin-top: 44px; }
+    @media (max-width: 960px) { .acct-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 600px) { .acct-grid { grid-template-columns: 1fr 1fr; gap: 14px; } }
+
     /* ─── TESTIMONIALS ─────────────────── */
     .testimonials { padding: 80px 0; }
     .testi-top { text-align: center; margin-bottom: 48px; }
@@ -492,6 +530,117 @@
         <p>100% safe methods. No passwords. No risk.</p>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<!-- ACCOUNTS STORE -->
+<section class="accounts" id="accounts">
+  <div class="container">
+    <p class="eyebrow">Accounts Marketplace</p>
+    <h2 class="feat-h2">Buy verified social media accounts.<br><span class="hl">Ready to use. Instant delivery.</span></h2>
+    <p class="acct-sub">Aged, verified and monetized accounts across all major platforms — delivered instantly to your inbox.</p>
+    <div class="acct-grid">
+
+      <div class="acct-card">
+        <div class="acct-card-top">
+          <div class="acct-ico" style="background:#fce7f3"><i class="fab fa-instagram" style="color:#e1306c"></i></div>
+          <div>
+            <div class="acct-name">Instagram</div>
+            <div class="acct-from">From ₦3,500</div>
+          </div>
+        </div>
+        <div class="acct-tags">
+          <span class="acct-tag">Aged</span>
+          <span class="acct-tag">Verified</span>
+          <span class="acct-tag">With Followers</span>
+        </div>
+        <a href="accounts.html" class="acct-btn">Shop Now →</a>
+      </div>
+
+      <div class="acct-card">
+        <div class="acct-card-top">
+          <div class="acct-ico" style="background:#f3f4f6"><i class="fab fa-tiktok" style="color:#010101"></i></div>
+          <div>
+            <div class="acct-name">TikTok</div>
+            <div class="acct-from">From ₦4,000</div>
+          </div>
+        </div>
+        <div class="acct-tags">
+          <span class="acct-tag">Aged</span>
+          <span class="acct-tag">High Followers</span>
+          <span class="acct-tag">USA/NG</span>
+        </div>
+        <a href="accounts.html" class="acct-btn">Shop Now →</a>
+      </div>
+
+      <div class="acct-card">
+        <div class="acct-card-top">
+          <div class="acct-ico" style="background:#dbeafe"><i class="fab fa-facebook-f" style="color:#1877f2"></i></div>
+          <div>
+            <div class="acct-name">Facebook</div>
+            <div class="acct-from">From ₦2,800</div>
+          </div>
+        </div>
+        <div class="acct-tags">
+          <span class="acct-tag">Aged</span>
+          <span class="acct-tag">Marketplace Ready</span>
+          <span class="acct-tag">USA</span>
+        </div>
+        <a href="accounts.html" class="acct-btn">Shop Now →</a>
+      </div>
+
+      <div class="acct-card">
+        <div class="acct-card-top">
+          <div class="acct-ico" style="background:#f3f4f6"><i class="fab fa-x-twitter" style="color:#000"></i></div>
+          <div>
+            <div class="acct-name">X / Twitter</div>
+            <div class="acct-from">From ₦5,000</div>
+          </div>
+        </div>
+        <div class="acct-tags">
+          <span class="acct-tag">Aged</span>
+          <span class="acct-tag">Blue Verified</span>
+          <span class="acct-tag">USA</span>
+        </div>
+        <a href="accounts.html" class="acct-btn">Shop Now →</a>
+      </div>
+
+      <div class="acct-card">
+        <div class="acct-card-top">
+          <div class="acct-ico" style="background:#fef3c7"><i class="fab fa-google" style="color:#ea4335"></i></div>
+          <div>
+            <div class="acct-name">Gmail</div>
+            <div class="acct-from">From ₦1,500</div>
+          </div>
+        </div>
+        <div class="acct-tags">
+          <span class="acct-tag">Aged</span>
+          <span class="acct-tag">Phone Verified</span>
+          <span class="acct-tag">USA</span>
+        </div>
+        <a href="accounts.html" class="acct-btn">Shop Now →</a>
+      </div>
+
+      <div class="acct-card">
+        <div class="acct-card-top">
+          <div class="acct-ico" style="background:#fee2e2"><i class="fab fa-youtube" style="color:#ff0000"></i></div>
+          <div>
+            <div class="acct-name">YouTube</div>
+            <div class="acct-from">From ₦45,000</div>
+          </div>
+        </div>
+        <div class="acct-tags">
+          <span class="acct-tag">Monetized</span>
+          <span class="acct-tag">1K+ Subs</span>
+          <span class="acct-tag">4K Watch Hrs</span>
+        </div>
+        <a href="accounts.html" class="acct-btn">Shop Now →</a>
+      </div>
+
+    </div>
+    <div class="acct-cta-row">
+      <a href="accounts.html" class="btn-main">Browse All Accounts →</a>
     </div>
   </div>
 </section>
