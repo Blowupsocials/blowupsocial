@@ -76,6 +76,44 @@
     .ds-user-name {}
     .ds-user-email {}
 
+    /* ── ANNOUNCEMENT BAR ── */
+    .ds-ann-bar {
+      background: linear-gradient(90deg, #7c3aed 0%, #ec4899 100%);
+      color: #fff; font-size: 0.8rem; font-weight: 600;
+      padding: 9px 20px; display: flex; align-items: center; justify-content: center;
+      gap: 10px; position: relative; flex-shrink: 0; line-height: 1.4; text-align: center;
+    }
+    .ds-ann-bar a { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
+    .ds-ann-bar a:hover { opacity: 0.85; }
+    .ds-ann-close {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.2); border: none; color: #fff;
+      width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
+      font-size: 0.7rem; display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s; flex-shrink: 0;
+    }
+    .ds-ann-close:hover { background: rgba(255,255,255,0.35); }
+
+    /* ── INSTALL PROMPT MODAL (iOS) ── */
+    .ds-install-modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 600;
+      display: flex; align-items: flex-end; justify-content: center;
+      padding: 0 0 20px; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    }
+    .ds-install-modal.show { opacity: 1; pointer-events: all; }
+    .ds-install-box {
+      background: #fff; border-radius: 18px; padding: 24px 22px; width: 100%;
+      max-width: 380px; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      transform: translateY(20px); transition: transform 0.2s;
+    }
+    .ds-install-modal.show .ds-install-box { transform: translateY(0); }
+    .ds-install-box h3 { font-size: 1rem; font-weight: 800; color: #111; margin-bottom: 6px; }
+    .ds-install-box p { font-size: 0.82rem; color: #555; line-height: 1.6; margin-bottom: 16px; }
+    .ds-install-step { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: #333; margin-bottom: 10px; }
+    .ds-install-step i { width: 28px; height: 28px; background: #f5f3ff; color: #7c3aed; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.78rem; }
+    .ds-install-done { width: 100%; padding: 11px; background: #7c3aed; color: #fff; border: none; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; margin-top: 6px; font-family: inherit; }
+    .ds-install-done:hover { opacity: 0.88; }
+
     /* ── MAIN ── */
     .ds-main { margin-left: 250px; width: calc(100vw - 250px); display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
 
@@ -741,6 +779,7 @@
       <a href="#" class="ds-nav-item" id="nav-txns" onclick="showDsSec('txns');return false">Transactions</a>
       <a href="#" class="ds-nav-item" id="nav-support" onclick="showDsSec('support');return false">Support</a>
       <a href="#" class="ds-nav-item" id="nav-settings" onclick="showDsSec('settings');return false">Account</a>
+      <a href="#" class="ds-nav-item" id="nav-install" onclick="triggerInstall();return false" style="color:#7c3aed;font-weight:600">Add to Home Screen</a>
       <a href="#" class="ds-nav-item danger" id="signout-btn">Sign Out</a>
 
       <!-- hidden nav IDs for JS compatibility -->
@@ -763,8 +802,26 @@
     </div>
   </aside>
 
+  <!-- ── iOS INSTALL MODAL ── -->
+  <div class="ds-install-modal" id="ios-install-modal">
+    <div class="ds-install-box">
+      <h3>Add BlowUpSocials to your Home Screen</h3>
+      <p>Install the app for a faster, full-screen experience — no App Store needed.</p>
+      <div class="ds-install-step"><i class="fas fa-arrow-up-from-bracket"></i><span>Tap the <strong>Share</strong> button at the bottom of Safari</span></div>
+      <div class="ds-install-step"><i class="fas fa-plus-square"></i><span>Scroll down and tap <strong>"Add to Home Screen"</strong></span></div>
+      <div class="ds-install-step"><i class="fas fa-check"></i><span>Tap <strong>Add</strong> — the app icon will appear on your home screen</span></div>
+      <button class="ds-install-done" onclick="document.getElementById('ios-install-modal').classList.remove('show')">Got it</button>
+    </div>
+  </div>
+
   <!-- ── MAIN ── -->
   <div class="ds-main">
+
+    <!-- ANNOUNCEMENT BAR -->
+    <div class="ds-ann-bar" id="ann-bar">
+      🎉 Welcome to BlowUpSocials! Fund your wallet today and get started instantly.
+      <button class="ds-ann-close" id="ann-close" aria-label="Dismiss"><i class="fas fa-xmark"></i></button>
+    </div>
 
     <!-- TOPBAR -->
     <header class="ds-topbar">
@@ -1267,6 +1324,45 @@
   <script src="js/supabase-client.js"></script>
   <script>
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
+
+    /* ── Announcement bar dismiss ── */
+    (function() {
+      const bar = document.getElementById('ann-bar');
+      if (localStorage.getItem('ann-dismissed')) { bar.style.display = 'none'; return; }
+      document.getElementById('ann-close').addEventListener('click', () => {
+        bar.style.display = 'none';
+        localStorage.setItem('ann-dismissed', '1');
+      });
+    })();
+
+    /* ── PWA Install prompt ── */
+    let _installPrompt = null;
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+    if (isStandalone) {
+      const el = document.getElementById('nav-install');
+      if (el) el.style.display = 'none';
+    }
+
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      _installPrompt = e;
+    });
+
+    window.addEventListener('appinstalled', () => {
+      const el = document.getElementById('nav-install');
+      if (el) el.style.display = 'none';
+    });
+
+    function triggerInstall() {
+      if (_installPrompt) {
+        _installPrompt.prompt();
+        _installPrompt.userChoice.then(() => { _installPrompt = null; });
+      } else if (isIOS) {
+        document.getElementById('ios-install-modal').classList.add('show');
+      }
+    }
   </script>
   <script>
     /* ── Toast ── */
