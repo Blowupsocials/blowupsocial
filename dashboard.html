@@ -827,72 +827,10 @@
       <!-- CENTER COLUMN -->
       <div class="ds-center">
 
-        <!-- STAT CARDS -->
-        <div class="ds-stats">
-          <div class="ds-stat-card">
-            <div class="ds-stat-top">
-              <div>
-                <div class="ds-stat-label">Total Orders</div>
-                <div class="ds-stat-num" id="stat-total">—</div>
-                <div class="ds-stat-trend trend-neutral" id="trend-total">All time</div>
-              </div>
-              <div class="ds-stat-icon-wrap si-blue"><i class="fas fa-bag-shopping"></i></div>
-            </div>
-            <div class="ds-sparkline">
-              <svg viewBox="0 0 100 28" preserveAspectRatio="none">
-                <polyline points="0,24 17,19 33,21 50,13 66,9 83,6 100,3" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-          </div>
-
-          <div class="ds-stat-card">
-            <div class="ds-stat-top">
-              <div>
-                <div class="ds-stat-label">Completed</div>
-                <div class="ds-stat-num" id="stat-completed">—</div>
-                <div class="ds-stat-trend trend-up" id="trend-completed">↑ 0% rate</div>
-              </div>
-              <div class="ds-stat-icon-wrap si-green"><i class="fas fa-circle-check"></i></div>
-            </div>
-            <div class="ds-sparkline">
-              <svg viewBox="0 0 100 28" preserveAspectRatio="none">
-                <polyline points="0,25 17,20 33,17 50,13 66,9 83,5 100,2" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-          </div>
-
-          <div class="ds-stat-card">
-            <div class="ds-stat-top">
-              <div>
-                <div class="ds-stat-label">In Progress</div>
-                <div class="ds-stat-num" id="stat-progress">—</div>
-                <div class="ds-stat-trend trend-neutral">Active now</div>
-              </div>
-              <div class="ds-stat-icon-wrap si-yellow"><i class="fas fa-spinner"></i></div>
-            </div>
-            <div class="ds-sparkline">
-              <svg viewBox="0 0 100 28" preserveAspectRatio="none">
-                <polyline points="0,14 17,18 33,11 50,19 66,9 83,14 100,7" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-          </div>
-
-          <div class="ds-stat-card">
-            <div class="ds-stat-top">
-              <div>
-                <div class="ds-stat-label">Total Spent</div>
-                <div class="ds-stat-num" id="stat-spent">₦0</div>
-                <div class="ds-stat-trend trend-neutral">Lifetime value</div>
-              </div>
-              <div class="ds-stat-icon-wrap si-purple"><i class="fas fa-naira-sign"></i></div>
-            </div>
-            <div class="ds-sparkline">
-              <svg viewBox="0 0 100 28" preserveAspectRatio="none">
-                <polyline points="0,19 17,15 33,19 50,11 66,15 83,9 100,13" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-          </div>
-        </div>
+        <!-- hidden stat placeholders for JS compatibility -->
+        <span hidden id="stat-total"></span><span hidden id="stat-completed"></span>
+        <span hidden id="stat-progress"></span><span hidden id="stat-spent"></span>
+        <span hidden id="trend-total"></span><span hidden id="trend-completed"></span>
 
         <!-- RECENT ORDERS -->
         <div class="ds-card" id="orders-section">
