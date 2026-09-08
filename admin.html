@@ -2450,7 +2450,33 @@
       document.getElementById('spark-revenue').innerHTML = sparkline(trendArr(revNGN, 10), '#10b981');
       document.getElementById('spark-pending').innerHTML = sparkline(trendArr(pC,   10), '#f59e0b');
 
-      /* Month-over-month trends removed temporarily for debug */
+      /* -- Month-over-month trends -- */
+      try {
+        const mo = new Date();
+        const t0 = new Date(mo.getFullYear(), mo.getMonth(), 1).toISOString();
+        const t1 = new Date(mo.getFullYear(), mo.getMonth() - 1, 1).toISOString();
+        const tr = await Promise.all([
+          db.from('orders').select('*',{count:'exact',head:true}).gte('created_at', t0),
+          db.from('orders').select('*',{count:'exact',head:true}).gte('created_at', t1).lt('created_at', t0),
+          db.from('profiles').select('*',{count:'exact',head:true}).gte('created_at', t0),
+          db.from('profiles').select('*',{count:'exact',head:true}).gte('created_at', t1).lt('created_at', t0),
+        ]);
+        const setTrend = (id, curr, prev, lbl) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          if (!prev) { el.innerHTML = '<span class="t-lbl">' + lbl + '</span>'; return; }
+          const p = ((curr - prev) / prev * 100).toFixed(1);
+          const up = p >= 0;
+          el.innerHTML = '<span class="' + (up ? 't-up' : 't-dn') + '"><i class="fas fa-arrow-' + (up ? 'up' : 'down') + '"></i> ' + Math.abs(p) + '%</span><span class="t-lbl">' + lbl + '</span>';
+        };
+        setTrend('trend-users',  tr[2].count, tr[3].count, 'new this month');
+        setTrend('trend-orders', tr[0].count, tr[1].count, 'vs last month');
+        const tmRev = ((await db.from('orders').select('amount').eq('status','Completed').gte('created_at', t0)).data || []).reduce((s,r) => s + parseFloat(r.amount || 0), 0);
+        const lmRev = ((await db.from('orders').select('amount').eq('status','Completed').gte('created_at', t1).lt('created_at', t0)).data || []).reduce((s,r) => s + parseFloat(r.amount || 0), 0);
+        setTrend('trend-revenue', tmRev, lmRev, 'vs last month');
+        const pendEl = document.getElementById('trend-pending');
+        if (pendEl) pendEl.innerHTML = '<span class="t-lbl">Awaiting fulfillment</span>';
+      } catch (e) { console.error('[Admin] trend error:', e); }
     })();
 
     /* -- PROVIDERS -- */
