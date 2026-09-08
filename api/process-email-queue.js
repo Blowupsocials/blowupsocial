@@ -2,9 +2,9 @@ const SUPABASE_URL = 'https://puutwycvshayqoozwfwv.supabase.co';
 const FROM = 'BlowUpSocials <support@blowupsocials.net>';
 
 export default async function handler(req, res) {
-  const cronSecret = process.env.CRON_SECRET;
-  if (cronSecret && req.headers.authorization !== `Bearer ${cronSecret}`) {
-    return res.status(401).json({ error: 'Unauthorized' });
+  // Only allow GET/POST, no other methods
+  if (req.method !== 'GET' && req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const serviceKey = process.env.SUPABASE_SERVICE_KEY;

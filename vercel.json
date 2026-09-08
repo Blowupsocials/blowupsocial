@@ -1,9 +1,6 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "crons": [
-    { "path": "/api/process-email-queue", "schedule": "0 * * * *" }
-  ],
   "routes": [
     { "src": "/api/peakerr",          "dest": "/api/peakerr.js" },
     { "src": "/api/accsmaster",       "dest": "/api/accsmaster.js" },
