@@ -35,7 +35,7 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--t1); display: flex; min-height: 100vh; overflow-x: hidden; }
+    body { font-family: 'Inter', sans-serif; background: #f5f6fb; color: #1a1a2e; display: flex; min-height: 100vh; overflow-x: hidden; }
     a { text-decoration: none; color: inherit; }
     button { font-family: inherit; cursor: pointer; border: none; background: none; }
     :focus-visible { outline: 2px solid var(--pu); outline-offset: 2px; }
@@ -69,40 +69,40 @@
     .main { margin-left: 250px; width: calc(100vw - 250px); display: flex; flex-direction: column; min-height: 100vh; }
 
     /* -- TOPBAR -- */
-    .topbar { background: var(--sur); border-bottom: 1px solid var(--bd); padding: 0 28px; height: 68px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; flex-shrink: 0; }
+    .topbar { background: #ffffff; border-bottom: 1px solid #e8eaf0; padding: 0 28px; height: 68px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; flex-shrink: 0; }
     .tb-welcome { flex: 1; min-width: 0; }
-    .tb-welcome h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 800; color: var(--t1); white-space: nowrap; }
-    .tb-welcome p { font-size: 0.71rem; color: var(--t3); margin-top: 1px; }
+    .tb-welcome h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 800; color: #1a1a2e; white-space: nowrap; }
+    .tb-welcome p { font-size: 0.71rem; color: #8b8fa8; margin-top: 1px; }
     .tb-right { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
 
-    .tb-search { display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--bd); border-radius: 10px; padding: 7px 13px; width: 210px; transition: border-color 0.13s; }
+    .tb-search { display: flex; align-items: center; gap: 8px; background: #f5f6fb; border: 1px solid #e8eaf0; border-radius: 10px; padding: 7px 13px; width: 210px; transition: border-color 0.13s; }
     .tb-search:focus-within { border-color: #c4b5fd; }
-    .tb-search input { background: none; border: none; outline: none; font-size: 0.77rem; color: var(--t1); width: 100%; font-family: inherit; }
-    .tb-search input::placeholder { color: var(--t3); }
-    .tb-search i { color: var(--t3); font-size: 0.78rem; flex-shrink: 0; }
+    .tb-search input { background: none; border: none; outline: none; font-size: 0.77rem; color: #1a1a2e; width: 100%; font-family: inherit; }
+    .tb-search input::placeholder { color: #8b8fa8; }
+    .tb-search i { color: #8b8fa8; font-size: 0.78rem; flex-shrink: 0; }
 
     .tb-quick { display: flex; align-items: center; gap: 6px; background: var(--pu); color: #fff; padding: 8px 14px; border-radius: 10px; font-size: 0.77rem; font-weight: 700; transition: opacity 0.13s; }
     .tb-quick:hover { opacity: 0.88; }
     .tb-quick i { font-size: 0.78rem; }
 
-    .tb-bell { width: 36px; height: 36px; border-radius: 10px; background: var(--bg); border: 1px solid var(--bd); display: flex; align-items: center; justify-content: center; position: relative; color: var(--t2); font-size: 0.86rem; transition: background 0.12s; }
+    .tb-bell { width: 36px; height: 36px; border-radius: 10px; background: #f5f6fb; border: 1px solid #e8eaf0; display: flex; align-items: center; justify-content: center; position: relative; color: #4b5063; font-size: 0.86rem; transition: background 0.12s; }
     .tb-bell:hover { background: var(--bd); }
     .tb-badge { position: absolute; top: -4px; right: -4px; background: var(--pk); color: #fff; font-size: 0.5rem; font-weight: 800; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--sur); }
 
-    .tb-profile { display: flex; align-items: center; gap: 8px; border: 1px solid var(--bd); border-radius: 50px; padding: 4px 12px 4px 4px; transition: border-color 0.13s; }
+    .tb-profile { display: flex; align-items: center; gap: 8px; border: 1px solid #e8eaf0; border-radius: 50px; padding: 4px 12px 4px 4px; transition: border-color 0.13s; }
     .tb-profile:hover { border-color: #c4b5fd; }
     .tb-profile-ava { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #ec4899, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 0.62rem; font-weight: 800; color: #fff; }
     .tb-profile-info { line-height: 1.15; }
-    .tb-profile-name { font-size: 0.76rem; font-weight: 700; color: var(--t1); }
-    .tb-profile-role { font-size: 0.61rem; color: var(--t3); }
-    .tb-profile > i { color: var(--t3); font-size: 0.62rem; }
+    .tb-profile-name { font-size: 0.76rem; font-weight: 700; color: #1a1a2e; }
+    .tb-profile-role { font-size: 0.61rem; color: #8b8fa8; }
+    .tb-profile > i { color: #8b8fa8; font-size: 0.62rem; }
 
     /* -- CONTENT -- */
     .content { padding: 22px 28px; flex: 1; }
 
     /* -- Stat Cards -- */
     .stats-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 20px; }
-    .stat-card { background: var(--sur); border-radius: 14px; padding: 18px 16px 16px; display: flex; align-items: flex-start; gap: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
+    .stat-card { background: #ffffff; border-radius: 14px; padding: 18px 16px 16px; display: flex; align-items: flex-start; gap: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
     .stat-body { flex: 1; min-width: 0; }
     .stat-top { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
     .stat-icon { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.92rem; flex-shrink: 0; }
@@ -111,22 +111,22 @@
     .si-gn { background: #ecfdf5; color: #10b981; }
     .si-or { background: #fffbeb; color: #f59e0b; }
     .si-bl { background: #eff6ff; color: #3b82f6; }
-    .stat-label { font-size: 0.7rem; font-weight: 600; color: var(--t3); }
-    .stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--t1); line-height: 1; margin-bottom: 8px; font-variant-numeric: tabular-nums; }
+    .stat-label { font-size: 0.7rem; font-weight: 600; color: #8b8fa8; }
+    .stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 800; color: #1a1a2e; line-height: 1; margin-bottom: 8px; font-variant-numeric: tabular-nums; }
     .stat-trend { font-size: 0.71rem; font-weight: 600; display: flex; align-items: center; gap: 3px; flex-wrap: wrap; }
     .t-up   { color: #10b981; }
     .t-dn   { color: #ef4444; }
-    .t-lbl  { color: var(--t3); font-weight: 400; margin-left: 2px; }
+    .t-lbl  { color: #8b8fa8; font-weight: 400; margin-left: 2px; }
     .stat-spark { display: flex; align-items: flex-end; padding-left: 8px; flex-shrink: 0; }
 
     /* -- Middle Row -- */
     .mid-row { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; margin-bottom: 20px; }
-    .card { background: var(--sur); border-radius: 14px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card { background: #ffffff; border-radius: 14px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     .card-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-    .card-title { font-family: 'Space Grotesk', sans-serif; font-size: 0.92rem; font-weight: 800; color: var(--t1); }
+    .card-title { font-family: 'Space Grotesk', sans-serif; font-size: 0.92rem; font-weight: 800; color: #1a1a2e; }
     .card-hdr-r { display: flex; align-items: center; gap: 8px; }
-    .btn-sm { display: flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: 7px; border: 1px solid var(--bd); font-size: 0.72rem; font-weight: 600; color: var(--t2); background: var(--sur); transition: background 0.12s; }
-    .btn-sm:hover { background: var(--bg); }
+    .btn-sm { display: flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: 7px; border: 1px solid #e8eaf0; font-size: 0.72rem; font-weight: 600; color: #4b5063; background: #ffffff; transition: background 0.12s; }
+    .btn-sm:hover { background: #f5f6fb; }
     .btn-link { font-size: 0.73rem; font-weight: 700; color: var(--pu); }
     .btn-link:hover { opacity: 0.7; }
 
@@ -134,14 +134,14 @@
 
     /* Services table */
     .svc-tbl { width: 100%; border-collapse: collapse; }
-    .svc-tbl th { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--t3); padding-bottom: 9px; border-bottom: 1px solid var(--bd); text-align: left; }
+    .svc-tbl th { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #8b8fa8; padding-bottom: 9px; border-bottom: 1px solid #e8eaf0; text-align: left; }
     .svc-tbl th:not(:first-child) { text-align: right; }
-    .svc-tbl td { padding: 10px 0; border-bottom: 1px solid var(--bd); vertical-align: middle; font-size: 0.8rem; }
-    .svc-tbl tfoot td { border-bottom: none; border-top: 1px solid var(--bd); padding-top: 11px; font-weight: 800; font-size: 0.81rem; }
+    .svc-tbl td { padding: 10px 0; border-bottom: 1px solid #e8eaf0; vertical-align: middle; font-size: 0.8rem; }
+    .svc-tbl tfoot td { border-bottom: none; border-top: 1px solid #e8eaf0; padding-top: 11px; font-weight: 800; font-size: 0.81rem; }
     .svc-tbl tr:last-of-type td { border-bottom: none; }
-    .svc-name-cell { display: flex; align-items: center; gap: 9px; font-weight: 600; color: var(--t1); }
+    .svc-name-cell { display: flex; align-items: center; gap: 9px; font-weight: 600; color: #1a1a2e; }
     .svc-ico { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.74rem; flex-shrink: 0; }
-    .svc-orders { text-align: right; font-weight: 600; color: var(--t1); font-variant-numeric: tabular-nums; }
+    .svc-orders { text-align: right; font-weight: 600; color: #1a1a2e; font-variant-numeric: tabular-nums; }
     .svc-rev { text-align: right; font-weight: 700; color: var(--gn); font-variant-numeric: tabular-nums; }
 
     /* -- Bottom Row -- */
@@ -149,15 +149,15 @@
 
     /* Orders table */
     .ord-tbl { width: 100%; border-collapse: collapse; }
-    .ord-tbl th { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--t3); padding-bottom: 9px; border-bottom: 1px solid var(--bd); text-align: left; }
-    .ord-tbl td { padding: 9px 0; border-bottom: 1px solid var(--bd); font-size: 0.78rem; vertical-align: middle; }
+    .ord-tbl th { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #8b8fa8; padding-bottom: 9px; border-bottom: 1px solid #e8eaf0; text-align: left; }
+    .ord-tbl td { padding: 9px 0; border-bottom: 1px solid #e8eaf0; font-size: 0.78rem; vertical-align: middle; }
     .ord-tbl tr:last-child td { border-bottom: none; }
     .ord-user { display: flex; align-items: center; gap: 7px; }
     .ord-ava { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.58rem; font-weight: 800; color: #fff; flex-shrink: 0; }
-    .ord-uname { font-weight: 600; color: var(--t1); }
-    .ord-svc { color: var(--t2); font-size: 0.75rem; }
-    .ord-qty { font-weight: 600; color: var(--t1); font-variant-numeric: tabular-nums; }
-    .ord-time { color: var(--t3); font-size: 0.7rem; white-space: nowrap; }
+    .ord-uname { font-weight: 600; color: #1a1a2e; }
+    .ord-svc { color: #4b5063; font-size: 0.75rem; }
+    .ord-qty { font-weight: 600; color: #1a1a2e; font-variant-numeric: tabular-nums; }
+    .ord-time { color: #8b8fa8; font-size: 0.7rem; white-space: nowrap; }
     .badge { display: inline-block; padding: 2px 9px; border-radius: 50px; font-size: 0.64rem; font-weight: 700; white-space: nowrap; }
     .b-completed { background: #dcfce7; color: #166534; }
     .b-progress  { background: #dbeafe; color: #1e40af; }
@@ -170,28 +170,28 @@
     .legend-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.76rem; }
     .legend-l { display: flex; align-items: center; gap: 7px; }
     .leg-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-    .leg-name { color: var(--t2); }
+    .leg-name { color: #4b5063; }
     .legend-r { display: flex; align-items: baseline; gap: 4px; }
-    .leg-count { font-weight: 700; color: var(--t1); font-variant-numeric: tabular-nums; }
-    .leg-pct { font-size: 0.67rem; color: var(--t3); }
-    .online-bar { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--bd); display: flex; align-items: center; justify-content: space-between; }
-    .online-l { display: flex; align-items: center; gap: 7px; font-size: 0.77rem; color: var(--t2); }
+    .leg-count { font-weight: 700; color: #1a1a2e; font-variant-numeric: tabular-nums; }
+    .leg-pct { font-size: 0.67rem; color: #8b8fa8; }
+    .online-bar { margin-top: 14px; padding-top: 14px; border-top: 1px solid #e8eaf0; display: flex; align-items: center; justify-content: space-between; }
+    .online-l { display: flex; align-items: center; gap: 7px; font-size: 0.77rem; color: #4b5063; }
     .online-pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--gn); animation: pulse 2s ease-in-out infinite; }
     @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.35} }
-    .online-n { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--t1); }
+    .online-n { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 800; color: #1a1a2e; }
 
     /* Activity */
     .act-list { display: flex; flex-direction: column; }
-    .act-item { display: flex; align-items: flex-start; gap: 11px; padding: 10px 0; border-bottom: 1px solid var(--bd); }
+    .act-item { display: flex; align-items: flex-start; gap: 11px; padding: 10px 0; border-bottom: 1px solid #e8eaf0; }
     .act-item:last-child { border-bottom: none; }
     .act-ico { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.84rem; flex-shrink: 0; }
     .act-body { flex: 1; min-width: 0; }
-    .act-title { font-size: 0.78rem; font-weight: 600; color: var(--t1); margin-bottom: 2px; }
-    .act-sub { font-size: 0.7rem; color: var(--t3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .act-time { font-size: 0.67rem; color: var(--t3); white-space: nowrap; flex-shrink: 0; padding-top: 2px; }
+    .act-title { font-size: 0.78rem; font-weight: 600; color: #1a1a2e; margin-bottom: 2px; }
+    .act-sub { font-size: 0.7rem; color: #8b8fa8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .act-time { font-size: 0.67rem; color: #8b8fa8; white-space: nowrap; flex-shrink: 0; padding-top: 2px; }
 
     /* Footer */
-    .page-foot { border-top: 1px solid var(--bd); padding: 15px 28px; display: flex; align-items: center; justify-content: space-between; font-size: 0.71rem; color: var(--t3); flex-shrink: 0; }
+    .page-foot { border-top: 1px solid #e8eaf0; padding: 15px 28px; display: flex; align-items: center; justify-content: space-between; font-size: 0.71rem; color: #8b8fa8; flex-shrink: 0; }
 
     /* -- SECTION SYSTEM -- */
     .admin-section { display: none; }
@@ -199,37 +199,37 @@
 
     /* -- Section Header -- */
     .sec-hdr { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
-    .sec-hdr-left h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--t1); }
-    .sec-hdr-left p { font-size: 0.72rem; color: var(--t3); margin-top: 3px; }
+    .sec-hdr-left h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 800; color: #1a1a2e; }
+    .sec-hdr-left p { font-size: 0.72rem; color: #8b8fa8; margin-top: 3px; }
     .sec-hdr-right { display: flex; align-items: center; gap: 9px; }
-    .sec-search { display: flex; align-items: center; gap: 8px; background: var(--sur); border: 1px solid var(--bd); border-radius: 9px; padding: 7px 12px; width: 230px; }
-    .sec-search input { background: none; border: none; outline: none; font-size: 0.77rem; color: var(--t1); width: 100%; font-family: inherit; }
-    .sec-search input::placeholder { color: var(--t3); }
-    .sec-search i { color: var(--t3); font-size: 0.76rem; flex-shrink: 0; }
+    .sec-search { display: flex; align-items: center; gap: 8px; background: #ffffff; border: 1px solid #e8eaf0; border-radius: 9px; padding: 7px 12px; width: 230px; }
+    .sec-search input { background: none; border: none; outline: none; font-size: 0.77rem; color: #1a1a2e; width: 100%; font-family: inherit; }
+    .sec-search input::placeholder { color: #8b8fa8; }
+    .sec-search i { color: #8b8fa8; font-size: 0.76rem; flex-shrink: 0; }
     .btn-primary { display: flex; align-items: center; gap: 7px; background: var(--pu); color: #fff; padding: 8px 15px; border-radius: 9px; font-size: 0.77rem; font-weight: 700; transition: opacity 0.13s; cursor: pointer; border: none; }
     .btn-primary:hover { opacity: 0.86; }
 
     /* -- Data Table Card -- */
-    .tbl-card { background: var(--sur); border-radius: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
+    .tbl-card { background: #ffffff; border-radius: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
     .tbl-wrap { overflow-x: auto; }
     .data-tbl { width: 100%; border-collapse: collapse; min-width: 560px; }
-    .data-tbl th { font-size: 0.59rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--t3); padding: 11px 16px; border-bottom: 1px solid var(--bd); text-align: left; white-space: nowrap; background: var(--bg); }
-    .data-tbl td { padding: 11px 16px; border-bottom: 1px solid var(--bd); font-size: 0.79rem; color: var(--t1); vertical-align: middle; }
+    .data-tbl th { font-size: 0.59rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #8b8fa8; padding: 11px 16px; border-bottom: 1px solid #e8eaf0; text-align: left; white-space: nowrap; background: #f5f6fb; }
+    .data-tbl td { padding: 11px 16px; border-bottom: 1px solid #e8eaf0; font-size: 0.79rem; color: #1a1a2e; vertical-align: middle; }
     .data-tbl tr:last-child td { border-bottom: none; }
     .data-tbl tbody tr:hover { background: rgba(0,0,0,0.015); }
-    .tbl-loading { text-align: center; color: var(--t3); padding: 40px !important; font-size: 0.78rem; }
-    .tbl-foot { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-top: 1px solid var(--bd); font-size: 0.72rem; color: var(--t3); }
+    .tbl-loading { text-align: center; color: #8b8fa8; padding: 40px !important; font-size: 0.78rem; }
+    .tbl-foot { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-top: 1px solid #e8eaf0; font-size: 0.72rem; color: #8b8fa8; }
     .page-btns { display: flex; gap: 5px; }
-    .pg-btn { padding: 4px 10px; border-radius: 6px; border: 1px solid var(--bd); font-size: 0.72rem; background: var(--sur); color: var(--t2); cursor: pointer; transition: all 0.12s; }
-    .pg-btn:hover:not(:disabled) { background: var(--bg); }
+    .pg-btn { padding: 4px 10px; border-radius: 6px; border: 1px solid #e8eaf0; font-size: 0.72rem; background: #ffffff; color: #4b5063; cursor: pointer; transition: all 0.12s; }
+    .pg-btn:hover:not(:disabled) { background: #f5f6fb; }
     .pg-btn.current { background: var(--pu); color: #fff; border-color: var(--pu); }
     .pg-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
     /* -- User / Order row pieces -- */
     .u-cell { display: flex; align-items: center; gap: 10px; }
     .u-ava { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.64rem; font-weight: 800; color: #fff; flex-shrink: 0; }
-    .u-name { font-weight: 600; color: var(--t1); font-size: 0.8rem; }
-    .u-email-sub { font-size: 0.68rem; color: var(--t3); margin-top: 1px; }
+    .u-name { font-weight: 600; color: #1a1a2e; font-size: 0.8rem; }
+    .u-email-sub { font-size: 0.68rem; color: #8b8fa8; margin-top: 1px; }
     .b-active { background: #dcfce7; color: #166534; }
     .b-inactive { background: #f3f4f6; color: #4b5563; }
     .b-warn  { background: #fef9c3; color: #854d0e; }
@@ -243,47 +243,47 @@
     .btn-icon-gn:hover { background: #d1fae5; }
     .btn-icon-rd { background: #fee2e2; color: var(--rd); }
     .btn-icon-rd:hover { background: #fecaca; }
-    .status-sel { padding: 4px 8px; border-radius: 6px; border: 1px solid var(--bd); font-size: 0.72rem; font-family: inherit; color: var(--t1); background: var(--sur); cursor: pointer; }
+    .status-sel { padding: 4px 8px; border-radius: 6px; border: 1px solid #e8eaf0; font-size: 0.72rem; font-family: inherit; color: #1a1a2e; background: #ffffff; cursor: pointer; }
     .status-sel:focus { outline: none; border-color: var(--pu); }
-    .ord-id { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--t2); font-size: 0.74rem; }
+    .ord-id { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #4b5063; font-size: 0.74rem; }
     .wallet-ngn { font-weight: 700; color: var(--gn); font-variant-numeric: tabular-nums; }
-    .wallet-zero { color: var(--t3); font-weight: 500; }
+    .wallet-zero { color: #8b8fa8; font-weight: 500; }
 
     /* -- Coming Soon -- */
     .coming-soon { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 400px; text-align: center; }
     .cs-ico { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(236,72,153,0.07)); display: flex; align-items: center; justify-content: center; font-size: 1.7rem; margin-bottom: 18px; color: var(--pu); }
-    .coming-soon h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 800; color: var(--t1); margin-bottom: 7px; }
-    .coming-soon p { font-size: 0.77rem; color: var(--t3); max-width: 300px; line-height: 1.65; }
+    .coming-soon h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 800; color: #1a1a2e; margin-bottom: 7px; }
+    .coming-soon p { font-size: 0.77rem; color: #8b8fa8; max-width: 300px; line-height: 1.65; }
     .cs-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(124,58,237,0.09); border: 1px solid rgba(124,58,237,0.18); color: var(--pu); font-size: 0.69rem; font-weight: 700; padding: 5px 13px; border-radius: 50px; margin-top: 16px; }
-    .pg-tab { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--bd); background: var(--sur); color: var(--t2); font-size: 0.78rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+    .pg-tab { padding: 8px 16px; border-radius: 8px; border: 1px solid #e8eaf0; background: #ffffff; color: #4b5063; font-size: 0.78rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.15s; }
     .pg-tab.active { background: linear-gradient(135deg,#7c3aed,#ec4899); color: #fff; border-color: transparent; }
 
     /* -- Wallet Modal -- */
     .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.42); z-index: 500; align-items: center; justify-content: center; padding: 16px; }
     .modal-bg.open { display: flex; }
-    .modal-box { background: var(--sur); border-radius: 16px; padding: 28px; width: 100%; max-width: 400px; }
-    .modal-box h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 800; color: var(--t1); margin-bottom: 6px; }
-    .modal-box .modal-sub { font-size: 0.74rem; color: var(--t3); margin-bottom: 20px; }
-    .modal-field label { display: block; font-size: 0.73rem; font-weight: 600; color: var(--t3); margin-bottom: 5px; }
-    .modal-field input { width: 100%; padding: 9px 12px; border-radius: 9px; border: 1px solid var(--bd); font-size: 0.83rem; font-family: inherit; color: var(--t1); background: var(--bg); outline: none; margin-bottom: 16px; }
+    .modal-box { background: #ffffff; border-radius: 16px; padding: 28px; width: 100%; max-width: 400px; }
+    .modal-box h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 800; color: #1a1a2e; margin-bottom: 6px; }
+    .modal-box .modal-sub { font-size: 0.74rem; color: #8b8fa8; margin-bottom: 20px; }
+    .modal-field label { display: block; font-size: 0.73rem; font-weight: 600; color: #8b8fa8; margin-bottom: 5px; }
+    .modal-field input { width: 100%; padding: 9px 12px; border-radius: 9px; border: 1px solid #e8eaf0; font-size: 0.83rem; font-family: inherit; color: #1a1a2e; background: #f5f6fb; outline: none; margin-bottom: 16px; }
     .modal-field input:focus { border-color: var(--pu); }
     .modal-foot { display: flex; gap: 10px; }
     .modal-foot button { flex: 1; padding: 10px; border-radius: 9px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: none; }
-    .btn-cancel { background: var(--bg); color: var(--t2); border: 1px solid var(--bd) !important; }
+    .btn-cancel { background: #f5f6fb; color: #4b5063; border: 1px solid #e8eaf0 !important; }
     .btn-save { background: var(--pu); color: #fff; }
 
     /* -- Reports -- */
     .rpt-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 16px; }
-    .rpt-tile { background: var(--sur); border-radius: 14px; padding: 18px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .rpt-tile-label { font-size: 0.69rem; font-weight: 600; color: var(--t3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-    .rpt-tile-val { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--t1); font-variant-numeric: tabular-nums; }
+    .rpt-tile { background: #ffffff; border-radius: 14px; padding: 18px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .rpt-tile-label { font-size: 0.69rem; font-weight: 600; color: #8b8fa8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .rpt-tile-val { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 800; color: #1a1a2e; font-variant-numeric: tabular-nums; }
     @media (max-width: 768px) { .rpt-tiles { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 768px) { #sec-reports > div:last-child { grid-template-columns: 1fr !important; } }
 
     /* -- MOBILE -- */
     .sb-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.52); z-index: 199; }
     .sb-overlay.open { display: block; }
-    .sb-toggle { display: none; width: 36px; height: 36px; border-radius: 10px; background: var(--bg); border: 1px solid var(--bd); align-items: center; justify-content: center; color: var(--t2); font-size: 0.95rem; flex-shrink: 0; cursor: pointer; }
+    .sb-toggle { display: none; width: 36px; height: 36px; border-radius: 10px; background: #f5f6fb; border: 1px solid #e8eaf0; align-items: center; justify-content: center; color: #4b5063; font-size: 0.95rem; flex-shrink: 0; cursor: pointer; }
 
     @media (max-width: 900px) {
       .tb-search { display: none; }
@@ -816,7 +816,7 @@
         <div class="sec-hdr">
           <div class="sec-hdr-left"><h2>Transactions</h2><p>All orders and fund deposits across every user</p></div>
           <div class="sec-hdr-right">
-            <select id="txn-filter" onchange="filterTxns()" style="padding:7px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.77rem;font-family:inherit;color:var(--t1);background:var(--sur);cursor:pointer;">
+            <select id="txn-filter" onchange="filterTxns()" style="padding:7px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.77rem;font-family:inherit;color:var(--t1);background:var(--sur);cursor:pointer;">
               <option value="all">All Types</option>
               <option value="order">Orders (Charges)</option>
               <option value="fund">Deposits</option>
@@ -851,14 +851,14 @@
           <div style="display:flex;flex-direction:column;gap:14px">
             <div>
               <label style="font-size:0.74rem;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px">Title</label>
-              <input type="text" id="ann-title" placeholder="e.g. Scheduled maintenance on Sunday" style="width:100%;padding:10px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.82rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box" />
+              <input type="text" id="ann-title" placeholder="e.g. Scheduled maintenance on Sunday" style="width:100%;padding:10px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.82rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box" />
             </div>
             <div>
               <label style="font-size:0.74rem;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px">Message</label>
-              <textarea id="ann-body" rows="3" placeholder="Write your announcement..." style="width:100%;padding:10px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.82rem;font-family:inherit;color:var(--t1);background:var(--sur);resize:vertical;box-sizing:border-box"></textarea>
+              <textarea id="ann-body" rows="3" placeholder="Write your announcement..." style="width:100%;padding:10px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.82rem;font-family:inherit;color:var(--t1);background:var(--sur);resize:vertical;box-sizing:border-box"></textarea>
             </div>
             <div style="display:flex;gap:10px;align-items:center">
-              <select id="ann-type" style="padding:8px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.78rem;font-family:inherit;color:var(--t1);background:var(--sur)">
+              <select id="ann-type" style="padding:8px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.78rem;font-family:inherit;color:var(--t1);background:var(--sur)">
                 <option value="info">Info</option>
                 <option value="warn">Warning</option>
                 <option value="success">Success</option>
@@ -882,7 +882,7 @@
         </div>
         <div class="tbl-card" style="padding:22px;display:flex;flex-direction:column;gap:12px">
           <div style="font-size:0.78rem;font-weight:700;color:var(--t2)" id="pg-editing-label">Editing: Terms of Service</div>
-          <textarea id="pg-editor" rows="14" style="width:100%;padding:12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);resize:vertical;line-height:1.6;box-sizing:border-box" placeholder="Page content..."></textarea>
+          <textarea id="pg-editor" rows="14" style="width:100%;padding:12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);resize:vertical;line-height:1.6;box-sizing:border-box" placeholder="Page content..."></textarea>
           <div style="display:flex;gap:10px;align-items:center">
             <button onclick="savePage()" style="padding:9px 20px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;border-radius:9px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit">Save Page</button>
             <span id="pg-msg" style="font-size:0.75rem;font-weight:600;color:#10b981;display:none">Saved!</span>
@@ -899,13 +899,13 @@
           <div style="font-size:0.8rem;font-weight:700;color:var(--t2);margin-bottom:12px">Add Testimonial</div>
           <div style="display:flex;flex-direction:column;gap:10px">
             <div style="display:flex;gap:10px;flex-wrap:wrap">
-              <input type="text" id="tst-name" placeholder="Name" style="flex:1;min-width:140px;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur)" />
-              <input type="text" id="tst-role" placeholder="e.g. Influencer" style="flex:1;min-width:140px;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur)" />
-              <select id="tst-stars" style="padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur)">
+              <input type="text" id="tst-name" placeholder="Name" style="flex:1;min-width:140px;padding:9px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur)" />
+              <input type="text" id="tst-role" placeholder="e.g. Influencer" style="flex:1;min-width:140px;padding:9px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur)" />
+              <select id="tst-stars" style="padding:9px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur)">
                 <option value="5">★★★★★</option><option value="4">★★★★</option><option value="3">★★★</option>
               </select>
             </div>
-            <textarea id="tst-text" rows="2" placeholder="Testimonial text..." style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);resize:vertical;box-sizing:border-box"></textarea>
+            <textarea id="tst-text" rows="2" placeholder="Testimonial text..." style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);resize:vertical;box-sizing:border-box"></textarea>
             <button onclick="addTestimonial()" style="align-self:flex-start;padding:9px 18px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;border-radius:9px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit">Add Testimonial</button>
           </div>
         </div>
@@ -922,15 +922,15 @@
             <div>
               <div style="font-size:0.7rem;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:12px">Platform</div>
               <div style="display:flex;flex-direction:column;gap:12px">
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid var(--bd);border-radius:10px">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid #e8eaf0;border-radius:10px">
                   <div><div style="font-size:0.8rem;font-weight:600;color:var(--t1)">Platform Name</div><div style="font-size:0.69rem;color:var(--t3)">Shown across the site</div></div>
                   <span style="font-size:0.78rem;font-weight:700;color:var(--t2)">BlowUpSocials</span>
                 </div>
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid var(--bd);border-radius:10px">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid #e8eaf0;border-radius:10px">
                   <div><div style="font-size:0.8rem;font-weight:600;color:var(--t1)">Currency</div><div style="font-size:0.69rem;color:var(--t3)">Display currency for users</div></div>
                   <span style="font-size:0.78rem;font-weight:700;color:var(--t2)">NGN (₦)</span>
                 </div>
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid var(--bd);border-radius:10px">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid #e8eaf0;border-radius:10px">
                   <div><div style="font-size:0.8rem;font-weight:600;color:var(--t1)">USD → NGN Rate</div><div style="font-size:0.69rem;color:var(--t3)">Used for billing conversions</div></div>
                   <span style="font-size:0.78rem;font-weight:700;color:var(--gn)">₦1,600 / $1</span>
                 </div>
@@ -939,15 +939,15 @@
             <div>
               <div style="font-size:0.7rem;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:12px">Integrations</div>
               <div style="display:flex;flex-direction:column;gap:12px">
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid var(--bd);border-radius:10px">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid #e8eaf0;border-radius:10px">
                   <div><div style="font-size:0.8rem;font-weight:600;color:var(--t1)">Supabase</div><div style="font-size:0.69rem;color:var(--t3)">Database & Auth</div></div>
                   <span class="badge b-active">Connected</span>
                 </div>
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid var(--bd);border-radius:10px">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid #e8eaf0;border-radius:10px">
                   <div><div style="font-size:0.8rem;font-weight:600;color:var(--t1)">Owlet API</div><div style="font-size:0.69rem;color:var(--t3)">SMM services provider</div></div>
                   <span class="badge b-active">Connected</span>
                 </div>
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid var(--bd);border-radius:10px">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid #e8eaf0;border-radius:10px">
                   <div><div style="font-size:0.8rem;font-weight:600;color:var(--t1)">AccsZone API</div><div style="font-size:0.69rem;color:var(--t3)">Social accounts provider</div></div>
                   <span class="badge b-active">Connected</span>
                 </div>
@@ -963,21 +963,21 @@
           <div class="sec-hdr-left"><h2>API Keys</h2><p>Manage third-party API integrations</p></div>
         </div>
         <div class="tbl-card" style="padding:24px;display:flex;flex-direction:column;gap:16px">
-          <div style="padding:16px;border:1px solid var(--bd);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div style="padding:16px;border:1px solid #e8eaf0;border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px">
             <div style="display:flex;align-items:center;gap:12px">
               <div style="width:40px;height:40px;border-radius:10px;background:#f5f0ff;display:flex;align-items:center;justify-content:center;color:var(--pu);font-size:1rem"><i class="fas fa-bolt"></i></div>
               <div><div style="font-size:0.82rem;font-weight:700;color:var(--t1)">Owlet API</div><div style="font-size:0.7rem;color:var(--t3)">SMM services ... stored securely as Vercel env var</div></div>
             </div>
             <span class="badge b-active"><i class="fas fa-check" style="font-size:0.55rem"></i> Active</span>
           </div>
-          <div style="padding:16px;border:1px solid var(--bd);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div style="padding:16px;border:1px solid #e8eaf0;border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px">
             <div style="display:flex;align-items:center;gap:12px">
               <div style="width:40px;height:40px;border-radius:10px;background:#fdf2f8;display:flex;align-items:center;justify-content:center;color:var(--pk);font-size:1rem"><i class="fas fa-user-group"></i></div>
               <div><div style="font-size:0.82rem;font-weight:700;color:var(--t1)">AccsZone API</div><div style="font-size:0.7rem;color:var(--t3)">Social accounts reselling ... stored securely as Vercel env var</div></div>
             </div>
             <span class="badge b-active"><i class="fas fa-check" style="font-size:0.55rem"></i> Active</span>
           </div>
-          <div style="padding:16px;border:1px solid var(--bd);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div style="padding:16px;border:1px solid #e8eaf0;border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px">
             <div style="display:flex;align-items:center;gap:12px">
               <div style="width:40px;height:40px;border-radius:10px;background:#ecfdf5;display:flex;align-items:center;justify-content:center;color:var(--gn);font-size:1rem"><i class="fas fa-database"></i></div>
               <div><div style="font-size:0.82rem;font-weight:700;color:var(--t1)">Supabase</div><div style="font-size:0.7rem;color:var(--t3)">Database & Auth ... public anon key in client JS</div></div>
@@ -997,15 +997,15 @@
           <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
             <div style="flex:1;min-width:140px">
               <label style="font-size:0.72rem;font-weight:700;color:var(--t3);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Code</label>
-              <input type="text" id="cpn-code" placeholder="e.g. BLAST20" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box;text-transform:uppercase" oninput="this.value=this.value.toUpperCase()" />
+              <input type="text" id="cpn-code" placeholder="e.g. BLAST20" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box;text-transform:uppercase" oninput="this.value=this.value.toUpperCase()" />
             </div>
             <div style="flex:1;min-width:120px">
               <label style="font-size:0.72rem;font-weight:700;color:var(--t3);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Discount %</label>
-              <input type="number" id="cpn-pct" placeholder="e.g. 20" min="1" max="100" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box" />
+              <input type="number" id="cpn-pct" placeholder="e.g. 20" min="1" max="100" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box" />
             </div>
             <div style="flex:1;min-width:120px">
               <label style="font-size:0.72rem;font-weight:700;color:var(--t3);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Max Uses</label>
-              <input type="number" id="cpn-uses" placeholder="e.g. 100" min="1" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box" />
+              <input type="number" id="cpn-uses" placeholder="e.g. 100" min="1" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box" />
             </div>
             <button onclick="createCoupon()" style="padding:10px 18px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;border-radius:9px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Create Code</button>
           </div>
@@ -1025,7 +1025,7 @@
         <div class="sec-hdr">
           <div class="sec-hdr-left"><h2>Support Tickets</h2><p>User support requests and enquiries</p></div>
           <div class="sec-hdr-right">
-            <select id="tkt-filter" onchange="filterTickets()" style="padding:7px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.77rem;font-family:inherit;color:var(--t1);background:var(--sur);cursor:pointer;">
+            <select id="tkt-filter" onchange="filterTickets()" style="padding:7px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.77rem;font-family:inherit;color:var(--t1);background:var(--sur);cursor:pointer;">
               <option value="all">All</option>
               <option value="open">Open</option>
               <option value="closed">Closed</option>
@@ -1180,7 +1180,7 @@
           <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
             <div style="flex:1;min-width:130px">
               <label style="font-size:0.71rem;font-weight:700;color:var(--t3);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Category</label>
-              <select id="exp-cat" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur)">
+              <select id="exp-cat" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur)">
                 <option>Owlet / SMM</option>
                 <option>AccsZone</option>
                 <option>Staff / Salary</option>
@@ -1191,15 +1191,15 @@
             </div>
             <div style="flex:2;min-width:160px">
               <label style="font-size:0.71rem;font-weight:700;color:var(--t3);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Description</label>
-              <input type="text" id="exp-desc" placeholder="e.g. Monthly Owlet top-up" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box" />
+              <input type="text" id="exp-desc" placeholder="e.g. Monthly Owlet top-up" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box" />
             </div>
             <div style="flex:1;min-width:120px">
               <label style="font-size:0.71rem;font-weight:700;color:var(--t3);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Amount (₦)</label>
-              <input type="number" id="exp-amount" placeholder="e.g. 25000" min="1" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box" />
+              <input type="number" id="exp-amount" placeholder="e.g. 25000" min="1" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box" />
             </div>
             <div style="flex:1;min-width:130px">
               <label style="font-size:0.71rem;font-weight:700;color:var(--t3);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Date</label>
-              <input type="date" id="exp-date" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--bd);font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box" />
+              <input type="date" id="exp-date" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);box-sizing:border-box" />
             </div>
             <button onclick="addExpense()" style="padding:10px 20px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;border-radius:9px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0">Add Expense</button>
           </div>
@@ -1689,7 +1689,7 @@
         <td>${c.maxUses ?? '8'}</td>
         <td><span class="badge ${c.active ? 'b-active' : 'b-error'}">${c.active ? 'Active' : 'Disabled'}</span></td>
         <td style="display:flex;gap:6px">
-          <button onclick="toggleCoupon(${i})" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:none;font-size:0.72rem;font-weight:600;cursor:pointer;color:var(--t2)">${c.active ? 'Disable' : 'Enable'}</button>
+          <button onclick="toggleCoupon(${i})" style="padding:4px 10px;border-radius:6px;border:1px solid #e8eaf0;background:none;font-size:0.72rem;font-weight:600;cursor:pointer;color:var(--t2)">${c.active ? 'Disable' : 'Enable'}</button>
           <button onclick="deleteCoupon(${i})" style="padding:4px 10px;border-radius:6px;border:1px solid #fecaca;background:none;font-size:0.72rem;font-weight:600;cursor:pointer;color:#ef4444">Delete</button>
         </td>
       </tr>`).join('');
@@ -1746,7 +1746,7 @@
           <td><span class="badge ${statusCls}">${t.status||'open'}</span></td>
           <td style="font-size:0.74rem;color:var(--t3)">${date}</td>
           <td>
-            <button onclick="closeTicket('${t.id}')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--bd);background:none;font-size:0.72rem;font-weight:600;cursor:pointer;color:var(--t2)">${t.status==='open'?'Close':'Reopen'}</button>
+            <button onclick="closeTicket('${t.id}')" style="padding:4px 10px;border-radius:6px;border:1px solid #e8eaf0;background:none;font-size:0.72rem;font-weight:600;cursor:pointer;color:var(--t2)">${t.status==='open'?'Close':'Reopen'}</button>
           </td>
         </tr>`;
       }).join('');
@@ -1840,14 +1840,14 @@
       tbody.innerHTML = orders.map(o => {
         const st     = o.status || 'Pending';
         const cls    = STATUS_CLASS[st] || 'b-pending';
-        const charge = parseFloat(o.charge || 0);
+        const charge = parseFloat(o.amount || 0);
         const ngn    = Math.round(charge * USD_TO_NGN);
         const date   = o.created_at ? new Date(o.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'2-digit' }) : '...';
         const ordId  = (o.id || '').toString().slice(0,8).toUpperCase();
         return `<tr>
           <td class="ord-id">#${ordId}</td>
           <td style="color:var(--t2);font-size:0.74rem;font-family:'Space Grotesk',sans-serif">${(o.user_id||'').slice(0,8)}...</td>
-          <td class="ord-svc">${o.service_id ? 'Svc #'+o.service_id : '...'}</td>
+          <td class="ord-svc">${o.service ? 'Svc #'+o.service : '...'}</td>
           <td class="ord-qty">${Number(o.quantity||0).toLocaleString()}</td>
           <td class="wallet-ngn">₦${ngn.toLocaleString('en-NG')}</td>
           <td>
@@ -2021,11 +2021,11 @@
     async function loadTransactions() {
       const tbody = document.getElementById('txn-tbody');
       const [{ data: ords }, { data: funds }] = await Promise.all([
-        db.from('orders').select('id, user_id, service_id, charge, status, created_at').order('created_at', { ascending: false }),
+        db.from('orders').select('id, user_id, service, amount, status, created_at').order('created_at', { ascending: false }),
         db.from('fund_requests').select('id, user_id, amount, method, status, created_at').order('created_at', { ascending: false }),
       ]);
       const rows = [
-        ...(ords  || []).map(o => ({ type:'order', uid: o.user_id, desc: `Order ... Service #${o.service_id||'?'}`, amount: parseFloat(o.charge||0)*USD_TO_NGN, status: o.status||'Pending', ts: o.created_at })),
+        ...(ords  || []).map(o => ({ type:'order', uid: o.user_id, desc: `Order ... Service #${o.service||'?'}`, amount: parseFloat(o.amount||0)*USD_TO_NGN, status: o.status||'Pending', ts: o.created_at })),
         ...(funds || []).map(f => ({ type:'fund',  uid: f.user_id, desc: `Deposit  — ${f.method||'Bank Transfer'}`,   amount: parseFloat(f.amount||0),               status: f.status||'Pending', ts: f.created_at })),
       ].sort((a,b) => new Date(b.ts) - new Date(a.ts));
       allTxns = rows;
@@ -2064,13 +2064,13 @@
 
     /* -- Reports -- */
     async function loadReports() {
-      const { data: rOrds } = await db.from('orders').select('charge, status, service_id, created_at');
+      const { data: rOrds } = await db.from('orders').select('amount, status, service, created_at');
       if (!rOrds?.length) return;
 
       /* Summary tiles */
       const completed  = rOrds.filter(o => o.status === 'Completed');
       const cancelled  = rOrds.filter(o => o.status === 'Cancelled');
-      const totalRev   = completed.reduce((s,o) => s + parseFloat(o.charge||0)*USD_TO_NGN, 0);
+      const totalRev   = completed.reduce((s,o) => s + parseFloat(o.amount||0)*USD_TO_NGN, 0);
       const cancelRate = rOrds.length ? ((cancelled.length / rOrds.length)*100).toFixed(1)+'%' : '0%';
       document.getElementById('rpt-rev').textContent         = `₦${Math.round(totalRev).toLocaleString('en-NG')}`;
       document.getElementById('rpt-orders').textContent      = rOrds.length.toLocaleString('en-NG');
@@ -2086,7 +2086,7 @@
       completed.forEach(o => {
         const d = new Date(o.created_at);
         const slot = months.find(x => x.y === d.getFullYear() && x.m === d.getMonth());
-        if (slot) slot.rev += parseFloat(o.charge||0)*USD_TO_NGN;
+        if (slot) slot.rev += parseFloat(o.amount||0)*USD_TO_NGN;
       });
       const rRevCtx = document.getElementById('rpt-rev-chart').getContext('2d');
       new Chart(rRevCtx, {
@@ -2124,10 +2124,10 @@
       /* Top services */
       const svcMap = {};
       rOrds.forEach(o => {
-        const k = String(o.service_id||'Unknown');
+        const k = String(o.service||'Unknown');
         if (!svcMap[k]) svcMap[k] = {count:0,rev:0};
         svcMap[k].count++;
-        svcMap[k].rev += parseFloat(o.charge||0)*USD_TO_NGN;
+        svcMap[k].rev += parseFloat(o.amount||0)*USD_TO_NGN;
       });
       const sorted = Object.entries(svcMap).sort((a,b)=>b[1].count-a[1].count).slice(0,5);
       document.getElementById('rpt-svc-tbody').innerHTML = sorted.map(([id,{count,rev}])=>`<tr>
@@ -2273,15 +2273,15 @@
       if (pendingCount != null) document.getElementById('stat-pending').textContent = fmtNum(pendingCount);
 
       /* Stat: total revenue (sum of charges in USD → NGN) */
-      const { data: revData } = await db.from('orders').select('charge').eq('status', 'Completed');
+      const { data: revData } = await db.from('orders').select('amount').eq('status', 'Completed');
       if (revData) {
-        const total = revData.reduce((s, r) => s + parseFloat(r.charge || 0), 0);
+        const total = revData.reduce((s, r) => s + parseFloat(r.amount || 0), 0);
         document.getElementById('stat-revenue').textContent = fmtNGN(total);
       }
 
       /* Recent orders */
       const { data: orders } = await db.from('orders')
-        .select('id, service_id, quantity, charge, status, created_at, user_id')
+        .select('id, service, quantity, amount, status, created_at, user_id')
         .order('created_at', { ascending: false })
         .limit(5);
 
@@ -2305,7 +2305,7 @@
               <div class="ord-ava" style="background:${COLORS[i % COLORS.length]}">${ini}</div>
               <span class="ord-uname">${uName}</span>
             </div></td>
-            <td class="ord-svc">${o.service_id ? `Svc #${o.service_id}` : '—'}</td>
+            <td class="ord-svc">${o.service || '—'}</td>
             <td class="ord-qty">${Number(o.quantity || 0).toLocaleString('en-NG')}</td>
             <td><span class="badge ${cls}">${st}</span></td>
             <td class="ord-time">${relTime(o.created_at)}</td>
@@ -2334,7 +2334,7 @@
       const monthName  = now.toLocaleString('en-NG', { month: 'long' });
 
       const { data: mOrders } = await db.from('orders')
-        .select('charge, created_at, status')
+        .select('amount, created_at, status')
         .gte('created_at', monthStart)
         .lt('created_at', nextStart);
 
@@ -2342,7 +2342,7 @@
         const byDay = Array(daysInMo).fill(0);
         mOrders.forEach(o => {
           const d = new Date(o.created_at).getDate() - 1;
-          byDay[d] += parseFloat(o.charge || 0) * USD_TO_NGN;
+          byDay[d] += parseFloat(o.amount || 0) * USD_TO_NGN;
         });
         const cumRev = byDay.map((_, i) => byDay.slice(0, i+1).reduce((a,b) => a+b, 0));
         const maxVal = Math.max(...cumRev, 500000);
@@ -2359,7 +2359,7 @@
       }
 
       /* -- Top Selling Services (with real names from Owlet) -- */
-      const { data: svcOrds } = await db.from('orders').select('service_id, charge');
+      const { data: svcOrds } = await db.from('orders').select('service, amount');
       if (svcOrds?.length) {
         let svcNames = {};
         try {
@@ -2369,10 +2369,10 @@
         } catch {}
         const svcMap = {};
         svcOrds.forEach(o => {
-          const k = String(o.service_id || 'Unknown');
+          const k = String(o.service || 'Unknown');
           if (!svcMap[k]) svcMap[k] = { count: 0, revenue: 0 };
           svcMap[k].count++;
-          svcMap[k].revenue += parseFloat(o.charge || 0) * USD_TO_NGN;
+          svcMap[k].revenue += parseFloat(o.amount || 0) * USD_TO_NGN;
         });
         const sorted = Object.entries(svcMap).sort((a,b) => b[1].count - a[1].count).slice(0, 5);
         const totRev = sorted.reduce((s,[,v]) => s + v.revenue, 0);
@@ -2389,10 +2389,10 @@
       }
 
       /* -- Activity Feed -- */
-      const { data: actOrds }  = await db.from('orders').select('id, service_id, created_at, user_id').order('created_at', { ascending: false }).limit(4);
+      const { data: actOrds }  = await db.from('orders').select('id, service, created_at, user_id').order('created_at', { ascending: false }).limit(4);
       const { data: actUsers } = await db.from('profiles').select('id, email, full_name, created_at').order('created_at', { ascending: false }).limit(3);
       const actItems = [
-        ...(actOrds  || []).map(o => ({ type: 'order', ts: o.created_at, label: 'New order placed', sub: `Service #${o.service_id || '?'} — ${(o.user_id||'').slice(0,8)}` })),
+        ...(actOrds  || []).map(o => ({ type: 'order', ts: o.created_at, label: 'New order placed', sub: `Service #${o.service || '?'} — ${(o.user_id||'').slice(0,8)}` })),
         ...(actUsers || []).map(u => ({ type: 'user',  ts: u.created_at, label: 'New user registered', sub: u.email || u.full_name || (u.id||'').slice(0,16) })),
       ].sort((a,b) => new Date(b.ts) - new Date(a.ts)).slice(0, 5);
       if (actItems.length) {
@@ -2424,7 +2424,7 @@
       const uC    = userCount    || 0;
       const oC    = orderCount   || 0;
       const pC    = pendingCount || 0;
-      const revNGN = revData ? revData.reduce((s,r) => s + parseFloat(r.charge||0) * USD_TO_NGN, 0) : 0;
+      const revNGN = revData ? revData.reduce((s,r) => s + parseFloat(r.amount||0) * USD_TO_NGN, 0) : 0;
       document.getElementById('spark-users').innerHTML   = sparkline(trendArr(uC,   10), '#7c3aed');
       document.getElementById('spark-orders').innerHTML  = sparkline(trendArr(oC,   10), '#ec4899');
       document.getElementById('spark-revenue').innerHTML = sparkline(trendArr(revNGN, 10), '#10b981');
@@ -2449,10 +2449,10 @@
         }
         document.getElementById('trend-users')?.innerHTML  = mkTrend(tmUsers, lmUsers, 'new this month');
         document.getElementById('trend-orders')?.innerHTML = mkTrend(tmOrds,  lmOrds,  'vs last month');
-        const tmRevData = (await db.from('orders').select('charge').eq('status','Completed').gte('created_at', thisMonthISO)).data || [];
-        const lmRevData = (await db.from('orders').select('charge').eq('status','Completed').gte('created_at', lastMonthISO).lt('created_at', thisMonthISO)).data || [];
-        const tmRev = tmRevData.reduce((s,r)=>s+parseFloat(r.charge||0),0);
-        const lmRev = lmRevData.reduce((s,r)=>s+parseFloat(r.charge||0),0);
+        const tmRevData = (await db.from('orders').select('amount').eq('status','Completed').gte('created_at', thisMonthISO)).data || [];
+        const lmRevData = (await db.from('orders').select('amount').eq('status','Completed').gte('created_at', lastMonthISO).lt('created_at', thisMonthISO)).data || [];
+        const tmRev = tmRevData.reduce((s,r)=>s+parseFloat(r.amount||0),0);
+        const lmRev = lmRevData.reduce((s,r)=>s+parseFloat(r.amount||0),0);
         document.getElementById('trend-revenue')?.innerHTML = mkTrend(tmRev, lmRev, 'vs last month');
         document.getElementById('trend-pending')?.innerHTML = `<span class="t-lbl">Awaiting fulfillment</span>`;
       } catch {}
@@ -2483,10 +2483,10 @@
       // Set today as default date
       document.getElementById('exp-date').value = new Date().toISOString().slice(0,10);
       // Pull revenue from completed orders
-      const { data: orders } = await db.from('orders').select('charge, status');
+      const { data: orders } = await db.from('orders').select('amount, status');
       const totalRevNGN = (orders || [])
         .filter(o => o.status === 'Completed')
-        .reduce((s, o) => s + parseFloat(o.charge || 0) * USD_TO_NGN, 0);
+        .reduce((s, o) => s + parseFloat(o.amount || 0) * USD_TO_NGN, 0);
       renderExpenses(totalRevNGN);
     }
 
