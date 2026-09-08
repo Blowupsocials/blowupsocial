@@ -2437,12 +2437,12 @@
       } catch { document.getElementById('stat-tickets').textContent = '0'; }
 
       /* -- Sparklines from real totals -- */
-      function trendArr(end, len) {
+      const trendArr = (end, len) => {
         const e = end || 0;
         return Array.from({ length: len }, (_, i) => Math.max(0,
           Math.round(e * (0.7 + 0.3 * (i / (len - 1))) * (1 + (i % 3 === 1 ? -0.02 : i % 3 === 2 ? 0.02 : 0)))
         ));
-      }
+      };
       const uC    = userCount    || 0;
       const oC    = orderCount   || 0;
       const pC    = pendingCount || 0;
@@ -2463,12 +2463,12 @@
           db.from('profiles').select('*',{count:'exact',head:true}).gte('created_at', thisMonthISO),
           db.from('profiles').select('*',{count:'exact',head:true}).gte('created_at', lastMonthISO).lt('created_at', thisMonthISO),
         ]);
-        function mkTrend(curr, prev, label) {
+        const mkTrend = (curr, prev, label) => {
           if (!prev) return `<span class="t-lbl">${label}</span>`;
           const pct = ((curr - prev) / prev * 100).toFixed(1);
           const up = pct >= 0;
           return `<span class="${up?'t-up':'t-dn'}"><i class="fas fa-arrow-${up?'up':'down'}"></i> ${Math.abs(pct)}%</span><span class="t-lbl">${label}</span>`;
-        }
+        };
         document.getElementById('trend-users')?.innerHTML  = mkTrend(tmUsers, lmUsers, 'new this month');
         document.getElementById('trend-orders')?.innerHTML = mkTrend(tmOrds,  lmOrds,  'vs last month');
         const tmRevData = (await db.from('orders').select('amount').eq('status','Completed').gte('created_at', thisMonthISO)).data || [];
