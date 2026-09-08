@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="BlowUpSocials" />
   <link rel="apple-touch-icon" href="/img/icon-192.png" />
-  <title>Create Account – BlowUpSocials</title>
+  <title>Create Account ï¿½ BlowUpSocials</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -400,7 +400,7 @@
       if (pwd !== pwd2)   { showMsg('Passwords do not match.'); return; }
       if (pwd.length < 6) { showMsg('Password must be at least 6 characters.'); return; }
 
-      btn.innerHTML = 'Creating account…';
+      btn.innerHTML = 'Creating accountï¿½';
       btn.disabled = true;
 
       const { data, error } = await db.auth.signUp({
@@ -416,10 +416,11 @@
         return;
       }
 
+      const sendAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
       fetch('/api/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'welcome', to: email, data: { name } }),
+        body: JSON.stringify({ type: 'welcome', to: email, data: { name }, scheduledAt: sendAt }),
       }).catch(() => {});
 
       if (data.session) {
@@ -435,7 +436,7 @@
       if (code.length < 6) { showOtpMsg('Please enter all 6 digits.'); return; }
 
       const btn = document.getElementById('otp-submit-btn');
-      btn.innerHTML = 'Verifying…';
+      btn.innerHTML = 'Verifyingï¿½';
       btn.disabled = true;
 
       const { data, error } = await db.auth.verifyOtp({
@@ -451,7 +452,7 @@
         return;
       }
 
-      showOtpMsg('Email verified! Redirecting…', false);
+      showOtpMsg('Email verified! Redirectingï¿½', false);
       setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
     }
 

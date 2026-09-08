@@ -97,7 +97,7 @@ export default async function handler(req, res) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) { res.status(500).json({ error: 'Email not configured' }); return; }
 
-  const { type, to, data = {} } = req.body || {};
+  const { type, to, data = {}, scheduledAt } = req.body || {};
   if (!type || !to) { res.status(400).json({ error: 'Missing type or to' }); return; }
 
   const tpl = TEMPLATES[type];
@@ -109,7 +109,7 @@ export default async function handler(req, res) {
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from: FROM, to: [to], subject, html }),
+      body: JSON.stringify({ from: FROM, to: [to], subject, html, ...(scheduledAt ? { scheduled_at: scheduledAt } : {}) }),
     });
     const result = await r.json();
     if (!r.ok) { res.status(r.status).json({ error: result }); return; }
