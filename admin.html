@@ -2221,9 +2221,16 @@
       if (confirm !== 'DELETE') { adminToast('Type DELETE to confirm.', 'warn'); return; }
       const btn = document.getElementById('um-delete-btn');
       btn.textContent = 'Deleting...'; btn.disabled = true;
+      const { data: { session } } = await db.auth.getSession();
       const { error } = await db.from('profiles').delete().eq('id', _umUserId);
+      if (error) { btn.textContent = 'Delete User'; btn.disabled = false; adminToast('Failed to delete user.', 'error'); return; }
+      // Also delete from auth.users so the email can be reused
+      await fetch('/api/admin-delete-user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token}` },
+        body: JSON.stringify({ userId: _umUserId }),
+      }).catch(() => {});
       btn.textContent = 'Delete User'; btn.disabled = false;
-      if (error) { adminToast('Failed to delete user.', 'error'); return; }
       _suspendedUsers.delete(_umUserId);
       localStorage.setItem('bns_suspended', JSON.stringify([..._suspendedUsers]));
       adminToast('User deleted.', 'success');

@@ -294,6 +294,7 @@
     });
 
     let pendingEmail = '';
+    let pendingName  = '';
     let resendCooldown = null;
 
     function togglePassword(id, iconId) {
@@ -400,7 +401,7 @@
       if (pwd !== pwd2)   { showMsg('Passwords do not match.'); return; }
       if (pwd.length < 6) { showMsg('Password must be at least 6 characters.'); return; }
 
-      btn.innerHTML = 'Creating account�';
+      btn.innerHTML = 'Creating account...';
       btn.disabled = true;
 
       const { data, error } = await db.auth.signUp({
@@ -416,16 +417,16 @@
         return;
       }
 
-      const sendAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
-      fetch('/api/send-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'welcome', to: email, data: { name }, scheduledAt: sendAt }),
-      }).catch(() => {});
-
       if (data.session) {
+        const sendAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+        fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'welcome', to: email, data: { name }, scheduledAt: sendAt }),
+        }).catch(() => {});
         window.location.href = 'dashboard.html';
       } else {
+        pendingName = name;
         showVerifyStep(email);
       }
     }
@@ -452,7 +453,13 @@
         return;
       }
 
-      showOtpMsg('Email verified! Redirecting�', false);
+      const sendAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+      fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'welcome', to: pendingEmail, data: { name: pendingName }, scheduledAt: sendAt }),
+      }).catch(() => {});
+      showOtpMsg('Email verified! Redirecting...', false);
       setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
     }
 
