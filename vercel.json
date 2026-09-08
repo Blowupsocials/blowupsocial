@@ -1,6 +1,9 @@
 {
   "version": 2,
   "cleanUrls": true,
+  "crons": [
+    { "path": "/api/process-email-queue", "schedule": "0 * * * *" }
+  ],
   "routes": [
     { "src": "/api/peakerr",          "dest": "/api/peakerr.js" },
     { "src": "/api/accsmaster",       "dest": "/api/accsmaster.js" },
@@ -8,6 +11,7 @@
     { "src": "/api/korapay",          "dest": "/api/korapay.js" },
     { "src": "/api/korapay-webhook",  "dest": "/api/korapay-webhook.js" },
     { "src": "/api/admin-delete-user", "dest": "/api/admin-delete-user.js" },
+    { "src": "/api/process-email-queue", "dest": "/api/process-email-queue.js" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }

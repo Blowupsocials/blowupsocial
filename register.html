@@ -418,11 +418,9 @@
       }
 
       if (data.session) {
-        const sendAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
-        fetch('/api/send-email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'welcome', to: email, data: { name }, scheduledAt: sendAt }),
+        db.from('email_queue').insert({
+          type: 'welcome', to_email: email, name,
+          send_at: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
         }).catch(() => {});
         window.location.href = 'dashboard.html';
       } else {
@@ -453,11 +451,9 @@
         return;
       }
 
-      const sendAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
-      fetch('/api/send-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'welcome', to: pendingEmail, data: { name: pendingName }, scheduledAt: sendAt }),
+      db.from('email_queue').insert({
+        type: 'welcome', to_email: pendingEmail, name: pendingName,
+        send_at: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
       }).catch(() => {});
       showOtpMsg('Email verified! Redirecting...', false);
       setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
