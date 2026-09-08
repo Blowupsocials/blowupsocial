@@ -2269,8 +2269,6 @@
       const { data: { session } } = await db.auth.getSession();
       if (!session || session.user.email !== ADMIN_EMAIL) { window.location.href = 'login.html'; return; }
 
-      try {
-
       /* Stat: total users */
       const { count: userCount, error: e1 } = await db.from('profiles').select('*', { count: 'exact', head: true });
       if (e1) console.error('[Admin] profiles count error:', e1);
@@ -2483,8 +2481,6 @@
         document.getElementById('trend-revenue')?.innerHTML = pctStr(tmRev, lmRev) + lbl('vs last month');
         document.getElementById('trend-pending')?.innerHTML = lbl('Awaiting fulfillment');
       } catch (e) { console.error('[Admin] trend error:', e); }
-
-      } catch (err) { console.error('[Admin dashboard error]', err); }
     })();
 
     /* -- PROVIDERS -- */
