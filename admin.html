@@ -488,11 +488,11 @@
         <div class="stat-card">
           <div class="stat-body">
             <div class="stat-top">
-              <div class="stat-icon si-bl"><i class="fas fa-headset"></i></div>
-              <span class="stat-label">Tickets Open</span>
+              <div class="stat-icon si-bl"><i class="fas fa-users"></i></div>
+              <span class="stat-label">Active Users</span>
             </div>
             <div class="stat-num" id="stat-tickets">...</div>
-            <div class="stat-trend"><span class="t-dn"><i class="fas fa-arrow-down"></i></span><span class="t-lbl">open tickets</span></div>
+            <div class="stat-trend"><span class="t-up"><i class="fas fa-arrow-up"></i></span><span class="t-lbl">last 30 days</span></div>
           </div>
           <div class="stat-spark" id="spark-tickets"></div>
         </div>
@@ -1334,8 +1334,10 @@
       7800000,8100000,8300000,8450320
     ];
 
+    let revenueChart = null;
+    try {
     const revenueCtx = document.getElementById('revenue-chart').getContext('2d');
-    const revenueChart = new Chart(revenueCtx, {
+    revenueChart = new Chart(revenueCtx, {
       type: 'line',
       data: {
         labels: Array.from({length:31}, (_,i) => `May ${i+1}`),
@@ -1389,8 +1391,10 @@
         }
       }
     });
+    } catch(e) { console.warn('Revenue chart init failed:', e); }
 
     /* -- Donut chart -- */
+    try {
     const donutCtx = document.getElementById('donut-chart').getContext('2d');
     const centerPlugin = {
       id: 'centerText',
@@ -1430,6 +1434,7 @@
         animation: { animateRotate: true, duration: 800 },
       }
     });
+    } catch(e) { console.warn('Donut chart init failed:', e); }
 
     /* -- SECTION NAVIGATION -- */
     const SEC_TITLES = {
@@ -2261,9 +2266,9 @@
     const STATUS_CLASS = { Completed:'b-completed', 'In Progress':'b-progress', Pending:'b-pending', Cancelled:'b-cancelled' };
 
     (async () => {
-      /* Auth check only ... no email redirect */
+      /* Auth check — must be the admin account */
       const { data: { session } } = await db.auth.getSession();
-      if (!session) { window.location.href = 'login.html'; return; }
+      if (!session || session.user.email !== ADMIN_EMAIL) { window.location.href = 'login.html'; return; }
 
       /* Stat: total users */
       const { count: userCount } = await db.from('profiles').select('*', { count: 'exact', head: true });
@@ -2345,7 +2350,7 @@
         .gte('created_at', monthStart)
         .lt('created_at', nextStart);
 
-      if (mOrders?.length) {
+      if (mOrders?.length && revenueChart) {
         const byDay = Array(daysInMo).fill(0);
         mOrders.forEach(o => {
           const d = new Date(o.created_at).getDate() - 1;
@@ -2415,10 +2420,10 @@
         </div>`).join('');
       }
 
-      /* -- Tickets Open -- */
+      /* -- Active Users (signed in within last 30 days) -- */
       try {
-        const { count: tc, error: te } = await db.from('tickets').select('*', { count: 'exact', head: true });
-        document.getElementById('stat-tickets').textContent = fmtNum(te ? 0 : (tc ?? 0));
+        const { data: auData, error: auErr } = await db.rpc('count_active_users');
+        document.getElementById('stat-tickets').textContent = fmtNum(auErr ? 0 : (auData ?? 0));
       } catch { document.getElementById('stat-tickets').textContent = '0'; }
 
       /* -- Sparklines from real totals -- */
