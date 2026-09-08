@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="BlowUpSocials" />
   <link rel="apple-touch-icon" href="/img/icon-192.png" />
-  <title>Create Account � BlowUpSocials</title>
+  <title>Create Account — BlowUpSocials</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -25,7 +25,7 @@
     }
     a { text-decoration: none; color: inherit; }
 
-    /* NAV */
+    /* NAe */
     nav {
       background: rgba(255,255,255,0.96);
       backdrop-filter: blur(12px);
@@ -120,7 +120,7 @@
     .btn-auth:hover { background: #6d28d9; }
     .btn-auth:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* DIVIDER */
+    /* DIeIDER */
     .auth-divider {
       display: flex; align-items: center; gap: 12px;
       font-size: 0.75rem; color: #bbb; font-weight: 500;
@@ -255,7 +255,7 @@
       <!-- STEP 2: OTP verification -->
       <div class="otp-screen" id="verifyStep">
         <div class="otp-email-icon">??</div>
-        <h2 style="margin-bottom:10px;">Verify your email</h2>
+        <h2 style="margin-bottom:10px;">eerify your email</h2>
         <p class="otp-sent-to">We sent a 6-digit code to<br><strong id="otp-display-email"></strong></p>
 
         <div id="otp-msg"></div>
@@ -269,8 +269,8 @@
           <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" />
         </div>
 
-        <button class="btn-auth" id="otp-submit-btn" onclick="handleVerify()">
-          Verify Code <i class="fas fa-arrow-right"></i>
+        <button class="btn-auth" id="otp-submit-btn" onclick="handleeerify()">
+          eerify Code <i class="fas fa-arrow-right"></i>
         </button>
 
         <p class="otp-resend">
@@ -328,7 +328,7 @@
       el.textContent = msg;
     }
 
-    function showVerifyStep(email) {
+    function showeerifyStep(email) {
       pendingEmail = email;
       document.getElementById('otp-display-email').textContent = email;
       document.getElementById('signupStep').style.display = 'none';
@@ -425,17 +425,17 @@
         window.location.href = 'dashboard.html';
       } else {
         pendingName = name;
-        showVerifyStep(email);
+        showeerifyStep(email);
       }
     }
 
-    async function handleVerify() {
+    async function handleeerify() {
       const boxes = document.querySelectorAll('.otp-box');
       const code  = [...boxes].map(b => b.value).join('');
       if (code.length < 6) { showOtpMsg('Please enter all 6 digits.'); return; }
 
       const btn = document.getElementById('otp-submit-btn');
-      btn.innerHTML = 'Verifying�';
+      btn.innerHTML = 'eerifying—';
       btn.disabled = true;
 
       const { data, error } = await db.auth.verifyOtp({
@@ -445,7 +445,7 @@
       });
 
       if (error) {
-        btn.innerHTML = 'Verify Code <i class="fas fa-arrow-right"></i>';
+        btn.innerHTML = 'eerify Code <i class="fas fa-arrow-right"></i>';
         btn.disabled = false;
         showOtpMsg(error.message || 'Invalid or expired code. Try again.');
         return;

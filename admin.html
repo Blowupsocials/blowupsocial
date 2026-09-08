@@ -1326,23 +1326,16 @@
 
     /* sparklines rendered after real data loads in the async IIFE below */
 
-    /* -- Revenue chart -- */
-    const mayRevenue = [
-      2100000,2280000,2450000,2600000,2780000,2950000,3100000,3050000,3350000,
-      3600000,3800000,3700000,4100000,4300000,4500000,4450000,4700000,5000000,
-      5300000,5600000,5800000,6100000,6400000,6650000,7000000,7200000,7480000,
-      7800000,8100000,8300000,8450320
-    ];
-
+    /* -- Revenue chart (empty until real data loads) -- */
     let revenueChart = null;
     try {
     const revenueCtx = document.getElementById('revenue-chart').getContext('2d');
     revenueChart = new Chart(revenueCtx, {
       type: 'line',
       data: {
-        labels: Array.from({length:31}, (_,i) => `May ${i+1}`),
+        labels: [],
         datasets: [{
-          data: mayRevenue,
+          data: [],
           borderColor: '#7c3aed',
           backgroundColor: (ctx) => {
             const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 220);
@@ -1375,7 +1368,7 @@
             ticks: {
               color: '#8b8fa8', font: { size: 10.5 },
               maxRotation: 0,
-              callback: (_, i) => [0,5,10,15,20,25,30].includes(i) ? `May ${i+1}` : '',
+              callback: (_, i) => '',
             }
           },
           y: {
@@ -2325,15 +2318,21 @@
         }).join('');
       }
 
-      /* User stats for donut */
-      const { count: totalU } = await db.from('profiles').select('*', { count: 'exact', head: true });
+      /* User stats for donut — real data */
+      const thirtyDaysAgo = new Date(Date.now() - 30 * 864e5).toISOString();
+      const sevenDaysAgo  = new Date(Date.now() -  7 * 864e5).toISOString();
+      const [{ count: totalU }, { count: newU }, { data: activeData }] = await Promise.all([
+        db.from('profiles').select('*', { count: 'exact', head: true }),
+        db.from('profiles').select('*', { count: 'exact', head: true }).gte('created_at', sevenDaysAgo),
+        db.rpc('count_active_users').then(r => ({ data: r.data ?? 0 })),
+      ]);
       if (totalU) {
-        const active   = Math.round(totalU * 0.677);
-        const inactive = Math.round(totalU * 0.173);
-        const newU     = totalU - active - inactive;
+        const active   = Number(activeData) || 0;
+        const newUsers = Number(newU)       || 0;
+        const inactive = Math.max(0, totalU - active - newUsers);
         document.getElementById('leg-active').textContent   = fmtNum(active);
         document.getElementById('leg-inactive').textContent = fmtNum(inactive);
-        document.getElementById('leg-new').textContent      = fmtNum(newU);
+        document.getElementById('leg-new').textContent      = fmtNum(newUsers);
       }
 
       /* -- Revenue chart: current month actual data -- */

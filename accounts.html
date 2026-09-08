@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="BlowUpSocials" />
   <link rel="apple-touch-icon" href="/img/icon-192.png" />
-  <title>Social Media Accounts � BlowUpSocials</title>
+  <title>Social Media Accounts — BlowUpSocials</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet" />
   <style>
@@ -233,13 +233,13 @@
         <!-- Search -->
         <div class="ac-search-wrap">
           <i class="fa-solid fa-magnifying-glass"></i>
-          <input class="ac-search-input" id="listing-search" type="text" placeholder="Search accounts�" oninput="filterListings(this.value)" />
+          <input class="ac-search-input" id="listing-search" type="text" placeholder="Search accounts—" oninput="filterListings(this.value)" />
         </div>
       </div>
 
       <!-- LISTINGS -->
       <div class="ac-listing-area" id="listing-area">
-        <div class="ac-state"><i class="fas fa-spinner fa-spin"></i><p>Loading store�</p></div>
+        <div class="ac-state"><i class="fas fa-spinner fa-spin"></i><p>Loading store—</p></div>
       </div>
     </div>
 
@@ -247,7 +247,7 @@
     <div id="view-orders" style="display:none">
       <div class="ac-listing-area">
         <div class="ac-orders-list" id="orders-list">
-          <div class="ac-state"><i class="fas fa-spinner fa-spin"></i><p>Loading your purchases�</p></div>
+          <div class="ac-state"><i class="fas fa-spinner fa-spin"></i><p>Loading your purchases—</p></div>
         </div>
       </div>
     </div>
@@ -261,11 +261,11 @@
         <button class="ac-modal-close" onclick="closeBuyModal()"><i class="fas fa-xmark"></i></button>
       </div>
       <div class="ac-modal-body">
-        <div class="ac-confirm-row"><span class="lbl">Product</span><span class="val" id="bm-name" style="max-width:58%">�</span></div>
-        <div class="ac-confirm-row"><span class="lbl">Category</span><span class="val" id="bm-platform">�</span></div>
-        <div class="ac-confirm-row"><span class="lbl">Your Balance</span><span class="val" id="bm-balance">�</span></div>
-        <div class="ac-confirm-row"><span class="lbl">Cost</span><span class="val hi" id="bm-price">�</span></div>
-        <div class="ac-confirm-row"><span class="lbl">Balance After</span><span class="val" id="bm-after">�</span></div>
+        <div class="ac-confirm-row"><span class="lbl">Product</span><span class="val" id="bm-name" style="max-width:58%">—</span></div>
+        <div class="ac-confirm-row"><span class="lbl">Category</span><span class="val" id="bm-platform">—</span></div>
+        <div class="ac-confirm-row"><span class="lbl">Your Balance</span><span class="val" id="bm-balance">—</span></div>
+        <div class="ac-confirm-row"><span class="lbl">Cost</span><span class="val hi" id="bm-price">—</span></div>
+        <div class="ac-confirm-row"><span class="lbl">Balance After</span><span class="val" id="bm-after">—</span></div>
         <div class="ac-modal-error" id="bm-error"></div>
         <div class="ac-modal-actions">
           <button class="ac-btn-cancel" onclick="closeBuyModal()">Cancel</button>
@@ -497,9 +497,9 @@
       const typeWrap = document.getElementById('type-dd-wrap');
       const typeMenu = document.getElementById('type-menu');
       typeWrap.classList.add('disabled');
-      document.getElementById('type-sel-label').textContent = 'Loading�';
+      document.getElementById('type-sel-label').textContent = 'Loading—';
       typeMenu.innerHTML = '';
-      setListingState('<i class="fas fa-spinner fa-spin"></i><p>Loading�</p>');
+      setListingState('<i class="fas fa-spinner fa-spin"></i><p>Loading—</p>');
 
       // Fetch subcategories from AccsZone
       const res  = await api({ action: 'subcategories', id: cat.id });
@@ -507,7 +507,7 @@
       const subs = Array.isArray(data) ? data : (data?.subcategories || data?.data || data?.items || data?.categories || []);
 
       if (!subs.length) {
-        // No subcategories � load listings directly
+        // No subcategories — load listings directly
         typeWrap.classList.add('disabled');
         document.getElementById('type-sel-label').textContent = 'All types';
         loadListings(cat.id);
@@ -654,7 +654,7 @@
     /* -- LOAD LISTINGS -- */
     async function loadListings(id, useSubcat = false) {
       document.getElementById('listing-search').value = '';
-      setListingState('<i class="fas fa-spinner fa-spin"></i><p>Loading�</p>');
+      setListingState('<i class="fas fa-spinner fa-spin"></i><p>Loading—</p>');
 
       const queryParam = useSubcat ? { subcategory_id: id } : { category_id: id };
       let res = await api({ action: 'listings', ...queryParam });
@@ -785,7 +785,7 @@
       const btn   = document.getElementById('bm-confirm-btn');
       const errEl = document.getElementById('bm-error');
       btn.disabled = true;
-      btn.textContent = 'Processing�';
+      btn.textContent = 'Processing—';
       errEl.style.display = 'none';
 
       let walletDeducted = false;
@@ -796,7 +796,7 @@
         const res  = await api({ action: 'purchase', ad_id: selectedOffer.id, quantity: 1 });
         const data = unwrap(res);
         if (!res || res.error || res.success === false) {
-          const detail = res?.detail ? ` � ${res.detail}` : '';
+          const detail = res?.detail ? ` — ${res.detail}` : '';
           throw new Error((res?.message || (typeof res?.error === 'string' ? res.error : '') || 'Purchase failed') + detail);
         }
 
@@ -806,7 +806,7 @@
           credentials = parseAccsZoneAccount(data.accounts[0]);
         }
 
-        // Save the order FIRST � so the account is never lost even if wallet update fails
+        // Save the order FIRST — so the account is never lost even if wallet update fails
         const { error: orderErr } = await db.from('account_orders').insert({
           user_id:           userId,
           provider_order_id: String(orderId || ''),
@@ -820,7 +820,7 @@
         });
         if (orderErr) console.error('Order save failed:', orderErr.message);
 
-        // Deduct wallet � check for errors explicitly
+        // Deduct wallet — check for errors explicitly
         const { error: walletErr } = await db.from('profiles').update({ wallet_balance: newBalance }).eq('id', userId);
         if (walletErr) throw new Error('Order saved but wallet update failed: ' + walletErr.message);
         walletDeducted = true;
@@ -886,7 +886,7 @@
     /* -- MY ORDERS -- */
     async function loadMyOrders() {
       const list = document.getElementById('orders-list');
-      list.innerHTML = `<div class="ac-state"><i class="fas fa-spinner fa-spin"></i><p>Loading�</p></div>`;
+      list.innerHTML = `<div class="ac-state"><i class="fas fa-spinner fa-spin"></i><p>Loading—</p></div>`;
 
       const { data: orders } = await db
         .from('account_orders').select('*')
@@ -911,7 +911,7 @@
           <div class="ac-order-icon" style="background:${ico.bg};color:${ico.color}"><i class="${ico.icon}"></i></div>
           <div class="ac-order-info">
             <div class="ac-order-title">${esc(o.offer_title || 'Product Order')}</div>
-            <div class="ac-order-meta">${esc(o.platform || '')} � ${date}</div>
+            <div class="ac-order-meta">${esc(o.platform || '')} — ${date}</div>
             ${credsBtn}
           </div>
           <div class="ac-order-right">
