@@ -9,7 +9,6 @@
     { "src": "/api/korapay-webhook",  "dest": "/api/korapay-webhook.js" },
     { "src": "/api/admin-delete-user", "dest": "/api/admin-delete-user.js" },
     { "src": "/api/process-email-queue", "dest": "/api/process-email-queue.js" },
-    { "src": "/api/run-migration", "dest": "/api/run-migration.js" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }
