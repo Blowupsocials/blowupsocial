@@ -2450,37 +2450,7 @@
       document.getElementById('spark-revenue').innerHTML = sparkline(trendArr(revNGN, 10), '#10b981');
       document.getElementById('spark-pending').innerHTML = sparkline(trendArr(pC,   10), '#f59e0b');
 
-      /* -- Month-over-month trends -- */
-      try {
-        const mnow = new Date();
-        const thisMonthISO = new Date(mnow.getFullYear(), mnow.getMonth(), 1).toISOString();
-        const lastMonthISO = new Date(mnow.getFullYear(), mnow.getMonth() - 1, 1).toISOString();
-        const trendResults = await Promise.all([
-          db.from('orders').select('*',{count:'exact',head:true}).gte('created_at', thisMonthISO),
-          db.from('orders').select('*',{count:'exact',head:true}).gte('created_at', lastMonthISO).lt('created_at', thisMonthISO),
-          db.from('profiles').select('*',{count:'exact',head:true}).gte('created_at', thisMonthISO),
-          db.from('profiles').select('*',{count:'exact',head:true}).gte('created_at', lastMonthISO).lt('created_at', thisMonthISO),
-        ]);
-        const tmOrds  = trendResults[0].count;
-        const lmOrds  = trendResults[1].count;
-        const tmUsers = trendResults[2].count;
-        const lmUsers = trendResults[3].count;
-        const pctStr = (curr, prev) => {
-          if (!prev) return '';
-          const p = ((curr - prev) / prev * 100).toFixed(1);
-          const up = p >= 0;
-          return '<span class="' + (up ? 't-up' : 't-dn') + '"><i class="fas fa-arrow-' + (up ? 'up' : 'down') + '"></i> ' + Math.abs(p) + '%</span>';
-        };
-        const lbl = (s) => '<span class="t-lbl">' + s + '</span>';
-        document.getElementById('trend-users')?.innerHTML  = pctStr(tmUsers, lmUsers) + lbl('new this month');
-        document.getElementById('trend-orders')?.innerHTML = pctStr(tmOrds, lmOrds) + lbl('vs last month');
-        const tmRevData = (await db.from('orders').select('amount').eq('status','Completed').gte('created_at', thisMonthISO)).data || [];
-        const lmRevData = (await db.from('orders').select('amount').eq('status','Completed').gte('created_at', lastMonthISO).lt('created_at', thisMonthISO)).data || [];
-        const tmRev = tmRevData.reduce((s, r) => s + parseFloat(r.amount || 0), 0);
-        const lmRev = lmRevData.reduce((s, r) => s + parseFloat(r.amount || 0), 0);
-        document.getElementById('trend-revenue')?.innerHTML = pctStr(tmRev, lmRev) + lbl('vs last month');
-        document.getElementById('trend-pending')?.innerHTML = lbl('Awaiting fulfillment');
-      } catch (e) { console.error('[Admin] trend error:', e); }
+      /* Month-over-month trends removed temporarily for debug */
     })();
 
     /* -- PROVIDERS -- */
