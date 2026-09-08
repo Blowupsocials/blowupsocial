@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin ... BlowUpSocials</title>
+  <title>Admin — BlowUpSocials</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet" />
   <style>
@@ -678,7 +678,7 @@
               <div class="act-ico" style="background:#ecfdf5;color:#10b981"><i class="fas fa-arrow-down"></i></div>
               <div class="act-body">
                 <div class="act-title">Funds added by user</div>
-                <div class="act-sub">?15,000 by janesmith</div>
+                <div class="act-sub">₦15,000 by janesmith</div>
               </div>
               <span class="act-time">12m ago</span>
             </div>
@@ -931,7 +931,7 @@
                   <span style="font-size:0.78rem;font-weight:700;color:var(--t2)">NGN (₦)</span>
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid var(--bd);border-radius:10px">
-                  <div><div style="font-size:0.8rem;font-weight:600;color:var(--t1)">USD ? NGN Rate</div><div style="font-size:0.69rem;color:var(--t3)">Used for billing conversions</div></div>
+                  <div><div style="font-size:0.8rem;font-weight:600;color:var(--t1)">USD → NGN Rate</div><div style="font-size:0.69rem;color:var(--t3)">Used for billing conversions</div></div>
                   <span style="font-size:0.78rem;font-weight:700;color:var(--gn)">₦1,600 / $1</span>
                 </div>
               </div>
@@ -1242,7 +1242,7 @@
       <!-- Credit panel -->
       <div id="um-panel-credit" class="um-panel" style="display:none">
         <div class="modal-field">
-          <label>Amount to Credit (?)</label>
+          <label>Amount to Credit (₦)</label>
           <input type="number" id="um-credit-amt" min="1" step="1" placeholder="e.g. 5000" style="font-size:0.95rem" />
         </div>
         <div class="modal-foot">
@@ -1254,7 +1254,7 @@
       <!-- Debit panel -->
       <div id="um-panel-debit" class="um-panel" style="display:none">
         <div class="modal-field">
-          <label>Amount to Debit (?)</label>
+          <label>Amount to Debit (₦)</label>
           <input type="number" id="um-debit-amt" min="1" step="1" placeholder="e.g. 2000" style="font-size:0.95rem" />
         </div>
         <p style="font-size:0.74rem;color:#ef4444;margin:0 0 14px">Current balance: <strong id="um-curr-bal"></strong></p>
@@ -1650,7 +1650,7 @@
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
               <span style="font-size:0.82rem;font-weight:700;color:var(--t1)">${t.name}</span>
               <span style="font-size:0.7rem;color:var(--t3)">${t.role}</span>
-              <span style="font-size:0.72rem;color:#f59e0b">${'?'.repeat(parseInt(t.stars||5))}</span>
+              <span style="font-size:0.72rem;color:#f59e0b">${'★'.repeat(parseInt(t.stars||5))}</span>
             </div>
             <div style="font-size:0.76rem;color:var(--t3);line-height:1.5">"${t.text}"</div>
           </div>
@@ -2272,7 +2272,7 @@
       const { count: pendingCount } = await db.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'Pending');
       if (pendingCount != null) document.getElementById('stat-pending').textContent = fmtNum(pendingCount);
 
-      /* Stat: total revenue (sum of charges in USD ? NGN) */
+      /* Stat: total revenue (sum of charges in USD → NGN) */
       const { data: revData } = await db.from('orders').select('charge').eq('status', 'Completed');
       if (revData) {
         const total = revData.reduce((s, r) => s + parseFloat(r.charge || 0), 0);
@@ -2392,7 +2392,7 @@
       const { data: actOrds }  = await db.from('orders').select('id, service_id, created_at, user_id').order('created_at', { ascending: false }).limit(4);
       const { data: actUsers } = await db.from('profiles').select('id, email, full_name, created_at').order('created_at', { ascending: false }).limit(3);
       const actItems = [
-        ...(actOrds  || []).map(o => ({ type: 'order', ts: o.created_at, label: 'New order placed', sub: `Service # — ` })),
+        ...(actOrds  || []).map(o => ({ type: 'order', ts: o.created_at, label: 'New order placed', sub: `Service #${o.service_id || '?'} — ${(o.user_id||'').slice(0,8)}` })),
         ...(actUsers || []).map(u => ({ type: 'user',  ts: u.created_at, label: 'New user registered', sub: u.email || u.full_name || (u.id||'').slice(0,16) })),
       ].sort((a,b) => new Date(b.ts) - new Date(a.ts)).slice(0, 5);
       if (actItems.length) {
