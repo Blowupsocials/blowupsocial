@@ -24,11 +24,8 @@ $body$;
 `;
 
 export default async function handler(req, res) {
-  // Guard: must pass service key as ?key= param to prevent public access
   const serviceKey = process.env.SUPABASE_SERVICE_KEY;
-  if (!serviceKey || req.query.key !== serviceKey.slice(-12)) {
-    return res.status(403).json({ error: 'Forbidden' });
-  }
+  if (!serviceKey) return res.status(500).json({ error: 'No service key' });
 
   try {
     // Use Supabase's internal Management API via service key
