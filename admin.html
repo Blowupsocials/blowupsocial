@@ -63,7 +63,8 @@
     .sb-foot-info { flex: 1; min-width: 0; }
     .sb-foot-name { font-size: 0.78rem; font-weight: 700; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .sb-foot-role { font-size: 0.61rem; color: #999; margin-top: 1px; }
-    .sb-foot > i { color: #ccc; font-size: 0.62rem; }
+    .sb-signout { background: none; border: none; color: #ccc; font-size: 0.88rem; cursor: pointer; padding: 6px 7px; border-radius: 6px; transition: background 0.15s, color 0.15s; flex-shrink: 0; }
+    .sb-signout:hover { background: rgba(239,68,68,0.12); color: #f87171; }
 
     /* -- MAIN -- */
     .main { margin-left: 250px; width: calc(100vw - 250px); display: flex; flex-direction: column; min-height: 100vh; }
@@ -396,7 +397,7 @@
         <div class="sb-foot-name" id="sb-admin-name">Admin</div>
         <div class="sb-foot-role">Super Administrator</div>
       </div>
-      <i class="fas fa-chevron-down"></i>
+      <button class="sb-signout" onclick="adminSignOut()" title="Sign out"><i class="fas fa-right-from-bracket"></i></button>
     </div>
   </nav>
 
@@ -2258,27 +2259,38 @@
 
     const STATUS_CLASS = { Completed:'b-completed', 'In Progress':'b-progress', Pending:'b-pending', Cancelled:'b-cancelled' };
 
+    async function adminSignOut() {
+      await db.auth.signOut();
+      window.location.href = 'admin-login.html';
+    }
+
     (async () => {
       /* Auth check — must be the admin account */
       const { data: { session } } = await db.auth.getSession();
       if (!session || session.user.email !== ADMIN_EMAIL) { window.location.href = 'login.html'; return; }
 
+      try {
+
       /* Stat: total users */
-      const { count: userCount } = await db.from('profiles').select('*', { count: 'exact', head: true });
+      const { count: userCount, error: e1 } = await db.from('profiles').select('*', { count: 'exact', head: true });
+      if (e1) console.error('[Admin] profiles count error:', e1);
       if (userCount != null) document.getElementById('stat-users').textContent = fmtNum(userCount);
 
       /* Stat: total + pending orders */
-      const { count: orderCount } = await db.from('orders').select('*', { count: 'exact', head: true });
+      const { count: orderCount, error: e2 } = await db.from('orders').select('*', { count: 'exact', head: true });
+      if (e2) console.error('[Admin] orders count error:', e2);
       if (orderCount != null) {
         document.getElementById('stat-orders').textContent = fmtNum(orderCount);
         document.getElementById('tbl-total-orders').textContent = fmtNum(orderCount);
       }
 
-      const { count: pendingCount } = await db.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'Pending');
+      const { count: pendingCount, error: e3 } = await db.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'Pending');
+      if (e3) console.error('[Admin] pending count error:', e3);
       if (pendingCount != null) document.getElementById('stat-pending').textContent = fmtNum(pendingCount);
 
       /* Stat: total revenue (sum of charges in USD → NGN) */
-      const { data: revData } = await db.from('orders').select('amount').eq('status', 'Completed');
+      const { data: revData, error: e4 } = await db.from('orders').select('amount').eq('status', 'Completed');
+      if (e4) console.error('[Admin] revenue error:', e4);
       if (revData) {
         const total = revData.reduce((s, r) => s + parseFloat(r.amount || 0), 0);
         document.getElementById('stat-revenue').textContent = fmtNGN(total);
@@ -2319,21 +2331,20 @@
       }
 
       /* User stats for donut — real data */
-      const thirtyDaysAgo = new Date(Date.now() - 30 * 864e5).toISOString();
-      const sevenDaysAgo  = new Date(Date.now() -  7 * 864e5).toISOString();
-      const [{ count: totalU }, { count: newU }, { data: activeData }] = await Promise.all([
-        db.from('profiles').select('*', { count: 'exact', head: true }),
-        db.from('profiles').select('*', { count: 'exact', head: true }).gte('created_at', sevenDaysAgo),
-        db.rpc('count_active_users').then(r => ({ data: r.data ?? 0 })),
-      ]);
-      if (totalU) {
-        const active   = Number(activeData) || 0;
-        const newUsers = Number(newU)       || 0;
-        const inactive = Math.max(0, totalU - active - newUsers);
-        document.getElementById('leg-active').textContent   = fmtNum(active);
-        document.getElementById('leg-inactive').textContent = fmtNum(inactive);
-        document.getElementById('leg-new').textContent      = fmtNum(newUsers);
-      }
+      try {
+        const sevenDaysAgo  = new Date(Date.now() -  7 * 864e5).toISOString();
+        const [{ count: totalU }, { count: newU }] = await Promise.all([
+          db.from('profiles').select('*', { count: 'exact', head: true }),
+          db.from('profiles').select('*', { count: 'exact', head: true }).gte('created_at', sevenDaysAgo),
+        ]);
+        if (totalU) {
+          const newUsers = Number(newU) || 0;
+          const inactive = Math.max(0, totalU - newUsers);
+          document.getElementById('leg-active').textContent   = fmtNum(totalU);
+          document.getElementById('leg-inactive').textContent = fmtNum(inactive);
+          document.getElementById('leg-new').textContent      = fmtNum(newUsers);
+        }
+      } catch (err) { console.error('[Admin] donut chart:', err); }
 
       /* -- Revenue chart: current month actual data -- */
       const now        = new Date();
@@ -2467,6 +2478,8 @@
         document.getElementById('trend-revenue')?.innerHTML = mkTrend(tmRev, lmRev, 'vs last month');
         document.getElementById('trend-pending')?.innerHTML = `<span class="t-lbl">Awaiting fulfillment</span>`;
       } catch {}
+
+      } catch (err) { console.error('[Admin dashboard error]', err); }
     })();
 
     /* -- PROVIDERS -- */
