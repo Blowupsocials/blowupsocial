@@ -421,13 +421,13 @@
           <i class="fas fa-bell"></i>
           <span class="tb-badge">8</span>
         </button>
-        <div class="tb-profile">
+        <div class="tb-profile" onclick="adminSignOut()" style="cursor:pointer" title="Sign out">
           <div class="tb-profile-ava">AD</div>
           <div class="tb-profile-info">
             <div class="tb-profile-name" id="tb-admin-name">Admin</div>
             <div class="tb-profile-role">Super Admin</div>
           </div>
-          <i class="fas fa-chevron-down"></i>
+          <i class="fas fa-right-from-bracket" style="color:#f87171;font-size:0.75rem"></i>
         </div>
       </div>
     </header>
@@ -635,20 +635,20 @@
           <div class="legend-list">
             <div class="legend-row">
               <div class="legend-l"><div class="leg-dot" style="background:#7c3aed"></div><span class="leg-name">Active Users</span></div>
-              <div class="legend-r"><span class="leg-count" id="leg-active">8,432</span><span class="leg-pct">(67.7%)</span></div>
+              <div class="legend-r"><span class="leg-count" id="leg-active">...</span><span class="leg-pct" id="leg-pct-active"></span></div>
             </div>
             <div class="legend-row">
-              <div class="legend-l"><div class="leg-dot" style="background:#ec4899"></div><span class="leg-name">Inactive Users</span></div>
-              <div class="legend-r"><span class="leg-count" id="leg-inactive">2,154</span><span class="leg-pct">(17.3%)</span></div>
+              <div class="legend-l"><div class="leg-dot" style="background:#ec4899"></div><span class="leg-name">Returning Users</span></div>
+              <div class="legend-r"><span class="leg-count" id="leg-inactive">...</span><span class="leg-pct" id="leg-pct-inactive"></span></div>
             </div>
             <div class="legend-row">
               <div class="legend-l"><div class="leg-dot" style="background:#10b981"></div><span class="leg-name">New This Month</span></div>
-              <div class="legend-r"><span class="leg-count" id="leg-new">1,871</span><span class="leg-pct">(15.0%)</span></div>
+              <div class="legend-r"><span class="leg-count" id="leg-new">...</span><span class="leg-pct" id="leg-pct-new"></span></div>
             </div>
           </div>
           <div class="online-bar">
-            <div class="online-l"><div class="online-pulse"></div> Online Now</div>
-            <span class="online-n">142</span>
+            <div class="online-l"><div class="online-pulse"></div> Total Users</div>
+            <span class="online-n" id="online-total">...</span>
           </div>
         </div>
 
@@ -1388,6 +1388,7 @@
     } catch(e) { console.warn('Revenue chart init failed:', e); }
 
     /* -- Donut chart -- */
+    let userDonut = null;
     try {
     const donutCtx = document.getElementById('donut-chart').getContext('2d');
     const centerPlugin = {
@@ -1411,12 +1412,12 @@
       }
     };
 
-    new Chart(donutCtx, {
+    userDonut = new Chart(donutCtx, {
       type: 'doughnut',
       plugins: [centerPlugin],
       data: {
         datasets: [{
-          data: [67.7, 17.3, 15.0],
+          data: [1, 1, 1],
           backgroundColor: ['#7c3aed', '#ec4899', '#10b981'],
           borderWidth: 0, hoverOffset: 3,
         }]
@@ -2330,17 +2331,28 @@
 
       /* User stats for donut — real data */
       try {
-        const sevenDaysAgo  = new Date(Date.now() -  7 * 864e5).toISOString();
-        const [{ count: totalU }, { count: newU }] = await Promise.all([
+        const thirtyDaysAgo = new Date(Date.now() - 30 * 864e5).toISOString();
+        const donutRes = await Promise.all([
           db.from('profiles').select('*', { count: 'exact', head: true }),
-          db.from('profiles').select('*', { count: 'exact', head: true }).gte('created_at', sevenDaysAgo),
+          db.from('profiles').select('*', { count: 'exact', head: true }).gte('created_at', thirtyDaysAgo),
         ]);
+        const totalU = donutRes[0].count || 0;
+        const newU   = donutRes[1].count || 0;
         if (totalU) {
-          const newUsers = Number(newU) || 0;
-          const inactive = Math.max(0, totalU - newUsers);
-          document.getElementById('leg-active').textContent   = fmtNum(totalU);
-          document.getElementById('leg-inactive').textContent = fmtNum(inactive);
-          document.getElementById('leg-new').textContent      = fmtNum(newUsers);
+          const newUsers  = Math.min(newU, totalU);
+          const returning = Math.max(0, totalU - newUsers);
+          const pct = (n) => '(' + (totalU ? (n / totalU * 100).toFixed(1) : '0') + '%)';
+          document.getElementById('leg-active').textContent      = fmtNum(totalU);
+          document.getElementById('leg-pct-active').textContent  = '(100%)';
+          document.getElementById('leg-inactive').textContent    = fmtNum(returning);
+          document.getElementById('leg-pct-inactive').textContent = pct(returning);
+          document.getElementById('leg-new').textContent         = fmtNum(newUsers);
+          document.getElementById('leg-pct-new').textContent     = pct(newUsers);
+          document.getElementById('online-total').textContent    = fmtNum(totalU);
+          if (userDonut) {
+            userDonut.data.datasets[0].data = [totalU, returning, newUsers];
+            userDonut.update();
+          }
         }
       } catch (err) { console.error('[Admin] donut chart:', err); }
 
