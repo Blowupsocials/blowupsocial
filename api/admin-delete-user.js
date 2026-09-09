@@ -28,7 +28,7 @@ export default async function handler(req, res) {
 
   if (!delRes.ok) {
     const body = await delRes.json().catch(() => ({}));
-    return res.status(delRes.status).json({ error: body.message || 'Delete failed', status: delRes.status, detail: body });
+    return res.status(delRes.status).json({ error: body.message || 'Delete failed' });
   }
 
   res.status(200).json({ success: true });
