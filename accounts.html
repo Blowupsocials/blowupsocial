@@ -765,6 +765,10 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
 
       document.getElementById('bm-confirm-btn').disabled = notEnough;
       document.getElementById('buy-modal').classList.add('show');
+      if (window.ttq) ttq.track('AddToCart', {
+        contents: [{ content_id: String(offer.id), content_type: 'product', content_name: offer.title }],
+        value: Math.round(offer.sellUsd * USD_TO_NGN), currency: 'NGN'
+      });
     }
 
     function closeBuyModal() {
@@ -799,6 +803,10 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
       btn.textContent = 'Processing—';
       errEl.style.display = 'none';
 
+      if (window.ttq) ttq.track('InitiateCheckout', {
+        contents: [{ content_id: String(selectedOffer.id), content_type: 'product', content_name: selectedOffer.title }],
+        value: Math.round(selectedOffer.sellUsd * USD_TO_NGN), currency: 'NGN'
+      });
       const prevBalance  = userBalance;
       const newBalance   = userBalance - selectedOffer.sellUsd;
 
@@ -835,6 +843,14 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
         });
         if (orderErr) console.error('Order save failed:', orderErr.message);
 
+        if (window.ttq) {
+          const acctEvt = {
+            contents: [{ content_id: String(selectedOffer.id), content_type: 'product', content_name: selectedOffer.title }],
+            value: Math.round(selectedOffer.sellUsd * USD_TO_NGN), currency: 'NGN'
+          };
+          ttq.track('PlaceAnOrder', acctEvt);
+          ttq.track('Purchase', acctEvt);
+        }
         closeBuyModal();
         if (credentials) {
           showCredentials(selectedOffer, credentials, orderId);
@@ -964,6 +980,16 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
       const { data: profile } = await db.from('profiles').select('wallet_balance').eq('id', userId).single();
       userBalance = parseFloat(profile?.wallet_balance || 0);
       document.getElementById('topbar-balance').textContent = fmtNGN(userBalance);
+
+      if (window.ttq && window.ttqHash) {
+        Promise.all([ttqHash(session.user.email), ttqHash(session.user.id)]).then(([he, hid]) => {
+          ttq.identify({ email: he, external_id: hid });
+          ttq.track('ViewContent', {
+            contents: [{ content_id: 'accounts_store', content_type: 'product', content_name: 'Social Media Accounts Store' }],
+            value: 0, currency: 'NGN'
+          });
+        });
+      }
 
       // Load categories then build UI
       const res = await api({ action: 'categories' });

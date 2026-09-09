@@ -1,3 +1,10 @@
+// TikTok Pixel SHA-256 helper (required for PII hashing)
+window.ttqHash = async function(str) {
+  if (!str) return '';
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str.toLowerCase().trim()));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+};
+
 // Mobile nav toggle
 const hamburger = document.getElementById('hamburger');
 const navLinks  = document.getElementById('navLinks');

@@ -755,6 +755,11 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
       document.getElementById('modal-balance').textContent = fmtNGN(userBalance);
       document.getElementById('modal-error').style.display = 'none';
       updateCost();
+      if (window.ttq) ttq.track('AddToCart', {
+        contents: [{ content_id: String(selectedSvc.service), content_type: 'product', content_name: selectedSvc.name }],
+        value: parseFloat(selectedSvc.rate) * MARKUP * Number(selectedSvc.min) / 1000,
+        currency: 'NGN'
+      });
 
       document.getElementById('order-modal').classList.add('show');
     }
@@ -792,6 +797,11 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
         errEl.textContent = `Insufficient balance. You need ${fmtNGN(cost)} but have ${fmtNGN(userBalance)}.`;
         errEl.style.display = 'block'; return;
       }
+
+      if (window.ttq) ttq.track('InitiateCheckout', {
+        contents: [{ content_id: String(selectedSvc.service), content_type: 'product', content_name: selectedSvc.name }],
+        value: Math.round(cost), currency: 'NGN'
+      });
 
       const btn = document.getElementById('order-submit');
       btn.disabled = true;
@@ -837,6 +847,14 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
         document.getElementById('modal-balance').textContent  = fmtNGN(newBalanceNGN);
         document.getElementById('stat-balance').textContent   = fmtNGN(newBalanceNGN);
 
+        if (window.ttq) {
+          const evtPayload = {
+            contents: [{ content_id: String(selectedSvc.service), content_type: 'product', content_name: selectedSvc.name }],
+            value: Math.round(cost), currency: 'NGN'
+          };
+          ttq.track('PlaceAnOrder', evtPayload);
+          ttq.track('Purchase', evtPayload);
+        }
         closeOrder();
         toast(`Order #${smmOrderId} placed! Processing will begin shortly.`, 'success');
 
@@ -860,6 +878,16 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
       userBalance = parseFloat(profile?.wallet_balance || 0) * USD_TO_NGN;
       document.getElementById('topbar-balance').textContent = fmtNGN(userBalance);
       document.getElementById('stat-balance').textContent   = fmtNGN(userBalance);
+
+      if (window.ttq && window.ttqHash) {
+        Promise.all([ttqHash(session.user.email), ttqHash(session.user.id)]).then(([he, hid]) => {
+          ttq.identify({ email: he, external_id: hid });
+          ttq.track('ViewContent', {
+            contents: [{ content_id: 'new_order', content_type: 'product', content_name: 'New Order — SMM Services' }],
+            value: 0, currency: 'NGN'
+          });
+        });
+      }
 
       const data = await owlet({ action: 'services' });
 

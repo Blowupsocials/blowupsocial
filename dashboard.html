@@ -1826,6 +1826,10 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
         document.getElementById('bk-checkout-link').href = d.checkoutUrl || '#';
         showBkState('details');
         startBankPoll(d.reference, amount, session.user.id);
+        if (window.ttq) ttq.track('InitiateCheckout', {
+          contents: [{ content_id: 'wallet_topup', content_type: 'product', content_name: 'Wallet Top-Up' }],
+          value: amount, currency: 'NGN'
+        });
 
       } catch (err) {
         showBkState('error');
@@ -1945,6 +1949,17 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
       /* Currency */
       const USD_TO_NGN = 1600;
       const fmtNGN = v => `₦${Math.round(v * USD_TO_NGN).toLocaleString('en-NG')}`;
+
+      /* TikTok: identify + ViewContent */
+      if (window.ttq && window.ttqHash) {
+        Promise.all([ttqHash(email), ttqHash(user.id)]).then(([he, hid]) => {
+          ttq.identify({ email: he, external_id: hid });
+          ttq.track('ViewContent', {
+            contents: [{ content_id: 'dashboard', content_type: 'product', content_name: 'Dashboard' }],
+            value: 0, currency: 'NGN'
+          });
+        });
+      }
 
       /* Populate names & avatars */
       document.getElementById('greeting-text').textContent  = `${timeGreeting()}, ${name.split(' ')[0]}!`;
