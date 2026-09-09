@@ -777,6 +777,11 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         value: Math.round(parseFloat(selectedSvc.rate) * MARKUP * Number(selectedSvc.min) / 1000),
         currency: 'NGN'
       });
+      if (window.fbq) fbq('track', 'AddToCart', {
+        content_ids: [String(selectedSvc.service)], content_name: selectedSvc.name,
+        content_type: 'product', currency: 'NGN',
+        value: Math.round(parseFloat(selectedSvc.rate) * MARKUP * Number(selectedSvc.min) / 1000)
+      });
 
       document.getElementById('order-modal').classList.add('show');
     }
@@ -818,6 +823,10 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       if (window.ttqTrack) ttqTrack('InitiateCheckout', {
         contents: [{ content_id: String(selectedSvc.service), content_type: 'product', content_name: selectedSvc.name }],
         value: Math.round(cost), currency: 'NGN'
+      });
+      if (window.fbq) fbq('track', 'InitiateCheckout', {
+        content_ids: [String(selectedSvc.service)], content_name: selectedSvc.name,
+        content_type: 'product', currency: 'NGN', value: Math.round(cost), num_items: 1
       });
 
       const btn = document.getElementById('order-submit');
@@ -872,6 +881,10 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
           ttqTrack('PlaceAnOrder', evtPayload);
           ttqTrack('Purchase', evtPayload);
         }
+        if (window.fbq) fbq('track', 'Purchase', {
+          content_ids: [String(selectedSvc.service)], content_name: selectedSvc.name,
+          content_type: 'product', currency: 'NGN', value: Math.round(cost), num_items: 1
+        });
         closeOrder();
         toast(`Order #${smmOrderId} placed! Processing will begin shortly.`, 'success');
 
@@ -901,6 +914,12 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
           contents: [{ content_id: 'new_order', content_type: 'product', content_name: 'New Order — SMM Services' }],
           value: 0, currency: 'NGN'
         }));
+      }
+      if (window.fbq && window.ttqHash) {
+        window.ttqHash(session.user.email).then(he => {
+          fbq('init', '2908681819475419', { em: he, external_id: session.user.id });
+          fbq('track', 'ViewContent', { content_name: 'New Order — SMM Services', content_type: 'product' });
+        });
       }
 
       const data = await owlet({ action: 'services' });

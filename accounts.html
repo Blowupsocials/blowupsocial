@@ -786,6 +786,10 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         contents: [{ content_id: String(offer.id), content_type: 'product', content_name: offer.title }],
         value: Math.round(offer.sellUsd * USD_TO_NGN), currency: 'NGN'
       });
+      if (window.fbq) fbq('track', 'AddToCart', {
+        content_ids: [String(offer.id)], content_name: offer.title,
+        content_type: 'product', currency: 'NGN', value: Math.round(offer.sellUsd * USD_TO_NGN)
+      });
     }
 
     function closeBuyModal() {
@@ -823,6 +827,11 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       if (window.ttqTrack) ttqTrack('InitiateCheckout', {
         contents: [{ content_id: String(selectedOffer.id), content_type: 'product', content_name: selectedOffer.title }],
         value: Math.round(selectedOffer.sellUsd * USD_TO_NGN), currency: 'NGN'
+      });
+      if (window.fbq) fbq('track', 'InitiateCheckout', {
+        content_ids: [String(selectedOffer.id)], content_name: selectedOffer.title,
+        content_type: 'product', currency: 'NGN',
+        value: Math.round(selectedOffer.sellUsd * USD_TO_NGN), num_items: 1
       });
       const prevBalance  = userBalance;
       const newBalance   = userBalance - selectedOffer.sellUsd;
@@ -868,6 +877,11 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
           ttqTrack('PlaceAnOrder', acctEvt);
           ttqTrack('Purchase', acctEvt);
         }
+        if (window.fbq) fbq('track', 'Purchase', {
+          content_ids: [String(selectedOffer.id)], content_name: selectedOffer.title,
+          content_type: 'product', currency: 'NGN',
+          value: Math.round(selectedOffer.sellUsd * USD_TO_NGN), num_items: 1
+        });
         closeBuyModal();
         if (credentials) {
           showCredentials(selectedOffer, credentials, orderId);
@@ -1008,6 +1022,12 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
           contents: [{ content_id: 'accounts_store', content_type: 'product', content_name: 'Social Media Accounts Store' }],
           value: 0, currency: 'NGN'
         }));
+      }
+      if (window.fbq && window.ttqHash) {
+        window.ttqHash(session.user.email).then(he => {
+          fbq('init', '2908681819475419', { em: he, external_id: session.user.id });
+          fbq('track', 'ViewContent', { content_name: 'Social Media Accounts Store', content_type: 'product' });
+        });
       }
 
       // Load categories then build UI

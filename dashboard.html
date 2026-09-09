@@ -1847,6 +1847,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
           contents: [{ content_id: 'wallet_topup', content_type: 'product', content_name: 'Wallet Top-Up' }],
           value: amount, currency: 'NGN'
         });
+        if (window.fbq) fbq('track', 'InitiateCheckout', { content_name: 'Wallet Top-Up', value: amount, currency: 'NGN', num_items: 1 });
 
       } catch (err) {
         showBkState('error');
@@ -1972,6 +1973,12 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
           contents: [{ content_id: 'dashboard', content_type: 'product', content_name: 'Dashboard' }],
           value: 0, currency: 'NGN'
         }));
+      }
+      if (window.fbq && window.ttqHash) {
+        window.ttqHash(email).then(he => {
+          fbq('init', '2908681819475419', { em: he, external_id: user.id });
+          fbq('track', 'ViewContent', { content_name: 'Dashboard', content_type: 'product' });
+        });
       }
 
       /* Populate names & avatars */

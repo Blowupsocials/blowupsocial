@@ -498,6 +498,12 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
           });
         });
       }
+      if (window.fbq) {
+        window.ttqHash && window.ttqHash(pendingEmail).then(he => {
+          fbq('init', '2908681819475419', { em: he });
+          fbq('track', 'CompleteRegistration', { status: true, currency: 'NGN', value: 0 });
+        });
+      }
       showOtpMsg('Email verified! Redirecting...', false);
       setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
     }
