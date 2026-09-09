@@ -468,11 +468,9 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
         type: 'welcome', to_email: pendingEmail, name: pendingName,
         send_at: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
       }).catch(() => {});
-      if (window.ttq && window.ttqHash) {
-        const uid = data.user?.id || '';
-        Promise.all([ttqHash(pendingEmail), ttqHash(uid)]).then(([he, hid]) => {
-          ttq.identify({ email: he, external_id: hid });
-          ttq.track('CompleteRegistration', {
+      if (window.ttqIdentify) {
+        ttqIdentify(pendingEmail, data.user?.id || '').then(() => {
+          ttqTrack('CompleteRegistration', {
             contents: [{ content_id: 'account_registration', content_type: 'product', content_name: 'BlowUpSocials Account' }],
             value: 0, currency: 'NGN'
           });

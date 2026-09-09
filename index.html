@@ -757,10 +757,22 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
 </footer>
 
 <script>
-  if (window.ttq) ttq.track('ViewContent', {
-    contents: [{ content_id: 'homepage', content_type: 'product', content_name: 'BlowUpSocials Homepage' }],
-    value: 0, currency: 'NGN'
-  });
+  (function() {
+    const props = {
+      contents: [{ content_id: 'homepage', content_type: 'product', content_name: 'BlowUpSocials Homepage' }],
+      value: 0, currency: 'NGN'
+    };
+    if (window.ttq) ttq.track('ViewContent', props);
+    fetch('/api/tiktok-events', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        event: 'ViewContent', user: {}, properties: props,
+        event_id: 'ViewContent-' + Date.now(),
+        page_url: window.location.href,
+      }),
+    }).catch(() => {});
+  })();
 </script>
 </body>
 </html>

@@ -1,8 +1,31 @@
-// TikTok Pixel SHA-256 helper (required for PII hashing)
+// TikTok Pixel + Events API helpers
 window.ttqHash = async function(str) {
   if (!str) return '';
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str.toLowerCase().trim()));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+};
+
+window._ttqUser = {};
+
+window.ttqIdentify = async function(email, userId) {
+  const [he, hid] = await Promise.all([ttqHash(email || ''), ttqHash(userId || '')]);
+  window._ttqUser = { email: he, external_id: hid };
+  if (window.ttq) ttq.identify({ email: he, external_id: hid });
+};
+
+window.ttqTrack = function(event, props) {
+  if (window.ttq) ttq.track(event, props);
+  fetch('/api/tiktok-events', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      event,
+      user: window._ttqUser || {},
+      properties: props || {},
+      event_id: event + '-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+      page_url: window.location.href,
+    }),
+  }).catch(() => {});
 };
 
 // Mobile nav toggle
