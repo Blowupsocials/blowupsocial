@@ -185,6 +185,17 @@
       .nav-meta { display: none; }
     }
   </style>
+<!-- TikTok Pixel Code Start -->
+<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
+var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
+;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+  ttq.load('DAGMGFJC77UC8FLJUHS0');
+  ttq.page();
+}(window, document, 'ttq');
+</script>
+<!-- TikTok Pixel Code End -->
 </head>
 <body>
 
@@ -254,8 +265,8 @@
 
       <!-- STEP 2: OTP verification -->
       <div class="otp-screen" id="verifyStep">
-        <div class="otp-email-icon">??</div>
-        <h2 style="margin-bottom:10px;">eerify your email</h2>
+        <div class="otp-email-icon">✉️</div>
+        <h2 style="margin-bottom:10px;">Verify your email</h2>
         <p class="otp-sent-to">We sent a 6-digit code to<br><strong id="otp-display-email"></strong></p>
 
         <div id="otp-msg"></div>
@@ -269,8 +280,8 @@
           <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" />
         </div>
 
-        <button class="btn-auth" id="otp-submit-btn" onclick="handleeerify()">
-          eerify Code <i class="fas fa-arrow-right"></i>
+        <button class="btn-auth" id="otp-submit-btn" onclick="handleVerify()">
+          Verify Code <i class="fas fa-arrow-right"></i>
         </button>
 
         <p class="otp-resend">
@@ -328,7 +339,7 @@
       el.textContent = msg;
     }
 
-    function showeerifyStep(email) {
+    function showVerifyStep(email) {
       pendingEmail = email;
       document.getElementById('otp-display-email').textContent = email;
       document.getElementById('signupStep').style.display = 'none';
@@ -425,17 +436,19 @@
         window.location.href = 'dashboard.html';
       } else {
         pendingName = name;
-        showeerifyStep(email);
+        showVerifyStep(email);
+        // Always resend to guarantee OTP delivery for both new and stuck-unconfirmed accounts
+        db.auth.resend({ type: 'signup', email }).catch(() => {});
       }
     }
 
-    async function handleeerify() {
+    async function handleVerify() {
       const boxes = document.querySelectorAll('.otp-box');
       const code  = [...boxes].map(b => b.value).join('');
       if (code.length < 6) { showOtpMsg('Please enter all 6 digits.'); return; }
 
       const btn = document.getElementById('otp-submit-btn');
-      btn.innerHTML = 'eerifying—';
+      btn.innerHTML = 'Verifying...';
       btn.disabled = true;
 
       const { data, error } = await db.auth.verifyOtp({
@@ -445,7 +458,7 @@
       });
 
       if (error) {
-        btn.innerHTML = 'eerify Code <i class="fas fa-arrow-right"></i>';
+        btn.innerHTML = 'Verify Code <i class="fas fa-arrow-right"></i>';
         btn.disabled = false;
         showOtpMsg(error.message || 'Invalid or expired code. Try again.');
         return;

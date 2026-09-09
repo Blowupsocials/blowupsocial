@@ -182,6 +182,17 @@
       .ac-dd-wrap, .ac-search-wrap { width: 100%; flex: unset; }
     }
   </style>
+<!-- TikTok Pixel Code Start -->
+<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
+var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
+;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+  ttq.load('DAGMGFJC77UC8FLJUHS0');
+  ttq.page();
+}(window, document, 'ttq');
+</script>
+<!-- TikTok Pixel Code End -->
 </head>
 <body>
   <script src="/js/supabase.min.js"></script>
@@ -298,9 +309,9 @@
   <div class="ac-toast" id="ac-toast"></div>
 
   <script>
-    const MARKUP     = 2;
+    const MARKUP     = parseFloat(localStorage.getItem('bns_markup_accszone') ?? '2');
     const USD_TO_NGN = 1600;
-    const fmtNGN = v => `?${Math.round(v * USD_TO_NGN).toLocaleString('en-NG')}`;
+    const fmtNGN = v => `₦${Math.round(v * USD_TO_NGN).toLocaleString('en-NG')}`;
 
     let userBalance   = 0;
     let userId        = null;
@@ -788,11 +799,16 @@
       btn.textContent = 'Processing—';
       errEl.style.display = 'none';
 
-      let walletDeducted = false;
       const prevBalance  = userBalance;
       const newBalance   = userBalance - selectedOffer.sellUsd;
 
       try {
+        // Deduct wallet FIRST — so it's always deducted before the provider call
+        const { error: walletErr } = await db.from('profiles').update({ wallet_balance: newBalance }).eq('id', userId);
+        if (walletErr) throw new Error('Could not update wallet: ' + walletErr.message);
+        userBalance = newBalance;
+        document.getElementById('topbar-balance').textContent = fmtNGN(newBalance);
+
         const res  = await api({ action: 'purchase', ad_id: selectedOffer.id, quantity: 1 });
         const data = unwrap(res);
         if (!res || res.error || res.success === false) {
@@ -806,7 +822,6 @@
           credentials = parseAccsZoneAccount(data.accounts[0]);
         }
 
-        // Save the order FIRST — so the account is never lost even if wallet update fails
         const { error: orderErr } = await db.from('account_orders').insert({
           user_id:           userId,
           provider_order_id: String(orderId || ''),
@@ -820,13 +835,6 @@
         });
         if (orderErr) console.error('Order save failed:', orderErr.message);
 
-        // Deduct wallet — check for errors explicitly
-        const { error: walletErr } = await db.from('profiles').update({ wallet_balance: newBalance }).eq('id', userId);
-        if (walletErr) throw new Error('Order saved but wallet update failed: ' + walletErr.message);
-        walletDeducted = true;
-
-        userBalance = newBalance;
-        document.getElementById('topbar-balance').textContent = fmtNGN(newBalance);
         closeBuyModal();
         if (credentials) {
           showCredentials(selectedOffer, credentials, orderId);
@@ -836,7 +844,9 @@
         }
 
       } catch (e) {
-        if (walletDeducted) {
+        // Only restore wallet if the provider call failed (wallet was already deducted)
+        // If wallet deduction itself failed, userBalance hasn't changed
+        if (userBalance !== prevBalance) {
           await db.from('profiles').update({ wallet_balance: prevBalance }).eq('id', userId);
           userBalance = prevBalance;
           document.getElementById('topbar-balance').textContent = fmtNGN(prevBalance);
@@ -915,7 +925,7 @@
             ${credsBtn}
           </div>
           <div class="ac-order-right">
-            <div class="ac-order-price">?${(o.price_ngn || 0).toLocaleString('en-NG')}</div>
+            <div class="ac-order-price">₦${(o.price_ngn || 0).toLocaleString('en-NG')}</div>
             <span class="ac-status ${stClass}">${stLabel}</span>
           </div>
         </div>`;

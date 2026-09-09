@@ -134,7 +134,7 @@
     .ds-install-done:hover { opacity: 0.88; }
 
     /* -- MAIN -- */
-    .ds-main { margin-left: 250px; width: calc(100vw - 250px); display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
+    .ds-main { margin-left: 250px; width: calc(100vw - 250px); display: flex; flex-direction: column; min-height: 100vh; overflow-x: clip; }
 
     /* -- TOPBAR -- */
     .ds-topbar {
@@ -274,8 +274,7 @@
     .ds-filter-tab.active { background: #f5f3ff; color: #7c3aed; border-color: #ddd6fe; }
 
     /* -- ORDERS TABLE -- */
-    #orders-section { overflow: hidden; }
-    .ds-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .ds-table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
     .ds-table-wrap::-webkit-scrollbar { display: none; }
     .ds-table { width: 100%; border-collapse: collapse; min-width: 560px; }
     .ds-table th {
@@ -565,6 +564,7 @@
 
       /* Right panel: comes first (order -1), full width, vertical stack */
       .ds-right { order: -1; width: 100%; }
+      .ds-center { width: 100%; }
 
       /* Hide activity and announcements; show balance + quick actions */
       .ds-right > div:nth-child(3),
@@ -683,6 +683,17 @@
       .ds-sec-title { font-size: 1rem; }
     }
   </style>
+<!-- TikTok Pixel Code Start -->
+<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
+var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
+;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+  ttq.load('DAGMGFJC77UC8FLJUHS0');
+  ttq.page();
+}(window, document, 'ttq');
+</script>
+<!-- TikTok Pixel Code End -->
 </head>
 <body>
 
@@ -2028,31 +2039,27 @@
         } catch(e) { /* silent */ }
       })();
 
-      /* Touch-scroll for orders table */
+
+      /* Horizontal swipe for orders table (JS sets scrollLeft directly on GPU layer) */
       (() => {
-        const card = document.getElementById('orders-section');
-        const wrap = card?.querySelector('.ds-table-wrap');
-        if (!wrap || !card) return;
-        // Pin wrap width to the card's actual rendered width so table always overflows it
-        function pinWidth() {
-          const w = card.clientWidth;
-          if (w > 0) { wrap.style.width = w + 'px'; wrap.style.maxWidth = w + 'px'; }
-        }
-        pinWidth();
-        window.addEventListener('resize', pinWidth);
-        // JS-driven horizontal swipe (reliable on all mobile browsers)
-        let startX = 0, startScroll = 0, active = false;
+        const wrap = document.querySelector('#orders-section .ds-table-wrap');
+        if (!wrap) return;
+        let startX = 0, startScroll = 0, isH = false, decided = false, startY = 0;
         wrap.addEventListener('touchstart', e => {
-          startX = e.touches[0].clientX;
-          startScroll = wrap.scrollLeft;
-          active = true;
+          startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+          startScroll = wrap.scrollLeft; isH = false; decided = false;
         }, { passive: true });
         wrap.addEventListener('touchmove', e => {
-          if (!active) return;
-          const dx = startX - e.touches[0].clientX;
-          if (Math.abs(dx) > 3) wrap.scrollLeft = startScroll + dx;
-        }, { passive: true });
-        wrap.addEventListener('touchend', () => { active = false; });
+          const dx = e.touches[0].clientX - startX;
+          const dy = e.touches[0].clientY - startY;
+          if (!decided && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) {
+            isH = Math.abs(dx) > Math.abs(dy); decided = true;
+          }
+          if (!isH) return;
+          e.preventDefault();
+          wrap.scrollLeft = startScroll - dx;
+        }, { passive: false });
+        wrap.addEventListener('touchend', () => { decided = false; });
       })();
 
       /* Sign out (sidebar + dropdown) */

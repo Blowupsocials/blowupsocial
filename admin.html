@@ -346,6 +346,17 @@
       .sec-hdr-left h2 { font-size: 0.97rem; }
     }
   </style>
+<!-- TikTok Pixel Code Start -->
+<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
+var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
+;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+  ttq.load('DAGMGFJC77UC8FLJUHS0');
+  ttq.page();
+}(window, document, 'ttq');
+</script>
+<!-- TikTok Pixel Code End -->
 </head>
 <body>
   <script src="/js/supabase.min.js"></script>
@@ -355,11 +366,19 @@
 
   <!-- -- SIDEBAR -- -->
   <nav class="sb" id="sidebar">
-    <div class="sb-logo">
-      <div class="sb-logo-mark">B</div>
-      <div class="sb-logo-text">
-        <div class="sb-logo-name">blowup</div>
-        <div class="sb-logo-sub">social</div>
+    <div style="position:relative;flex-shrink:0">
+      <div class="sb-logo" id="logo-btn" onclick="toggleLogoMenu()" style="cursor:pointer;user-select:none">
+        <div class="sb-logo-mark">B</div>
+        <div class="sb-logo-text">
+          <div class="sb-logo-name">blowup</div>
+          <div class="sb-logo-sub">social</div>
+        </div>
+        <i class="fas fa-chevron-down" id="logo-chevron" style="margin-left:auto;font-size:0.6rem;color:#bbb;transition:transform 0.2s"></i>
+      </div>
+      <div id="logo-menu" style="display:none;position:absolute;left:10px;right:10px;top:calc(100% + 4px);background:#fff;border:1px solid #ece9ff;border-radius:10px;box-shadow:0 6px 24px rgba(124,58,237,0.12);z-index:400;overflow:hidden;font-size:0.85rem">
+        <a href="#" onclick="event.preventDefault();showSection('settings');closeLogoMenu()" style="display:flex;align-items:center;gap:10px;padding:11px 16px;color:#222;text-decoration:none;transition:background 0.12s" onmouseover="this.style.background='#f5f3ff'" onmouseout="this.style.background=''"><i class="fas fa-gear" style="color:#7c3aed;width:14px;text-align:center"></i> Settings</a>
+        <div style="height:1px;background:#f0f0f0;margin:0 10px"></div>
+        <button onclick="adminSignOut()" style="display:flex;align-items:center;gap:10px;padding:11px 16px;width:100%;background:none;border:none;text-align:left;font-size:0.85rem;font-family:inherit;color:#ef4444;cursor:pointer;transition:background 0.12s" onmouseover="this.style.background='#fff5f5'" onmouseout="this.style.background=''"><i class="fas fa-right-from-bracket" style="width:14px;text-align:center"></i> Sign Out</button>
       </div>
     </div>
 
@@ -369,16 +388,14 @@
 
       <div class="sb-sec">Manage</div>
       <a href="#" data-section="users"         class="sb-item">Users</a>
-      <a href="#" data-section="orders"        class="sb-item">Orders</a>
-      <a href="#" data-section="acct-orders"   class="sb-item">Acct Store</a>
-      <a href="#" data-section="funds"         class="sb-item">Fund Requests</a>
+      <a href="#" data-section="orders"        class="sb-item">Social Boost Purchases</a>
+      <a href="#" data-section="acct-orders"   class="sb-item">Account Store Purchases</a>
       <a href="#" data-section="transactions"  class="sb-item">Transactions</a>
       <a href="#" data-section="services"      class="sb-item">Services</a>
       <a href="#" data-section="categories"    class="sb-item">Categories</a>
 
       <div class="sb-sec">Content</div>
       <a href="#" data-section="announcements" class="sb-item">Announcements</a>
-      <a href="#" data-section="testimonials"  class="sb-item">Testimonials</a>
 
       <div class="sb-sec">Finance</div>
       <a href="#" data-section="expenses"      class="sb-item">Expenses &amp; Profit</a>
@@ -388,7 +405,7 @@
       <a href="#" data-section="settings"      class="sb-item">Settings</a>
       <a href="#" data-section="apikeys"       class="sb-item">API Keys</a>
       <a href="#" data-section="coupons"       class="sb-item">Coupons</a>
-      <a href="dashboard.html" class="sb-item" style="color:#7c3aed;font-weight:600;margin-top:8px">→ User Dashboard</a>
+<a href="#" class="sb-item" onclick="adminSignOut();return false;" style="color:#ef4444;margin-top:4px"><i class="fas fa-right-from-bracket" style="width:14px;text-align:center;margin-right:2px"></i> Sign Out</a>
     </div>
 
     <div class="sb-foot">
@@ -412,15 +429,6 @@
       </div>
       <div class="tb-right">
         <button class="sb-toggle" onclick="toggleSidebar()" aria-label="Menu"><i class="fas fa-bars"></i></button>
-        <div class="tb-search">
-          <i class="fas fa-magnifying-glass"></i>
-          <input type="text" placeholder="Search anything..." />
-        </div>
-        <button class="tb-quick"><i class="fas fa-bolt"></i> Quick Actions</button>
-        <button class="tb-bell">
-          <i class="fas fa-bell"></i>
-          <span class="tb-badge">8</span>
-        </button>
         <div class="tb-profile" onclick="adminSignOut()" style="cursor:pointer" title="Sign out">
           <div class="tb-profile-ava">AD</div>
           <div class="tb-profile-info">
@@ -445,7 +453,7 @@
               <span class="stat-label">Total Users</span>
             </div>
             <div class="stat-num" id="stat-users">...</div>
-            <div class="stat-trend" id="trend-users"><span class="t-lbl">All time</span></div>
+            <div class="stat-trend"><span class="t-lbl">All time</span></div>
           </div>
           <div class="stat-spark" id="spark-users"></div>
         </div>
@@ -457,7 +465,7 @@
               <span class="stat-label">Total Orders</span>
             </div>
             <div class="stat-num" id="stat-orders">...</div>
-            <div class="stat-trend" id="trend-orders"><span class="t-lbl">All time</span></div>
+            <div class="stat-trend"><span class="t-lbl">All time</span></div>
           </div>
           <div class="stat-spark" id="spark-orders"></div>
         </div>
@@ -465,11 +473,11 @@
         <div class="stat-card">
           <div class="stat-body">
             <div class="stat-top">
-              <div class="stat-icon si-gn"><i class="fas fa-naira-sign"></i></div>
-              <span class="stat-label">Total Revenue</span>
+              <div class="stat-icon si-gn"><i class="fas fa-wallet"></i></div>
+              <span class="stat-label">Total Funded</span>
             </div>
             <div class="stat-num" id="stat-revenue">...</div>
-            <div class="stat-trend" id="trend-revenue"><span class="t-lbl">Completed orders</span></div>
+            <div class="stat-trend"><span class="t-lbl">Total in platform</span></div>
           </div>
           <div class="stat-spark" id="spark-revenue"></div>
         </div>
@@ -477,11 +485,11 @@
         <div class="stat-card">
           <div class="stat-body">
             <div class="stat-top">
-              <div class="stat-icon si-or"><i class="far fa-clock"></i></div>
-              <span class="stat-label">Pending Orders</span>
+              <div class="stat-icon si-or"><i class="fas fa-arrow-trend-up"></i></div>
+              <span class="stat-label">Service Spend</span>
             </div>
             <div class="stat-num" id="stat-pending">...</div>
-            <div class="stat-trend" id="trend-pending"><span class="t-lbl">Awaiting fulfillment</span></div>
+            <div class="stat-trend"><span class="t-lbl">Total spent on services</span></div>
           </div>
           <div class="stat-spark" id="spark-pending"></div>
         </div>
@@ -489,11 +497,11 @@
         <div class="stat-card">
           <div class="stat-body">
             <div class="stat-top">
-              <div class="stat-icon si-bl"><i class="fas fa-users"></i></div>
-              <span class="stat-label">Active Users</span>
+              <div class="stat-icon si-bl"><i class="fas fa-wallet"></i></div>
+              <span class="stat-label">Funded Users</span>
             </div>
             <div class="stat-num" id="stat-tickets">...</div>
-            <div class="stat-trend"><span class="t-up"><i class="fas fa-arrow-up"></i></span><span class="t-lbl">last 30 days</span></div>
+            <div class="stat-trend"><span class="t-lbl">with wallet balance</span></div>
           </div>
           <div class="stat-spark" id="spark-tickets"></div>
         </div>
@@ -505,7 +513,7 @@
         <!-- Revenue chart -->
         <div class="card">
           <div class="card-hdr">
-            <div class="card-title">Revenue Overview</div>
+            <div class="card-title">Funding Overview</div>
             <div class="card-hdr-r">
               <button class="btn-sm"><i class="fas fa-calendar-days"></i> This Month <i class="fas fa-chevron-down"></i></button>
               <button class="btn-sm"><i class="fas fa-arrow-down"></i> Export</button>
@@ -518,7 +526,7 @@
         <div class="card">
           <div class="card-hdr">
             <div class="card-title">Top Selling Services</div>
-            <button class="btn-link">View All</button>
+            <button class="btn-link" onclick="showSection('orders')">View All</button>
           </div>
           <table class="svc-tbl">
             <thead>
@@ -569,62 +577,6 @@
       <!-- BOTTOM ROW -->
       <div class="bot-row">
 
-        <!-- Recent orders -->
-        <div class="card">
-          <div class="card-hdr">
-            <div class="card-title">Recent Orders</div>
-            <button class="btn-link">View All</button>
-          </div>
-          <table class="ord-tbl">
-            <thead>
-              <tr>
-                <th>User</th>
-                <th>Service</th>
-                <th>Qty</th>
-                <th>Status</th>
-                <th>Time</th>
-              </tr>
-            </thead>
-            <tbody id="recent-orders-body">
-              <tr>
-                <td><div class="ord-user"><div class="ord-ava" style="background:linear-gradient(135deg,#7c3aed,#3b82f6)">JD</div><span class="ord-uname">John Doe</span></div></td>
-                <td class="ord-svc">Instagram Followers</td>
-                <td class="ord-qty">5,000</td>
-                <td><span class="badge b-completed">Completed</span></td>
-                <td class="ord-time">2m ago</td>
-              </tr>
-              <tr>
-                <td><div class="ord-user"><div class="ord-ava" style="background:linear-gradient(135deg,#ec4899,#f59e0b)">JS</div><span class="ord-uname">Jane Smith</span></div></td>
-                <td class="ord-svc">TikTok Views</td>
-                <td class="ord-qty">10,000</td>
-                <td><span class="badge b-progress">In Progress</span></td>
-                <td class="ord-time">8m ago</td>
-              </tr>
-              <tr>
-                <td><div class="ord-user"><div class="ord-ava" style="background:linear-gradient(135deg,#10b981,#3b82f6)">MJ</div><span class="ord-uname">Mike Johnson</span></div></td>
-                <td class="ord-svc">YouTube Subscribers</td>
-                <td class="ord-qty">1,000</td>
-                <td><span class="badge b-completed">Completed</span></td>
-                <td class="ord-time">15m ago</td>
-              </tr>
-              <tr>
-                <td><div class="ord-user"><div class="ord-ava" style="background:linear-gradient(135deg,#f59e0b,#ec4899)">SW</div><span class="ord-uname">Sarah Wilson</span></div></td>
-                <td class="ord-svc">Twitter Followers</td>
-                <td class="ord-qty">2,500</td>
-                <td><span class="badge b-pending">Pending</span></td>
-                <td class="ord-time">22m ago</td>
-              </tr>
-              <tr>
-                <td><div class="ord-user"><div class="ord-ava" style="background:linear-gradient(135deg,#7c3aed,#ec4899)">DB</div><span class="ord-uname">David Brown</span></div></td>
-                <td class="ord-svc">Instagram Followers</td>
-                <td class="ord-qty">3,000</td>
-                <td><span class="badge b-cancelled">Cancelled</span></td>
-                <td class="ord-time">35m ago</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
         <!-- User statistics -->
         <div class="card">
           <div class="card-hdr">
@@ -634,16 +586,12 @@
           <div class="donut-wrap"><canvas id="donut-chart"></canvas></div>
           <div class="legend-list">
             <div class="legend-row">
-              <div class="legend-l"><div class="leg-dot" style="background:#7c3aed"></div><span class="leg-name">Active Users</span></div>
+              <div class="legend-l"><div class="leg-dot" style="background:#7c3aed"></div><span class="leg-name">Active Users (Funded)</span></div>
               <div class="legend-r"><span class="leg-count" id="leg-active">...</span><span class="leg-pct" id="leg-pct-active"></span></div>
             </div>
             <div class="legend-row">
-              <div class="legend-l"><div class="leg-dot" style="background:#ec4899"></div><span class="leg-name">Returning Users</span></div>
+              <div class="legend-l"><div class="leg-dot" style="background:#e5e7eb"></div><span class="leg-name">Inactive Users</span></div>
               <div class="legend-r"><span class="leg-count" id="leg-inactive">...</span><span class="leg-pct" id="leg-pct-inactive"></span></div>
-            </div>
-            <div class="legend-row">
-              <div class="legend-l"><div class="leg-dot" style="background:#10b981"></div><span class="leg-name">New This Month</span></div>
-              <div class="legend-r"><span class="leg-count" id="leg-new">...</span><span class="leg-pct" id="leg-pct-new"></span></div>
             </div>
           </div>
           <div class="online-bar">
@@ -727,7 +675,7 @@
       <!-- -- ORDERS -- -->
       <div id="sec-orders" class="admin-section">
         <div class="sec-hdr">
-          <div class="sec-hdr-left"><h2>Orders</h2><p>View and manage all customer orders</p></div>
+          <div class="sec-hdr-left"><h2>Social Boost Purchases</h2><p>View and manage SMM social media orders</p></div>
           <div class="sec-hdr-right">
             <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="order-search" placeholder="Search orders..." oninput="filterOrders(this.value)"></div>
           </div>
@@ -735,8 +683,8 @@
         <div class="tbl-card">
           <div class="tbl-wrap">
             <table class="data-tbl">
-              <thead><tr><th>Order ID</th><th>User</th><th>Service</th><th>Qty</th><th>Charge</th><th>Status</th><th>Date</th></tr></thead>
-              <tbody id="orders-tbody"><tr><td colspan="7" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading orders...</td></tr></tbody>
+              <thead><tr><th>Order ID</th><th>User</th><th>Service</th><th>Target Link</th><th>Qty</th><th>Charge</th><th>Status</th><th>Date</th></tr></thead>
+              <tbody id="orders-tbody"><tr><td colspan="8" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading orders...</td></tr></tbody>
             </table>
           </div>
           <div class="tbl-foot"><span id="orders-count">...</span><div class="page-btns" id="orders-pages"></div></div>
@@ -746,7 +694,7 @@
       <!-- -- ACCOUNT STORE ORDERS -- -->
       <div id="sec-acct-orders" class="admin-section">
         <div class="sec-hdr">
-          <div class="sec-hdr-left"><h2>Acct Store Orders</h2><p>Account purchases from the AccsZone store ... manage status and issue refunds</p></div>
+          <div class="sec-hdr-left"><h2>Account Store Purchases</h2><p>Account purchases from the AccsZone store — manage status and issue refunds</p></div>
           <div class="sec-hdr-right">
             <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="acct-search" placeholder="Search by user or title..." oninput="filterAcctOrders(this.value)"></div>
           </div>
@@ -765,7 +713,7 @@
       <!-- -- SERVICES -- -->
       <div id="sec-services" class="admin-section">
         <div class="sec-hdr">
-          <div class="sec-hdr-left"><h2>Services</h2><p>Live Owlet SMM service catalog (2... markup applied for display)</p></div>
+          <div class="sec-hdr-left"><h2>Services</h2><p id="svc-subhead">Live Owlet SMM service catalog — markup applied for display</p></div>
           <div class="sec-hdr-right">
             <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="svc-search" placeholder="Search services..." oninput="filterServices()"></div>
           </div>
@@ -797,32 +745,18 @@
         </div>
       </div>
 
-      <!-- -- ADD FUNDS REQUESTS -- -->
-      <div id="sec-funds" class="admin-section">
-        <div class="sec-hdr">
-          <div class="sec-hdr-left"><h2>Add Funds Requests</h2><p>Review and approve user deposit requests</p></div>
-        </div>
-        <div class="tbl-card">
-          <div class="tbl-wrap">
-            <table class="data-tbl">
-              <thead><tr><th>User</th><th>Amount</th><th>Method</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody id="funds-tbody"><tr><td colspan="6" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading requests...</td></tr></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
       <!-- -- TRANSACTIONS -- -->
       <div id="sec-transactions" class="admin-section">
         <div class="sec-hdr">
-          <div class="sec-hdr-left"><h2>Transactions</h2><p>All orders and fund deposits across every user</p></div>
+          <div class="sec-hdr-left"><h2>Transactions</h2><p>Wallet credits and debits — all funding activity per user</p></div>
           <div class="sec-hdr-right">
             <select id="txn-filter" onchange="filterTxns()" style="padding:7px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.77rem;font-family:inherit;color:var(--t1);background:var(--sur);cursor:pointer;">
-              <option value="all">All Types</option>
-              <option value="order">Orders (Charges)</option>
-              <option value="fund">Deposits</option>
+              <option value="all">All</option>
+              <option value="completed">Completed</option>
+              <option value="pending">Pending</option>
+              <option value="rejected">Rejected</option>
             </select>
-            <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="txn-search" placeholder="Search user ID..." oninput="filterTxns()"></div>
+            <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="txn-search" placeholder="Search user..." oninput="filterTxns()"></div>
           </div>
         </div>
         <div class="tbl-card">
@@ -831,12 +765,11 @@
               <thead><tr>
                 <th>Type</th>
                 <th>User</th>
-                <th>Description</th>
                 <th>Amount (NGN)</th>
                 <th>Status</th>
                 <th>Date</th>
               </tr></thead>
-              <tbody id="txn-tbody"><tr><td colspan="6" class="tbl-loading"><i class="fas fa-circle-notch fa-spin"></i> Loading...</td></tr></tbody>
+              <tbody id="txn-tbody"><tr><td colspan="5" class="tbl-loading"><i class="fas fa-circle-notch fa-spin"></i> Loading...</td></tr></tbody>
             </table>
           </div>
           <div class="tbl-foot"><span id="txn-count" style="color:var(--t3);font-size:0.72rem;">...</span></div>
@@ -961,30 +894,12 @@
       <!-- -- API KEYS -- -->
       <div id="sec-apikeys" class="admin-section">
         <div class="sec-hdr">
-          <div class="sec-hdr-left"><h2>API Keys</h2><p>Manage third-party API integrations</p></div>
+          <div class="sec-hdr-left"><h2>API Keys</h2><p>External API key management</p></div>
         </div>
-        <div class="tbl-card" style="padding:24px;display:flex;flex-direction:column;gap:16px">
-          <div style="padding:16px;border:1px solid #e8eaf0;border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px">
-            <div style="display:flex;align-items:center;gap:12px">
-              <div style="width:40px;height:40px;border-radius:10px;background:#f5f0ff;display:flex;align-items:center;justify-content:center;color:var(--pu);font-size:1rem"><i class="fas fa-bolt"></i></div>
-              <div><div style="font-size:0.82rem;font-weight:700;color:var(--t1)">Owlet API</div><div style="font-size:0.7rem;color:var(--t3)">SMM services ... stored securely as Vercel env var</div></div>
-            </div>
-            <span class="badge b-active"><i class="fas fa-check" style="font-size:0.55rem"></i> Active</span>
-          </div>
-          <div style="padding:16px;border:1px solid #e8eaf0;border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px">
-            <div style="display:flex;align-items:center;gap:12px">
-              <div style="width:40px;height:40px;border-radius:10px;background:#fdf2f8;display:flex;align-items:center;justify-content:center;color:var(--pk);font-size:1rem"><i class="fas fa-user-group"></i></div>
-              <div><div style="font-size:0.82rem;font-weight:700;color:var(--t1)">AccsZone API</div><div style="font-size:0.7rem;color:var(--t3)">Social accounts reselling ... stored securely as Vercel env var</div></div>
-            </div>
-            <span class="badge b-active"><i class="fas fa-check" style="font-size:0.55rem"></i> Active</span>
-          </div>
-          <div style="padding:16px;border:1px solid #e8eaf0;border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px">
-            <div style="display:flex;align-items:center;gap:12px">
-              <div style="width:40px;height:40px;border-radius:10px;background:#ecfdf5;display:flex;align-items:center;justify-content:center;color:var(--gn);font-size:1rem"><i class="fas fa-database"></i></div>
-              <div><div style="font-size:0.82rem;font-weight:700;color:var(--t1)">Supabase</div><div style="font-size:0.7rem;color:var(--t3)">Database & Auth ... public anon key in client JS</div></div>
-            </div>
-            <span class="badge b-active"><i class="fas fa-check" style="font-size:0.55rem"></i> Active</span>
-          </div>
+        <div class="coming-soon">
+          <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,#ede9fe,#fce7f3);display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:16px"><i class="fas fa-key" style="color:#7c3aed"></i></div>
+          <h3 style="font-size:1.05rem;font-weight:700;color:var(--t1);margin-bottom:6px">Coming Soon</h3>
+          <p style="font-size:0.82rem;color:var(--t3);max-width:320px;text-align:center">API key management will allow you to rotate keys, set rate limits, and monitor usage across all integrations.</p>
         </div>
       </div>
 
@@ -1113,6 +1028,15 @@
                 <span style="font-size:0.75rem;color:var(--t3)">Balance</span>
                 <span class="badge b-warn" id="prov-peakerr-bal" style="font-size:0.72rem">Loading...</span>
               </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:9px">
+                <span style="font-size:0.75rem;color:var(--t3)">Markup</span>
+                <div style="display:flex;align-items:center;gap:6px">
+                  <span style="font-size:0.75rem;color:var(--t3)">×</span>
+                  <input type="number" id="prov-markup-owlet" min="1" step="0.1" placeholder="e.g. 2"
+                    style="width:70px;padding:5px 8px;border-radius:7px;border:1px solid #d1d5db;font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);text-align:right"
+                    oninput="saveMarkup('owlet', this.value)" />
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1142,6 +1066,15 @@
               <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:9px">
                 <span style="font-size:0.75rem;color:var(--t3)">Balance</span>
                 <span class="badge b-warn" id="prov-accs-bal" style="font-size:0.72rem">Loading...</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:9px">
+                <span style="font-size:0.75rem;color:var(--t3)">Markup</span>
+                <div style="display:flex;align-items:center;gap:6px">
+                  <span style="font-size:0.75rem;color:var(--t3)">×</span>
+                  <input type="number" id="prov-markup-accszone" min="1" step="0.1" placeholder="e.g. 2"
+                    style="width:70px;padding:5px 8px;border-radius:7px;border:1px solid #d1d5db;font-size:0.8rem;font-family:inherit;color:var(--t1);background:var(--sur);text-align:right"
+                    oninput="saveMarkup('accszone', this.value)" />
+                </div>
               </div>
             </div>
           </div>
@@ -1304,6 +1237,23 @@
       document.getElementById('sb-overlay').classList.remove('open');
     }
 
+    function toggleLogoMenu() {
+      const menu = document.getElementById('logo-menu');
+      const chev = document.getElementById('logo-chevron');
+      const isOpen = menu.style.display !== 'none';
+      menu.style.display = isOpen ? 'none' : 'block';
+      chev.style.transform = isOpen ? '' : 'rotate(180deg)';
+    }
+    function closeLogoMenu() {
+      const menu = document.getElementById('logo-menu');
+      const chev = document.getElementById('logo-chevron');
+      if (menu) menu.style.display = 'none';
+      if (chev) chev.style.transform = '';
+    }
+    document.addEventListener('click', e => {
+      if (!document.getElementById('logo-btn')?.contains(e.target)) closeLogoMenu();
+    });
+
     /* -- Sparkline generator -- */
     function sparkline(data, color) {
       const w = 68, h = 36, p = 2;
@@ -1358,7 +1308,7 @@
             padding: 12, cornerRadius: 8, displayColors: false,
             callbacks: {
               title: i => i[0].label,
-              label: i => `Revenue: ₦${Number(i.raw).toLocaleString('en-NG')}`,
+              label: i => `Funded: ₦${Number(i.raw).toLocaleString('en-NG')}`,
             }
           }
         },
@@ -1400,11 +1350,10 @@
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--t1').trim() || '#0f0e1c';
         ctx.font = '800 19px "Space Grotesk", sans-serif';
-        ctx.fillText(document.getElementById('leg-active') ? (
-          parseInt(document.getElementById('leg-active').textContent.replace(/,/g,'')) +
-          parseInt(document.getElementById('leg-inactive').textContent.replace(/,/g,'')) +
-          parseInt(document.getElementById('leg-new').textContent.replace(/,/g,''))
-        ).toLocaleString('en-NG') : '12,457', cx, cy - 9);
+        ctx.fillText(
+          (document.getElementById('online-total')?.textContent || '…'),
+          cx, cy - 9
+        );
         ctx.fillStyle = '#8b8fa8';
         ctx.font = '400 10.5px Inter, sans-serif';
         ctx.fillText('Total Users', cx, cy + 10);
@@ -1417,8 +1366,8 @@
       plugins: [centerPlugin],
       data: {
         datasets: [{
-          data: [1, 1, 1],
-          backgroundColor: ['#7c3aed', '#ec4899', '#10b981'],
+          data: [1, 1],
+          backgroundColor: ['#7c3aed', '#10b981'],
           borderWidth: 0, hoverOffset: 3,
         }]
       },
@@ -1435,10 +1384,10 @@
     const SEC_TITLES = {
       dashboard:     ['Welcome back, Admin!', "Here's what's happening on your platform today."],
       users:         ['Users', 'Manage all registered users'],
-      orders:        ['Orders', 'View and manage all customer orders'],
+      orders:        ['Social Boost Purchases', 'View and manage SMM social media orders'],
+      'acct-orders': ['Account Store Purchases', 'View and manage account store orders'],
       services:      ['Services', 'Manage available SMM services'],
       categories:    ['Categories', 'Organise services by category'],
-      funds:         ['Add Funds Requests', 'Review and approve deposit requests'],
       transactions:  ['Transactions', 'Full payment transaction history'],
       announcements: ['Announcements', 'Post updates to your users'],
       pages:         ['Pages', 'Manage static content pages'],
@@ -1478,7 +1427,6 @@
       if (name === 'users')         await loadUsers();
       if (name === 'orders')        await loadOrders();
       if (name === 'acct-orders')   await loadAcctOrders();
-      if (name === 'funds')         await loadFunds();
       if (name === 'transactions')  await loadTransactions();
       if (name === 'reports')       await loadReports();
       if (name === 'providers')     await loadProviders();
@@ -1527,7 +1475,9 @@
       const tbody = document.getElementById('svc-tbody');
       document.getElementById('svc-count').textContent = `${svcs.length} services`;
       if (!svcs.length) { tbody.innerHTML = `<tr><td colspan="7" class="tbl-loading">No services</td></tr>`; return; }
-      const MARKUP = 2;
+      const MARKUP = getMarkup('owlet');
+      const sh = document.getElementById('svc-subhead');
+      if (sh) sh.textContent = `Live Owlet SMM service catalog — ×${MARKUP} markup applied`;
       tbody.innerHTML = svcs.map(s => {
         const rate = Math.round(parseFloat(s.rate || 0) * MARKUP);
         return `<tr>
@@ -1553,7 +1503,7 @@
         const r = await fetch('/api/owlet', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'services' }) });
         const svcs = await r.json();
         if (!Array.isArray(svcs)) throw new Error('bad response');
-        const MARKUP = 2;
+        const MARKUP = getMarkup('owlet');
         const map = {};
         svcs.forEach(s => {
           const c = s.category || 'Uncategorised';
@@ -1791,7 +1741,7 @@
         const suspended = _suspendedUsers.has(u.id);
         const walletCell = ngn > 0
           ? `<span class="wallet-ngn">₦${ngn.toLocaleString('en-NG')}</span>`
-          : `<span class="wallet-zero">?0</span>`;
+          : `<span class="wallet-zero">₦0</span>`;
         const safeName = name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
         return `<tr style="${suspended ? 'opacity:0.6' : ''}">
           <td><div class="u-cell">
@@ -1823,9 +1773,11 @@
     let allOrders = [];
     async function loadOrders() {
       const tbody = document.getElementById('orders-tbody');
-      const { data, error } = await db.from('orders').select('*').order('created_at', { ascending: false });
+      const { data, error } = await db.from('orders')
+        .select('*, profiles(full_name, email)')
+        .order('created_at', { ascending: false });
       if (error || !data?.length) {
-        tbody.innerHTML = `<tr><td colspan="7" class="tbl-loading">No orders found</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="tbl-loading">No orders found</td></tr>`;
         document.getElementById('orders-count').textContent = '0 orders';
         return;
       }
@@ -1836,23 +1788,26 @@
     function renderOrders(orders) {
       const tbody = document.getElementById('orders-tbody');
       document.getElementById('orders-count').textContent = `${orders.length} order${orders.length !== 1 ? 's' : ''}`;
-      if (!orders.length) { tbody.innerHTML = `<tr><td colspan="7" class="tbl-loading">No orders match your search</td></tr>`; return; }
+      if (!orders.length) { tbody.innerHTML = `<tr><td colspan="8" class="tbl-loading">No orders match your search</td></tr>`; return; }
       tbody.innerHTML = orders.map(o => {
-        const st     = o.status || 'Pending';
-        const cls    = STATUS_CLASS[st] || 'b-pending';
-        const charge = parseFloat(o.amount || 0);
-        const ngn    = Math.round(charge * USD_TO_NGN);
-        const date   = o.created_at ? new Date(o.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'2-digit' }) : '...';
-        const ordId  = (o.id || '').toString().slice(0,8).toUpperCase();
+        const st      = o.status || 'Pending';
+        const charge  = parseFloat(o.amount || 0);
+        const ngn     = Math.round(charge * USD_TO_NGN);
+        const date    = o.created_at ? new Date(o.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'2-digit' }) : '...';
+        const userName = o.profiles?.full_name || o.profiles?.email || (o.user_id||'').slice(0,8)+'…';
+        const linkCell = o.link
+          ? `<a href="${o.link}" target="_blank" style="color:var(--pu);font-size:0.7rem;word-break:break-all;max-width:160px;display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle" title="${o.link}">${o.link.replace(/https?:\/\/(www\.)?/,'').split('?')[0]}</a>`
+          : `<span style="color:var(--t3);font-size:0.7rem">—</span>`;
         return `<tr>
-          <td class="ord-id">#${ordId}</td>
-          <td style="color:var(--t2);font-size:0.74rem;font-family:'Space Grotesk',sans-serif">${(o.user_id||'').slice(0,8)}...</td>
-          <td class="ord-svc">${o.service ? 'Svc #'+o.service : '...'}</td>
+          <td class="ord-id" title="${o.order_ref||''}">#${o.id}</td>
+          <td style="font-size:0.74rem"><div style="font-weight:600;color:var(--t1)">${userName}</div>${o.order_ref ? `<div style="color:var(--t3);font-size:0.68rem">${o.order_ref}</div>` : ''}</td>
+          <td class="ord-svc">${o.service || '...'}</td>
+          <td>${linkCell}</td>
           <td class="ord-qty">${Number(o.quantity||0).toLocaleString()}</td>
           <td class="wallet-ngn">₦${ngn.toLocaleString('en-NG')}</td>
           <td>
             <select class="status-sel" onchange="updateOrderStatus('${o.id}',this.value,this)">
-              ${['Pending','In Progress','Completed','Cancelled'].map(s=>`<option${s===st?' selected':''}>${s}</option>`).join('')}
+              ${['Pending','Processing','In Progress','Completed','Cancelled'].map(s=>`<option${s===st?' selected':''}>${s}</option>`).join('')}
             </select>
           </td>
           <td style="color:var(--t3);font-size:0.72rem;white-space:nowrap">${date}</td>
@@ -1863,8 +1818,11 @@
     function filterOrders(q) {
       const lq = q.toLowerCase();
       renderOrders(allOrders.filter(o =>
-        (o.id||'').toLowerCase().includes(lq) ||
-        (o.user_id||'').toLowerCase().includes(lq) ||
+        String(o.id||'').includes(lq) ||
+        (o.service||'').toLowerCase().includes(lq) ||
+        (o.profiles?.full_name||'').toLowerCase().includes(lq) ||
+        (o.profiles?.email||'').toLowerCase().includes(lq) ||
+        (o.order_ref||'').toLowerCase().includes(lq) ||
         (o.status||'').toLowerCase().includes(lq)
       ));
     }
@@ -1885,7 +1843,9 @@
     let allAcctOrders = [];
     async function loadAcctOrders() {
       const tbody = document.getElementById('acct-orders-tbody');
-      const { data, error } = await db.from('account_orders').select('*').order('created_at', { ascending: false });
+      const { data, error } = await db.from('account_orders')
+        .select('*, profiles(full_name, email)')
+        .order('created_at', { ascending: false });
       if (error || !data?.length) {
         tbody.innerHTML = `<tr><td colspan="7" class="tbl-loading">No account store orders found</td></tr>`;
         document.getElementById('acct-orders-count').textContent = '0 orders';
@@ -1900,25 +1860,26 @@
       document.getElementById('acct-orders-count').textContent = `${rows.length} order${rows.length !== 1 ? 's' : ''}`;
       if (!rows.length) { tbody.innerHTML = `<tr><td colspan="7" class="tbl-loading">No orders match</td></tr>`; return; }
       tbody.innerHTML = rows.map(o => {
-        const st   = o.status || 'pending';
-        const cls  = st === 'complete' ? 'b-active' : st === 'refunded' ? 'b-cancelled' : 'b-pending';
-        const ngn  = Math.round(parseFloat(o.price_ngn || 0)).toLocaleString('en-NG');
-        const date = o.created_at ? new Date(o.created_at).toLocaleDateString('en-NG', {day:'numeric',month:'short',year:'2-digit'}) : '...';
-        const uid  = (o.user_id||'').slice(0,12);
+        const st       = o.status || 'pending';
+        const stLabel  = st === 'complete' ? 'Delivered' : st === 'refunded' ? 'Refunded' : st === 'failed' ? 'Failed' : 'Pending';
+        const cls      = st === 'complete' ? 'b-active' : st === 'refunded' ? 'b-cancelled' : st === 'failed' ? 'b-error' : 'b-pending';
+        const ngn      = Math.round(parseFloat(o.price_ngn || 0)).toLocaleString('en-NG');
+        const date     = o.created_at ? new Date(o.created_at).toLocaleDateString('en-NG', {day:'numeric',month:'short',year:'2-digit'}) : '...';
+        const userName = o.profiles?.full_name || o.profiles?.email || (o.user_id||'').slice(0,8)+'…';
         const hasCreds = o.credentials && (typeof o.credentials === 'object' ? Object.keys(o.credentials).length > 0 : String(o.credentials).trim());
         return `<tr>
-          <td class="ord-id">#${(o.id||'').toString().slice(0,8).toUpperCase()}</td>
-          <td style="color:var(--t2);font-size:0.74rem;font-family:'Space Grotesk',sans-serif">${uid}...</td>
+          <td class="ord-id">#${o.id}</td>
+          <td style="font-size:0.74rem"><div style="font-weight:600;color:var(--t1)">${userName}</div><div style="color:var(--t3);font-size:0.68rem">${o.profiles?.email || ''}</div></td>
           <td class="ord-svc" style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${(o.offer_title||'')}">
             ${o.offer_title || '...'}<br>
             <span style="color:var(--t3);font-size:0.68rem">${o.platform||''}</span>
           </td>
           <td class="wallet-ngn">₦${ngn}</td>
-          <td><span class="badge ${cls}">${st}</span></td>
+          <td><span class="badge ${cls}">${stLabel}</span></td>
           <td style="color:var(--t3);font-size:0.72rem;white-space:nowrap">${date}</td>
           <td style="display:flex;gap:6px;flex-wrap:wrap">
             ${hasCreds ? `<button class="act-btn" style="font-size:0.7rem;padding:4px 9px" onclick="viewAcctCreds('${o.id}')">Creds</button>` : ''}
-            ${st !== 'refunded' ? `<button class="act-btn" style="font-size:0.7rem;padding:4px 9px;background:#fef2f2;color:#dc2626;border-color:#fecaca" onclick="refundAcctOrder('${o.id}','${o.user_id}',${parseFloat(o.price_usd||0)})">Refund</button>` : ''}
+            ${st !== 'refunded' ? `<button class="act-btn" style="font-size:0.7rem;padding:4px 9px;background:#fef2f2;color:#dc2626;border-color:#fecaca" onclick="refundAcctOrder('${o.id}','${o.user_id}',${parseFloat(o.price_usd||0)})">Refund</button>` : '<span style="color:var(--t3);font-size:0.7rem">Refunded</span>'}
           </td>
         </tr>`;
       }).join('');
@@ -1927,7 +1888,9 @@
     function filterAcctOrders(q) {
       const lq = q.toLowerCase();
       renderAcctOrders(allAcctOrders.filter(o =>
-        (o.user_id||'').toLowerCase().includes(lq) ||
+        String(o.id||'').includes(lq) ||
+        (o.profiles?.full_name||'').toLowerCase().includes(lq) ||
+        (o.profiles?.email||'').toLowerCase().includes(lq) ||
         (o.offer_title||'').toLowerCase().includes(lq) ||
         (o.platform||'').toLowerCase().includes(lq) ||
         (o.status||'').toLowerCase().includes(lq)
@@ -1935,7 +1898,7 @@
     }
 
     function viewAcctCreds(orderId) {
-      const o = allAcctOrders.find(x => x.id === orderId);
+      const o = allAcctOrders.find(x => String(x.id) === String(orderId));
       if (!o || !o.credentials) return;
       const creds = typeof o.credentials === 'object'
         ? Object.entries(o.credentials).map(([k,v]) => `<strong>${k}:</strong> ${v}`).join('<br>')
@@ -1980,86 +1943,58 @@
       adminToast('Refund issued successfully', 'success');
     }
 
-    /* -- Funds Requests -- */
-    async function loadFunds() {
-      const tbody = document.getElementById('funds-tbody');
-      const { data, error } = await db.from('fund_requests').select('*').order('created_at', { ascending: false });
-      if (error || !data?.length) {
-        tbody.innerHTML = `<tr><td colspan="6" class="tbl-loading">No pending fund requests</td></tr>`;
-        return;
-      }
-      tbody.innerHTML = data.map(r => {
-        const ngn  = Math.round(parseFloat(r.amount||0)).toLocaleString('en-NG');
-        const date = r.created_at ? new Date(r.created_at).toLocaleDateString('en-NG',{day:'numeric',month:'short',year:'2-digit'}) : '...';
-        const st   = r.status || 'Pending';
-        const cls  = st === 'Approved' ? 'b-active' : st === 'Rejected' ? 'b-cancelled' : 'b-pending';
-        return `<tr>
-          <td style="color:var(--t2);font-size:0.74rem">${(r.user_id||'').slice(0,12)}...</td>
-          <td class="wallet-ngn">₦${ngn}</td>
-          <td style="color:var(--t2)">${r.method || 'Bank Transfer'}</td>
-          <td style="color:var(--t3);font-size:0.72rem">${date}</td>
-          <td><span class="badge ${cls}">${st}</span></td>
-          <td><div class="act-btns">
-            <button class="btn-icon btn-icon-gn" title="Approve" onclick="approveFund('${r.id}')"><i class="fas fa-check"></i></button>
-            <button class="btn-icon btn-icon-rd" title="Reject" onclick="rejectFund('${r.id}')"><i class="fas fa-times"></i></button>
-          </div></td>
-        </tr>`;
-      }).join('');
-    }
 
-    async function approveFund(id) {
-      await db.from('fund_requests').update({ status: 'Approved' }).eq('id', id);
-      loadedSec.delete('funds'); await loadFunds();
-    }
-    async function rejectFund(id) {
-      await db.from('fund_requests').update({ status: 'Rejected' }).eq('id', id);
-      loadedSec.delete('funds'); await loadFunds();
-    }
-
-    /* -- Transactions -- */
+    /* -- Transactions (wallet funding events only) -- */
     let allTxns = [];
     async function loadTransactions() {
       const tbody = document.getElementById('txn-tbody');
-      const [{ data: ords }, { data: funds }] = await Promise.all([
-        db.from('orders').select('id, user_id, service, amount, status, created_at').order('created_at', { ascending: false }),
-        db.from('fund_requests').select('id, user_id, amount, method, status, created_at').order('created_at', { ascending: false }),
-      ]);
-      const rows = [
-        ...(ords  || []).map(o => ({ type:'order', uid: o.user_id, desc: `Order ... Service #${o.service||'?'}`, amount: parseFloat(o.amount||0)*USD_TO_NGN, status: o.status||'Pending', ts: o.created_at })),
-        ...(funds || []).map(f => ({ type:'fund',  uid: f.user_id, desc: `Deposit  — ${f.method||'Bank Transfer'}`,   amount: parseFloat(f.amount||0),               status: f.status||'Pending', ts: f.created_at })),
-      ].sort((a,b) => new Date(b.ts) - new Date(a.ts));
-      allTxns = rows;
-      renderTxns(rows);
+      tbody.innerHTML = `<tr><td colspan="5" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>`;
+      const { data: funds, error } = await db.from('fund_requests')
+        .select('*, profiles(full_name, email)')
+        .order('created_at', { ascending: false });
+      if (error) { tbody.innerHTML = `<tr><td colspan="5" class="tbl-loading">Error loading transactions</td></tr>`; return; }
+      allTxns = funds || [];
+      renderTxns(allTxns);
     }
 
     function renderTxns(rows) {
       const tbody = document.getElementById('txn-tbody');
       document.getElementById('txn-count').textContent = `${rows.length} transaction${rows.length !== 1 ? 's' : ''}`;
-      if (!rows.length) { tbody.innerHTML = `<tr><td colspan="6" class="tbl-loading">No transactions found</td></tr>`; return; }
+      if (!rows.length) { tbody.innerHTML = `<tr><td colspan="5" class="tbl-loading">No wallet transactions found</td></tr>`; return; }
       tbody.innerHTML = rows.map(r => {
-        const cls  = STATUS_CLASS[r.status] || 'b-pending';
-        const date = r.ts ? new Date(r.ts).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'2-digit', hour:'2-digit', minute:'2-digit' }) : '...';
-        const typePill = r.type === 'order'
-          ? `<span class="badge" style="background:#fdf2f8;color:#ec4899">Charge</span>`
-          : `<span class="badge" style="background:#ecfdf5;color:#10b981">Deposit</span>`;
+        const st     = (r.status || 'pending').toLowerCase();
+        const cls    = st === 'completed' ? 'b-active' : st === 'rejected' ? 'b-cancelled' : 'b-pending';
+        const stLabel= st === 'completed' ? 'Completed' : st === 'rejected' ? 'Rejected' : 'Pending';
+        const amt    = parseFloat(r.amount || 0);
+        const isDebit= amt < 0;
+        const date   = r.created_at ? new Date(r.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'2-digit', hour:'2-digit', minute:'2-digit' }) : '...';
+        const userName = r.profiles?.full_name || r.profiles?.email || (r.user_id||'').slice(0,12)+'…';
+        const pill   = isDebit
+          ? `<span class="badge" style="background:#fef2f2;color:#dc2626">Debit</span>`
+          : `<span class="badge" style="background:#ecfdf5;color:#10b981">Credit</span>`;
         return `<tr>
-          <td>${typePill}</td>
-          <td style="font-size:0.73rem;color:var(--t3);font-family:'Space Grotesk',sans-serif">${(r.uid||'').slice(0,12)}...</td>
-          <td style="font-size:0.78rem;color:var(--t2)">${r.desc}</td>
-          <td class="wallet-ngn">₦${Math.round(r.amount).toLocaleString('en-NG')}</td>
-          <td><span class="badge ${cls}">${r.status}</span></td>
+          <td>${pill}</td>
+          <td style="font-size:0.74rem"><div style="font-weight:600;color:var(--t1)">${userName}</div><div style="color:var(--t3);font-size:0.68rem">${r.method || 'Bank Transfer'}</div></td>
+          <td class="wallet-ngn" style="color:${isDebit ? '#dc2626' : '#10b981'}">
+            ${isDebit ? '−' : '+'}₦${Math.abs(Math.round(amt)).toLocaleString('en-NG')}
+          </td>
+          <td><span class="badge ${cls}">${stLabel}</span></td>
           <td style="font-size:0.72rem;color:var(--t3);white-space:nowrap">${date}</td>
         </tr>`;
       }).join('');
     }
 
     function filterTxns() {
-      const type = document.getElementById('txn-filter').value;
-      const q    = (document.getElementById('txn-search').value || '').toLowerCase();
-      renderTxns(allTxns.filter(r =>
-        (type === 'all' || r.type === type) &&
-        (!q || (r.uid||'').toLowerCase().includes(q) || r.desc.toLowerCase().includes(q))
-      ));
+      const status = document.getElementById('txn-filter').value;
+      const q      = (document.getElementById('txn-search').value || '').toLowerCase();
+      renderTxns(allTxns.filter(r => {
+        const st = (r.status || '').toLowerCase();
+        const matchStatus = status === 'all' || st === status;
+        const matchSearch = !q || (r.profiles?.full_name||'').toLowerCase().includes(q)
+          || (r.profiles?.email||'').toLowerCase().includes(q)
+          || (r.method||'').toLowerCase().includes(q);
+        return matchStatus && matchSearch;
+      }));
     }
 
     /* -- Reports -- */
@@ -2070,7 +2005,7 @@
       /* Summary tiles */
       const completed  = rOrds.filter(o => o.status === 'Completed');
       const cancelled  = rOrds.filter(o => o.status === 'Cancelled');
-      const totalRev   = completed.reduce((s,o) => s + parseFloat(o.amount||0)*USD_TO_NGN, 0);
+      const totalRev   = rOrds.filter(o => o.status !== 'Cancelled').reduce((s,o) => s + parseFloat(o.amount||0)*USD_TO_NGN, 0);
       const cancelRate = rOrds.length ? ((cancelled.length / rOrds.length)*100).toFixed(1)+'%' : '0%';
       document.getElementById('rpt-rev').textContent         = `₦${Math.round(totalRev).toLocaleString('en-NG')}`;
       document.getElementById('rpt-orders').textContent      = rOrds.length.toLocaleString('en-NG');
@@ -2275,142 +2210,128 @@
       if (e1) console.error('[Admin] profiles count error:', e1);
       if (userCount != null) document.getElementById('stat-users').textContent = fmtNum(userCount);
 
-      /* Stat: total + pending orders */
-      const { count: orderCount, error: e2 } = await db.from('orders').select('*', { count: 'exact', head: true });
-      if (e2) console.error('[Admin] orders count error:', e2);
-      if (orderCount != null) {
-        document.getElementById('stat-orders').textContent = fmtNum(orderCount);
-        document.getElementById('tbl-total-orders').textContent = fmtNum(orderCount);
-      }
+      /* Stat: total orders = SMM orders + account store orders */
+      const [{ count: smmCount, error: e2a }, { count: acctCount, error: e2b }] = await Promise.all([
+        db.from('orders').select('*', { count: 'exact', head: true }),
+        db.from('account_orders').select('*', { count: 'exact', head: true }).neq('status', 'refunded'),
+      ]);
+      if (e2a) console.error('[Admin] orders count error:', e2a);
+      if (e2b) console.error('[Admin] acct orders count error:', e2b);
+      const orderCount = (smmCount || 0) + (acctCount || 0);
+      document.getElementById('stat-orders').textContent = fmtNum(orderCount);
+      document.getElementById('tbl-total-orders').textContent = fmtNum(orderCount);
 
-      const { count: pendingCount, error: e3 } = await db.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'Pending');
-      if (e3) console.error('[Admin] pending count error:', e3);
-      if (pendingCount != null) document.getElementById('stat-pending').textContent = fmtNum(pendingCount);
+      /* Stat: service spend = SMM orders + account store purchases */
+      const [{ data: revData, error: e3 }, { data: acctRevData, error: e3b }] = await Promise.all([
+        db.from('orders').select('amount').neq('status', 'Cancelled'),
+        db.from('account_orders').select('price_ngn').neq('status', 'refunded'),
+      ]);
+      if (e3) console.error('[Admin] orders revenue error:', e3);
+      if (e3b) console.error('[Admin] acct orders revenue error:', e3b);
+      const smmSpendNGN  = (revData     || []).reduce((s, r) => s + parseFloat(r.amount    || 0) * USD_TO_NGN, 0);
+      const acctSpendNGN = (acctRevData || []).reduce((s, r) => s + parseFloat(r.price_ngn || 0), 0);
+      const spendNGN = smmSpendNGN + acctSpendNGN;
+      document.getElementById('stat-pending').textContent = `₦${Math.round(spendNGN).toLocaleString('en-NG')}`;
 
-      /* Stat: total revenue (sum of charges in USD → NGN) */
-      const { data: revData, error: e4 } = await db.from('orders').select('amount').eq('status', 'Completed');
-      if (e4) console.error('[Admin] revenue error:', e4);
-      if (revData) {
-        const total = revData.reduce((s, r) => s + parseFloat(r.amount || 0), 0);
-        document.getElementById('stat-revenue').textContent = fmtNGN(total);
-      }
+      /* Stat: total funded = money still in wallets + everything already spent */
+      const { data: walletData, error: e4 } = await db.from('profiles').select('wallet_balance');
+      if (e4) console.error('[Admin] wallets error:', e4);
+      const walletsNGN = (walletData || []).reduce((s, u) => s + parseFloat(u.wallet_balance || 0) * USD_TO_NGN, 0);
+      const totalFundedNGN = walletsNGN + spendNGN;
+      document.getElementById('stat-revenue').textContent = `₦${Math.round(totalFundedNGN).toLocaleString('en-NG')}`;
 
-      /* Recent orders */
-      const { data: orders } = await db.from('orders')
-        .select('id, service, quantity, amount, status, created_at, user_id')
-        .order('created_at', { ascending: false })
-        .limit(5);
-
-      if (orders?.length) {
-        const uids = [...new Set(orders.map(o => o.user_id).filter(Boolean))];
-        let userMap = {};
-        if (uids.length) {
-          const { data: uProfiles } = await db.from('profiles').select('id, full_name, email').in('id', uids);
-          (uProfiles || []).forEach(u => {
-            userMap[u.id] = u.full_name || (u.email || '').split('@')[0] || 'User';
-          });
-        }
-        const tbody = document.getElementById('recent-orders-body');
-        tbody.innerHTML = orders.map((o, i) => {
-          const uName = userMap[o.user_id] || o.user_id?.slice(0,8) || 'User';
-          const ini   = initials(userMap[o.user_id] || o.user_id || '');
-          const st    = o.status || 'Pending';
-          const cls   = STATUS_CLASS[st] || 'b-pending';
-          return `<tr>
-            <td><div class="ord-user">
-              <div class="ord-ava" style="background:${COLORS[i % COLORS.length]}">${ini}</div>
-              <span class="ord-uname">${uName}</span>
-            </div></td>
-            <td class="ord-svc">${o.service || '—'}</td>
-            <td class="ord-qty">${Number(o.quantity || 0).toLocaleString('en-NG')}</td>
-            <td><span class="badge ${cls}">${st}</span></td>
-            <td class="ord-time">${relTime(o.created_at)}</td>
-          </tr>`;
-        }).join('');
-      }
-
-      /* User stats for donut — real data */
+      /* User stats for donut — active (funded) vs inactive */
       try {
-        const thirtyDaysAgo = new Date(Date.now() - 30 * 864e5).toISOString();
-        const donutRes = await Promise.all([
+        const [{ count: totalU }, { count: activeU }] = await Promise.all([
           db.from('profiles').select('*', { count: 'exact', head: true }),
-          db.from('profiles').select('*', { count: 'exact', head: true }).gte('created_at', thirtyDaysAgo),
+          db.from('profiles').select('*', { count: 'exact', head: true }).gt('wallet_balance', 0),
         ]);
-        const totalU = donutRes[0].count || 0;
-        const newU   = donutRes[1].count || 0;
-        if (totalU) {
-          const newUsers  = Math.min(newU, totalU);
-          const returning = Math.max(0, totalU - newUsers);
-          const pct = (n) => '(' + (totalU ? (n / totalU * 100).toFixed(1) : '0') + '%)';
-          document.getElementById('leg-active').textContent      = fmtNum(totalU);
-          document.getElementById('leg-pct-active').textContent  = '(100%)';
-          document.getElementById('leg-inactive').textContent    = fmtNum(returning);
-          document.getElementById('leg-pct-inactive').textContent = pct(returning);
-          document.getElementById('leg-new').textContent         = fmtNum(newUsers);
-          document.getElementById('leg-pct-new').textContent     = pct(newUsers);
-          document.getElementById('online-total').textContent    = fmtNum(totalU);
-          if (userDonut) {
-            userDonut.data.datasets[0].data = [totalU, returning, newUsers];
-            userDonut.update();
-          }
+        const total    = totalU  || 0;
+        const active   = activeU || 0;
+        const inactive = Math.max(0, total - active);
+        const pct = n => total ? `(${(n / total * 100).toFixed(1)}%)` : '';
+        document.getElementById('leg-active').textContent       = fmtNum(active);
+        document.getElementById('leg-pct-active').textContent   = pct(active);
+        document.getElementById('leg-inactive').textContent     = fmtNum(inactive);
+        document.getElementById('leg-pct-inactive').textContent = pct(inactive);
+        document.getElementById('online-total').textContent     = fmtNum(total);
+        if (userDonut && total) {
+          userDonut.data.datasets[0].data             = [active, inactive];
+          userDonut.data.datasets[0].backgroundColor  = ['#7c3aed', '#e5e7eb'];
+          userDonut.update();
         }
       } catch (err) { console.error('[Admin] donut chart:', err); }
 
-      /* -- Revenue chart: current month actual data -- */
-      const now        = new Date();
-      const y          = now.getFullYear();
-      const mo         = now.getMonth();
-      const monthStart = `${y}-${String(mo+1).padStart(2,'0')}-01T00:00:00`;
-      const nextStart  = mo === 11 ? `${y+1}-01-01T00:00:00` : `${y}-${String(mo+2).padStart(2,'0')}-01T00:00:00`;
-      const daysInMo   = new Date(y, mo+1, 0).getDate();
-      const monthName  = now.toLocaleString('en-NG', { month: 'long' });
-
-      const { data: mOrders } = await db.from('orders')
-        .select('amount, created_at, status')
-        .gte('created_at', monthStart)
-        .lt('created_at', nextStart);
-
-      if (mOrders?.length && revenueChart) {
-        const byDay = Array(daysInMo).fill(0);
-        mOrders.forEach(o => {
-          const d = new Date(o.created_at).getDate() - 1;
-          byDay[d] += parseFloat(o.amount || 0) * USD_TO_NGN;
+      /* -- Funding chart: daily spending over last 30 days -- */
+      try {
+        const NUM_DAYS = 30;
+        const dayMs    = 864e5;
+        const chartNow = new Date();
+        const days = Array.from({ length: NUM_DAYS }, (_, i) => {
+          const start = new Date(chartNow - (NUM_DAYS - 1 - i) * dayMs);
+          start.setHours(0, 0, 0, 0);
+          const end = new Date(start.getTime() + dayMs);
+          const d = start.getDate(), m = start.getMonth() + 1;
+          const label = `${d}/${m}`;
+          return { label, start: start.toISOString(), end: end.toISOString(), ngn: 0 };
         });
-        const cumRev = byDay.map((_, i) => byDay.slice(0, i+1).reduce((a,b) => a+b, 0));
-        const maxVal = Math.max(...cumRev, 500000);
-        const labels = Array.from({ length: daysInMo }, (_, i) => `${monthName} ${i+1}`);
-        revenueChart.data.labels = labels;
-        revenueChart.data.datasets[0].data = cumRev;
-        revenueChart.options.scales.y.max = Math.ceil(maxVal / 500000) * 500000 + 500000;
-        revenueChart.options.scales.y.ticks.callback = v => v === 0 ? '₦0' : `₦${(v/1000000).toFixed(1)}M`;
-        revenueChart.options.scales.x.ticks.callback = (_, i) => {
-          const step = Math.max(1, Math.floor(daysInMo / 6));
-          return (i === 0 || i % step === 0 || i === daysInMo - 1) ? `${monthName.slice(0,3)} ${i+1}` : '';
-        };
-        revenueChart.update();
-      }
+        const [{ data: fundChart, error: fcErr }, { data: smmChartData }, { data: acctChartData }] = await Promise.all([
+          db.from('fund_requests').select('amount, created_at').in('status', ['Approved', 'completed']).gte('created_at', days[0].start),
+          db.from('orders').select('amount, created_at').neq('status', 'Cancelled').gte('created_at', days[0].start),
+          db.from('account_orders').select('price_ngn, created_at').neq('status', 'refunded').gte('created_at', days[0].start),
+        ]);
+        if (!fcErr && fundChart?.length) {
+          fundChart.forEach(f => {
+            const ts   = new Date(f.created_at).getTime();
+            const slot = days.find(d => ts >= new Date(d.start).getTime() && ts < new Date(d.end).getTime());
+            if (slot) slot.ngn += parseFloat(f.amount || 0);
+          });
+        } else {
+          (smmChartData || []).forEach(o => {
+            const ts   = new Date(o.created_at).getTime();
+            const slot = days.find(d => ts >= new Date(d.start).getTime() && ts < new Date(d.end).getTime());
+            if (slot) slot.ngn += parseFloat(o.amount || 0) * USD_TO_NGN;
+          });
+          (acctChartData || []).forEach(o => {
+            const ts   = new Date(o.created_at).getTime();
+            const slot = days.find(d => ts >= new Date(d.start).getTime() && ts < new Date(d.end).getTime());
+            if (slot) slot.ngn += parseFloat(o.price_ngn || 0);
+          });
+        }
+        if (revenueChart) {
+          revenueChart.data.labels = days.map(d => d.label);
+          revenueChart.data.datasets[0].data = days.map(d => d.ngn);
+          const maxVal = Math.max(...days.map(d => d.ngn), 5000);
+          revenueChart.options.scales.y.max = Math.ceil(maxVal / 5000) * 5000 * 1.2;
+          revenueChart.options.scales.y.ticks.callback = v => v === 0 ? '₦0' : `₦${(v/1000).toFixed(0)}k`;
+          revenueChart.options.scales.x.ticks.callback = (_, i) => (i % 5 === 0) ? (days[i]?.label ?? '') : '';
+          revenueChart.update();
+        }
+      } catch(chartErr) { console.error('[Admin] funding chart:', chartErr); }
 
-      /* -- Top Selling Services (with real names from Owlet) -- */
-      const { data: svcOrds } = await db.from('orders').select('service, amount');
-      if (svcOrds?.length) {
-        let svcNames = {};
-        try {
-          const svcsRes = await fetch('/api/owlet', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'services' }) });
-          const svcs = await svcsRes.json();
-          if (Array.isArray(svcs)) svcs.forEach(s => { svcNames[String(s.service)] = s.name; });
-        } catch {}
-        const svcMap = {};
-        svcOrds.forEach(o => {
-          const k = String(o.service || 'Unknown');
-          if (!svcMap[k]) svcMap[k] = { count: 0, revenue: 0 };
-          svcMap[k].count++;
-          svcMap[k].revenue += parseFloat(o.amount || 0) * USD_TO_NGN;
-        });
+      /* -- Top Selling Services: real data from orders + account_orders -- */
+      const [{ data: svcOrds }, { data: svcAcctOrds }] = await Promise.all([
+        db.from('orders').select('service, amount'),
+        db.from('account_orders').select('offer_title, platform, price_ngn').neq('status', 'refunded'),
+      ]);
+      const svcMap = {};
+      (svcOrds || []).forEach(o => {
+        const k = o.service || 'Unknown';
+        if (!svcMap[k]) svcMap[k] = { count: 0, revenue: 0 };
+        svcMap[k].count++;
+        svcMap[k].revenue += parseFloat(o.amount || 0) * USD_TO_NGN;
+      });
+      (svcAcctOrds || []).forEach(o => {
+        const k = o.offer_title || (o.platform ? `${o.platform} Account` : 'Account Store');
+        if (!svcMap[k]) svcMap[k] = { count: 0, revenue: 0 };
+        svcMap[k].count++;
+        svcMap[k].revenue += parseFloat(o.price_ngn || 0);
+      });
+      if (Object.keys(svcMap).length) {
         const sorted = Object.entries(svcMap).sort((a,b) => b[1].count - a[1].count).slice(0, 5);
         const totRev = sorted.reduce((s,[,v]) => s + v.revenue, 0);
-        document.getElementById('top-svc-tbody').innerHTML = sorted.map(([id, {count, revenue}]) => {
-          const name = svcNames[id] || `Service #${id}`;
-          const shortName = name.length > 28 ? name.slice(0, 28) + '…' : name;
+        document.getElementById('top-svc-tbody').innerHTML = sorted.map(([name, {count, revenue}]) => {
+          const shortName = name.length > 30 ? name.slice(0, 30) + '…' : name;
           return `<tr>
             <td><div class="svc-name-cell"><div class="svc-ico" style="background:#f5f3ff;color:#7c3aed"><i class="fas fa-layer-group"></i></div>${shortName}</div></td>
             <td class="svc-orders">${count.toLocaleString('en-NG')}</td>
@@ -2421,29 +2342,37 @@
       }
 
       /* -- Activity Feed -- */
-      const { data: actOrds }  = await db.from('orders').select('id, service, created_at, user_id').order('created_at', { ascending: false }).limit(4);
-      const { data: actUsers } = await db.from('profiles').select('id, email, full_name, created_at').order('created_at', { ascending: false }).limit(3);
+      const [{ data: actOrds }, { data: actAcct }, { data: actUsers }] = await Promise.all([
+        db.from('orders').select('id, service, created_at, user_id, profiles(full_name,email)').order('created_at', { ascending: false }).limit(3),
+        db.from('account_orders').select('id, offer_title, platform, created_at, profiles(full_name,email)').order('created_at', { ascending: false }).limit(3),
+        db.from('profiles').select('id, email, full_name, created_at').order('created_at', { ascending: false }).limit(3),
+      ]);
       const actItems = [
-        ...(actOrds  || []).map(o => ({ type: 'order', ts: o.created_at, label: 'New order placed', sub: `Service #${o.service || '?'} — ${(o.user_id||'').slice(0,8)}` })),
-        ...(actUsers || []).map(u => ({ type: 'user',  ts: u.created_at, label: 'New user registered', sub: u.email || u.full_name || (u.id||'').slice(0,16) })),
-      ].sort((a,b) => new Date(b.ts) - new Date(a.ts)).slice(0, 5);
-      if (actItems.length) {
-        document.getElementById('activity-list').innerHTML = actItems.map(a => `<div class="act-item">
-          ${a.type === 'order'
-            ? `<div class="act-ico" style="background:#fdf2f8;color:#ec4899"><i class="fas fa-bag-shopping"></i></div>`
-            : `<div class="act-ico" style="background:#f5f0ff;color:#7c3aed"><i class="fas fa-user-plus"></i></div>`}
-          <div class="act-body">
-            <div class="act-title">${a.label}</div>
-            <div class="act-sub">${a.sub}</div>
-          </div>
-          <span class="act-time">${relTime(a.ts)}</span>
-        </div>`).join('');
-      }
+        ...(actOrds  || []).map(o => ({ type:'order',  ts: o.created_at, label: 'Social Boost order',   sub: `${o.service || 'Order'} by ${o.profiles?.full_name || o.profiles?.email || (o.user_id||'').slice(0,8)}` })),
+        ...(actAcct  || []).map(o => ({ type:'acct',   ts: o.created_at, label: 'Account Store purchase', sub: `${o.offer_title || (o.platform||'Account')} by ${o.profiles?.full_name || o.profiles?.email || '—'}` })),
+        ...(actUsers || []).map(u => ({ type:'user',   ts: u.created_at, label: 'New user registered',   sub: u.full_name || u.email || (u.id||'').slice(0,16) })),
+      ].sort((a,b) => new Date(b.ts) - new Date(a.ts)).slice(0, 6);
+      document.getElementById('activity-list').innerHTML = actItems.length
+        ? actItems.map(a => `<div class="act-item">
+            ${a.type === 'order'
+              ? `<div class="act-ico" style="background:#fdf2f8;color:#ec4899"><i class="fas fa-bag-shopping"></i></div>`
+              : a.type === 'acct'
+                ? `<div class="act-ico" style="background:#f0fdf4;color:#10b981"><i class="fas fa-store"></i></div>`
+                : `<div class="act-ico" style="background:#f5f0ff;color:#7c3aed"><i class="fas fa-user-plus"></i></div>`}
+            <div class="act-body">
+              <div class="act-title">${a.label}</div>
+              <div class="act-sub">${a.sub}</div>
+            </div>
+            <span class="act-time">${relTime(a.ts)}</span>
+          </div>`).join('')
+        : `<div style="color:var(--t3);font-size:0.8rem;padding:12px 0">No recent activity</div>`;
 
-      /* -- Active Users (signed in within last 30 days) -- */
+      /* -- Active Users: profiles with wallet_balance > 0 -- */
       try {
-        const { data: auData, error: auErr } = await db.rpc('count_active_users');
-        document.getElementById('stat-tickets').textContent = fmtNum(auErr ? 0 : (auData ?? 0));
+        const { count: activeCount, error: acErr } = await db.from('profiles')
+          .select('*', { count: 'exact', head: true })
+          .gt('wallet_balance', 0);
+        if (!acErr && activeCount != null) document.getElementById('stat-tickets').textContent = fmtNum(activeCount);
       } catch { document.getElementById('stat-tickets').textContent = '0'; }
 
       /* -- Sparklines from real totals -- */
@@ -2453,14 +2382,12 @@
           Math.round(e * (0.7 + 0.3 * (i / (len - 1))) * (1 + (i % 3 === 1 ? -0.02 : i % 3 === 2 ? 0.02 : 0)))
         ));
       };
-      const uC    = userCount    || 0;
-      const oC    = orderCount   || 0;
-      const pC    = pendingCount || 0;
-      const revNGN = revData ? revData.reduce((s,r) => s + parseFloat(r.amount||0) * USD_TO_NGN, 0) : 0;
-      document.getElementById('spark-users').innerHTML   = sparkline(trendArr(uC,   10), '#7c3aed');
-      document.getElementById('spark-orders').innerHTML  = sparkline(trendArr(oC,   10), '#ec4899');
-      document.getElementById('spark-revenue').innerHTML = sparkline(trendArr(revNGN, 10), '#10b981');
-      document.getElementById('spark-pending').innerHTML = sparkline(trendArr(pC,   10), '#f59e0b');
+      const uC = userCount  || 0;
+      const oC = orderCount || 0;
+      document.getElementById('spark-users').innerHTML   = sparkline(trendArr(uC,            10), '#7c3aed');
+      document.getElementById('spark-orders').innerHTML  = sparkline(trendArr(oC,            10), '#ec4899');
+      document.getElementById('spark-revenue').innerHTML = sparkline(trendArr(totalFundedNGN, 10), '#10b981');
+      document.getElementById('spark-pending').innerHTML = sparkline(trendArr(spendNGN,       10), '#f59e0b');
 
       /* -- Month-over-month trends -- */
       try {
@@ -2481,31 +2408,81 @@
           const up = p >= 0;
           el.innerHTML = '<span class="' + (up ? 't-up' : 't-dn') + '"><i class="fas fa-arrow-' + (up ? 'up' : 'down') + '"></i> ' + Math.abs(p) + '%</span><span class="t-lbl">' + lbl + '</span>';
         };
-        setTrend('trend-users',  tr[2].count, tr[3].count, 'new this month');
-        setTrend('trend-orders', tr[0].count, tr[1].count, 'vs last month');
-        const tmRev = ((await db.from('orders').select('amount').eq('status','Completed').gte('created_at', t0)).data || []).reduce((s,r) => s + parseFloat(r.amount || 0), 0);
-        const lmRev = ((await db.from('orders').select('amount').eq('status','Completed').gte('created_at', t1).lt('created_at', t0)).data || []).reduce((s,r) => s + parseFloat(r.amount || 0), 0);
-        setTrend('trend-revenue', tmRev, lmRev, 'vs last month');
-        const pendEl = document.getElementById('trend-pending');
-        if (pendEl) pendEl.innerHTML = '<span class="t-lbl">Awaiting fulfillment</span>';
+        /* trend-users and trend-orders removed — static labels used instead */
+        /* Revenue trend: fund_requests this month vs last month */
+        const tmFund = ((await db.from('fund_requests').select('amount').in('status',['Approved','completed']).gte('created_at', t0)).data || []).reduce((s,r) => s + parseFloat(r.amount || 0), 0);
+        const lmFund = ((await db.from('fund_requests').select('amount').in('status',['Approved','completed']).gte('created_at', t1).lt('created_at', t0)).data || []).reduce((s,r) => s + parseFloat(r.amount || 0), 0);
+        setTrend('trend-revenue', tmFund, lmFund, 'funded this month');
+        /* Service spend trend: SMM + account store */
+        const tmSmmSpend  = ((await db.from('orders').select('amount').neq('status','Cancelled').gte('created_at', t0)).data || []).reduce((s,r) => s + parseFloat(r.amount || 0) * USD_TO_NGN, 0);
+        const lmSmmSpend  = ((await db.from('orders').select('amount').neq('status','Cancelled').gte('created_at', t1).lt('created_at', t0)).data || []).reduce((s,r) => s + parseFloat(r.amount || 0) * USD_TO_NGN, 0);
+        const tmAcctSpend = ((await db.from('account_orders').select('price_ngn').neq('status','refunded').gte('created_at', t0)).data || []).reduce((s,r) => s + parseFloat(r.price_ngn || 0), 0);
+        const lmAcctSpend = ((await db.from('account_orders').select('price_ngn').neq('status','refunded').gte('created_at', t1).lt('created_at', t0)).data || []).reduce((s,r) => s + parseFloat(r.price_ngn || 0), 0);
+        setTrend('trend-pending', tmSmmSpend + tmAcctSpend, lmSmmSpend + lmAcctSpend, 'vs last month');
       } catch (e) { console.error('[Admin] trend error:', e); }
     })();
 
     /* -- PROVIDERS -- */
     async function loadProviders() {
-      /* Try to fetch Owlet balance */
+      /* Owlet balance */
+      const balEl = document.getElementById('prov-peakerr-bal');
       try {
-        const r = await fetch('/api/owlet', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'balance' }) });
-        const d = await r.json();
-        const bal = d?.balance ?? d?.data?.balance ?? null;
-        document.getElementById('prov-peakerr-bal').textContent = bal != null ? `₦${Math.round(parseFloat(bal)).toLocaleString('en-NG')}` : 'N/A';
-        document.getElementById('prov-peakerr-bal').className = 'badge ' + (bal != null ? 'b-active' : 'b-warn');
-      } catch { document.getElementById('prov-peakerr-bal').textContent = 'Unavailable'; }
+        const r   = await fetch('/api/owlet', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'balance' }) });
+        const text = await r.text();
+        let d; try { d = JSON.parse(text); } catch { d = null; }
+        const rawBal  = d?.balance ?? d?.data?.balance ?? null;
+        const currency = (d?.currency ?? d?.data?.currency ?? 'USD').toUpperCase();
+        const num = rawBal != null ? parseFloat(rawBal) : null;
+        if (num != null && !isNaN(num)) {
+          if (currency === 'USD') {
+            balEl.textContent = `$${num.toFixed(2)} (≈ ₦${Math.round(num * USD_TO_NGN).toLocaleString('en-NG')})`;
+          } else {
+            balEl.textContent = `₦${Math.round(num).toLocaleString('en-NG')}`;
+          }
+          balEl.className = 'badge b-active';
+        } else {
+          balEl.textContent = d?.error ? d.error : 'N/A';
+          balEl.className = 'badge b-warn';
+        }
+      } catch { balEl.textContent = 'Unavailable'; balEl.className = 'badge b-warn'; }
 
-      /* AccsZone doesn't expose a balance endpoint ... show N/A */
+      /* AccsZone balance */
       const acEl = document.getElementById('prov-accs-bal');
-      acEl.textContent = 'N/A';
-      acEl.className = 'badge b-warn';
+      try {
+        const r   = await fetch('/api/accsmaster', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'balance' }) });
+        const text = await r.text();
+        let d; try { d = JSON.parse(text); } catch { d = null; }
+        const rawBal  = d?.balance ?? d?.data?.balance ?? d?.data ?? null;
+        const currency = (d?.currency ?? d?.data?.currency ?? 'USD').toUpperCase();
+        const num = rawBal != null ? parseFloat(rawBal) : null;
+        if (num != null && !isNaN(num)) {
+          acEl.textContent = currency === 'USD'
+            ? `$${num.toFixed(2)} (≈ ₦${Math.round(num * USD_TO_NGN).toLocaleString('en-NG')})`
+            : `₦${Math.round(num).toLocaleString('en-NG')}`;
+          acEl.className = 'badge b-active';
+        } else {
+          acEl.textContent = d?.error ? d.error : 'N/A';
+          acEl.className = 'badge b-warn';
+        }
+      } catch { acEl.textContent = 'Unavailable'; acEl.className = 'badge b-warn'; }
+
+      /* Pre-fill markup inputs — show real defaults when nothing saved yet */
+      const owletInput = document.getElementById('prov-markup-owlet');
+      const accsInput  = document.getElementById('prov-markup-accszone');
+      owletInput.value = getMarkup('owlet');
+      accsInput.value  = getMarkup('accszone');
+    }
+
+    function saveMarkup(provider, value) {
+      const key = provider === 'owlet' ? 'bns_markup_owlet' : 'bns_markup_accszone';
+      localStorage.setItem(key, value);
+      adminToast(`${provider === 'owlet' ? 'Owlet' : 'AccsZone'} markup set to ×${value}`, 'success');
+    }
+
+    function getMarkup(provider) {
+      const key      = provider === 'owlet' ? 'bns_markup_owlet' : 'bns_markup_accszone';
+      const defaults = { owlet: 2, accszone: 2 };
+      return parseFloat(localStorage.getItem(key) ?? defaults[provider] ?? 2);
     }
 
     /* -- EXPENSES & PROFIT -- */
@@ -2513,13 +2490,17 @@
 
     async function loadExpenses() {
       _expenses = JSON.parse(localStorage.getItem('bns_expenses') || '[]');
-      // Set today as default date
       document.getElementById('exp-date').value = new Date().toISOString().slice(0,10);
-      // Pull revenue from completed orders
-      const { data: orders } = await db.from('orders').select('amount, status');
-      const totalRevNGN = (orders || [])
-        .filter(o => o.status === 'Completed')
-        .reduce((s, o) => s + parseFloat(o.amount || 0) * USD_TO_NGN, 0);
+      // Total funded = wallets + all spending (same formula as dashboard stat)
+      const [{ data: wallets }, { data: smmOrds }, { data: acctOrds }] = await Promise.all([
+        db.from('profiles').select('wallet_balance'),
+        db.from('orders').select('amount').neq('status', 'Cancelled'),
+        db.from('account_orders').select('price_ngn').neq('status', 'refunded'),
+      ]);
+      const walletsNGN  = (wallets  || []).reduce((s, u) => s + parseFloat(u.wallet_balance || 0) * USD_TO_NGN, 0);
+      const smmNGN      = (smmOrds  || []).reduce((s, o) => s + parseFloat(o.amount || 0) * USD_TO_NGN, 0);
+      const acctNGN     = (acctOrds || []).reduce((s, o) => s + parseFloat(o.price_ngn || 0), 0);
+      const totalRevNGN = walletsNGN + smmNGN + acctNGN;
       renderExpenses(totalRevNGN);
     }
 
