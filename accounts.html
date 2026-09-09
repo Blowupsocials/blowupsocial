@@ -928,11 +928,16 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
         const date    = new Date(o.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'numeric' });
         const stClass = { pending:'st-pending', complete:'st-complete', failed:'st-failed' }[o.status] || 'st-pending';
         const stLabel = { pending:'Processing', complete:'Delivered', failed:'Failed' }[o.status] || 'Pending';
-        const credsBtn = (o.status === 'complete' && o.credentials)
-          ? `<button class="ac-creds-btn" onclick='showStoredCreds(${esc(JSON.stringify({ title: o.offer_title, credentials: o.credentials }))})'>
+        let credsBtn = '';
+        if (o.status === 'complete' && o.credentials) {
+          credsBtn = `<button class="ac-creds-btn" onclick='showStoredCreds(${esc(JSON.stringify({ title: o.offer_title, credentials: o.credentials }))})'>
                <i class="fas fa-key"></i> View Credentials
-             </button>`
-          : '';
+             </button>`;
+        } else if (o.status === 'complete') {
+          credsBtn = `<span class="ac-creds-pending"><i class="fas fa-clock"></i> Credentials being processed — check back soon</span>`;
+        } else if (o.status === 'pending') {
+          credsBtn = `<span class="ac-creds-pending"><i class="fas fa-hourglass-half"></i> Credentials will appear here once delivered</span>`;
+        }
         return `<div class="ac-order-card">
           <div class="ac-order-icon" style="background:${ico.bg};color:${ico.color}"><i class="${ico.icon}"></i></div>
           <div class="ac-order-info">

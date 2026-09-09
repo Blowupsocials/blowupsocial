@@ -328,7 +328,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
       el.style.cssText = isError
         ? 'background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#dc2626;padding:11px 14px;border-radius:9px;font-size:.82rem;margin-bottom:16px;text-align:center;'
         : 'background:rgba(5,150,105,.08);border:1px solid rgba(5,150,105,.2);color:#059669;padding:11px 14px;border-radius:9px;font-size:.82rem;margin-bottom:16px;text-align:center;';
-      el.textContent = msg;
+      el.innerHTML = msg;
     }
 
     function showOtpMsg(msg, isError = true) {
@@ -434,6 +434,11 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
           send_at: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
         }).catch(() => {});
         window.location.href = 'dashboard.html';
+      } else if (!data.user || (data.user.identities && data.user.identities.length === 0)) {
+        // Anti-enumeration: this email is already registered and confirmed
+        btn.innerHTML = 'Create Account <i class="fas fa-arrow-right"></i>';
+        btn.disabled = false;
+        showMsg('An account with this email already exists. <a href="login.html" style="color:#7c3aed;font-weight:700;text-decoration:underline;">Sign in instead →</a>');
       } else {
         pendingName = name;
         showVerifyStep(email);

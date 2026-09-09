@@ -1908,7 +1908,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
         const link  = o.link || o.target_url || '—';
         const disp  = link !== '—' && link.length > 28 ? link.slice(0,28)+'—' : link;
         const qty   = o._isAcct
-          ? `<a href="accounts" style="color:#7c3aed;font-size:.8rem"><i class="fas fa-key"></i> View</a>`
+          ? `<a href="accounts.html#orders" style="color:#7c3aed;font-size:.8rem"><i class="fas fa-key"></i> My Purchases</a>`
           : (o.quantity != null ? Number(o.quantity).toLocaleString() : (o.amount ? `$${parseFloat(o.amount).toFixed(2)}` : '—'));
         const st    = o.status || 'Pending';
         return `<tr>
