@@ -1,4 +1,5 @@
 const SUPABASE_URL = 'https://puutwycvshayqoozwfwv.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1dXR3eWN2c2hheXFvb3p3Znd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyOTIwODcsImV4cCI6MjEwMzg2ODA4N30.1V5LAxx8fDSCFrgUtdo2PEn-FC5ZReRKK1usVADkFy0';
 const ADMIN_EMAILS = ['blowupsocialsconsult@gmail.com'];
 
 export default async function handler(req, res) {
@@ -10,7 +11,7 @@ export default async function handler(req, res) {
 
   // Verify caller is admin
   const meRes = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-    headers: { Authorization: `Bearer ${token}`, apikey: process.env.SUPABASE_ANON_KEY },
+    headers: { Authorization: `Bearer ${token}`, apikey: SUPABASE_ANON },
   });
   if (!meRes.ok) return res.status(401).json({ error: 'Invalid session' });
   const me = await meRes.json();
