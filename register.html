@@ -459,8 +459,6 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       } else {
         pendingName = name;
         showVerifyStep(email);
-        // Always resend to guarantee OTP delivery for both new and stuck-unconfirmed accounts
-        db.auth.resend({ type: 'signup', email }).catch(() => {});
       }
     }
 
