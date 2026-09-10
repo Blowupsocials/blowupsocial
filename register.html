@@ -478,17 +478,24 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       btn.innerHTML = 'Verifying...';
       btn.disabled = true;
 
+      const _timeout = new Promise((_, rej) =>
+        setTimeout(() => rej(new Error('timeout')), 15000)
+      );
+
       let data, error;
       try {
-        ({ data, error } = await db.auth.verifyOtp({
-          email: pendingEmail,
-          token: code,
-          type: 'signup'
-        }));
+        ({ data, error } = await Promise.race([
+          db.auth.verifyOtp({ email: pendingEmail, token: code, type: 'signup' }),
+          _timeout
+        ]));
       } catch (e) {
         btn.innerHTML = 'Verify Code <i class="fas fa-arrow-right"></i>';
         btn.disabled = false;
-        showOtpMsg('Something went wrong. Please check your connection and try again.');
+        showOtpMsg(
+          e.message === 'timeout'
+            ? 'Verification timed out — check your connection and try again.'
+            : 'Something went wrong. Please try again.'
+        );
         return;
       }
 
