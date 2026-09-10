@@ -469,15 +469,28 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       const code  = [...boxes].map(b => b.value).join('');
       if (code.length < 6) { showOtpMsg('Please enter all 6 digits.'); return; }
 
+      if (!pendingEmail) {
+        showOtpMsg('Session expired. Please go back and try again.');
+        return;
+      }
+
       const btn = document.getElementById('otp-submit-btn');
       btn.innerHTML = 'Verifying...';
       btn.disabled = true;
 
-      const { data, error } = await db.auth.verifyOtp({
-        email: pendingEmail,
-        token: code,
-        type: 'signup'
-      });
+      let data, error;
+      try {
+        ({ data, error } = await db.auth.verifyOtp({
+          email: pendingEmail,
+          token: code,
+          type: 'signup'
+        }));
+      } catch (e) {
+        btn.innerHTML = 'Verify Code <i class="fas fa-arrow-right"></i>';
+        btn.disabled = false;
+        showOtpMsg('Something went wrong. Please check your connection and try again.');
+        return;
+      }
 
       if (error) {
         btn.innerHTML = 'Verify Code <i class="fas fa-arrow-right"></i>';
