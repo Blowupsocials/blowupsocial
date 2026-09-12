@@ -1,3 +1,7 @@
 const SUPABASE_URL  = 'https://puutwycvshayqoozwfwv.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1dXR3eWN2c2hheXFvb3p3Znd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyOTIwODcsImV4cCI6MjEwMzg2ODA4N30.1V5LAxx8fDSCFrgUtdo2PEn-FC5ZReRKK1usVADkFy0';
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+// Use a no-op lock to avoid hanging on browsers that block navigator.locks
+// (Firefox strict mode, Brave shields, privacy-hardened profiles)
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+  auth: { lock: async (_name, _timeout, fn) => fn() }
+});

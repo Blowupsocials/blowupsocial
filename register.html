@@ -476,40 +476,54 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       btn.innerHTML = 'Verifying...';
       btn.disabled = true;
 
+      // Bypass db.auth.verifyOtp — Supabase v2 uses navigator.locks which can stall
+      // indefinitely if a stale lock exists. Raw fetch sidesteps it entirely.
       const _timeout = new Promise((_, rej) =>
         setTimeout(() => rej(new Error('timeout')), 15000)
       );
 
-      let data, error;
+      let result;
       try {
-        ({ data, error } = await Promise.race([
-          db.auth.verifyOtp({ email: pendingEmail, token: code, type: 'signup' }),
+        const resp = await Promise.race([
+          fetch('https://puutwycvshayqoozwfwv.supabase.co/auth/v1/verify', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1dXR3eWN2c2hheXFvb3p3Znd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyOTIwODcsImV4cCI6MjEwMzg2ODA4N30.1V5LAxx8fDSCFrgUtdo2PEn-FC5ZReRKK1usVADkFy0'
+            },
+            body: JSON.stringify({ email: pendingEmail, token: code, type: 'signup', gotrue_meta_security: {} })
+          }),
           _timeout
-        ]));
+        ]);
+        result = await resp.json();
+        if (!resp.ok) throw new Error(result.message || result.error_description || 'Invalid or expired code. Try again.');
       } catch (e) {
         btn.innerHTML = 'Verify Code <i class="fas fa-arrow-right"></i>';
         btn.disabled = false;
         showOtpMsg(
           e.message === 'timeout'
             ? 'Verification timed out — check your connection and try again.'
-            : 'Something went wrong. Please try again.'
+            : (e.message || 'Something went wrong. Please try again.')
         );
         return;
       }
 
-      if (error) {
-        btn.innerHTML = 'Verify Code <i class="fas fa-arrow-right"></i>';
-        btn.disabled = false;
-        showOtpMsg(error.message || 'Invalid or expired code. Try again.');
-        return;
+      // Write session to localStorage so dashboard can pick it up on load
+      if (result.access_token) {
+        try {
+          localStorage.setItem('sb-puutwycvshayqoozwfwv-auth-token', JSON.stringify({
+            access_token:  result.access_token,
+            token_type:    result.token_type || 'bearer',
+            expires_in:    result.expires_in,
+            expires_at:    result.expires_at,
+            refresh_token: result.refresh_token,
+            user:          result.user
+          }));
+        } catch (_) {}
       }
 
-      db.from('email_queue').insert({
-        type: 'welcome', to_email: pendingEmail, name: pendingName,
-        send_at: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
-      }).catch(() => {});
       if (window.ttqIdentify) {
-        ttqIdentify(pendingEmail, data.user?.id || '').then(() => {
+        ttqIdentify(pendingEmail, result.user?.id || '').then(() => {
           ttqTrack('CompleteRegistration', {
             contents: [{ content_id: 'account_registration', content_type: 'product', content_name: 'BlowUpSocials Account' }],
             value: 0, currency: 'NGN'
