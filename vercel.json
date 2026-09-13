@@ -7,7 +7,8 @@
     { "src": "/api/send-email",       "dest": "/api/send-email.js" },
     { "src": "/api/korapay",          "dest": "/api/korapay.js" },
     { "src": "/api/korapay-webhook",  "dest": "/api/korapay-webhook.js" },
-    { "src": "/api/admin-delete-user", "dest": "/api/admin-delete-user.js" },
+    { "src": "/api/admin-delete-user",  "dest": "/api/admin-delete-user.js" },
+    { "src": "/api/send-broadcast",    "dest": "/api/send-broadcast.js" },
     { "src": "/api/process-email-queue", "dest": "/api/process-email-queue.js" },
     { "src": "/(.*)", "dest": "/$1" }
   ]

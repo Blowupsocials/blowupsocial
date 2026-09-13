@@ -413,6 +413,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
 
       <div class="sb-sec">Content</div>
       <a href="#" data-section="announcements" class="sb-item">Announcements</a>
+      <a href="#" data-section="broadcast"     class="sb-item">Broadcast Email</a>
 
       <div class="sb-sec">Finance</div>
       <a href="#" data-section="expenses"      class="sb-item">Expenses &amp; Profit</a>
@@ -1237,6 +1238,83 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         </div>
       </div>
 
+      <!-- ── BROADCAST EMAIL ────────────────────────────────────── -->
+      <div id="sec-broadcast" class="admin-section">
+        <div class="sec-hdr">
+          <div class="sec-hdr-left"><h2>Broadcast Email</h2><p>Compose and send marketing emails to segmented user groups</p></div>
+        </div>
+
+        <!-- Compose card -->
+        <div class="tbl-card" style="padding:24px;margin-bottom:16px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px">
+            <div class="modal-field">
+              <label>Audience Segment</label>
+              <select id="bc-segment" style="width:100%;padding:9px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:0.85rem;font-family:inherit;color:var(--t1);background:var(--sur);outline:none">
+                <option value="all">All Users</option>
+                <option value="paid">Paid Users (any purchase)</option>
+                <option value="smm">Social Boost buyers</option>
+                <option value="accounts">Account Store buyers</option>
+                <option value="wallet">Users with wallet balance</option>
+              </select>
+            </div>
+            <div class="modal-field">
+              <label>Estimated Recipients</label>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:2px">
+                <div id="bc-count" style="flex:1;padding:9px 12px;border:1px solid #e8eaf0;border-radius:8px;font-size:0.85rem;color:var(--t3);background:var(--bg)">—</div>
+                <button onclick="bcCount()" style="padding:8px 14px;border-radius:8px;border:1px solid #7c3aed;background:transparent;color:#7c3aed;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Count</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-field" style="margin-bottom:14px">
+            <label>Email Subject <span style="color:var(--rd);font-weight:700">*</span></label>
+            <input type="text" id="bc-subject" placeholder="e.g. Big news for BlowUpSocials users 🎉" style="font-size:0.9rem" />
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+            <div class="modal-field">
+              <label>Preview Text <span style="color:var(--t3);font-weight:400;font-size:0.72rem">(inbox snippet)</span></label>
+              <input type="text" id="bc-preview-text" placeholder="Short teaser shown in inbox..." style="font-size:0.85rem" />
+            </div>
+            <div class="modal-field">
+              <label>Heading <span style="color:var(--t3);font-weight:400;font-size:0.72rem">(optional, supports {{name}})</span></label>
+              <input type="text" id="bc-heading" placeholder="e.g. Hey {{name}}, check this out 👋" style="font-size:0.85rem" />
+            </div>
+          </div>
+
+          <div class="modal-field" style="margin-bottom:14px">
+            <label>Message <span style="color:var(--rd);font-weight:700">*</span> <span style="color:var(--t3);font-weight:400;font-size:0.72rem">— use {{name}} to personalise, blank line = new paragraph</span></label>
+            <textarea id="bc-body" rows="8" placeholder="Write your message here. Use {{name}} to personalise with each user's name." style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:0.85rem;font-family:inherit;color:var(--t1);background:var(--sur);resize:vertical;box-sizing:border-box;outline:none;margin-top:4px"></textarea>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px">
+            <div class="modal-field">
+              <label>CTA Button Label <span style="color:var(--t3);font-weight:400;font-size:0.72rem">(optional)</span></label>
+              <input type="text" id="bc-cta-label" placeholder="e.g. Order Now" style="font-size:0.85rem" />
+            </div>
+            <div class="modal-field">
+              <label>CTA Button URL <span style="color:var(--t3);font-weight:400;font-size:0.72rem">(optional)</span></label>
+              <input type="text" id="bc-cta-url" placeholder="https://blowupsocials.net/new-order" style="font-size:0.85rem" />
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <button onclick="bcPreview()" style="padding:9px 20px;border-radius:9px;border:1px solid #7c3aed;background:transparent;color:#7c3aed;font-size:0.83rem;font-weight:700;cursor:pointer;font-family:inherit"><i class="fas fa-eye" style="margin-right:6px"></i>Preview</button>
+            <button id="bc-send-btn" onclick="bcSend()" style="padding:9px 24px;border-radius:9px;border:none;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;font-size:0.83rem;font-weight:700;cursor:pointer;font-family:inherit"><i class="fas fa-paper-plane" style="margin-right:6px"></i>Send Broadcast</button>
+          </div>
+          <div id="bc-status" style="margin-top:14px;font-size:0.82rem;display:none"></div>
+        </div>
+
+        <!-- Preview panel -->
+        <div id="bc-preview-panel" class="tbl-card" style="padding:24px;display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <span style="font-size:0.85rem;font-weight:700;color:var(--t1)">Email Preview</span>
+            <button onclick="document.getElementById('bc-preview-panel').style.display='none'" style="border:none;background:none;color:var(--t3);font-size:0.8rem;cursor:pointer;font-family:inherit;padding:4px 8px">✕ Close</button>
+          </div>
+          <iframe id="bc-preview-frame" style="width:100%;height:520px;border:1px solid #e8eaf0;border-radius:8px" sandbox="allow-same-origin"></iframe>
+        </div>
+      </div><!-- /sec-broadcast -->
+
     </div>
   </div>
 
@@ -1407,6 +1485,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       categories:    ['Categories', 'Organise services by category'],
       transactions:  ['Transactions', 'Full payment transaction history'],
       announcements: ['Announcements', 'Post updates to your users'],
+      broadcast:     ['Broadcast Email', 'Send marketing emails to segmented user groups'],
       pages:         ['Pages', 'Manage static content pages'],
       testimonials:  ['Testimonials', 'Curate user reviews'],
       settings:      ['Settings', 'Platform configuration'],
@@ -2215,6 +2294,83 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
     async function adminSignOut() {
       await db.auth.signOut();
       window.location.href = 'admin-login.html';
+    }
+
+    /* ── Broadcast Email ─────────────────────────────────────────── */
+    function bcPayload() {
+      return {
+        segment:    document.getElementById('bc-segment').value,
+        subject:    document.getElementById('bc-subject').value.trim(),
+        preview:    document.getElementById('bc-preview-text').value.trim(),
+        heading:    document.getElementById('bc-heading').value.trim(),
+        body:       document.getElementById('bc-body').value.trim(),
+        ctaLabel:   document.getElementById('bc-cta-label').value.trim(),
+        ctaUrl:     document.getElementById('bc-cta-url').value.trim(),
+        adminEmail: ADMIN_EMAIL,
+      };
+    }
+
+    async function bcCount() {
+      const el = document.getElementById('bc-count');
+      el.textContent = 'Counting…';
+      try {
+        const r = await fetch('/api/send-broadcast', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...bcPayload(), countOnly: true }),
+        });
+        const d = await r.json();
+        el.textContent = d.error ? 'Error' : `${d.count} recipient${d.count !== 1 ? 's' : ''}`;
+      } catch { el.textContent = 'Error'; }
+    }
+
+    function bcPreview() {
+      const p = bcPayload();
+      if (!p.body) { showBcStatus('Add a message body first.', false); return; }
+      const name = 'Friend';
+      const safeBody = p.body
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+        .replace(/\{\{name\}\}/g, name)
+        .replace(/\n\n/g,'</p><p style="color:#4b5063;font-size:0.9rem;line-height:1.6;margin:0 0 16px">')
+        .replace(/\n/g,'<br>');
+      const heading = p.heading ? `<h1 style="font-size:1.25rem;font-weight:700;color:#0f0e1c;margin:0 0 16px">${p.heading.replace(/\{\{name\}\}/g,name)}</h1>` : '';
+      const cta = p.ctaLabel && p.ctaUrl
+        ? `<a href="${p.ctaUrl}" style="display:inline-block;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;font-weight:700;font-size:0.88rem;padding:13px 28px;border-radius:9px;text-decoration:none;margin-top:16px">${p.ctaLabel} →</a>`
+        : '';
+      const preview = p.preview ? `<div style="display:none;max-height:0;overflow:hidden;opacity:0;font-size:1px">${p.preview}</div>` : '';
+      const html = `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:20px;background:#f4f4f8;font-family:Inter,Arial,sans-serif">${preview}<div style="max-width:560px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e8eaf0"><div style="background:linear-gradient(135deg,#7c3aed,#ec4899);padding:32px 40px"><div style="font-size:1.4rem;font-weight:800;color:#fff">BlowUpSocials</div><div style="font-size:0.8rem;color:rgba(255,255,255,0.7);margin-top:2px">SMM Panel &amp; Digital Store</div></div><div style="padding:36px 40px">${heading}<p style="color:#4b5063;font-size:0.9rem;line-height:1.6;margin:0 0 16px">${safeBody}</p>${cta}</div><div style="padding:20px 40px;border-top:1px solid #e8eaf0;background:#f8f9fc"><p style="font-size:0.75rem;color:#8b8fa8;margin:0">Questions? <a href="mailto:support@blowupsocials.net" style="color:#7c3aed">support@blowupsocials.net</a></p></div></div></body></html>`;
+      const panel = document.getElementById('bc-preview-panel');
+      panel.style.display = 'block';
+      document.getElementById('bc-preview-frame').srcdoc = html;
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    async function bcSend() {
+      const p = bcPayload();
+      if (!p.subject) { showBcStatus('Subject is required.', false); return; }
+      if (!p.body)    { showBcStatus('Message body is required.', false); return; }
+      if (!confirm(`Send broadcast to all "${document.getElementById('bc-segment').options[document.getElementById('bc-segment').selectedIndex].text}" recipients?`)) return;
+      const btn = document.getElementById('bc-send-btn');
+      btn.disabled = true; btn.textContent = 'Sending…';
+      showBcStatus('Sending… this may take a moment.', true);
+      try {
+        const r = await fetch('/api/send-broadcast', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(p),
+        });
+        const d = await r.json();
+        if (d.error) { showBcStatus('Error: ' + d.error, false); }
+        else { showBcStatus(`Sent to ${d.sent} of ${d.total} recipients.${d.errors?.length ? ' Some errors occurred.' : ''}`, true); }
+      } catch (e) { showBcStatus('Error: ' + e.message, false); }
+      finally { btn.disabled = false; btn.textContent = '✈ Send Broadcast'; }
+    }
+
+    function showBcStatus(msg, ok) {
+      const el = document.getElementById('bc-status');
+      el.style.display = 'block';
+      el.style.color = ok ? '#059669' : '#dc2626';
+      el.textContent = msg;
     }
 
     (async () => {
