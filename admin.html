@@ -1169,75 +1169,6 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         </div>
       </div>
 
-    </div><!-- /content -->
-
-    <footer class="page-foot">
-      <span>... 2026 BlowUpSocials. All rights reserved.</span>
-      <span>Crafted with love for growth</span>
-    </footer>
-  </div>
-
-  <!-- User Management Modal -->
-  <div class="modal-bg" id="wallet-modal" onclick="if(event.target===this)closeWalletModal()">
-    <div class="modal-box" style="max-width:420px">
-      <h3 id="um-title">Manage User</h3>
-      <p class="modal-sub">User: <strong id="wm-name"></strong></p>
-
-      <!-- Action tabs -->
-      <div style="display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap">
-        <button class="um-tab" id="um-tab-credit"  onclick="umTab('credit')"  style="background:linear-gradient(135deg,#10b981,#34d399);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:inherit;opacity:0.45">Credit</button>
-        <button class="um-tab" id="um-tab-debit"   onclick="umTab('debit')"   style="background:linear-gradient(135deg,#ef4444,#f87171);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:inherit;opacity:0.45">Debit</button>
-        <button class="um-tab" id="um-tab-suspend" onclick="umTab('suspend')" style="background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:inherit;opacity:0.45" id="um-tab-suspend">Suspend</button>
-        <button class="um-tab" id="um-tab-delete"  onclick="umTab('delete')"  style="background:linear-gradient(135deg,#7f1d1d,#ef4444);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:inherit;opacity:0.45">Delete</button>
-      </div>
-
-      <!-- Credit panel -->
-      <div id="um-panel-credit" class="um-panel" style="display:none">
-        <div class="modal-field">
-          <label>Amount to Credit (₦)</label>
-          <input type="number" id="um-credit-amt" min="1" step="1" placeholder="e.g. 5000" style="font-size:0.95rem" />
-        </div>
-        <div class="modal-foot">
-          <button class="btn-cancel" onclick="closeWalletModal()">Cancel</button>
-          <button class="btn-save" id="um-credit-btn" onclick="doCredit()" style="background:linear-gradient(135deg,#10b981,#34d399)">Credit Wallet</button>
-        </div>
-      </div>
-
-      <!-- Debit panel -->
-      <div id="um-panel-debit" class="um-panel" style="display:none">
-        <div class="modal-field">
-          <label>Amount to Debit (₦)</label>
-          <input type="number" id="um-debit-amt" min="1" step="1" placeholder="e.g. 2000" style="font-size:0.95rem" />
-        </div>
-        <p style="font-size:0.74rem;color:#ef4444;margin:0 0 14px">Current balance: <strong id="um-curr-bal"></strong></p>
-        <div class="modal-foot">
-          <button class="btn-cancel" onclick="closeWalletModal()">Cancel</button>
-          <button class="btn-save" id="um-debit-btn" onclick="doDebit()" style="background:linear-gradient(135deg,#ef4444,#f87171)">Debit Wallet</button>
-        </div>
-      </div>
-
-      <!-- Suspend panel -->
-      <div id="um-panel-suspend" class="um-panel" style="display:none">
-        <p style="font-size:0.82rem;color:var(--t1);line-height:1.6;margin:0 0 18px" id="um-suspend-msg"></p>
-        <div class="modal-foot">
-          <button class="btn-cancel" onclick="closeWalletModal()">Cancel</button>
-          <button class="btn-save" id="um-suspend-btn" onclick="doSuspend()" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">Confirm</button>
-        </div>
-      </div>
-
-      <!-- Delete panel -->
-      <div id="um-panel-delete" class="um-panel" style="display:none">
-        <p style="font-size:0.82rem;color:#ef4444;line-height:1.6;margin:0 0 12px">This will permanently delete the user and all their data. This cannot be undone.</p>
-        <div class="modal-field">
-          <label>Type DELETE to confirm</label>
-          <input type="text" id="um-delete-confirm" placeholder="DELETE" style="font-size:0.9rem;text-transform:uppercase" />
-        </div>
-        <div class="modal-foot">
-          <button class="btn-cancel" onclick="closeWalletModal()">Cancel</button>
-          <button class="btn-save" id="um-delete-btn" onclick="doDelete()" style="background:linear-gradient(135deg,#7f1d1d,#ef4444)">Delete User</button>
-        </div>
-      </div>
-
       <!-- ── BROADCAST EMAIL ────────────────────────────────────── -->
       <div id="sec-broadcast" class="admin-section">
         <div class="sec-hdr">
@@ -1314,6 +1245,75 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
           <iframe id="bc-preview-frame" style="width:100%;height:520px;border:1px solid #e8eaf0;border-radius:8px" sandbox="allow-same-origin"></iframe>
         </div>
       </div><!-- /sec-broadcast -->
+
+    </div><!-- /content -->
+
+    <footer class="page-foot">
+      <span>... 2026 BlowUpSocials. All rights reserved.</span>
+      <span>Crafted with love for growth</span>
+    </footer>
+  </div>
+
+  <!-- User Management Modal -->
+  <div class="modal-bg" id="wallet-modal" onclick="if(event.target===this)closeWalletModal()">
+    <div class="modal-box" style="max-width:420px">
+      <h3 id="um-title">Manage User</h3>
+      <p class="modal-sub">User: <strong id="wm-name"></strong></p>
+
+      <!-- Action tabs -->
+      <div style="display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap">
+        <button class="um-tab" id="um-tab-credit"  onclick="umTab('credit')"  style="background:linear-gradient(135deg,#10b981,#34d399);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:inherit;opacity:0.45">Credit</button>
+        <button class="um-tab" id="um-tab-debit"   onclick="umTab('debit')"   style="background:linear-gradient(135deg,#ef4444,#f87171);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:inherit;opacity:0.45">Debit</button>
+        <button class="um-tab" id="um-tab-suspend" onclick="umTab('suspend')" style="background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:inherit;opacity:0.45" id="um-tab-suspend">Suspend</button>
+        <button class="um-tab" id="um-tab-delete"  onclick="umTab('delete')"  style="background:linear-gradient(135deg,#7f1d1d,#ef4444);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:inherit;opacity:0.45">Delete</button>
+      </div>
+
+      <!-- Credit panel -->
+      <div id="um-panel-credit" class="um-panel" style="display:none">
+        <div class="modal-field">
+          <label>Amount to Credit (₦)</label>
+          <input type="number" id="um-credit-amt" min="1" step="1" placeholder="e.g. 5000" style="font-size:0.95rem" />
+        </div>
+        <div class="modal-foot">
+          <button class="btn-cancel" onclick="closeWalletModal()">Cancel</button>
+          <button class="btn-save" id="um-credit-btn" onclick="doCredit()" style="background:linear-gradient(135deg,#10b981,#34d399)">Credit Wallet</button>
+        </div>
+      </div>
+
+      <!-- Debit panel -->
+      <div id="um-panel-debit" class="um-panel" style="display:none">
+        <div class="modal-field">
+          <label>Amount to Debit (₦)</label>
+          <input type="number" id="um-debit-amt" min="1" step="1" placeholder="e.g. 2000" style="font-size:0.95rem" />
+        </div>
+        <p style="font-size:0.74rem;color:#ef4444;margin:0 0 14px">Current balance: <strong id="um-curr-bal"></strong></p>
+        <div class="modal-foot">
+          <button class="btn-cancel" onclick="closeWalletModal()">Cancel</button>
+          <button class="btn-save" id="um-debit-btn" onclick="doDebit()" style="background:linear-gradient(135deg,#ef4444,#f87171)">Debit Wallet</button>
+        </div>
+      </div>
+
+      <!-- Suspend panel -->
+      <div id="um-panel-suspend" class="um-panel" style="display:none">
+        <p style="font-size:0.82rem;color:var(--t1);line-height:1.6;margin:0 0 18px" id="um-suspend-msg"></p>
+        <div class="modal-foot">
+          <button class="btn-cancel" onclick="closeWalletModal()">Cancel</button>
+          <button class="btn-save" id="um-suspend-btn" onclick="doSuspend()" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">Confirm</button>
+        </div>
+      </div>
+
+      <!-- Delete panel -->
+      <div id="um-panel-delete" class="um-panel" style="display:none">
+        <p style="font-size:0.82rem;color:#ef4444;line-height:1.6;margin:0 0 12px">This will permanently delete the user and all their data. This cannot be undone.</p>
+        <div class="modal-field">
+          <label>Type DELETE to confirm</label>
+          <input type="text" id="um-delete-confirm" placeholder="DELETE" style="font-size:0.9rem;text-transform:uppercase" />
+        </div>
+        <div class="modal-foot">
+          <button class="btn-cancel" onclick="closeWalletModal()">Cancel</button>
+          <button class="btn-save" id="um-delete-btn" onclick="doDelete()" style="background:linear-gradient(135deg,#7f1d1d,#ef4444)">Delete User</button>
+        </div>
+      </div>
 
     </div>
   </div>
