@@ -168,6 +168,13 @@
     .ac-copy-btn { background: none; color: #8b8fa8; font-size: 0.75rem; padding: 2px 6px; border-radius: 5px; flex-shrink: 0; }
     .ac-copy-btn:hover { background: #e5e7eb; }
     .ac-warn-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 10px 14px; font-size: 0.78rem; color: #92400e; margin-top: 14px; display: flex; gap: 8px; align-items: flex-start; }
+    .ac-instr-html h1,.ac-instr-html h2,.ac-instr-html h3,.ac-instr-html h4,.ac-instr-html h5 { font-size:0.85rem;font-weight:700;color:#15803d;margin:10px 0 4px; }
+    .ac-instr-html p { margin:0 0 8px; }
+    .ac-instr-html ul,.ac-instr-html ol { margin:0 0 8px;padding-left:18px; }
+    .ac-instr-html li { margin-bottom:3px; }
+    .ac-instr-html a { color:#15803d;word-break:break-all; }
+    .ac-instr-html hr { border:none;border-top:1px solid #bbf7d0;margin:10px 0; }
+    .ac-instr-html strong { font-weight:700; }
 
     .ac-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); padding: 11px 22px; border-radius: 50px; font-size: 0.82rem; font-weight: 600; color: #fff; z-index: 9999; transition: transform 0.3s; pointer-events: none; white-space: nowrap; }
     .ac-toast.show { transform: translateX(-50%) translateY(0); }
@@ -868,6 +875,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
           status:            credentials ? 'complete' : 'pending',
           credentials:       credentials || null,
           offer_description: selectedOffer.desc || null,
+          offer_slug:        selectedOffer.slug ? String(selectedOffer.slug) : null,
         });
         if (orderErr) console.error('Order save failed:', orderErr.message);
 
@@ -924,7 +932,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         const instrHtml = desc ? `
           <div style="margin-top:16px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 14px">
             <div style="font-size:0.74rem;font-weight:700;color:#15803d;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px"><i class="fas fa-circle-info" style="margin-right:5px"></i>How to Login</div>
-            <div style="font-size:0.8rem;color:#166534;line-height:1.6;white-space:pre-wrap">${esc(desc)}</div>
+            <div class="ac-instr-html" style="font-size:0.8rem;color:#166534;line-height:1.6">${desc}</div>
           </div>` : '';
         content.innerHTML = `<p style="text-align:center;font-size:0.83rem;color:#6b7080;margin-bottom:10px">Your access details for <strong>${esc(offer.title)}</strong></p><div class="ac-creds-box">${rows}</div>${instrHtml}`;
         warn.style.display = 'flex';
@@ -932,7 +940,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         const instrHtml = desc ? `
           <div style="margin-top:16px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 14px">
             <div style="font-size:0.74rem;font-weight:700;color:#15803d;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px"><i class="fas fa-circle-info" style="margin-right:5px"></i>How to Login</div>
-            <div style="font-size:0.8rem;color:#166534;line-height:1.6;white-space:pre-wrap">${esc(desc)}</div>
+            <div class="ac-instr-html" style="font-size:0.8rem;color:#166534;line-height:1.6">${desc}</div>
           </div>` : '';
         content.innerHTML = `<div class="ac-creds-box"><pre style="font-size:0.8rem;white-space:pre-wrap;word-break:break-all">${esc(credentials)}</pre></div>${instrHtml}`;
         warn.style.display = 'flex';
@@ -1009,26 +1017,51 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         null
       );
 
-      // If no instructions stored, fetch from Accszone and inject + cache
-      if (!o.offer_description && o.offer_id) {
+      // If no instructions stored, resolve slug then fetch full listing
+      if (!o.offer_description) {
         try {
-          const res = await api({ action: 'listing', slug: o.offer_id });
-          const listing = res?.data || res;
-          const desc = listing?.description || listing?.desc || listing?.details || '';
-          if (desc) {
-            const instrId = 'instr-injected';
-            if (!document.getElementById(instrId)) {
-              const box = document.createElement('div');
-              box.id = instrId;
-              box.style.cssText = 'margin-top:16px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 14px';
-              box.innerHTML = `<div style="font-size:0.74rem;font-weight:700;color:#15803d;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px"><i class="fas fa-circle-info" style="margin-right:5px"></i>How to Login</div><div style="font-size:0.8rem;color:#166534;line-height:1.6;white-space:pre-wrap">${esc(desc)}</div>`;
-              document.getElementById('creds-content').appendChild(box);
+          let slug = o.offer_slug || null;
+
+          // For past orders without slug: find it by searching category listings
+          if (!slug && o.offer_id) {
+            const platform = (o.platform || '').toLowerCase();
+            const cat = allCategories.find(c =>
+              platform.includes(c.title.toLowerCase().replace(' accounts','').replace(' account','')) ||
+              c.title.toLowerCase().includes(platform.replace(' accounts','').replace(' account',''))
+            );
+            if (cat) {
+              const lr = await api({ action: 'listings', category_id: cat.id });
+              const ld = unwrap(lr);
+              const items = Array.isArray(ld) ? ld : (ld?.listings || ld?.items || ld?.results || []);
+              const match = items.find(l => String(l.id) === String(o.offer_id));
+              if (match?.slug) {
+                slug = match.slug;
+                // Cache slug so we don't repeat this search
+                await db.from('account_orders').update({ offer_slug: slug }).eq('id', o.id);
+                _orderMap[id].offer_slug = slug;
+              }
             }
-            // Cache for next time
-            o.offer_description = desc;
-            _orderMap[id].offer_description = desc;
-            await db.from('account_orders').update({ offer_description: desc }).eq('id', o.id);
           }
+
+          if (!slug) return;
+
+          const res = await api({ action: 'listing', slug });
+          const full = res?.data || res;
+          const desc = full?.description || full?.desc || full?.details || '';
+          if (!desc) return;
+
+          // Inject into open modal
+          const instrId = 'instr-injected';
+          if (!document.getElementById(instrId)) {
+            const box = document.createElement('div');
+            box.id = instrId;
+            box.style.cssText = 'margin-top:16px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 14px';
+            box.innerHTML = `<div style="font-size:0.74rem;font-weight:700;color:#15803d;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px"><i class="fas fa-circle-info" style="margin-right:5px"></i>How to Login</div><div class="ac-instr-html" style="font-size:0.8rem;color:#166534;line-height:1.6">${desc}</div>`;
+            document.getElementById('creds-content').appendChild(box);
+          }
+          // Cache description so next click is instant
+          _orderMap[id].offer_description = desc;
+          await db.from('account_orders').update({ offer_description: desc, offer_slug: slug }).eq('id', o.id);
         } catch (e) { /* silent — instructions are non-critical */ }
       }
     }
