@@ -42,7 +42,7 @@ export default async function handler(req, res) {
   /* ─── INITIALIZE ─────────────────────────────────────── */
   if (action === 'initialize') {
     const { amount, email, name, userId } = params;
-    if (!amount || amount < 3000) return res.status(400).json({ error: 'Minimum amount is ₦3,000' });
+    if (!amount || amount < 100) return res.status(400).json({ error: 'Minimum amount is ₦100' });
     if (!email || !userId)        return res.status(400).json({ error: 'Missing email or userId' });
 
     const reference = `BNS-${Date.now()}-${Math.random().toString(36).slice(2,7)}`;
