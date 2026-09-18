@@ -973,7 +973,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         const stLabel = { pending:'Processing', complete:'Delivered', failed:'Failed' }[o.status] || 'Pending';
         let credsBtn = '';
         if (o.status === 'complete' && o.credentials) {
-          credsBtn = `<button class="ac-creds-btn" onclick='showStoredCreds(${esc(JSON.stringify({ title: o.offer_title, credentials: o.credentials, offer_description: o.offer_description || '' }))})'>
+          credsBtn = `<button class="ac-creds-btn" onclick='showStoredCreds(${esc(JSON.stringify({ id: o.id, offer_id: o.offer_id, title: o.offer_title, credentials: o.credentials, offer_description: o.offer_description || '' }))})'>
                <i class="fas fa-key"></i> View Credentials
              </button>`;
         } else if (o.status === 'complete') {
@@ -996,9 +996,34 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       }).join('');
     }
 
-    function showStoredCreds(data) {
+    async function showStoredCreds(data) {
       if (typeof data === 'string') data = JSON.parse(data);
+      // Show immediately with what we have
       showCredentials({ title: data.title, offer_description: data.offer_description || '' }, data.credentials, null);
+
+      // If no instructions stored, fetch from Accszone and inject + cache
+      if (!data.offer_description && data.offer_id) {
+        try {
+          const res = await api({ action: 'listing', slug: data.offer_id });
+          const listing = res?.data || res;
+          const desc = listing?.description || listing?.desc || listing?.details || '';
+          if (desc) {
+            // Inject into the currently open modal
+            const instrId = 'instr-injected';
+            if (!document.getElementById(instrId)) {
+              const box = document.createElement('div');
+              box.id = instrId;
+              box.style.cssText = 'margin-top:16px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 14px';
+              box.innerHTML = `<div style="font-size:0.74rem;font-weight:700;color:#15803d;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px"><i class="fas fa-circle-info" style="margin-right:5px"></i>How to Login</div><div style="font-size:0.8rem;color:#166534;line-height:1.6;white-space:pre-wrap">${esc(desc)}</div>`;
+              document.getElementById('creds-content').appendChild(box);
+            }
+            // Cache in Supabase so next click is instant
+            if (data.id) {
+              await db.from('account_orders').update({ offer_description: desc }).eq('id', data.id);
+            }
+          }
+        } catch { /* silent — instructions are non-critical */ }
+      }
     }
 
     function iconFor(catId, title) {
