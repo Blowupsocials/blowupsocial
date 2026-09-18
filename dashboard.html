@@ -749,7 +749,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
           <button class="ds-amount-btn" data-amt="20000">₦20,000 <span style="display:block;font-size:0.6rem;font-weight:700;color:#16a34a;letter-spacing:0.02em;margin-top:2px;">+10% bonus</span></button>
         </div>
         <label class="ds-modal-input-label">Or enter a custom amount (₦)</label>
-        <input type="number" class="ds-modal-input" id="custom-amount" placeholder="₦0.00" min="100" max="10000000" />
+        <input type="number" class="ds-modal-input" id="custom-amount" placeholder="₦0.00" min="3000" max="10000000" />
         <div class="ds-modal-methods">
           <button class="ds-method-btn selected" data-method="bank"><i class="fas fa-university"></i> Bank Transfer</button>
           <button class="ds-method-btn" data-method="crypto"><i class="fab fa-bitcoin"></i> Crypto</button>
@@ -1807,7 +1807,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
     document.getElementById('modal-submit').addEventListener('click', async () => {
       const custom = parseFloat(document.getElementById('custom-amount').value);
       const amount = custom > 0 ? custom : selectedAmt;
-      if (amount < 100) { toast('Minimum top-up amount is ₦100.', 'warn'); return; }
+      if (amount < 3000) { toast('Minimum top-up amount is ₦3,000.', 'warn'); return; }
       if (selectedMethod !== 'bank') { toast('Only Bank Transfer is available right now.', 'warn'); return; }
 
       closeFundsModal();
