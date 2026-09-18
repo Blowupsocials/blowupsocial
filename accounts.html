@@ -732,7 +732,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         const desc     = o.description || o.desc || o.details || '';
         const slug     = o.slug || o.id;
         const ico      = iconFromTitle(title, catId);
-        const offerObj = JSON.stringify({ id: o.id, slug, title, catId, catName, priceUsd, sellUsd });
+        const offerObj = JSON.stringify({ id: o.id, slug, title, catId, catName, priceUsd, sellUsd, desc });
 
         return `<div class="ac-card">
           <div class="ac-card-top">
@@ -866,6 +866,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
           price_ngn:         Math.round(selectedOffer.sellUsd * USD_TO_NGN),
           status:            credentials ? 'complete' : 'pending',
           credentials:       credentials || null,
+          offer_description: selectedOffer.desc || null,
         });
         if (orderErr) console.error('Order save failed:', orderErr.message);
 
@@ -909,6 +910,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
     function showCredentials(offer, credentials, orderId) {
       const content = document.getElementById('creds-content');
       const warn    = document.getElementById('creds-warn');
+      const desc    = offer.desc || offer.offer_description || '';
 
       if (credentials && typeof credentials === 'object' && Object.keys(credentials).length) {
         const rows = Object.entries(credentials).map(([k, v]) =>
@@ -918,10 +920,20 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
             <button class="ac-copy-btn" onclick="copyText('cv-${esc(k)}')"><i class="fas fa-copy"></i></button>
           </div>`
         ).join('');
-        content.innerHTML = `<p style="text-align:center;font-size:0.83rem;color:#6b7080;margin-bottom:10px">Your access details for <strong>${esc(offer.title)}</strong></p><div class="ac-creds-box">${rows}</div>`;
+        const instrHtml = desc ? `
+          <div style="margin-top:16px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 14px">
+            <div style="font-size:0.74rem;font-weight:700;color:#15803d;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px"><i class="fas fa-circle-info" style="margin-right:5px"></i>How to Login</div>
+            <div style="font-size:0.8rem;color:#166534;line-height:1.6;white-space:pre-wrap">${esc(desc)}</div>
+          </div>` : '';
+        content.innerHTML = `<p style="text-align:center;font-size:0.83rem;color:#6b7080;margin-bottom:10px">Your access details for <strong>${esc(offer.title)}</strong></p><div class="ac-creds-box">${rows}</div>${instrHtml}`;
         warn.style.display = 'flex';
       } else if (typeof credentials === 'string' && credentials.trim()) {
-        content.innerHTML = `<div class="ac-creds-box"><pre style="font-size:0.8rem;white-space:pre-wrap;word-break:break-all">${esc(credentials)}</pre></div>`;
+        const instrHtml = desc ? `
+          <div style="margin-top:16px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 14px">
+            <div style="font-size:0.74rem;font-weight:700;color:#15803d;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px"><i class="fas fa-circle-info" style="margin-right:5px"></i>How to Login</div>
+            <div style="font-size:0.8rem;color:#166534;line-height:1.6;white-space:pre-wrap">${esc(desc)}</div>
+          </div>` : '';
+        content.innerHTML = `<div class="ac-creds-box"><pre style="font-size:0.8rem;white-space:pre-wrap;word-break:break-all">${esc(credentials)}</pre></div>${instrHtml}`;
         warn.style.display = 'flex';
       } else {
         content.innerHTML = `
@@ -961,7 +973,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         const stLabel = { pending:'Processing', complete:'Delivered', failed:'Failed' }[o.status] || 'Pending';
         let credsBtn = '';
         if (o.status === 'complete' && o.credentials) {
-          credsBtn = `<button class="ac-creds-btn" onclick='showStoredCreds(${esc(JSON.stringify({ title: o.offer_title, credentials: o.credentials }))})'>
+          credsBtn = `<button class="ac-creds-btn" onclick='showStoredCreds(${esc(JSON.stringify({ title: o.offer_title, credentials: o.credentials, offer_description: o.offer_description || '' }))})'>
                <i class="fas fa-key"></i> View Credentials
              </button>`;
         } else if (o.status === 'complete') {
@@ -986,7 +998,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
 
     function showStoredCreds(data) {
       if (typeof data === 'string') data = JSON.parse(data);
-      showCredentials({ title: data.title }, data.credentials, null);
+      showCredentials({ title: data.title, offer_description: data.offer_description || '' }, data.credentials, null);
     }
 
     function iconFor(catId, title) {
