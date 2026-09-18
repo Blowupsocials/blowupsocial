@@ -46,7 +46,7 @@ export default async function handler(req, res) {
     if (!email || !userId)        return res.status(400).json({ error: 'Missing email or userId' });
 
     const reference = `BNS-${Date.now()}-${Math.random().toString(36).slice(2,7)}`;
-    const appUrl    = 'https://blowupsocial.vercel.app';
+    const appUrl    = 'https://blowupsocials.net';
 
     const koraBody = {
       reference,

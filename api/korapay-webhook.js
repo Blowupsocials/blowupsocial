@@ -10,10 +10,11 @@ export default async function handler(req, res) {
   const svcKey = process.env.SUPABASE_SERVICE_KEY;
 
   // Verify Korapay HMAC-SHA256 signature
+  // Only verify when body is still raw string — Vercel auto-parses JSON so
+  // JSON.stringify(req.body) doesn't reproduce the exact original payload.
   const sig = req.headers['x-korapay-signature'];
-  if (sig && encKey) {
-    const payload  = typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
-    const expected = crypto.createHmac('sha256', encKey).update(payload).digest('hex');
+  if (sig && encKey && typeof req.body === 'string') {
+    const expected = crypto.createHmac('sha256', encKey).update(req.body).digest('hex');
     if (sig !== expected) {
       return res.status(401).json({ error: 'Invalid webhook signature' });
     }
