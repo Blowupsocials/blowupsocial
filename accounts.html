@@ -333,6 +333,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
     let userBalance   = 0;
     let userId        = null;
     let selectedOffer = null;
+    const _orderMap   = {}; // id → order data, avoids inline JSON in onclick
 
     /* -- GROUPS: AccsZone social media accounts only -- */
     const GROUPS = [
@@ -967,13 +968,14 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       }
 
       list.innerHTML = orders.map(o => {
+        _orderMap[o.id] = o; // store full order for safe lookup
         const ico     = iconFor(null, o.platform || o.offer_title);
         const date    = new Date(o.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'numeric' });
         const stClass = { pending:'st-pending', complete:'st-complete', failed:'st-failed' }[o.status] || 'st-pending';
         const stLabel = { pending:'Processing', complete:'Delivered', failed:'Failed' }[o.status] || 'Pending';
         let credsBtn = '';
         if (o.status === 'complete' && o.credentials) {
-          credsBtn = `<button class="ac-creds-btn" onclick='showStoredCreds(${esc(JSON.stringify({ id: o.id, offer_id: o.offer_id, title: o.offer_title, credentials: o.credentials, offer_description: o.offer_description || '' }))})'>
+          credsBtn = `<button class="ac-creds-btn" onclick="showStoredCreds(${o.id})">
                <i class="fas fa-key"></i> View Credentials
              </button>`;
         } else if (o.status === 'complete') {
@@ -996,19 +998,24 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       }).join('');
     }
 
-    async function showStoredCreds(data) {
-      if (typeof data === 'string') data = JSON.parse(data);
-      // Show immediately with what we have
-      showCredentials({ title: data.title, offer_description: data.offer_description || '' }, data.credentials, null);
+    async function showStoredCreds(id) {
+      const o = _orderMap[id];
+      if (!o) return;
+
+      // Show credentials immediately
+      showCredentials(
+        { title: o.offer_title, offer_description: o.offer_description || '' },
+        o.credentials,
+        null
+      );
 
       // If no instructions stored, fetch from Accszone and inject + cache
-      if (!data.offer_description && data.offer_id) {
+      if (!o.offer_description && o.offer_id) {
         try {
-          const res = await api({ action: 'listing', slug: data.offer_id });
+          const res = await api({ action: 'listing', slug: o.offer_id });
           const listing = res?.data || res;
           const desc = listing?.description || listing?.desc || listing?.details || '';
           if (desc) {
-            // Inject into the currently open modal
             const instrId = 'instr-injected';
             if (!document.getElementById(instrId)) {
               const box = document.createElement('div');
@@ -1017,12 +1024,12 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
               box.innerHTML = `<div style="font-size:0.74rem;font-weight:700;color:#15803d;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px"><i class="fas fa-circle-info" style="margin-right:5px"></i>How to Login</div><div style="font-size:0.8rem;color:#166534;line-height:1.6;white-space:pre-wrap">${esc(desc)}</div>`;
               document.getElementById('creds-content').appendChild(box);
             }
-            // Cache in Supabase so next click is instant
-            if (data.id) {
-              await db.from('account_orders').update({ offer_description: desc }).eq('id', data.id);
-            }
+            // Cache for next time
+            o.offer_description = desc;
+            _orderMap[id].offer_description = desc;
+            await db.from('account_orders').update({ offer_description: desc }).eq('id', o.id);
           }
-        } catch { /* silent — instructions are non-critical */ }
+        } catch (e) { /* silent — instructions are non-critical */ }
       }
     }
 
