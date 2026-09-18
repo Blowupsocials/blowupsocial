@@ -76,7 +76,7 @@ export default async function handler(req, res) {
     const svcKey = process.env.SUPABASE_SERVICE_KEY;
     if (svcKey) {
       await supaPost(svcKey, '/fund_requests', {
-        user_id: userId, amount, method: 'Bank Transfer', status: 'pending',
+        user_id: userId, amount, method: 'Bank Transfer', status: 'pending', reference,
       }).catch(() => {});
     }
 
@@ -114,24 +114,32 @@ export default async function handler(req, res) {
   return res.status(400).json({ error: 'Invalid action' });
 }
 
-// Credit wallet — idempotent: marks oldest pending fund_request completed then adds balance
+// Credit wallet — idempotent via reference: skips if this reference was already credited
 export async function creditWallet(svcKey, userId, amountNGN, reference) {
-  // Find the oldest pending Bank Transfer request for this user
+  // Guard: if this exact reference was already credited, do nothing
+  if (reference) {
+    const existing = await supaGet(
+      svcKey,
+      `/fund_requests?user_id=eq.${userId}&reference=eq.${encodeURIComponent(reference)}&status=eq.completed&limit=1&select=id`
+    );
+    if (Array.isArray(existing) && existing.length > 0) return; // already credited
+  }
+
+  const addUSD = (amountNGN || 0) / USD_TO_NGN;
+
+  // Find the oldest pending Bank Transfer request for this user and mark it completed
   const frs = await supaGet(
     svcKey,
     `/fund_requests?user_id=eq.${userId}&status=eq.pending&method=eq.Bank%20Transfer&order=created_at.asc&limit=1&select=id,amount`
   );
 
-  const addUSD = (amountNGN || 0) / USD_TO_NGN;
-
   if (Array.isArray(frs) && frs.length > 0) {
-    const fr = frs[0];
-    // Mark this fund_request completed
-    await supaPatch(svcKey, `/fund_requests?id=eq.${fr.id}`, { status: 'completed' });
+    await supaPatch(svcKey, `/fund_requests?id=eq.${frs[0].id}`, {
+      status: 'completed', reference: reference || null,
+    });
   } else {
-    // No pending request found — insert a completed one for the record
     await supaPost(svcKey, '/fund_requests', {
-      user_id: userId, amount: amountNGN, method: 'Bank Transfer', status: 'completed',
+      user_id: userId, amount: amountNGN, method: 'Bank Transfer', status: 'completed', reference: reference || null,
     }).catch(() => {});
   }
 
