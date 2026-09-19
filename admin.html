@@ -2344,10 +2344,11 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       const spendNGN = smmSpendNGN + acctSpendNGN;
       document.getElementById('stat-pending').textContent = `₦${Math.round(spendNGN).toLocaleString('en-NG')}`;
 
-      /* Stat: total funded = sum of all completed fund_requests */
-      const { data: fundReqData, error: e4 } = await db.from('fund_requests').select('amount').in('status', ['Approved', 'completed']);
-      if (e4) console.error('[Admin] fund_requests error:', e4);
-      const totalFundedNGN = (fundReqData || []).reduce((s, r) => s + parseFloat(r.amount || 0), 0);
+      /* Stat: total funded = all wallet balances (remaining) + all service spend
+         Every naira in the system came through Korapay, so wallets + spent = total paid */
+      const { data: walletData } = await db.from('profiles').select('wallet_balance');
+      const walletsNGN = (walletData || []).reduce((s, u) => s + parseFloat(u.wallet_balance || 0) * USD_TO_NGN, 0);
+      const totalFundedNGN = walletsNGN + spendNGN;
       document.getElementById('stat-revenue').textContent = `₦${Math.round(totalFundedNGN).toLocaleString('en-NG')}`;
 
       /* User stats — active (funded) vs inactive */
@@ -2509,9 +2510,16 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
     async function loadExpenses() {
       _expenses = JSON.parse(localStorage.getItem('bns_expenses') || '[]');
       document.getElementById('exp-date').value = new Date().toISOString().slice(0,10);
-      // Total funded = sum of all completed fund_requests
-      const { data: fundReqs } = await db.from('fund_requests').select('amount').in('status', ['Approved', 'completed']);
-      const totalRevNGN = (fundReqs || []).reduce((s, r) => s + parseFloat(r.amount || 0), 0);
+      // Total funded = wallets remaining + service spend (same formula as dashboard)
+      const [{ data: expWallets }, { data: expSmmOrds }, { data: expAcctOrds }] = await Promise.all([
+        db.from('profiles').select('wallet_balance'),
+        db.from('orders').select('amount').neq('status', 'Cancelled'),
+        db.from('account_orders').select('price_ngn').neq('status', 'refunded'),
+      ]);
+      const expWalletsNGN = (expWallets  || []).reduce((s, u) => s + parseFloat(u.wallet_balance || 0) * USD_TO_NGN, 0);
+      const expSmmNGN     = (expSmmOrds  || []).reduce((s, o) => s + parseFloat(o.amount    || 0) * USD_TO_NGN, 0);
+      const expAcctNGN    = (expAcctOrds || []).reduce((s, o) => s + parseFloat(o.price_ngn || 0), 0);
+      const totalRevNGN   = expWalletsNGN + expSmmNGN + expAcctNGN;
       renderExpenses(totalRevNGN);
     }
 
