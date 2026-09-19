@@ -596,16 +596,36 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
           <div class="sec-hdr-left"><h2>User Wallets</h2><p>All user balances, sorted from highest to lowest</p></div>
           <div class="sec-hdr-right">
             <div id="wallets-total-badge" style="background:#ecfdf5;border:1px solid #bbf7d0;color:#166534;padding:7px 14px;border-radius:9px;font-size:0.78rem;font-weight:700">Total in wallets: ...</div>
+            <div class="sec-search"><i class="fas fa-magnifying-glass"></i><input type="text" id="wallets-search" placeholder="Search by name or email..." oninput="filterWallets(this.value)"></div>
           </div>
         </div>
         <div class="tbl-card">
           <div class="tbl-wrap">
             <table class="data-tbl">
-              <thead><tr><th>#</th><th>User</th><th>Email</th><th>Balance (USD)</th><th>Balance (NGN)</th><th>Joined</th></tr></thead>
-              <tbody id="wallets-tbody"><tr><td colspan="6" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr></tbody>
+              <thead><tr><th>#</th><th>User</th><th>Email</th><th>Balance (USD)</th><th>Balance (NGN)</th><th>Joined</th><th>Actions</th></tr></thead>
+              <tbody id="wallets-tbody"><tr><td colspan="7" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr></tbody>
             </table>
           </div>
           <div class="tbl-foot"><span id="wallets-count" style="color:var(--t3);font-size:0.72rem">...</span></div>
+        </div>
+      </div>
+
+      <!-- Wallet Fund Modal -->
+      <div class="modal-bg" id="wallet-fund-modal">
+        <div class="modal-box" style="max-width:360px">
+          <h3 id="wfm-title">Adjust Wallet</h3>
+          <p class="modal-sub" id="wfm-sub">Current balance: ...</p>
+          <div class="modal-field">
+            <label>Amount (NGN)</label>
+            <input type="number" id="wfm-amount" placeholder="e.g. 5000" min="1" step="1" />
+          </div>
+          <div style="display:flex;gap:8px;margin-bottom:16px">
+            <button id="wfm-add-btn" onclick="wfmSubmit('add')" style="flex:1;padding:9px;border-radius:9px;background:#ecfdf5;color:#166534;border:1px solid #bbf7d0;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit"><i class="fas fa-plus"></i> Add Funds</button>
+            <button id="wfm-rem-btn" onclick="wfmSubmit('remove')" style="flex:1;padding:9px;border-radius:9px;background:#fee2e2;color:#991b1b;border:1px solid #fecaca;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit"><i class="fas fa-minus"></i> Remove Funds</button>
+          </div>
+          <div class="modal-foot">
+            <button class="btn-cancel" onclick="document.getElementById('wallet-fund-modal').classList.remove('open')">Cancel</button>
+          </div>
         </div>
       </div>
 
@@ -1629,6 +1649,8 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
     }
 
     /* -- Wallets -- */
+    let _allWallets = [];
+
     async function loadWallets() {
       const tbody = document.getElementById('wallets-tbody');
       const { data, error } = await db.from('profiles')
@@ -1636,23 +1658,34 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         .order('wallet_balance', { ascending: false })
         .limit(500);
       if (error || !data) {
-        tbody.innerHTML = `<tr><td colspan="6" class="tbl-loading">Failed to load wallets</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="tbl-loading">Failed to load wallets</td></tr>`;
         return;
       }
-      const totalUSD = data.reduce((s, u) => s + parseFloat(u.wallet_balance || 0), 0);
+      _allWallets = data;
+      renderWallets(_allWallets);
+    }
+
+    function renderWallets(list) {
+      const totalUSD = _allWallets.reduce((s, u) => s + parseFloat(u.wallet_balance || 0), 0);
       const totalNGN = totalUSD * USD_TO_NGN;
       document.getElementById('wallets-total-badge').textContent =
         `Total in wallets: ₦${Math.round(totalNGN).toLocaleString('en-NG')} ($${totalUSD.toFixed(2)})`;
-      document.getElementById('wallets-count').textContent = `${data.length} user${data.length !== 1 ? 's' : ''}`;
+      document.getElementById('wallets-count').textContent = `${list.length} of ${_allWallets.length} user${_allWallets.length !== 1 ? 's' : ''}`;
       const colors = ['#7c3aed','#ec4899','#10b981','#3b82f6','#f59e0b'];
-      tbody.innerHTML = data.map((u, i) => {
+      const tbody = document.getElementById('wallets-tbody');
+      if (!list.length) {
+        tbody.innerHTML = `<tr><td colspan="7" class="tbl-loading">No users match search</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = list.map((u, i) => {
         const bal    = parseFloat(u.wallet_balance || 0);
         const balNGN = bal * USD_TO_NGN;
         const joined = u.created_at ? new Date(u.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'numeric' }) : '—';
         const initials = (u.full_name || u.email || '?').slice(0, 2).toUpperCase();
         const col = colors[(u.email || '').charCodeAt(0) % colors.length];
+        const globalIdx = _allWallets.findIndex(w => w.id === u.id) + 1;
         return `<tr>
-          <td style="color:var(--t3);font-size:0.72rem;font-weight:600">${i + 1}</td>
+          <td style="color:var(--t3);font-size:0.72rem;font-weight:600">${globalIdx}</td>
           <td><div class="u-cell">
             <div class="u-ava" style="background:${col}">${initials}</div>
             <div class="u-name">${u.full_name || '—'}</div>
@@ -1663,8 +1696,55 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
             ${bal > 0 ? '₦' + Math.round(balNGN).toLocaleString('en-NG') : '—'}
           </td>
           <td class="ord-time">${joined}</td>
+          <td>
+            <button onclick="openWalletFundModal('${u.id}','${(u.full_name || u.email || '').replace(/'/g,'\\\'')}')"
+              class="btn-icon btn-icon-pu" title="Add/Remove funds" style="width:auto;padding:4px 10px;border-radius:6px;font-size:0.72rem;font-weight:700;gap:5px;display:inline-flex;align-items:center">
+              <i class="fas fa-wallet"></i> Adjust
+            </button>
+          </td>
         </tr>`;
       }).join('');
+    }
+
+    function filterWallets(q) {
+      const term = q.toLowerCase().trim();
+      const filtered = !term
+        ? _allWallets
+        : _allWallets.filter(u =>
+            (u.full_name || '').toLowerCase().includes(term) ||
+            (u.email || '').toLowerCase().includes(term)
+          );
+      renderWallets(filtered);
+    }
+
+    let _wfmUserId = null;
+    function openWalletFundModal(userId, name) {
+      _wfmUserId = userId;
+      const user = _allWallets.find(u => u.id === userId);
+      const bal  = parseFloat(user?.wallet_balance || 0);
+      document.getElementById('wfm-title').textContent = `Adjust — ${name}`;
+      document.getElementById('wfm-sub').textContent   = `Current balance: $${bal.toFixed(4)} (₦${Math.round(bal * USD_TO_NGN).toLocaleString('en-NG')})`;
+      document.getElementById('wfm-amount').value = '';
+      document.getElementById('wallet-fund-modal').classList.add('open');
+    }
+
+    async function wfmSubmit(action) {
+      const amountNGN = parseFloat(document.getElementById('wfm-amount').value);
+      if (!amountNGN || amountNGN <= 0) { adminToast('Enter a valid amount.', 'warn'); return; }
+      if (!_wfmUserId) return;
+      const user = _allWallets.find(u => u.id === _wfmUserId);
+      const current = parseFloat(user?.wallet_balance || 0);
+      const deltaUSD = amountNGN / USD_TO_NGN;
+      const newBal   = action === 'add' ? current + deltaUSD : Math.max(0, current - deltaUSD);
+      const { error } = await db.from('profiles').update({ wallet_balance: newBal }).eq('id', _wfmUserId);
+      if (error) { adminToast('Failed to update wallet.', 'error'); return; }
+      // Update local cache and re-render
+      user.wallet_balance = newBal;
+      _allWallets.sort((a, b) => parseFloat(b.wallet_balance || 0) - parseFloat(a.wallet_balance || 0));
+      const q = document.getElementById('wallets-search')?.value || '';
+      filterWallets(q);
+      document.getElementById('wallet-fund-modal').classList.remove('open');
+      adminToast(`₦${amountNGN.toLocaleString('en-NG')} ${action === 'add' ? 'added to' : 'removed from'} wallet.`, 'success');
     }
 
     /* -- Users -- */
@@ -2251,7 +2331,6 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       if (e2b) console.error('[Admin] acct orders count error:', e2b);
       const orderCount = (smmCount || 0) + (acctCount || 0);
       document.getElementById('stat-orders').textContent = fmtNum(orderCount);
-      document.getElementById('tbl-total-orders').textContent = fmtNum(orderCount);
 
       /* Stat: service spend = SMM orders + account store purchases */
       const [{ data: revData, error: e3 }, { data: acctRevData, error: e3b }] = await Promise.all([
