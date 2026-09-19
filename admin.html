@@ -102,7 +102,7 @@
     .content { padding: 22px 28px; flex: 1; }
 
     /* -- Stat Cards -- */
-    .stats-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 20px; }
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
     .stat-card { background: #ffffff; border-radius: 14px; padding: 18px 16px 16px; display: flex; align-items: flex-start; gap: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
     .stat-body { flex: 1; min-width: 0; }
     .stat-top { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
@@ -405,6 +405,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
 
       <div class="sb-sec">Manage</div>
       <a href="#" data-section="users"         class="sb-item">Users</a>
+      <a href="#" data-section="wallets"       class="sb-item">Wallets</a>
       <a href="#" data-section="orders"        class="sb-item">Social Boost Purchases</a>
       <a href="#" data-section="acct-orders"   class="sb-item">Account Store Purchases</a>
       <a href="#" data-section="transactions"  class="sb-item">Transactions</a>
@@ -512,158 +513,57 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
           <div class="stat-spark" id="spark-pending"></div>
         </div>
 
-        <div class="stat-card">
-          <div class="stat-body">
-            <div class="stat-top">
-              <div class="stat-icon si-bl"><i class="fas fa-wallet"></i></div>
-              <span class="stat-label">Funded Users</span>
-            </div>
-            <div class="stat-num" id="stat-tickets">...</div>
-            <div class="stat-trend"><span class="t-lbl">with wallet balance</span></div>
-          </div>
-          <div class="stat-spark" id="spark-tickets"></div>
-        </div>
-      </div>
-
-      <!-- MIDDLE ROW -->
-      <div class="mid-row">
-
-        <!-- Revenue chart -->
-        <div class="card">
-          <div class="card-hdr">
-            <div class="card-title">Funding Overview</div>
-            <div class="card-hdr-r">
-              <button class="btn-sm"><i class="fas fa-calendar-days"></i> This Month <i class="fas fa-chevron-down"></i></button>
-              <button class="btn-sm"><i class="fas fa-arrow-down"></i> Export</button>
-            </div>
-          </div>
-          <div class="chart-wrap"><canvas id="revenue-chart"></canvas></div>
-        </div>
-
-        <!-- Top selling services -->
-        <div class="card">
-          <div class="card-hdr">
-            <div class="card-title">Top Selling Services</div>
-            <button class="btn-link" onclick="showSection('orders')">View All</button>
-          </div>
-          <table class="svc-tbl">
-            <thead>
-              <tr>
-                <th>Service</th>
-                <th>Orders</th>
-                <th>Revenue</th>
-              </tr>
-            </thead>
-            <tbody id="top-svc-tbody">
-              <tr>
-                <td><div class="svc-name-cell"><div class="svc-ico" style="background:#fdf2f8;color:#e1306c"><i class="fa-brands fa-instagram"></i></div>Instagram Followers</div></td>
-                <td class="svc-orders">12,540</td>
-                <td class="svc-rev">₦2,850,400</td>
-              </tr>
-              <tr>
-                <td><div class="svc-name-cell"><div class="svc-ico" style="background:#f3f4f6;color:#000"><i class="fa-brands fa-tiktok"></i></div>TikTok Views</div></td>
-                <td class="svc-orders">9,875</td>
-                <td class="svc-rev">₦1,975,000</td>
-              </tr>
-              <tr>
-                <td><div class="svc-name-cell"><div class="svc-ico" style="background:#fef2f2;color:#ff0000"><i class="fa-brands fa-youtube"></i></div>YouTube Subscribers</div></td>
-                <td class="svc-orders">6,250</td>
-                <td class="svc-rev">₦1,562,500</td>
-              </tr>
-              <tr>
-                <td><div class="svc-name-cell"><div class="svc-ico" style="background:#f9fafb;color:#000"><i class="fa-brands fa-x-twitter"></i></div>Twitter (X) Followers</div></td>
-                <td class="svc-orders">3,890</td>
-                <td class="svc-rev">₦1,050,300</td>
-              </tr>
-              <tr>
-                <td><div class="svc-name-cell"><div class="svc-ico" style="background:#f0fdf4;color:#1db954"><i class="fa-brands fa-spotify"></i></div>Spotify Plays</div></td>
-                <td class="svc-orders">2,337</td>
-                <td class="svc-rev">₦654,120</td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td>Total</td>
-                <td class="svc-orders" id="tbl-total-orders">34,892</td>
-                <td class="svc-rev" id="tbl-total-rev">...</td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
       </div>
 
       <!-- BOTTOM ROW -->
-      <div class="bot-row">
-
-        <!-- User statistics -->
-        <div class="card">
-          <div class="card-hdr">
-            <div class="card-title">User Statistics</div>
-            <button class="btn-link">View All</button>
-          </div>
-          <div class="donut-wrap"><canvas id="donut-chart"></canvas></div>
-          <div class="legend-list">
-            <div class="legend-row">
-              <div class="legend-l"><div class="leg-dot" style="background:#7c3aed"></div><span class="leg-name">Active Users (Funded)</span></div>
-              <div class="legend-r"><span class="leg-count" id="leg-active">...</span><span class="leg-pct" id="leg-pct-active"></span></div>
-            </div>
-            <div class="legend-row">
-              <div class="legend-l"><div class="leg-dot" style="background:#e5e7eb"></div><span class="leg-name">Inactive Users</span></div>
-              <div class="legend-r"><span class="leg-count" id="leg-inactive">...</span><span class="leg-pct" id="leg-pct-inactive"></span></div>
-            </div>
-          </div>
-          <div class="online-bar">
-            <div class="online-l"><div class="online-pulse"></div> Total Users</div>
-            <span class="online-n" id="online-total">...</span>
-          </div>
-        </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
 
         <!-- Recent activity -->
         <div class="card">
           <div class="card-hdr">
             <div class="card-title">Recent Activity</div>
-            <button class="btn-link">View All</button>
           </div>
           <div class="act-list" id="activity-list">
             <div class="act-item">
-              <div class="act-ico" style="background:#f5f0ff;color:#7c3aed"><i class="fas fa-user-plus"></i></div>
-              <div class="act-body">
-                <div class="act-title">New user registered</div>
-                <div class="act-sub">johndoe@example.com</div>
-              </div>
-              <span class="act-time">2m ago</span>
+              <div class="act-ico" style="background:#f5f0ff;color:#7c3aed"><i class="fas fa-circle-notch fa-spin"></i></div>
+              <div class="act-body"><div class="act-title">Loading...</div></div>
             </div>
-            <div class="act-item">
-              <div class="act-ico" style="background:#fdf2f8;color:#ec4899"><i class="fas fa-bag-shopping"></i></div>
-              <div class="act-body">
-                <div class="act-title">New order received</div>
-                <div class="act-sub">Order #BS24589</div>
+          </div>
+        </div>
+
+        <!-- User breakdown -->
+        <div class="card">
+          <div class="card-hdr">
+            <div class="card-title">User Breakdown</div>
+            <button class="btn-link" onclick="showSection('wallets')">View Wallets</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;margin-top:4px">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#f5f3ff;border-radius:10px">
+              <div style="display:flex;align-items:center;gap:9px">
+                <div style="width:9px;height:9px;border-radius:50%;background:#7c3aed;flex-shrink:0"></div>
+                <span style="font-size:0.8rem;color:#4b5063">Active (Funded)</span>
               </div>
-              <span class="act-time">5m ago</span>
+              <div style="display:flex;align-items:baseline;gap:5px">
+                <span id="leg-active" style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:800;color:#1a1a2e">...</span>
+                <span id="leg-pct-active" style="font-size:0.69rem;color:#8b8fa8"></span>
+              </div>
             </div>
-            <div class="act-item">
-              <div class="act-ico" style="background:#ecfdf5;color:#10b981"><i class="fas fa-arrow-down"></i></div>
-              <div class="act-body">
-                <div class="act-title">Funds added by user</div>
-                <div class="act-sub">₦15,000 by janesmith</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#f5f6fb;border-radius:10px">
+              <div style="display:flex;align-items:center;gap:9px">
+                <div style="width:9px;height:9px;border-radius:50%;background:#e5e7eb;flex-shrink:0"></div>
+                <span style="font-size:0.8rem;color:#4b5063">Inactive</span>
               </div>
-              <span class="act-time">12m ago</span>
+              <div style="display:flex;align-items:baseline;gap:5px">
+                <span id="leg-inactive" style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:800;color:#1a1a2e">...</span>
+                <span id="leg-pct-inactive" style="font-size:0.69rem;color:#8b8fa8"></span>
+              </div>
             </div>
-            <div class="act-item">
-              <div class="act-ico" style="background:#fffbeb;color:#f59e0b"><i class="fas fa-arrows-rotate"></i></div>
-              <div class="act-body">
-                <div class="act-title">Service updated</div>
-                <div class="act-sub">YouTube Subscribers</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1px solid #e8eaf0;border-radius:10px;margin-top:4px">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div class="online-pulse"></div>
+                <span style="font-size:0.8rem;color:#4b5063">Total Users</span>
               </div>
-              <span class="act-time">25m ago</span>
-            </div>
-            <div class="act-item">
-              <div class="act-ico" style="background:#eff6ff;color:#3b82f6"><i class="fas fa-ticket"></i></div>
-              <div class="act-body">
-                <div class="act-title">New support ticket</div>
-                <div class="act-sub">Ticket #TK2456</div>
-              </div>
-              <span class="act-time">32m ago</span>
+              <span id="online-total" style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:800;color:#1a1a2e">...</span>
             </div>
           </div>
         </div>
@@ -687,6 +587,25 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
             </table>
           </div>
           <div class="tbl-foot"><span id="users-count">...</span><div class="page-btns" id="users-pages"></div></div>
+        </div>
+      </div>
+
+      <!-- -- WALLETS -- -->
+      <div id="sec-wallets" class="admin-section">
+        <div class="sec-hdr">
+          <div class="sec-hdr-left"><h2>User Wallets</h2><p>All user balances, sorted from highest to lowest</p></div>
+          <div class="sec-hdr-right">
+            <div id="wallets-total-badge" style="background:#ecfdf5;border:1px solid #bbf7d0;color:#166534;padding:7px 14px;border-radius:9px;font-size:0.78rem;font-weight:700">Total in wallets: ...</div>
+          </div>
+        </div>
+        <div class="tbl-card">
+          <div class="tbl-wrap">
+            <table class="data-tbl">
+              <thead><tr><th>#</th><th>User</th><th>Email</th><th>Balance (USD)</th><th>Balance (NGN)</th><th>Joined</th></tr></thead>
+              <tbody id="wallets-tbody"><tr><td colspan="6" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr></tbody>
+            </table>
+          </div>
+          <div class="tbl-foot"><span id="wallets-count" style="color:var(--t3);font-size:0.72rem">...</span></div>
         </div>
       </div>
 
@@ -1372,113 +1291,13 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
 
     /* sparklines rendered after real data loads in the async IIFE below */
 
-    /* -- Revenue chart (empty until real data loads) -- */
-    let revenueChart = null;
-    try {
-    const revenueCtx = document.getElementById('revenue-chart').getContext('2d');
-    revenueChart = new Chart(revenueCtx, {
-      type: 'line',
-      data: {
-        labels: [],
-        datasets: [{
-          data: [],
-          borderColor: '#7c3aed',
-          backgroundColor: (ctx) => {
-            const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 220);
-            g.addColorStop(0, 'rgba(124,58,237,0.18)');
-            g.addColorStop(1, 'rgba(124,58,237,0)');
-            return g;
-          },
-          fill: true, tension: 0.45, borderWidth: 2,
-          pointRadius: 0, pointHoverRadius: 5,
-          pointBackgroundColor: '#7c3aed', pointBorderColor: '#fff', pointBorderWidth: 2,
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: '#0f0e1c', titleColor: '#8b8fa8', bodyColor: '#fff',
-            padding: 12, cornerRadius: 8, displayColors: false,
-            callbacks: {
-              title: i => i[0].label,
-              label: i => `Funded: ₦${Number(i.raw).toLocaleString('en-NG')}`,
-            }
-          }
-        },
-        scales: {
-          x: {
-            grid: { display: false },
-            border: { display: false },
-            ticks: {
-              color: '#8b8fa8', font: { size: 10.5 },
-              maxRotation: 0,
-              callback: (_, i) => '',
-            }
-          },
-          y: {
-            min: 0, max: 10000000,
-            grid: { color: 'rgba(0,0,0,0.045)', drawBorder: false },
-            border: { display: false },
-            ticks: {
-              color: '#8b8fa8', font: { size: 10.5 },
-              callback: v => v === 0 ? '₦0' : `₦${v/1000000}M`,
-              stepSize: 2000000,
-            }
-          }
-        }
-      }
-    });
-    } catch(e) { console.warn('Revenue chart init failed:', e); }
-
-    /* -- Donut chart -- */
-    let userDonut = null;
-    try {
-    const donutCtx = document.getElementById('donut-chart').getContext('2d');
-    const centerPlugin = {
-      id: 'centerText',
-      afterDraw(chart) {
-        const { ctx, chartArea: { left, right, top, bottom } } = chart;
-        const cx = left + (right - left) / 2, cy = top + (bottom - top) / 2;
-        ctx.save();
-        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--t1').trim() || '#0f0e1c';
-        ctx.font = '800 19px "Space Grotesk", sans-serif';
-        ctx.fillText(
-          (document.getElementById('online-total')?.textContent || '…'),
-          cx, cy - 9
-        );
-        ctx.fillStyle = '#8b8fa8';
-        ctx.font = '400 10.5px Inter, sans-serif';
-        ctx.fillText('Total Users', cx, cy + 10);
-        ctx.restore();
-      }
-    };
-
-    userDonut = new Chart(donutCtx, {
-      type: 'doughnut',
-      plugins: [centerPlugin],
-      data: {
-        datasets: [{
-          data: [1, 1],
-          backgroundColor: ['#7c3aed', '#10b981'],
-          borderWidth: 0, hoverOffset: 3,
-        }]
-      },
-      options: {
-        cutout: '72%',
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false }, tooltip: { enabled: false } },
-        animation: { animateRotate: true, duration: 800 },
-      }
-    });
-    } catch(e) { console.warn('Donut chart init failed:', e); }
+    /* charts removed — dashboard simplified */
 
     /* -- SECTION NAVIGATION -- */
     const SEC_TITLES = {
       dashboard:     ['Welcome back, Admin!', "Here's what's happening on your platform today."],
       users:         ['Users', 'Manage all registered users'],
+      wallets:       ['User Wallets', 'All user balances, sorted from highest to lowest'],
       orders:        ['Social Boost Purchases', 'View and manage SMM social media orders'],
       'acct-orders': ['Account Store Purchases', 'View and manage account store orders'],
       services:      ['Services', 'Manage available SMM services'],
@@ -1521,6 +1340,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
 
     async function loadSecData(name) {
       if (name === 'users')         await loadUsers();
+      if (name === 'wallets')       await loadWallets();
       if (name === 'orders')        await loadOrders();
       if (name === 'acct-orders')   await loadAcctOrders();
       if (name === 'transactions')  await loadTransactions();
@@ -1806,6 +1626,45 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         t.status = newStatus;
         filterTickets();
       } catch { adminToast('Failed to update ticket.', 'warn'); }
+    }
+
+    /* -- Wallets -- */
+    async function loadWallets() {
+      const tbody = document.getElementById('wallets-tbody');
+      const { data, error } = await db.from('profiles')
+        .select('id, full_name, email, wallet_balance, created_at')
+        .order('wallet_balance', { ascending: false })
+        .limit(500);
+      if (error || !data) {
+        tbody.innerHTML = `<tr><td colspan="6" class="tbl-loading">Failed to load wallets</td></tr>`;
+        return;
+      }
+      const totalUSD = data.reduce((s, u) => s + parseFloat(u.wallet_balance || 0), 0);
+      const totalNGN = totalUSD * USD_TO_NGN;
+      document.getElementById('wallets-total-badge').textContent =
+        `Total in wallets: ₦${Math.round(totalNGN).toLocaleString('en-NG')} ($${totalUSD.toFixed(2)})`;
+      document.getElementById('wallets-count').textContent = `${data.length} user${data.length !== 1 ? 's' : ''}`;
+      const colors = ['#7c3aed','#ec4899','#10b981','#3b82f6','#f59e0b'];
+      tbody.innerHTML = data.map((u, i) => {
+        const bal    = parseFloat(u.wallet_balance || 0);
+        const balNGN = bal * USD_TO_NGN;
+        const joined = u.created_at ? new Date(u.created_at).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'numeric' }) : '—';
+        const initials = (u.full_name || u.email || '?').slice(0, 2).toUpperCase();
+        const col = colors[(u.email || '').charCodeAt(0) % colors.length];
+        return `<tr>
+          <td style="color:var(--t3);font-size:0.72rem;font-weight:600">${i + 1}</td>
+          <td><div class="u-cell">
+            <div class="u-ava" style="background:${col}">${initials}</div>
+            <div class="u-name">${u.full_name || '—'}</div>
+          </div></td>
+          <td style="color:var(--t2);font-size:0.78rem">${u.email || '—'}</td>
+          <td style="font-size:0.82rem;color:#4b5063;font-variant-numeric:tabular-nums">$${bal.toFixed(4)}</td>
+          <td class="${bal > 0 ? 'wallet-ngn' : 'wallet-zero'}">
+            ${bal > 0 ? '₦' + Math.round(balNGN).toLocaleString('en-NG') : '—'}
+          </td>
+          <td class="ord-time">${joined}</td>
+        </tr>`;
+      }).join('');
     }
 
     /* -- Users -- */
@@ -2406,14 +2265,13 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       const spendNGN = smmSpendNGN + acctSpendNGN;
       document.getElementById('stat-pending').textContent = `₦${Math.round(spendNGN).toLocaleString('en-NG')}`;
 
-      /* Stat: total funded = money still in wallets + everything already spent */
-      const { data: walletData, error: e4 } = await db.from('profiles').select('wallet_balance');
-      if (e4) console.error('[Admin] wallets error:', e4);
-      const walletsNGN = (walletData || []).reduce((s, u) => s + parseFloat(u.wallet_balance || 0) * USD_TO_NGN, 0);
-      const totalFundedNGN = walletsNGN + spendNGN;
+      /* Stat: total funded = sum of all completed fund_requests */
+      const { data: fundReqData, error: e4 } = await db.from('fund_requests').select('amount').in('status', ['Approved', 'completed']);
+      if (e4) console.error('[Admin] fund_requests error:', e4);
+      const totalFundedNGN = (fundReqData || []).reduce((s, r) => s + parseFloat(r.amount || 0), 0);
       document.getElementById('stat-revenue').textContent = `₦${Math.round(totalFundedNGN).toLocaleString('en-NG')}`;
 
-      /* User stats for donut — active (funded) vs inactive */
+      /* User stats — active (funded) vs inactive */
       try {
         const [{ count: totalU }, { count: activeU }] = await Promise.all([
           db.from('profiles').select('*', { count: 'exact', head: true }),
@@ -2428,91 +2286,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         document.getElementById('leg-inactive').textContent     = fmtNum(inactive);
         document.getElementById('leg-pct-inactive').textContent = pct(inactive);
         document.getElementById('online-total').textContent     = fmtNum(total);
-        if (userDonut && total) {
-          userDonut.data.datasets[0].data             = [active, inactive];
-          userDonut.data.datasets[0].backgroundColor  = ['#7c3aed', '#e5e7eb'];
-          userDonut.update();
-        }
-      } catch (err) { console.error('[Admin] donut chart:', err); }
-
-      /* -- Funding chart: daily spending over last 30 days -- */
-      try {
-        const NUM_DAYS = 30;
-        const dayMs    = 864e5;
-        const chartNow = new Date();
-        const days = Array.from({ length: NUM_DAYS }, (_, i) => {
-          const start = new Date(chartNow - (NUM_DAYS - 1 - i) * dayMs);
-          start.setHours(0, 0, 0, 0);
-          const end = new Date(start.getTime() + dayMs);
-          const d = start.getDate(), m = start.getMonth() + 1;
-          const label = `${d}/${m}`;
-          return { label, start: start.toISOString(), end: end.toISOString(), ngn: 0 };
-        });
-        const [{ data: fundChart, error: fcErr }, { data: smmChartData }, { data: acctChartData }] = await Promise.all([
-          db.from('fund_requests').select('amount, created_at').in('status', ['Approved', 'completed']).gte('created_at', days[0].start),
-          db.from('orders').select('amount, created_at').neq('status', 'Cancelled').gte('created_at', days[0].start),
-          db.from('account_orders').select('price_ngn, created_at').neq('status', 'refunded').gte('created_at', days[0].start),
-        ]);
-        if (!fcErr && fundChart?.length) {
-          fundChart.forEach(f => {
-            const ts   = new Date(f.created_at).getTime();
-            const slot = days.find(d => ts >= new Date(d.start).getTime() && ts < new Date(d.end).getTime());
-            if (slot) slot.ngn += parseFloat(f.amount || 0);
-          });
-        } else {
-          (smmChartData || []).forEach(o => {
-            const ts   = new Date(o.created_at).getTime();
-            const slot = days.find(d => ts >= new Date(d.start).getTime() && ts < new Date(d.end).getTime());
-            if (slot) slot.ngn += parseFloat(o.amount || 0) * USD_TO_NGN;
-          });
-          (acctChartData || []).forEach(o => {
-            const ts   = new Date(o.created_at).getTime();
-            const slot = days.find(d => ts >= new Date(d.start).getTime() && ts < new Date(d.end).getTime());
-            if (slot) slot.ngn += parseFloat(o.price_ngn || 0);
-          });
-        }
-        if (revenueChart) {
-          revenueChart.data.labels = days.map(d => d.label);
-          revenueChart.data.datasets[0].data = days.map(d => d.ngn);
-          const maxVal = Math.max(...days.map(d => d.ngn), 5000);
-          revenueChart.options.scales.y.max = Math.ceil(maxVal / 5000) * 5000 * 1.2;
-          revenueChart.options.scales.y.ticks.callback = v => v === 0 ? '₦0' : `₦${(v/1000).toFixed(0)}k`;
-          revenueChart.options.scales.x.ticks.callback = (_, i) => (i % 5 === 0) ? (days[i]?.label ?? '') : '';
-          revenueChart.update();
-        }
-      } catch(chartErr) { console.error('[Admin] funding chart:', chartErr); }
-
-      /* -- Top Selling Services: real data from orders + account_orders -- */
-      const [{ data: svcOrds }, { data: svcAcctOrds }] = await Promise.all([
-        db.from('orders').select('service, amount'),
-        db.from('account_orders').select('offer_title, platform, price_ngn').neq('status', 'refunded'),
-      ]);
-      const svcMap = {};
-      (svcOrds || []).forEach(o => {
-        const k = o.service || 'Unknown';
-        if (!svcMap[k]) svcMap[k] = { count: 0, revenue: 0 };
-        svcMap[k].count++;
-        svcMap[k].revenue += parseFloat(o.amount || 0) * USD_TO_NGN;
-      });
-      (svcAcctOrds || []).forEach(o => {
-        const k = o.offer_title || (o.platform ? `${o.platform} Account` : 'Account Store');
-        if (!svcMap[k]) svcMap[k] = { count: 0, revenue: 0 };
-        svcMap[k].count++;
-        svcMap[k].revenue += parseFloat(o.price_ngn || 0);
-      });
-      if (Object.keys(svcMap).length) {
-        const sorted = Object.entries(svcMap).sort((a,b) => b[1].count - a[1].count).slice(0, 5);
-        const totRev = sorted.reduce((s,[,v]) => s + v.revenue, 0);
-        document.getElementById('top-svc-tbody').innerHTML = sorted.map(([name, {count, revenue}]) => {
-          const shortName = name.length > 30 ? name.slice(0, 30) + '…' : name;
-          return `<tr>
-            <td><div class="svc-name-cell"><div class="svc-ico" style="background:#f5f3ff;color:#7c3aed"><i class="fas fa-layer-group"></i></div>${shortName}</div></td>
-            <td class="svc-orders">${count.toLocaleString('en-NG')}</td>
-            <td class="svc-rev">₦${Math.round(revenue).toLocaleString('en-NG')}</td>
-          </tr>`;
-        }).join('');
-        document.getElementById('tbl-total-rev').textContent = `₦${Math.round(totRev).toLocaleString('en-NG')}`;
-      }
+      } catch (err) { console.error('[Admin] user stats:', err); }
 
       /* -- Activity Feed -- */
       const [{ data: actOrds }, { data: actAcct }, { data: actUsers }] = await Promise.all([
@@ -2539,14 +2313,6 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
             <span class="act-time">${relTime(a.ts)}</span>
           </div>`).join('')
         : `<div style="color:var(--t3);font-size:0.8rem;padding:12px 0">No recent activity</div>`;
-
-      /* -- Active Users: profiles with wallet_balance > 0 -- */
-      try {
-        const { count: activeCount, error: acErr } = await db.from('profiles')
-          .select('*', { count: 'exact', head: true })
-          .gt('wallet_balance', 0);
-        if (!acErr && activeCount != null) document.getElementById('stat-tickets').textContent = fmtNum(activeCount);
-      } catch { document.getElementById('stat-tickets').textContent = '0'; }
 
       /* -- Sparklines from real totals -- */
       const trendArr = (end, len) => {
@@ -2664,16 +2430,9 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
     async function loadExpenses() {
       _expenses = JSON.parse(localStorage.getItem('bns_expenses') || '[]');
       document.getElementById('exp-date').value = new Date().toISOString().slice(0,10);
-      // Total funded = wallets + all spending (same formula as dashboard stat)
-      const [{ data: wallets }, { data: smmOrds }, { data: acctOrds }] = await Promise.all([
-        db.from('profiles').select('wallet_balance'),
-        db.from('orders').select('amount').neq('status', 'Cancelled'),
-        db.from('account_orders').select('price_ngn').neq('status', 'refunded'),
-      ]);
-      const walletsNGN  = (wallets  || []).reduce((s, u) => s + parseFloat(u.wallet_balance || 0) * USD_TO_NGN, 0);
-      const smmNGN      = (smmOrds  || []).reduce((s, o) => s + parseFloat(o.amount || 0) * USD_TO_NGN, 0);
-      const acctNGN     = (acctOrds || []).reduce((s, o) => s + parseFloat(o.price_ngn || 0), 0);
-      const totalRevNGN = walletsNGN + smmNGN + acctNGN;
+      // Total funded = sum of all completed fund_requests
+      const { data: fundReqs } = await db.from('fund_requests').select('amount').in('status', ['Approved', 'completed']);
+      const totalRevNGN = (fundReqs || []).reduce((s, r) => s + parseFloat(r.amount || 0), 0);
       renderExpenses(totalRevNGN);
     }
 
