@@ -2487,16 +2487,8 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
     async function loadExpenses() {
       _expenses = JSON.parse(localStorage.getItem('bns_expenses') || '[]');
       document.getElementById('exp-date').value = new Date().toISOString().slice(0,10);
-      // Total funded = wallets remaining + service spend (same formula as dashboard)
-      const [{ data: expWallets }, { data: expSmmOrds }, { data: expAcctOrds }] = await Promise.all([
-        db.from('profiles').select('wallet_balance'),
-        db.from('orders').select('amount').neq('status', 'Cancelled'),
-        db.from('account_orders').select('price_ngn').neq('status', 'refunded'),
-      ]);
-      const expWalletsNGN = (expWallets  || []).reduce((s, u) => s + parseFloat(u.wallet_balance || 0) * USD_TO_NGN, 0);
-      const expSmmNGN     = (expSmmOrds  || []).reduce((s, o) => s + parseFloat(o.amount    || 0) * USD_TO_NGN, 0);
-      const expAcctNGN    = (expAcctOrds || []).reduce((s, o) => s + parseFloat(o.price_ngn || 0), 0);
-      const totalRevNGN   = expWalletsNGN + expSmmNGN + expAcctNGN;
+      const { data: expFunds } = await db.from('fund_requests').select('amount').eq('status', 'completed');
+      const totalRevNGN = (expFunds || []).reduce((s, r) => s + parseFloat(r.amount || 0), 0);
       renderExpenses(totalRevNGN);
     }
 
