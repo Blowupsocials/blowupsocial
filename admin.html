@@ -451,7 +451,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         <div class="stat-card">
           <span class="stat-label">Orders Completed</span>
           <span class="stat-num" id="stat-pending">...</span>
-          <div class="stat-trend"><span class="t-lbl">Fulfilled orders</span></div>
+          <div class="stat-trend"><span class="t-lbl">Total spend</span></div>
         </div>
       </div>
 
@@ -2310,7 +2310,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       document.getElementById('stat-active-users').textContent = fmtNum(active);
       document.getElementById('stat-orders').textContent       = fmtNum(orderCount);
       document.getElementById('stat-revenue').textContent      = `₦${Math.round(totalFundedNGN).toLocaleString('en-NG')}`;
-      document.getElementById('stat-pending').textContent      = fmtNum(completedCount);
+      document.getElementById('stat-pending').textContent      = `₦${Math.round(spendNGN).toLocaleString('en-NG')}`;
 
       const pct = n => total ? `(${(n / total * 100).toFixed(1)}%)` : '';
       document.getElementById('stat-active-users').textContent = fmtNum(active);
