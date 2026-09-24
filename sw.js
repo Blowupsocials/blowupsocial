@@ -1,4 +1,4 @@
-const CACHE = 'blowupsocials-v6';
+const CACHE = 'blowupsocials-v7';
 const SHELL = [
   '/',
   '/dashboard',
