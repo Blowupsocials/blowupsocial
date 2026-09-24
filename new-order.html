@@ -435,7 +435,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
   <script src="js/supabase-client.js"></script>
   <script>
     /* -- Config -- */
-    const MARKUP       = parseFloat(localStorage.getItem('bns_markup_owlet') ?? '2');
+    let MARKUP         = 2; // loaded from server below; default until fetched
     const USD_TO_NGN   = 1600;
     const MIN_PRICE_PER_K = 10; // hide services below ₦10 per 1,000 (very low quality)
     const fmtNGN = v => `₦${Math.round(v).toLocaleString('en-NG')}`;
@@ -460,7 +460,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
 
     /* -- Action types (second dropdown) -- */
     const ACTION_TYPES = [
-      { key: 'followers',     label: 'Followers',       match: ['follower', 'subscriber', 'member', 'connection'] },
+      { key: 'followers',     label: 'Followers',       match: ['follower', 'subscriber', 'connection'] },
       { key: 'likes',         label: 'Likes',           match: ['like', 'heart', 'reaction'] },
       { key: 'comments',      label: 'Comments',        match: ['comment'] },
       { key: 'saves',         label: 'Saves',           match: ['save', 'bookmark', 'favourite', 'favorite'] },
@@ -480,21 +480,19 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
 
     /* -- Country types (third dropdown) -- */
     const COUNTRIES = [
-      { key: 'usa',       label: '???? USA',            match: ['usa', 'us ', 'american', 'united states'] },
-      { key: 'uk',        label: '???? UK',             match: ['uk ', 'united kingdom', 'british'] },
-      { key: 'nigeria',   label: '???? Nigeria',        match: ['nigeria', 'nigerian'] },
-      { key: 'india',     label: '???? India',          match: ['india', 'indian'] },
-      { key: 'brazil',    label: '???? Brazil',         match: ['brazil', 'brazilian'] },
-      { key: 'arab',      label: '?? Arab / MENA',     match: ['arab', 'arabic', 'middle east', 'gulf', 'mena'] },
-      { key: 'africa',    label: '?? Africa',          match: ['africa', 'african', 'ghana', 'kenya', 'south africa'] },
-      { key: 'global',    label: '?? Global / Real',   match: ['global', 'worldwide', 'real', 'international', 'organic', 'hq', 'high quality'] },
-      { key: 'others',    label: 'Others',             match: [] },
+      { key: 'usa',       label: '🇺🇸 USA',            match: ['usa', 'us ', 'american', 'united states'] },
+      { key: 'uk',        label: '🇬🇧 UK',             match: ['uk ', 'united kingdom', 'british'] },
+      { key: 'nigeria',   label: '🇳🇬 Nigeria',        match: ['nigeria', 'nigerian'] },
+
+      { key: 'brazil',    label: '🇧🇷 Brazil',         match: ['brazil', 'brazilian'] },
+      { key: 'arab',      label: '🌍 Arab / MENA',     match: ['arab', 'arabic', 'middle east', 'gulf', 'mena'] },
+      { key: 'africa',    label: '🌍 Africa',          match: ['africa', 'african', 'ghana', 'kenya', 'south africa'] },
+      { key: 'others',    label: 'Others',             match: ['global', 'worldwide', 'real', 'international', 'organic', 'hq', 'high quality'] },
     ];
 
     function detectCountry(name) {
       const hay = name.toLowerCase();
       for (const c of COUNTRIES) {
-        if (c.key === 'others') continue;
         if (c.match.some(m => hay.includes(m))) return c.key;
       }
       return 'others';
@@ -511,6 +509,147 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
     function getPlatformCSS(name, category) {
       const p = detectPlatform(name, category);
       return p ? { css: p.css, icon: p.icon } : { css: 'pi-def', icon: 'fas fa-star' };
+    }
+
+    /* -- Clean service name for display -- */
+    function cleanServiceName(raw) {
+      // Strip trailing speed/day tags e.g. "50K/Day", "300/Day", "5K/D"
+      let r = raw.replace(/\s+\d+[KMk]?\/D(?:ay)?\.?\s*$/i, '').trim();
+
+      // Extract base (everything before first [ or |)
+      let base = r.split(/[\[|]/)[0].trim();
+
+      // Collect qualifier segments from ALL brackets (works even with mixed bracket+pipe)
+      const bracketParts = [...r.matchAll(/\[([^\]]+)\]/g)].map(m => m[1].trim());
+      // Also grab pipe segments that aren't inside brackets
+      const pipeParts = r.includes('|')
+        ? r.split('|').slice(1).flatMap(part => {
+            const inner = [...part.matchAll(/\[([^\]]+)\]/g)].map(m => m[1].trim());
+            const outer = part.replace(/\[[^\]]+\]/g, '').trim();
+            return inner.length ? inner : (outer ? [outer] : []);
+          })
+        : [];
+      const segs = [...bracketParts, ...pipeParts];
+
+      // Noise: skip these segments entirely
+      const isNoise = s => {
+        const c = s.replace(/[^\x00-\x7F]/g, '').trim().toLowerCase();
+        if (!c) return false; // let empty strings (emoji-only) fall through to reaction check
+        return /^(refill|auto.?refill|no.?refill|non.?drop|low.?drop|instant(\s*start)?|fast(\s*start)?|slow(\s*start)?|cheapest|hq\s*profile|high\s*qual\w*\s*profile|worldwide\s*profiles?|hq\s*(worldwide|real)|real\s*(worldwide|hq)|works\s*with|starts?\s*in|start\s*time|max\b|guaranteed|\d+[km]?\/d(ay)?|drop\s*risk|nr\b|organic\s*users?|global\s*organic|high\s*quality\s*accounts?|all\s*link|\bhq\b|\breal\b|verified|fast\b|english\b)/i
+          .test(c) || /^[\d%.\s+]+$/.test(c);
+      };
+
+      const COUNTRIES = [
+        [/nigeria/i, 'Nigeria'], [/\busa\b|\bamerican\b|\bunited\s*states\b/i, 'USA'],
+        [/\buk\b|\bunited\s*kingdom\b|\bbritish\b/i, 'UK'], [/\bindia(n)?\b/i, 'India'],
+        [/\bbrazil(ian)?\b/i, 'Brazil'], [/\barab\b|\barabic\b|\bmena\b|\bgulf\b/i, 'Arab/MENA'],
+        [/\bgerman(y)?\b/i, 'Germany'], [/\bfrench\b|\bfrance\b/i, 'France'],
+        [/\bspanish\b|\bspain\b/i, 'Spain'], [/\b(south\s*)?korean?\b/i, 'Korea'],
+        [/\bjapan(ese)?\b/i, 'Japan'], [/\bafrica(n)?\b|\bghana\b|\bkenya\b/i, 'Africa'],
+        [/\bturk(ish|ey)\b/i, 'Turkey'],
+      ];
+      const REACTIONS = [
+        [/like\s*👍|^👍$/i, 'Like 👍'], [/love\s*❤|^❤/i, 'Love ❤️'], [/wow\s*😲|^😲$/i, 'Wow 😲'],
+        [/haha\s*😆|^😆$/i, 'Haha 😆'], [/care\s*🤗|^🤗$/i, 'Care 🤗'], [/sad\s*😥|^😥$/i, 'Sad 😥'],
+        [/angry\s*😡|^😡$/i, 'Angry 😡'],
+      ];
+
+      let country = null, gender = null, reaction = null, duration = null, ctype = null;
+
+      for (const seg of segs) {
+        const sl = seg.replace(/[^\x00-\x7F]/g, '').trim().toLowerCase();
+        if (isNoise(seg)) continue;
+
+        let handled = false;
+
+        // "X Accounts" pattern — detect country or gender (e.g. "UK Accounts", "Female Accounts")
+        const accM = sl.match(/^([a-z ]+?)\s+accounts?$/);
+        if (accM) {
+          const t = accM[1].trim();
+          for (const [re, lbl] of COUNTRIES) { if (re.test(t)) { country = lbl; handled = true; break; } }
+          if (/female|woman|women/i.test(t)) { gender = 'Female'; handled = true; }
+          else if (/\bmale\b|\bmen\b|\bman\b/i.test(t)) { gender = 'Male'; handled = true; }
+          if (handled) continue;
+        }
+
+        // Country — do NOT early-continue so gender can also be set from same segment (e.g. "Nigerian Male")
+        if (!country) {
+          for (const [re, lbl] of COUNTRIES) { if (re.test(sl)) { country = lbl; handled = true; break; } }
+        }
+
+        // Gender — runs even if country was just set from this segment
+        if (/female|woman|women/i.test(sl)) { gender = 'Female'; handled = true; }
+        else if (/\bmale\b|\bmen\b|\bman\b/i.test(sl)) { gender = 'Male'; handled = true; }
+
+        if (handled) continue;
+
+        // Reactions (check on original seg with emoji preserved)
+        let fr = false;
+        for (const [re, lbl] of REACTIONS) { if (re.test(seg.trim())) { reaction = lbl; fr = true; break; } }
+        if (fr) continue;
+
+        // Livestream duration e.g. "15 Mins"
+        const dm = sl.match(/^(\d+)\s*mins?$/);
+        if (dm) { duration = dm[1] + ' Mins'; continue; }
+
+        // Comment/vote type — handles "Custom", "Custom Comments", "Random Comments" etc.
+        if (/\bcustom\b/i.test(sl) && !/accounts?/i.test(sl)) { ctype = 'Custom'; continue; }
+        if (/\brandom\b/i.test(sl) && !/accounts?/i.test(sl)) { ctype = 'Random'; continue; }
+        if (/\bemoji\b/i.test(sl) && !/accounts?/i.test(sl)) { ctype = 'Emoji'; continue; }
+      }
+
+      // Strip emoji/symbol decorators from start of base (e.g. "🅕 🇩🇪👨❤️  Facebook...")
+      base = base.replace(/^(?:[^\x00-\x7F\w]|\s)+/, '').trim();
+
+      // Check base for gender if not found in segments
+      if (!gender) {
+        if (/\bfemale\b|\bwoman\b|\bwomen\b/i.test(base)) gender = 'Female';
+        else if (/\bmale\b|\bman\b|\bmen\b/i.test(base)) gender = 'Male';
+      }
+
+      // Check base for country if not found in segments
+      if (!country) {
+        for (const [re, lbl] of COUNTRIES) { if (re.test(base)) { country = lbl; break; } }
+      }
+
+      // Extract VIP / type from base before stripping
+      let vip = false;
+      if (/\bvip\b/i.test(base)) vip = true;
+      if (!ctype) {
+        if (/\bcustom\b/i.test(base)) ctype = 'Custom';
+        else if (/\brandom\b/i.test(base)) ctype = 'Random';
+        else if (/\bemoji\b/i.test(base)) ctype = 'Emoji';
+      }
+
+      // Strip noise words from base
+      base = base
+        .replace(/\bvip\b\s*/gi, '')
+        .replace(/\bcustom\b\s*/gi, '')
+        .replace(/\brandom\b\s*/gi, '')
+        .replace(/\bemoji\b\s*/gi, '')
+        .replace(/\borganic\b\s*/gi, '')
+        .replace(/\breal\s+humans?\b\s*/gi, '')
+        // Country adjectives
+        .replace(/\b(nigerian?|american|british|indian|brazilian|german|french|spanish|south\s*korean?|japanese|african?|turkish?)\b\s*/gi, '')
+        // Gender words (only once we've captured them)
+        .replace(/\b(female|male|woman|women|man|men)\b\s*/gi, '')
+        // Base name simplifications
+        .replace(/\bTweet\s+/gi, '')
+        .replace(/\bChannel\/Group\s+/gi, '')
+        .replace(/\bPost\s+Reactions?\b/gi, 'Reactions')
+        .replace(/\s*\/\s*Status\b/gi, '')
+        .replace(/^Youtube\b/i, 'YouTube')
+        .replace(/^Tiktok\b/i, 'TikTok')
+        .replace(/\s{2,}/g, ' ').trim();
+
+      // Build clean name
+      const prefix = [...(gender ? [gender] : []), ...(vip ? ['VIP'] : [])];
+      let name = (prefix.length ? prefix.join(' ') + ' ' : '') + base;
+      if (reaction) name += ' – ' + reaction;
+      if (ctype)    name += ' – ' + ctype;
+      if (duration) name += ' – ' + duration;
+      if (country)  name += ' [' + country + ']';
+      return name.replace(/\s{2,}/g, ' ').trim();
     }
 
     /* -- Toast -- */
@@ -666,7 +805,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
           <div class="no-svc-top">
             <div class="no-svc-icon ${css}"><i class="${icon}"></i></div>
             <div class="no-svc-info">
-              <div class="no-svc-name">${s.name}</div>
+              <div class="no-svc-name">${cleanServiceName(s.name)}</div>
               <div class="no-svc-cat">${s.category || '—'}</div>
             </div>
           </div>
@@ -762,7 +901,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       const { css, icon } = getPlatformCSS(selectedSvc.name, selectedSvc.category);
       document.getElementById('modal-icon').className = `no-svc-icon ${css}`;
       document.getElementById('modal-icon').innerHTML = `<i class="${icon}"></i>`;
-      document.getElementById('modal-svc-name').textContent = selectedSvc.name;
+      document.getElementById('modal-svc-name').textContent = cleanServiceName(selectedSvc.name);
       document.getElementById('modal-svc-cat').textContent  = selectedSvc.category || '';
       document.getElementById('qty-range').textContent = `Min: ${Number(selectedSvc.min).toLocaleString()} / Max: ${Number(selectedSvc.max).toLocaleString()}`;
       document.getElementById('order-qty').min   = selectedSvc.min;
@@ -834,11 +973,32 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       btn.textContent = 'Placing order…';
 
       try {
-        // 1. Place on Owlet
-        const result = await owlet({ action: 'add', service: selectedSvc.service, link, quantity: qty });
+        // Get fresh JWT for server-side verification
+        const { data: { session: freshSession } } = await db.auth.getSession();
+        if (!freshSession) {
+          errEl.textContent = 'Your session has expired. Please refresh the page and log in again.';
+          errEl.style.display = 'block';
+          btn.disabled = false;
+          btn.innerHTML = 'Place Order <i class="fas fa-arrow-right"></i>';
+          return;
+        }
 
-        if (result.error || !result.order) {
-          errEl.textContent = result.error || 'Order could not be placed. Please try again.';
+        // Place order server-side — balance check, deduction, and Owlet call all happen on the server
+        const result = await fetch('/api/owlet', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${freshSession.access_token}` },
+          body: JSON.stringify({
+            action:      'place_order',
+            service:     selectedSvc.service,
+            serviceName: selectedSvc.name,
+            link,
+            quantity:    qty,
+            costNGN:     cost,
+          }),
+        }).then(r => r.json());
+
+        if (result.error) {
+          errEl.textContent = result.error;
           errEl.style.display = 'block';
           btn.disabled = false;
           btn.innerHTML = 'Place Order <i class="fas fa-arrow-right"></i>';
@@ -847,27 +1007,8 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
 
         const smmOrderId = result.order;
 
-        // 2. Deduct from Supabase wallet (balance in NGN locally, USD in DB)
-        const { data: { session } } = await db.auth.getSession();
-        const userId        = session.user.id;
-        const newBalanceNGN = parseFloat((userBalance - cost).toFixed(2));
-        const newBalanceUSD = parseFloat((newBalanceNGN / USD_TO_NGN).toFixed(6));
-
-        await db.from('profiles').update({ wallet_balance: newBalanceUSD }).eq('id', userId);
-
-        // 3. Save order to Supabase (amount stored as USD for consistency)
-        const { error: ordErr } = await db.from('orders').insert({
-          user_id:    userId,
-          order_ref:  `BUS-${smmOrderId}`,
-          service:    selectedSvc.name || 'Social Boost',
-          link:       link,
-          quantity:   qty,
-          amount:     parseFloat((cost / USD_TO_NGN).toFixed(4)),
-          status:     'Pending',
-        });
-        if (ordErr) console.error('[order-save]', ordErr.code, ordErr.message, ordErr.details);
-
-        // 4. Update local balance (keep in NGN)
+        // Update local balance from server response
+        const newBalanceNGN = result.newBalanceNGN ?? parseFloat((userBalance - cost).toFixed(2));
         userBalance = newBalanceNGN;
         document.getElementById('topbar-balance').textContent = fmtNGN(newBalanceNGN);
         document.getElementById('modal-balance').textContent  = fmtNGN(newBalanceNGN);
@@ -922,6 +1063,13 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         });
       }
 
+      // Fetch markup from server so all devices stay in sync
+      try {
+        const cfgRes = await fetch('/api/config');
+        const cfg = await cfgRes.json();
+        MARKUP = parseFloat(cfg.markup_owlet ?? 2) || 2;
+      } catch { /* keep default 2 */ }
+
       const data = await owlet({ action: 'services' });
 
       if (!Array.isArray(data)) {
@@ -930,12 +1078,21 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         return;
       }
 
-      allServices = data;
+      // Deduplicate: for each unique clean display name, keep only the cheapest service
+      const seen = new Map();
+      for (const s of data) {
+        const key = cleanServiceName(s.name);
+        const existing = seen.get(key);
+        if (!existing || parseFloat(s.rate) < parseFloat(existing.rate)) {
+          seen.set(key, s);
+        }
+      }
+      allServices = [...seen.values()];
 
       // Stats
-      const prices = data.map(s => parseFloat(s.rate) * MARKUP).filter(n => !isNaN(n));
-      const platCount = new Set(data.map(s => detectPlatform(s.name, s.category)?.key).filter(Boolean)).size;
-      document.getElementById('stat-services').textContent = data.length.toLocaleString();
+      const prices = allServices.map(s => parseFloat(s.rate) * MARKUP).filter(n => !isNaN(n));
+      const platCount = new Set(allServices.map(s => detectPlatform(s.name, s.category)?.key).filter(Boolean)).size;
+      document.getElementById('stat-services').textContent = allServices.length.toLocaleString();
       document.getElementById('stat-platforms').textContent = platCount;
       document.getElementById('stat-lowest').textContent = prices.length ? fmtNGN(Math.min(...prices)) : '—';
 

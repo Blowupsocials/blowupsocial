@@ -41,84 +41,66 @@
     :focus-visible { outline: 2px solid var(--pu); outline-offset: 2px; }
 
     /* -- SIDEBAR -- */
-    .sb { width: 250px; background: #fff; border-right: 1px solid #ebebeb; position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 200; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+    .sb { width: 220px; background: #fff; border-right: 1px solid #ebebeb; position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 200; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
     .sb::-webkit-scrollbar { display: none; }
 
-    .sb-logo { display: flex; align-items: center; gap: 10px; padding: 22px 20px 18px; border-bottom: 1px solid #f0f0f0; flex-shrink: 0; }
-    .sb-logo-mark { width: 32px; height: 32px; border-radius: 9px; background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 800; color: #fff; flex-shrink: 0; }
+    .sb-logo { display: flex; align-items: center; gap: 10px; padding: 20px 18px 16px; flex-shrink: 0; }
+    .sb-logo-mark { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; font-weight: 800; color: #fff; flex-shrink: 0; }
     .sb-logo-text { line-height: 1.15; }
-    .sb-logo-name { font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; font-weight: 800; color: #111; letter-spacing: -0.3px; }
-    .sb-logo-sub { font-size: 0.62rem; font-weight: 700; color: #7c3aed; letter-spacing: 0.3px; }
+    .sb-logo-name { font-family: 'Space Grotesk', sans-serif; font-size: 0.88rem; font-weight: 800; color: #111; letter-spacing: -0.3px; }
+    .sb-logo-sub { font-size: 0.6rem; font-weight: 700; color: #7c3aed; letter-spacing: 0.3px; }
 
-    .sb-nav { flex: 1; padding: 10px 12px; display: flex; flex-direction: column; gap: 1px; }
-    .sb-sec { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #c0c4d0; padding: 10px 16px 4px; }
-    .sb-item { display: flex; align-items: center; padding: 11px 16px; border-radius: 10px; font-size: 0.92rem; font-weight: 400; color: #222; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+    .sb-admin { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-top: 1px solid #f3f3f3; border-bottom: 1px solid #f3f3f3; flex-shrink: 0; margin-bottom: 6px; }
+    .sb-ava { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #ec4899, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 800; color: #fff; flex-shrink: 0; }
+    .sb-admin-info { flex: 1; min-width: 0; }
+    .sb-admin-name { font-size: 0.8rem; font-weight: 700; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sb-admin-role { font-size: 0.62rem; color: #7c3aed; font-weight: 600; margin-top: 1px; }
+
+    .sb-nav { flex: 1; padding: 4px 10px; display: flex; flex-direction: column; gap: 1px; }
+    .sb-sec { display: none; }
+    .sb-item { display: flex; align-items: center; padding: 9px 14px; border-radius: 8px; font-size: 0.88rem; font-weight: 400; color: #444; transition: background 0.13s, color 0.13s; white-space: nowrap; }
     .sb-item i { display: none; }
     .sb-item:hover { background: #f5f3ff; color: #7c3aed; }
-    .sb-item.active { background: #ece9ff; color: #7c3aed; font-weight: 700; }
+    .sb-item.active { background: #ece9ff; color: #7c3aed; font-weight: 600; }
 
-    .sb-foot { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-top: 1px solid #f0f0f0; flex-shrink: 0; }
-    .sb-ava { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #ec4899, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 0.68rem; font-weight: 800; color: #fff; flex-shrink: 0; position: relative; }
-    .sb-ava-online { position: absolute; bottom: -1px; right: -1px; width: 9px; height: 9px; border-radius: 50%; background: #10b981; border: 1.5px solid #fff; }
-    .sb-foot-info { flex: 1; min-width: 0; }
-    .sb-foot-name { font-size: 0.78rem; font-weight: 700; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .sb-foot-role { font-size: 0.61rem; color: #999; margin-top: 1px; }
-    .sb-signout { background: none; border: none; color: #ccc; font-size: 0.88rem; cursor: pointer; padding: 6px 7px; border-radius: 6px; transition: background 0.15s, color 0.15s; flex-shrink: 0; }
-    .sb-signout:hover { background: rgba(239,68,68,0.12); color: #f87171; }
+    .sb-foot { padding: 12px 14px; border-top: 1px solid #f0f0f0; flex-shrink: 0; }
+    .sb-signout { display: flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 8px; font-size: 0.85rem; color: #ef4444; background: none; border: 1px solid #fecaca; width: 100%; cursor: pointer; font-family: inherit; transition: background 0.13s; }
+    .sb-signout:hover { background: #fff5f5; }
+    .sb-foot-name { display: none; }
+    .sb-foot-role { display: none; }
+    .sb-ava-online { display: none; }
 
     /* -- MAIN -- */
-    .main { margin-left: 250px; width: calc(100vw - 250px); display: flex; flex-direction: column; min-height: 100vh; }
+    .main { margin-left: 220px; width: calc(100vw - 220px); display: flex; flex-direction: column; min-height: 100vh; }
 
-    /* -- TOPBAR -- */
-    .topbar { background: #ffffff; border-bottom: 1px solid #e8eaf0; padding: 0 28px; height: 68px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; flex-shrink: 0; }
-    .tb-welcome { flex: 1; min-width: 0; }
-    .tb-welcome h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 800; color: #1a1a2e; white-space: nowrap; }
-    .tb-welcome p { font-size: 0.71rem; color: #8b8fa8; margin-top: 1px; }
-    .tb-right { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
-
-    .tb-search { display: flex; align-items: center; gap: 8px; background: #f5f6fb; border: 1px solid #e8eaf0; border-radius: 10px; padding: 7px 13px; width: 210px; transition: border-color 0.13s; }
-    .tb-search:focus-within { border-color: #c4b5fd; }
-    .tb-search input { background: none; border: none; outline: none; font-size: 0.77rem; color: #1a1a2e; width: 100%; font-family: inherit; }
-    .tb-search input::placeholder { color: #8b8fa8; }
-    .tb-search i { color: #8b8fa8; font-size: 0.78rem; flex-shrink: 0; }
-
-    .tb-quick { display: flex; align-items: center; gap: 6px; background: var(--pu); color: #fff; padding: 8px 14px; border-radius: 10px; font-size: 0.77rem; font-weight: 700; transition: opacity 0.13s; }
-    .tb-quick:hover { opacity: 0.88; }
-    .tb-quick i { font-size: 0.78rem; }
-
-    .tb-bell { width: 36px; height: 36px; border-radius: 10px; background: #f5f6fb; border: 1px solid #e8eaf0; display: flex; align-items: center; justify-content: center; position: relative; color: #4b5063; font-size: 0.86rem; transition: background 0.12s; }
-    .tb-bell:hover { background: var(--bd); }
-    .tb-badge { position: absolute; top: -4px; right: -4px; background: var(--pk); color: #fff; font-size: 0.5rem; font-weight: 800; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--sur); }
-
-    .tb-profile { display: flex; align-items: center; gap: 8px; border: 1px solid #e8eaf0; border-radius: 50px; padding: 4px 12px 4px 4px; transition: border-color 0.13s; }
-    .tb-profile:hover { border-color: #c4b5fd; }
+    /* -- TOPBAR (mobile only) -- */
+    .topbar { display: none; background: #fff; border-bottom: 1px solid #e8eaf0; padding: 0 16px; height: 52px; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; flex-shrink: 0; }
+    .tb-welcome { flex: 1; }
+    .tb-welcome h1 { font-size: 0.9rem; font-weight: 700; color: #1a1a2e; }
+    .tb-welcome p { display: none; }
+    .tb-right { display: flex; align-items: center; gap: 8px; }
+    .tb-search, .tb-quick, .tb-bell, .tb-badge, .tb-profile-info { display: none; }
+    .tb-profile { display: flex; align-items: center; }
     .tb-profile-ava { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #ec4899, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 0.62rem; font-weight: 800; color: #fff; }
-    .tb-profile-info { line-height: 1.15; }
-    .tb-profile-name { font-size: 0.76rem; font-weight: 700; color: #1a1a2e; }
-    .tb-profile-role { font-size: 0.61rem; color: #8b8fa8; }
-    .tb-profile > i { color: #8b8fa8; font-size: 0.62rem; }
+    .tb-profile > i { display: none; }
 
     /* -- CONTENT -- */
-    .content { padding: 22px 28px; flex: 1; }
+    .content { padding: 26px 28px; flex: 1; }
 
     /* -- Stat Cards -- */
-    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
-    .stat-card { background: #ffffff; border-radius: 14px; padding: 18px 16px 16px; display: flex; align-items: flex-start; gap: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
+    .stats-row { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .stat-card { background: #fff; border-radius: 12px; padding: 20px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border: 1px solid #f0f0f0; display: flex; flex-direction: column; }
     .stat-body { flex: 1; min-width: 0; }
-    .stat-top { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
-    .stat-icon { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.92rem; flex-shrink: 0; }
-    .si-pu { background: #f5f0ff; color: #7c3aed; }
-    .si-pk { background: #fdf2f8; color: #ec4899; }
-    .si-gn { background: #ecfdf5; color: #10b981; }
-    .si-or { background: #fffbeb; color: #f59e0b; }
-    .si-bl { background: #eff6ff; color: #3b82f6; }
-    .stat-label { font-size: 0.7rem; font-weight: 600; color: #8b8fa8; }
-    .stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 800; color: #1a1a2e; line-height: 1; margin-bottom: 8px; font-variant-numeric: tabular-nums; }
-    .stat-trend { font-size: 0.71rem; font-weight: 600; display: flex; align-items: center; gap: 3px; flex-wrap: wrap; }
-    .t-up   { color: #10b981; }
-    .t-dn   { color: #ef4444; }
-    .t-lbl  { color: #8b8fa8; font-weight: 400; margin-left: 2px; }
-    .stat-spark { display: flex; align-items: flex-end; padding-left: 8px; flex-shrink: 0; }
+    .stat-top { display: none; }
+    .stat-icon { display: none; }
+    .si-pu, .si-pk, .si-gn, .si-or, .si-bl { display: none; }
+    .stat-label { font-size: 0.65rem; font-weight: 700; color: #a0a6b8; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; display: block; }
+    .stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 1.65rem; font-weight: 800; color: #1a1a2e; line-height: 1; margin-bottom: 6px; font-variant-numeric: tabular-nums; display: block; }
+    .stat-trend { font-size: 0.72rem; display: flex; align-items: center; gap: 3px; flex-wrap: wrap; }
+    .t-up   { color: #10b981; font-weight: 600; }
+    .t-dn   { color: #ef4444; font-weight: 600; }
+    .t-lbl  { color: #a0a6b8; font-weight: 400; }
+    .stat-spark { display: none; }
 
     /* -- Middle Row -- */
     .mid-row { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; margin-bottom: 20px; }
@@ -286,23 +268,19 @@
     .sb-overlay.open { display: block; }
     .sb-toggle { display: none; width: 36px; height: 36px; border-radius: 10px; background: #f5f6fb; border: 1px solid #e8eaf0; align-items: center; justify-content: center; color: #4b5063; font-size: 0.95rem; flex-shrink: 0; cursor: pointer; }
 
-    @media (max-width: 900px) {
-      .tb-search { display: none; }
-      .tb-quick { display: none; }
+    @media (min-width: 769px) {
+      .topbar { display: none !important; }
     }
 
     @media (max-width: 768px) {
-      .sb { transform: translateX(-100%); transition: transform 0.24s ease; box-shadow: none; width: 270px; }
+      .sb { transform: translateX(-100%); transition: transform 0.24s ease; box-shadow: none; width: 240px; }
       .sb.open { transform: translateX(0); box-shadow: 4px 0 32px rgba(0,0,0,0.12); }
       .main { margin-left: 0; width: 100vw; }
       .sb-toggle { display: flex; }
-      .topbar { padding: 0 14px; gap: 8px; }
-      .tb-welcome p { display: none; }
-      .tb-profile-info { display: none; }
-      .tb-profile > i { display: none; }
-      .tb-profile { padding: 4px 6px 4px 4px; }
+      .topbar { display: flex; }
       .content { padding: 12px; }
       .stats-row { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
+      .stats-row .stat-card:last-child { grid-column: span 2; max-width: 50%; }
       .stat-spark { display: none; }
       .stat-num { font-size: 1.3rem; }
       .stat-card { padding: 14px 13px 12px; }
@@ -383,78 +361,55 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
 
   <!-- -- SIDEBAR -- -->
   <nav class="sb" id="sidebar">
-    <div style="position:relative;flex-shrink:0">
-      <div class="sb-logo" id="logo-btn" onclick="toggleLogoMenu()" style="cursor:pointer;user-select:none">
-        <div class="sb-logo-mark">B</div>
-        <div class="sb-logo-text">
-          <div class="sb-logo-name">blowup</div>
-          <div class="sb-logo-sub">social</div>
-        </div>
-        <i class="fas fa-chevron-down" id="logo-chevron" style="margin-left:auto;font-size:0.6rem;color:#bbb;transition:transform 0.2s"></i>
+    <div class="sb-logo">
+      <div class="sb-logo-mark">B</div>
+      <div class="sb-logo-text">
+        <div class="sb-logo-name">blowup</div>
+        <div class="sb-logo-sub">social</div>
       </div>
-      <div id="logo-menu" style="display:none;position:absolute;left:10px;right:10px;top:calc(100% + 4px);background:#fff;border:1px solid #ece9ff;border-radius:10px;box-shadow:0 6px 24px rgba(124,58,237,0.12);z-index:400;overflow:hidden;font-size:0.85rem">
-        <a href="#" onclick="event.preventDefault();showSection('settings');closeLogoMenu()" style="display:flex;align-items:center;gap:10px;padding:11px 16px;color:#222;text-decoration:none;transition:background 0.12s" onmouseover="this.style.background='#f5f3ff'" onmouseout="this.style.background=''"><i class="fas fa-gear" style="color:#7c3aed;width:14px;text-align:center"></i> Settings</a>
-        <div style="height:1px;background:#f0f0f0;margin:0 10px"></div>
-        <button onclick="adminSignOut()" style="display:flex;align-items:center;gap:10px;padding:11px 16px;width:100%;background:none;border:none;text-align:left;font-size:0.85rem;font-family:inherit;color:#ef4444;cursor:pointer;transition:background 0.12s" onmouseover="this.style.background='#fff5f5'" onmouseout="this.style.background=''"><i class="fas fa-right-from-bracket" style="width:14px;text-align:center"></i> Sign Out</button>
+    </div>
+
+    <div class="sb-admin">
+      <div class="sb-ava">AD</div>
+      <div class="sb-admin-info">
+        <div class="sb-admin-name" id="sb-admin-name">Admin</div>
+        <div class="sb-admin-role">Admin panel</div>
       </div>
     </div>
 
     <div class="sb-nav">
-      <div class="sb-sec">Overview</div>
-      <a href="#" data-section="dashboard"     class="sb-item active">Dashboard</a>
-
-      <div class="sb-sec">Manage</div>
+      <a href="#" data-section="dashboard"     class="sb-item active">Overview</a>
       <a href="#" data-section="users"         class="sb-item">Users</a>
       <a href="#" data-section="wallets"       class="sb-item">Wallets</a>
-      <a href="#" data-section="orders"        class="sb-item">Social Boost Purchases</a>
-      <a href="#" data-section="acct-orders"   class="sb-item">Account Store Purchases</a>
-      <a href="#" data-section="transactions"  class="sb-item">Bank Funding</a>
+      <a href="#" data-section="orders"        class="sb-item">Social Boost</a>
+      <a href="#" data-section="acct-orders"   class="sb-item">Account Store</a>
+      <a href="#" data-section="transactions"  class="sb-item">Payments</a>
       <a href="#" data-section="services"      class="sb-item">Services</a>
       <a href="#" data-section="categories"    class="sb-item">Categories</a>
-
-      <div class="sb-sec">Content</div>
       <a href="#" data-section="announcements" class="sb-item">Announcements</a>
-      <a href="#" data-section="broadcast"     class="sb-item">Broadcast Email</a>
-
-      <div class="sb-sec">Finance</div>
       <a href="#" data-section="expenses"      class="sb-item">Expenses &amp; Profit</a>
-
-      <div class="sb-sec">System</div>
       <a href="#" data-section="providers"     class="sb-item">Providers</a>
       <a href="#" data-section="settings"      class="sb-item">Settings</a>
-      <a href="#" data-section="apikeys"       class="sb-item">API Keys</a>
       <a href="#" data-section="coupons"       class="sb-item">Coupons</a>
-<a href="#" class="sb-item" onclick="adminSignOut();return false;" style="color:#ef4444;margin-top:4px"><i class="fas fa-right-from-bracket" style="width:14px;text-align:center;margin-right:2px"></i> Sign Out</a>
     </div>
 
     <div class="sb-foot">
-      <div class="sb-ava">AD<div class="sb-ava-online"></div></div>
-      <div class="sb-foot-info">
-        <div class="sb-foot-name" id="sb-admin-name">Admin</div>
-        <div class="sb-foot-role">Super Administrator</div>
-      </div>
-      <button class="sb-signout" onclick="adminSignOut()" title="Sign out"><i class="fas fa-right-from-bracket"></i></button>
+      <button class="sb-signout" onclick="adminSignOut()">
+        <i class="fas fa-right-from-bracket"></i> Logout
+      </button>
     </div>
   </nav>
 
   <!-- -- MAIN -- -->
   <div class="main">
 
-    <!-- TOPBAR -->
+    <!-- TOPBAR (mobile only) -->
     <header class="topbar">
-      <div class="tb-welcome">
-        <h1>Welcome back, Admin!</h1>
-        <p>Here's what's happening on your platform today.</p>
-      </div>
+      <button class="sb-toggle" onclick="toggleSidebar()" aria-label="Menu"><i class="fas fa-bars"></i></button>
+      <div class="tb-welcome"><h1>BlowUpSocials Admin</h1><p></p></div>
       <div class="tb-right">
-        <button class="sb-toggle" onclick="toggleSidebar()" aria-label="Menu"><i class="fas fa-bars"></i></button>
-        <div class="tb-profile" onclick="adminSignOut()" style="cursor:pointer" title="Sign out">
-          <div class="tb-profile-ava">AD</div>
-          <div class="tb-profile-info">
-            <div class="tb-profile-name" id="tb-admin-name">Admin</div>
-            <div class="tb-profile-role">Super Admin</div>
-          </div>
-          <i class="fas fa-right-from-bracket" style="color:#f87171;font-size:0.75rem"></i>
+        <div class="tb-profile">
+          <div class="tb-profile-ava" id="tb-admin-name">AD</div>
         </div>
       </div>
     </header>
@@ -462,113 +417,63 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
     <!-- CONTENT -->
     <div class="content">
       <div id="sec-dashboard" class="admin-section active">
+      <div style="margin-bottom:22px">
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:800;color:#1a1a2e;margin-bottom:4px">Overview</h2>
+        <p style="font-size:0.75rem;color:#8b8fa8">Platform summary at a glance</p>
+      </div>
 
       <!-- STAT CARDS -->
       <div class="stats-row">
         <div class="stat-card">
-          <div class="stat-body">
-            <div class="stat-top">
-              <div class="stat-icon si-pu"><i class="fas fa-users"></i></div>
-              <span class="stat-label">Total Users</span>
-            </div>
-            <div class="stat-num" id="stat-users">...</div>
-            <div class="stat-trend"><span class="t-lbl">All time</span></div>
-          </div>
-          <div class="stat-spark" id="spark-users"></div>
+          <span class="stat-label">Total Users</span>
+          <span class="stat-num" id="stat-users">...</span>
+          <div class="stat-trend"><span class="t-lbl">All time</span></div>
         </div>
 
         <div class="stat-card">
-          <div class="stat-body">
-            <div class="stat-top">
-              <div class="stat-icon si-pk"><i class="fas fa-cart-shopping"></i></div>
-              <span class="stat-label">Total Orders</span>
-            </div>
-            <div class="stat-num" id="stat-orders">...</div>
-            <div class="stat-trend"><span class="t-lbl">All time</span></div>
-          </div>
-          <div class="stat-spark" id="spark-orders"></div>
+          <span class="stat-label">Active Users</span>
+          <span class="stat-num" id="stat-active-users">...</span>
+          <div class="stat-trend"><span class="t-lbl">Have funded wallet</span></div>
         </div>
 
         <div class="stat-card">
-          <div class="stat-body">
-            <div class="stat-top">
-              <div class="stat-icon si-gn"><i class="fas fa-wallet"></i></div>
-              <span class="stat-label">Total Funded</span>
-            </div>
-            <div class="stat-num" id="stat-revenue">...</div>
-            <div class="stat-trend"><span class="t-lbl">Total in platform</span></div>
-          </div>
-          <div class="stat-spark" id="spark-revenue"></div>
+          <span class="stat-label">Total Orders</span>
+          <span class="stat-num" id="stat-orders">...</span>
+          <div class="stat-trend"><span class="t-lbl">All time</span></div>
         </div>
 
         <div class="stat-card">
-          <div class="stat-body">
-            <div class="stat-top">
-              <div class="stat-icon si-or"><i class="fas fa-arrow-trend-up"></i></div>
-              <span class="stat-label">Service Spend</span>
-            </div>
-            <div class="stat-num" id="stat-pending">...</div>
-            <div class="stat-trend"><span class="t-lbl">Total spent on services</span></div>
-          </div>
-          <div class="stat-spark" id="spark-pending"></div>
+          <span class="stat-label">Total Funded</span>
+          <span class="stat-num" id="stat-revenue">...</span>
+          <div class="stat-trend"><span class="t-lbl">Total deposited</span></div>
         </div>
 
+        <div class="stat-card">
+          <span class="stat-label">Orders Completed</span>
+          <span class="stat-num" id="stat-pending">...</span>
+          <div class="stat-trend"><span class="t-lbl">Fulfilled orders</span></div>
+        </div>
       </div>
 
-      <!-- BOTTOM ROW -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
-
-        <!-- Recent activity -->
-        <div class="card">
-          <div class="card-hdr">
-            <div class="card-title">Recent Activity</div>
-          </div>
-          <div class="act-list" id="activity-list">
-            <div class="act-item">
-              <div class="act-ico" style="background:#f5f0ff;color:#7c3aed"><i class="fas fa-circle-notch fa-spin"></i></div>
-              <div class="act-body"><div class="act-title">Loading...</div></div>
-            </div>
+      <!-- RECENT ACTIVITY -->
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-hdr">
+          <div class="card-title">Recent Activity</div>
+        </div>
+        <div class="act-list" id="activity-list">
+          <div class="act-item">
+            <div class="act-ico" style="background:#f5f0ff;color:#7c3aed"><i class="fas fa-circle-notch fa-spin"></i></div>
+            <div class="act-body"><div class="act-title">Loading...</div></div>
           </div>
         </div>
-
-        <!-- User breakdown -->
-        <div class="card">
-          <div class="card-hdr">
-            <div class="card-title">User Breakdown</div>
-            <button class="btn-link" onclick="showSection('wallets')">View Wallets</button>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:12px;margin-top:4px">
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#f5f3ff;border-radius:10px">
-              <div style="display:flex;align-items:center;gap:9px">
-                <div style="width:9px;height:9px;border-radius:50%;background:#7c3aed;flex-shrink:0"></div>
-                <span style="font-size:0.8rem;color:#4b5063">Active (Funded)</span>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:5px">
-                <span id="leg-active" style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:800;color:#1a1a2e">...</span>
-                <span id="leg-pct-active" style="font-size:0.69rem;color:#8b8fa8"></span>
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#f5f6fb;border-radius:10px">
-              <div style="display:flex;align-items:center;gap:9px">
-                <div style="width:9px;height:9px;border-radius:50%;background:#e5e7eb;flex-shrink:0"></div>
-                <span style="font-size:0.8rem;color:#4b5063">Inactive</span>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:5px">
-                <span id="leg-inactive" style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:800;color:#1a1a2e">...</span>
-                <span id="leg-pct-inactive" style="font-size:0.69rem;color:#8b8fa8"></span>
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1px solid #e8eaf0;border-radius:10px;margin-top:4px">
-              <div style="display:flex;align-items:center;gap:8px">
-                <div class="online-pulse"></div>
-                <span style="font-size:0.8rem;color:#4b5063">Total Users</span>
-              </div>
-              <span id="online-total" style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:800;color:#1a1a2e">...</span>
-            </div>
-          </div>
-        </div>
-
       </div>
+
+      <!-- Hidden elements kept for JS compat -->
+      <span id="leg-active" style="display:none"></span>
+      <span id="leg-pct-active" style="display:none"></span>
+      <span id="leg-inactive" style="display:none"></span>
+      <span id="leg-pct-inactive" style="display:none"></span>
+      <span id="online-total" style="display:none"></span>
       </div><!-- /sec-dashboard -->
 
       <!-- -- USERS -- -->
@@ -582,8 +487,8 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         <div class="tbl-card">
           <div class="tbl-wrap">
             <table class="data-tbl">
-              <thead><tr><th>User</th><th>Wallet Balance</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead>
-              <tbody id="users-tbody"><tr><td colspan="5" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading users...</td></tr></tbody>
+              <thead><tr><th>User</th><th>Wallet Balance</th><th>Total Funded</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead>
+              <tbody id="users-tbody"><tr><td colspan="6" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading users...</td></tr></tbody>
             </table>
           </div>
           <div class="tbl-foot"><span id="users-count">...</span><div class="page-btns" id="users-pages"></div></div>
@@ -705,7 +610,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       <!-- -- TRANSACTIONS -- -->
       <div id="sec-transactions" class="admin-section">
         <div class="sec-hdr">
-          <div class="sec-hdr-left"><h2>Bank Funding</h2><p>All Korapay bank transfer top-ups per user</p></div>
+          <div class="sec-hdr-left"><h2>Payments</h2><p>All Korapay bank transfer top-ups per user</p></div>
           <div class="sec-hdr-right">
             <select id="txn-filter" onchange="filterTxns()" style="padding:7px 12px;border-radius:9px;border:1px solid #e8eaf0;font-size:0.77rem;font-family:inherit;color:var(--t1);background:var(--sur);cursor:pointer;">
               <option value="all">All</option>
@@ -1322,7 +1227,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       'acct-orders': ['Account Store Purchases', 'View and manage account store orders'],
       services:      ['Services', 'Manage available SMM services'],
       categories:    ['Categories', 'Organise services by category'],
-      transactions:  ['Bank Funding', 'All Korapay bank transfer top-ups'],
+      transactions:  ['Payments', 'All Korapay bank transfer top-ups'],
       announcements: ['Announcements', 'Post updates to your users'],
       broadcast:     ['Broadcast Email', 'Send marketing emails to segmented user groups'],
       pages:         ['Pages', 'Manage static content pages'],
@@ -1749,16 +1654,37 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
 
     /* -- Users -- */
     let allUsers = [];
+    let _userFundedMap = {};
+
     async function loadUsers() {
       const tbody = document.getElementById('users-tbody');
-      const { data, error } = await db.from('profiles').select('*').order('created_at', { ascending: false });
-      if (error || !data?.length) {
-        tbody.innerHTML = `<tr><td colspan="5" class="tbl-loading">No users found</td></tr>`;
-        document.getElementById('users-count').textContent = '0 users';
-        return;
+      tbody.innerHTML = `<tr><td colspan="6" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading users...</td></tr>`;
+      try {
+        const [{ data, error }, { data: fundData }] = await Promise.all([
+          db.from('profiles')
+            .select('id, full_name, email, wallet_balance, created_at')
+            .order('created_at', { ascending: false })
+            .limit(500),
+          db.from('fund_requests')
+            .select('user_id, amount')
+            .eq('status', 'completed'),
+        ]);
+        if (error) throw error;
+        if (!data?.length) {
+          tbody.innerHTML = `<tr><td colspan="6" class="tbl-loading">No users found</td></tr>`;
+          document.getElementById('users-count').textContent = '0 users';
+          return;
+        }
+        _userFundedMap = {};
+        for (const r of (fundData || [])) {
+          _userFundedMap[r.user_id] = (_userFundedMap[r.user_id] || 0) + parseFloat(r.amount || 0);
+        }
+        allUsers = data;
+        renderUsers(data);
+      } catch (err) {
+        console.error('[Admin] loadUsers error:', err);
+        tbody.innerHTML = `<tr><td colspan="6" class="tbl-loading" style="color:#ef4444">Failed to load users: ${err?.message || 'Unknown error'}</td></tr>`;
       }
-      allUsers = data;
-      renderUsers(data);
     }
 
     const _suspendedUsers = new Set(JSON.parse(localStorage.getItem('bns_suspended') || '[]'));
@@ -1766,7 +1692,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
     function renderUsers(users) {
       const tbody = document.getElementById('users-tbody');
       document.getElementById('users-count').textContent = `${users.length} user${users.length !== 1 ? 's' : ''}`;
-      if (!users.length) { tbody.innerHTML = `<tr><td colspan="5" class="tbl-loading">No users match your search</td></tr>`; return; }
+      if (!users.length) { tbody.innerHTML = `<tr><td colspan="6" class="tbl-loading">No users match your search</td></tr>`; return; }
       tbody.innerHTML = users.map((u, i) => {
         const name      = u.full_name || 'User';
         const ini       = initials(u.email || name);
@@ -1778,12 +1704,17 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
           ? `<span class="wallet-ngn">₦${ngn.toLocaleString('en-NG')}</span>`
           : `<span class="wallet-zero">₦0</span>`;
         const safeName = name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+        const fundedNGN = _userFundedMap[u.id] || 0;
+        const fundedCell = fundedNGN > 0
+          ? `<span class="wallet-ngn">₦${Math.round(fundedNGN).toLocaleString('en-NG')}</span>`
+          : `<span class="wallet-zero">—</span>`;
         return `<tr style="${suspended ? 'opacity:0.6' : ''}">
           <td><div class="u-cell">
             <div class="u-ava" style="background:${COLORS[i%COLORS.length]}">${ini}</div>
             <div><div class="u-name">${name}</div><div class="u-email-sub">${u.email || u.id?.slice(0,20)+'...'}</div></div>
           </div></td>
           <td>${walletCell}</td>
+          <td>${fundedCell}</td>
           <td><span class="badge ${suspended ? 'b-error' : 'b-active'}">${suspended ? 'Suspended' : 'Active'}</span></td>
           <td style="color:var(--t2);font-size:0.74rem">${date}</td>
           <td style="white-space:nowrap"><div class="act-btns" style="gap:4px;flex-wrap:nowrap">
@@ -2313,79 +2244,98 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
     }
 
     (async () => {
-      /* Auth check — must be the admin account */
+      /* Auth check */
       const { data: { session } } = await db.auth.getSession();
       if (!session || session.user.email !== ADMIN_EMAIL) { window.location.href = 'login.html'; return; }
 
-      /* Stat: total users */
-      const { count: userCount, error: e1 } = await db.from('profiles').select('*', { count: 'exact', head: true });
-      if (e1) console.error('[Admin] profiles count error:', e1);
-      if (userCount != null) document.getElementById('stat-users').textContent = fmtNum(userCount);
+      /* Fire ALL dashboard queries in one round-trip */
+      const mo = new Date();
+      const t0 = new Date(mo.getFullYear(), mo.getMonth(), 1).toISOString();
+      const t1 = new Date(mo.getFullYear(), mo.getMonth() - 1, 1).toISOString();
 
-      /* Stat: total orders = SMM orders + account store orders */
-      const [{ count: smmCount, error: e2a }, { count: acctCount, error: e2b }] = await Promise.all([
+      const [
+        { count: userCount },
+        { count: smmCount },
+        { count: acctCount },
+        { count: smmDone },
+        { count: acctDone },
+        { data: revData },
+        { data: acctRevData },
+        { data: walletData },
+        { count: activeU },
+        { data: actOrds },
+        { data: actAcct },
+        { data: actUsers },
+        { data: actFunds },
+        { data: tmFundData },
+        { data: lmFundData },
+        { data: tmSmmData },
+        { data: lmSmmData },
+        { data: tmAcctData },
+        { data: lmAcctData },
+      ] = await Promise.all([
+        db.from('profiles').select('*', { count: 'exact', head: true }),
         db.from('orders').select('*', { count: 'exact', head: true }),
         db.from('account_orders').select('*', { count: 'exact', head: true }).neq('status', 'refunded'),
-      ]);
-      if (e2a) console.error('[Admin] orders count error:', e2a);
-      if (e2b) console.error('[Admin] acct orders count error:', e2b);
-      const orderCount = (smmCount || 0) + (acctCount || 0);
-      document.getElementById('stat-orders').textContent = fmtNum(orderCount);
-
-      /* Stat: service spend = SMM orders + account store purchases */
-      const [{ data: revData, error: e3 }, { data: acctRevData, error: e3b }] = await Promise.all([
+        db.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'Completed'),
+        db.from('account_orders').select('*', { count: 'exact', head: true }).eq('status', 'complete'),
         db.from('orders').select('amount').neq('status', 'Cancelled'),
         db.from('account_orders').select('price_ngn').neq('status', 'refunded'),
-      ]);
-      if (e3) console.error('[Admin] orders revenue error:', e3);
-      if (e3b) console.error('[Admin] acct orders revenue error:', e3b);
-      const smmSpendNGN  = (revData     || []).reduce((s, r) => s + parseFloat(r.amount    || 0) * USD_TO_NGN, 0);
-      const acctSpendNGN = (acctRevData || []).reduce((s, r) => s + parseFloat(r.price_ngn || 0), 0);
-      const spendNGN = smmSpendNGN + acctSpendNGN;
-      document.getElementById('stat-pending').textContent = `₦${Math.round(spendNGN).toLocaleString('en-NG')}`;
-
-      /* Stat: total funded = all wallet balances (remaining) + all service spend
-         Every naira in the system came through Korapay, so wallets + spent = total paid */
-      const { data: walletData } = await db.from('profiles').select('wallet_balance');
-      const walletsNGN = (walletData || []).reduce((s, u) => s + parseFloat(u.wallet_balance || 0) * USD_TO_NGN, 0);
-      const totalFundedNGN = walletsNGN + spendNGN;
-      document.getElementById('stat-revenue').textContent = `₦${Math.round(totalFundedNGN).toLocaleString('en-NG')}`;
-
-      /* User stats — active (funded) vs inactive */
-      try {
-        const [{ count: totalU }, { count: activeU }] = await Promise.all([
-          db.from('profiles').select('*', { count: 'exact', head: true }),
-          db.from('profiles').select('*', { count: 'exact', head: true }).gt('wallet_balance', 0),
-        ]);
-        const total    = totalU  || 0;
-        const active   = activeU || 0;
-        const inactive = Math.max(0, total - active);
-        const pct = n => total ? `(${(n / total * 100).toFixed(1)}%)` : '';
-        document.getElementById('leg-active').textContent       = fmtNum(active);
-        document.getElementById('leg-pct-active').textContent   = pct(active);
-        document.getElementById('leg-inactive').textContent     = fmtNum(inactive);
-        document.getElementById('leg-pct-inactive').textContent = pct(inactive);
-        document.getElementById('online-total').textContent     = fmtNum(total);
-      } catch (err) { console.error('[Admin] user stats:', err); }
-
-      /* -- Activity Feed -- */
-      const [{ data: actOrds }, { data: actAcct }, { data: actUsers }] = await Promise.all([
-        db.from('orders').select('id, service, created_at, user_id, profiles(full_name,email)').order('created_at', { ascending: false }).limit(3),
-        db.from('account_orders').select('id, offer_title, platform, created_at, profiles(full_name,email)').order('created_at', { ascending: false }).limit(3),
+        db.from('profiles').select('wallet_balance'),
+        db.from('profiles').select('*', { count: 'exact', head: true }).gt('wallet_balance', 0),
+        db.from('orders').select('id, service, created_at, user_id, profiles(full_name,email)').order('created_at', { ascending: false }).limit(4),
+        db.from('account_orders').select('id, offer_title, platform, created_at, profiles(full_name,email)').order('created_at', { ascending: false }).limit(4),
         db.from('profiles').select('id, email, full_name, created_at').order('created_at', { ascending: false }).limit(3),
+        db.from('fund_requests').select('id, amount, created_at, status, profiles(full_name,email)').eq('status','completed').order('created_at', { ascending: false }).limit(4),
+        db.from('fund_requests').select('amount').in('status',['Approved','completed']).gte('created_at', t0),
+        db.from('fund_requests').select('amount').in('status',['Approved','completed']).gte('created_at', t1).lt('created_at', t0),
+        db.from('orders').select('amount').neq('status','Cancelled').gte('created_at', t0),
+        db.from('orders').select('amount').neq('status','Cancelled').gte('created_at', t1).lt('created_at', t0),
+        db.from('account_orders').select('price_ngn').neq('status','refunded').gte('created_at', t0),
+        db.from('account_orders').select('price_ngn').neq('status','refunded').gte('created_at', t1).lt('created_at', t0),
       ]);
+
+      /* Render stats */
+      const orderCount     = (smmCount || 0) + (acctCount || 0);
+      const completedCount = (smmDone  || 0) + (acctDone  || 0);
+      const smmSpendNGN    = (revData     || []).reduce((s, r) => s + parseFloat(r.amount    || 0) * USD_TO_NGN, 0);
+      const acctSpendNGN   = (acctRevData || []).reduce((s, r) => s + parseFloat(r.price_ngn || 0), 0);
+      const spendNGN       = smmSpendNGN + acctSpendNGN;
+      const walletsNGN     = (walletData  || []).reduce((s, u) => s + parseFloat(u.wallet_balance || 0) * USD_TO_NGN, 0);
+      const totalFundedNGN = walletsNGN + spendNGN;
+      const total          = userCount || 0;
+      const active         = activeU   || 0;
+
+      document.getElementById('stat-users').textContent        = fmtNum(total);
+      document.getElementById('stat-active-users').textContent = fmtNum(active);
+      document.getElementById('stat-orders').textContent       = fmtNum(orderCount);
+      document.getElementById('stat-revenue').textContent      = `₦${Math.round(totalFundedNGN).toLocaleString('en-NG')}`;
+      document.getElementById('stat-pending').textContent      = fmtNum(completedCount);
+
+      const pct = n => total ? `(${(n / total * 100).toFixed(1)}%)` : '';
+      document.getElementById('stat-active-users').textContent = fmtNum(active);
+      document.getElementById('leg-active').textContent        = fmtNum(active);
+      document.getElementById('leg-pct-active').textContent    = pct(active);
+      document.getElementById('leg-inactive').textContent      = fmtNum(Math.max(0, total - active));
+      document.getElementById('leg-pct-inactive').textContent  = pct(Math.max(0, total - active));
+      document.getElementById('online-total').textContent      = fmtNum(total);
+
+      /* Render activity feed */
       const actItems = [
-        ...(actOrds  || []).map(o => ({ type:'order',  ts: o.created_at, label: 'Social Boost order',   sub: `${o.service || 'Order'} by ${o.profiles?.full_name || o.profiles?.email || (o.user_id||'').slice(0,8)}` })),
-        ...(actAcct  || []).map(o => ({ type:'acct',   ts: o.created_at, label: 'Account Store purchase', sub: `${o.offer_title || (o.platform||'Account')} by ${o.profiles?.full_name || o.profiles?.email || '—'}` })),
-        ...(actUsers || []).map(u => ({ type:'user',   ts: u.created_at, label: 'New user registered',   sub: u.full_name || u.email || (u.id||'').slice(0,16) })),
-      ].sort((a,b) => new Date(b.ts) - new Date(a.ts)).slice(0, 6);
+        ...(actOrds  || []).map(o => ({ type:'order',   ts: o.created_at, label: 'Social Boost order',    sub: `${o.service || 'Order'} by ${o.profiles?.full_name || o.profiles?.email || (o.user_id||'').slice(0,8)}` })),
+        ...(actAcct  || []).map(o => ({ type:'acct',    ts: o.created_at, label: 'Account Store purchase', sub: `${o.offer_title || (o.platform||'Account')} by ${o.profiles?.full_name || o.profiles?.email || '—'}` })),
+        ...(actUsers || []).map(u => ({ type:'user',    ts: u.created_at, label: 'New user registered',    sub: u.full_name || u.email || (u.id||'').slice(0,16) })),
+        ...(actFunds || []).map(f => ({ type:'funding', ts: f.created_at, label: 'Wallet funded',          sub: `₦${Math.round(parseFloat(f.amount||0)).toLocaleString('en-NG')} — ${f.profiles?.full_name || f.profiles?.email || '—'}` })),
+      ].sort((a,b) => new Date(b.ts) - new Date(a.ts)).slice(0, 8);
       document.getElementById('activity-list').innerHTML = actItems.length
         ? actItems.map(a => `<div class="act-item">
             ${a.type === 'order'
               ? `<div class="act-ico" style="background:#fdf2f8;color:#ec4899"><i class="fas fa-bag-shopping"></i></div>`
               : a.type === 'acct'
                 ? `<div class="act-ico" style="background:#f0fdf4;color:#10b981"><i class="fas fa-store"></i></div>`
-                : `<div class="act-ico" style="background:#f5f0ff;color:#7c3aed"><i class="fas fa-user-plus"></i></div>`}
+                : a.type === 'funding'
+                  ? `<div class="act-ico" style="background:#fffbeb;color:#f59e0b"><i class="fas fa-money-bill-wave"></i></div>`
+                  : `<div class="act-ico" style="background:#f5f0ff;color:#7c3aed"><i class="fas fa-user-plus"></i></div>`}
             <div class="act-body">
               <div class="act-title">${a.label}</div>
               <div class="act-sub">${a.sub}</div>
@@ -2394,50 +2344,24 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
           </div>`).join('')
         : `<div style="color:var(--t3);font-size:0.8rem;padding:12px 0">No recent activity</div>`;
 
-      /* -- Sparklines from real totals -- */
-      const trendArr = (end, len) => {
-        const e = end || 0;
-        return Array.from({ length: len }, (_, i) => Math.max(0,
-          Math.round(e * (0.7 + 0.3 * (i / (len - 1))) * (1 + (i % 3 === 1 ? -0.02 : i % 3 === 2 ? 0.02 : 0)))
-        ));
-      };
-      const uC = userCount  || 0;
-      const oC = orderCount || 0;
-      document.getElementById('spark-users').innerHTML   = sparkline(trendArr(uC,            10), '#7c3aed');
-      document.getElementById('spark-orders').innerHTML  = sparkline(trendArr(oC,            10), '#ec4899');
-      document.getElementById('spark-revenue').innerHTML = sparkline(trendArr(totalFundedNGN, 10), '#10b981');
-      document.getElementById('spark-pending').innerHTML = sparkline(trendArr(spendNGN,       10), '#f59e0b');
-
-      /* -- Month-over-month trends -- */
+      /* Render month-over-month trends (sync — data already fetched) */
       try {
-        const mo = new Date();
-        const t0 = new Date(mo.getFullYear(), mo.getMonth(), 1).toISOString();
-        const t1 = new Date(mo.getFullYear(), mo.getMonth() - 1, 1).toISOString();
-        const tr = await Promise.all([
-          db.from('orders').select('*',{count:'exact',head:true}).gte('created_at', t0),
-          db.from('orders').select('*',{count:'exact',head:true}).gte('created_at', t1).lt('created_at', t0),
-          db.from('profiles').select('*',{count:'exact',head:true}).gte('created_at', t0),
-          db.from('profiles').select('*',{count:'exact',head:true}).gte('created_at', t1).lt('created_at', t0),
-        ]);
         const setTrend = (id, curr, prev, lbl) => {
           const el = document.getElementById(id);
           if (!el) return;
           if (!prev) { el.innerHTML = '<span class="t-lbl">' + lbl + '</span>'; return; }
           const p = ((curr - prev) / prev * 100).toFixed(1);
           const up = p >= 0;
-          el.innerHTML = '<span class="' + (up ? 't-up' : 't-dn') + '"><i class="fas fa-arrow-' + (up ? 'up' : 'down') + '"></i> ' + Math.abs(p) + '%</span><span class="t-lbl">' + lbl + '</span>';
+          el.innerHTML = '<span class="' + (up ? 't-up' : 't-dn') + '"><i class="fas fa-arrow-' + (up ? 'up' : 'down') + '"></i> ' + Math.abs(p) + '%</span><span class="t-lbl"> ' + lbl + '</span>';
         };
-        /* trend-users and trend-orders removed — static labels used instead */
-        /* Revenue trend: fund_requests this month vs last month */
-        const tmFund = ((await db.from('fund_requests').select('amount').in('status',['Approved','completed']).gte('created_at', t0)).data || []).reduce((s,r) => s + parseFloat(r.amount || 0), 0);
-        const lmFund = ((await db.from('fund_requests').select('amount').in('status',['Approved','completed']).gte('created_at', t1).lt('created_at', t0)).data || []).reduce((s,r) => s + parseFloat(r.amount || 0), 0);
+        const tmFund = (tmFundData || []).reduce((s,r) => s + parseFloat(r.amount || 0), 0);
+        const lmFund = (lmFundData || []).reduce((s,r) => s + parseFloat(r.amount || 0), 0);
         setTrend('trend-revenue', tmFund, lmFund, 'funded this month');
-        /* Service spend trend: SMM + account store */
-        const tmSmmSpend  = ((await db.from('orders').select('amount').neq('status','Cancelled').gte('created_at', t0)).data || []).reduce((s,r) => s + parseFloat(r.amount || 0) * USD_TO_NGN, 0);
-        const lmSmmSpend  = ((await db.from('orders').select('amount').neq('status','Cancelled').gte('created_at', t1).lt('created_at', t0)).data || []).reduce((s,r) => s + parseFloat(r.amount || 0) * USD_TO_NGN, 0);
-        const tmAcctSpend = ((await db.from('account_orders').select('price_ngn').neq('status','refunded').gte('created_at', t0)).data || []).reduce((s,r) => s + parseFloat(r.price_ngn || 0), 0);
-        const lmAcctSpend = ((await db.from('account_orders').select('price_ngn').neq('status','refunded').gte('created_at', t1).lt('created_at', t0)).data || []).reduce((s,r) => s + parseFloat(r.price_ngn || 0), 0);
-        setTrend('trend-pending', tmSmmSpend + tmAcctSpend, lmSmmSpend + lmAcctSpend, 'vs last month');
+        const tmSpend = (tmSmmData || []).reduce((s,r) => s + parseFloat(r.amount || 0) * USD_TO_NGN, 0)
+                      + (tmAcctData || []).reduce((s,r) => s + parseFloat(r.price_ngn || 0), 0);
+        const lmSpend = (lmSmmData || []).reduce((s,r) => s + parseFloat(r.amount || 0) * USD_TO_NGN, 0)
+                      + (lmAcctData || []).reduce((s,r) => s + parseFloat(r.price_ngn || 0), 0);
+        setTrend('trend-pending', tmSpend, lmSpend, 'vs last month');
       } catch (e) { console.error('[Admin] trend error:', e); }
     })();
 
@@ -2485,23 +2409,38 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         }
       } catch { acEl.textContent = 'Unavailable'; acEl.className = 'badge b-warn'; }
 
-      /* Pre-fill markup inputs — show real defaults when nothing saved yet */
-      const owletInput = document.getElementById('prov-markup-owlet');
-      const accsInput  = document.getElementById('prov-markup-accszone');
-      owletInput.value = getMarkup('owlet');
-      accsInput.value  = getMarkup('accszone');
+      await loadMarkupConfig();
     }
 
-    function saveMarkup(provider, value) {
-      const key = provider === 'owlet' ? 'bns_markup_owlet' : 'bns_markup_accszone';
-      localStorage.setItem(key, value);
-      adminToast(`${provider === 'owlet' ? 'Owlet' : 'AccsZone'} markup set to ×${value}`, 'success');
+    const _markupCache = { owlet: 2, accszone: 2 };
+
+    async function loadMarkupConfig() {
+      try {
+        const r = await fetch('/api/config');
+        const cfg = await r.json();
+        _markupCache.owlet    = parseFloat(cfg.markup_owlet    ?? 2);
+        _markupCache.accszone = parseFloat(cfg.markup_accszone ?? 2);
+      } catch { /* keep defaults */ }
+      document.getElementById('prov-markup-owlet').value   = _markupCache.owlet;
+      document.getElementById('prov-markup-accszone').value = _markupCache.accszone;
+    }
+
+    async function saveMarkup(provider, value) {
+      const key = provider === 'owlet' ? 'markup_owlet' : 'markup_accszone';
+      _markupCache[provider] = parseFloat(value) || 2;
+      try {
+        const r = await fetch('/api/config', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key, value }),
+        });
+        const d = await r.json();
+        if (d.ok) adminToast(`${provider === 'owlet' ? 'Owlet' : 'AccsZone'} markup set to ×${value} — live on all devices`, 'success');
+        else adminToast('Failed to save markup', 'error');
+      } catch { adminToast('Failed to save markup', 'error'); }
     }
 
     function getMarkup(provider) {
-      const key      = provider === 'owlet' ? 'bns_markup_owlet' : 'bns_markup_accszone';
-      const defaults = { owlet: 2, accszone: 2 };
-      return parseFloat(localStorage.getItem(key) ?? defaults[provider] ?? 2);
+      return _markupCache[provider] ?? 2;
     }
 
     /* -- EXPENSES & PROFIT -- */

@@ -105,7 +105,11 @@ export default async function handler(req, res) {
 
     if (status === 'success' && userId) {
       const svcKey = process.env.SUPABASE_SERVICE_KEY;
-      if (svcKey) await creditWallet(svcKey, userId, amount || vd.data?.amount, reference);
+      if (svcKey) {
+        const paid = Number(amount || vd.data?.amount);
+        const bonus = paid === 20000 ? 2000 : 0;
+        await creditWallet(svcKey, userId, paid + bonus, reference);
+      }
     }
 
     return res.status(200).json({ status, amount: vd.data?.amount });

@@ -333,7 +333,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
   <div class="ac-toast" id="ac-toast"></div>
 
   <script>
-    const MARKUP     = parseFloat(localStorage.getItem('bns_markup_accszone') ?? '2');
+    let MARKUP       = 2; // loaded from server below
     const USD_TO_NGN = 1600;
     const fmtNGN = v => `₦${Math.round(v * USD_TO_NGN).toLocaleString('en-NG')}`;
 
@@ -841,43 +841,49 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         content_type: 'product', currency: 'NGN',
         value: Math.round(selectedOffer.sellUsd * USD_TO_NGN), num_items: 1
       });
-      const prevBalance  = userBalance;
-      const newBalance   = userBalance - selectedOffer.sellUsd;
-
       try {
-        // Deduct wallet FIRST — so it's always deducted before the provider call
-        const { error: walletErr } = await db.from('profiles').update({ wallet_balance: newBalance }).eq('id', userId);
-        if (walletErr) throw new Error('Could not update wallet: ' + walletErr.message);
-        userBalance = newBalance;
-        document.getElementById('topbar-balance').textContent = fmtNGN(newBalance);
-
-        const res  = await api({ action: 'purchase', ad_id: selectedOffer.id, quantity: 1 });
-        const data = unwrap(res);
-        if (!res || res.error || res.success === false) {
-          const detail = res?.detail ? ` — ${res.detail}` : '';
-          throw new Error((res?.message || (typeof res?.error === 'string' ? res.error : '') || 'Purchase failed') + detail);
+        // Get fresh JWT — session check before hitting the server
+        const { data: { session: freshSession } } = await db.auth.getSession();
+        if (!freshSession) {
+          errEl.textContent = 'Your session has expired. Please refresh the page and log in again.';
+          errEl.style.display = 'block';
+          btn.disabled = false; btn.textContent = 'Confirm Purchase';
+          return;
         }
 
+        // Server-side purchase: balance check, deduction, and provider call all on the server
+        const res = await fetch('/api/accsmaster', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${freshSession.access_token}` },
+          body: JSON.stringify({
+            action:      'secure_purchase',
+            ad_id:       selectedOffer.id,
+            quantity:    1,
+            offer_title: selectedOffer.title,
+            offer_slug:  selectedOffer.slug || null,
+            platform:    selectedOffer.catName || null,
+            price_usd:   selectedOffer.sellUsd,
+            price_ngn:   Math.round(selectedOffer.sellUsd * USD_TO_NGN),
+          }),
+        }).then(r => r.json());
+
+        if (!res || res.error || res.success === false) {
+          const detail = res?.detail ? ` — ${res.detail}` : '';
+          throw new Error((res?.error || res?.message || 'Purchase failed') + detail);
+        }
+
+        // Update local balance from server response
+        if (res.newBalanceUSD !== undefined) {
+          userBalance = res.newBalanceUSD;
+          document.getElementById('topbar-balance').textContent = fmtNGN(userBalance);
+        }
+
+        const data        = res?.data ?? res;
         const orderId     = data?.order_id || data?.id || null;
         let credentials   = data?.credentials || data?.account || null;
         if (!credentials && Array.isArray(data?.accounts) && data.accounts.length) {
           credentials = parseAccsZoneAccount(data.accounts[0]);
         }
-
-        const { error: orderErr } = await db.from('account_orders').insert({
-          user_id:           userId,
-          provider_order_id: String(orderId || ''),
-          offer_id:          String(selectedOffer.id || ''),
-          offer_title:       selectedOffer.title,
-          platform:          selectedOffer.catName || 'Social Media Account',
-          price_usd:         selectedOffer.sellUsd,
-          price_ngn:         Math.round(selectedOffer.sellUsd * USD_TO_NGN),
-          status:            credentials ? 'complete' : 'pending',
-          credentials:       credentials || null,
-          offer_description: selectedOffer.desc || null,
-          offer_slug:        selectedOffer.slug ? String(selectedOffer.slug) : null,
-        });
-        if (orderErr) console.error('Order save failed:', orderErr.message);
 
         if (window.ttqTrack) {
           const acctEvt = {
@@ -901,13 +907,6 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         }
 
       } catch (e) {
-        // Only restore wallet if the provider call failed (wallet was already deducted)
-        // If wallet deduction itself failed, userBalance hasn't changed
-        if (userBalance !== prevBalance) {
-          await db.from('profiles').update({ wallet_balance: prevBalance }).eq('id', userId);
-          userBalance = prevBalance;
-          document.getElementById('topbar-balance').textContent = fmtNGN(prevBalance);
-        }
         errEl.textContent   = e.message || 'Purchase could not be completed. Please try again.';
         errEl.style.display = 'block';
         btn.disabled    = false;
@@ -1093,6 +1092,13 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       const { data: profile } = await db.from('profiles').select('wallet_balance').eq('id', userId).single();
       userBalance = parseFloat(profile?.wallet_balance || 0);
       document.getElementById('topbar-balance').textContent = fmtNGN(userBalance);
+
+      // Fetch markup from server so all devices stay in sync
+      try {
+        const cfgRes = await fetch('/api/config');
+        const cfg = await cfgRes.json();
+        MARKUP = parseFloat(cfg.markup_accszone ?? 2) || 2;
+      } catch { /* keep default */ }
 
       if (window.ttqIdentify) {
         ttqIdentify(session.user.email, session.user.id).then(() => ttqTrack('ViewContent', {

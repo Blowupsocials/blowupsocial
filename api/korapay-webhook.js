@@ -28,7 +28,8 @@ export default async function handler(req, res) {
     const reference = data?.reference;
 
     if (userId && amountNGN) {
-      await creditWallet(svcKey, userId, amountNGN, reference);
+      const bonus = Number(amountNGN) === 20000 ? 2000 : 0;
+      await creditWallet(svcKey, userId, Number(amountNGN) + bonus, reference);
     }
   }
 
