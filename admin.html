@@ -1739,6 +1739,7 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
     let allOrders = [];
     async function loadOrders() {
       const tbody = document.getElementById('orders-tbody');
+      tbody.innerHTML = `<tr><td colspan="8" class="tbl-loading"><i class="fas fa-spinner fa-spin"></i> Loading orders...</td></tr>`;
       const { data, error } = await db.from('orders')
         .select('*, profiles(full_name, email)')
         .order('created_at', { ascending: false });
@@ -1749,6 +1750,41 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
       }
       allOrders = data;
       renderOrders(data);
+      syncOwletStatuses(data);
+    }
+
+    async function syncOwletStatuses(orders) {
+      const pending = orders.filter(o => o.status === 'Pending' && o.order_ref?.startsWith('BUS-'));
+      if (!pending.length) return;
+
+      const idMap = {};
+      for (const o of pending) idMap[o.order_ref.replace('BUS-', '')] = o.id;
+
+      const owletIds = Object.keys(idMap);
+      const statusMap = {};
+      for (let i = 0; i < owletIds.length; i += 100) {
+        try {
+          const r = await fetch('/api/owlet', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'status', orders: owletIds.slice(i, i + 100).join(',') }),
+          });
+          Object.assign(statusMap, await r.json());
+        } catch {}
+      }
+
+      const toDb = { Completed: 'Completed', Canceled: 'Cancelled', 'In Progress': 'In Progress', Processing: 'Processing', Partial: 'Partial' };
+      const updates = [];
+      for (const [owletId, d] of Object.entries(statusMap)) {
+        const dbId = idMap[owletId];
+        const newSt = d?.status && toDb[d.status];
+        if (dbId && newSt && newSt !== 'Pending') updates.push({ id: dbId, status: newSt });
+      }
+      if (!updates.length) return;
+
+      await Promise.all(updates.map(u => db.from('orders').update({ status: u.status }).eq('id', u.id)));
+      for (const u of updates) { const o = allOrders.find(x => x.id === u.id); if (o) o.status = u.status; }
+      renderOrders(allOrders);
     }
 
     function renderOrders(orders) {
