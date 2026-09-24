@@ -2478,15 +2478,18 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
     let _expenses = [];
 
     async function loadExpenses() {
-      _expenses = JSON.parse(localStorage.getItem('bns_expenses') || '[]');
       document.getElementById('exp-date').value = new Date().toISOString().slice(0,10);
-      const { data: expFunds } = await db.from('fund_requests').select('amount').eq('status', 'completed');
+      const [{ data: expFunds }, { data: expRows }] = await Promise.all([
+        db.from('fund_requests').select('amount').eq('status', 'completed'),
+        db.from('expenses').select('*').order('date', { ascending: false }),
+      ]);
+      _expenses = expRows || [];
       const totalRevNGN = (expFunds || []).reduce((s, r) => s + parseFloat(r.amount || 0), 0);
       renderExpenses(totalRevNGN);
     }
 
     function renderExpenses(totalRevNGN) {
-      const totalExp = _expenses.reduce((s, e) => s + e.amount, 0);
+      const totalExp = _expenses.reduce((s, e) => s + parseFloat(e.amount || 0), 0);
       const profit   = totalRevNGN - totalExp;
       const margin   = totalRevNGN > 0 ? (profit / totalRevNGN) * 100 : 0;
       const fmt      = v => `₦${Math.round(v).toLocaleString('en-NG')}`;
@@ -2503,41 +2506,37 @@ src="https://www.facebook.com/tr?id=2908681819475419&ev=PageView&noscript=1"
         tbody.innerHTML = `<tr><td colspan="5" class="tbl-loading">No expenses logged yet.</td></tr>`;
         return;
       }
-      const sorted = [..._expenses].sort((a,b) => new Date(b.date) - new Date(a.date));
-      tbody.innerHTML = sorted.map((e, i) => {
-        const realIdx = _expenses.indexOf(e);
+      tbody.innerHTML = _expenses.map(e => {
         const date = new Date(e.date).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'numeric' });
         return `<tr>
           <td style="font-size:0.75rem;color:var(--t3);white-space:nowrap">${date}</td>
           <td><span class="badge b-warn" style="font-size:0.67rem">${e.category}</span></td>
-          <td style="font-size:0.8rem;color:var(--t1)">${e.desc}</td>
+          <td style="font-size:0.8rem;color:var(--t1)">${e.description}</td>
           <td style="font-weight:700;color:var(--rd)">₦${Math.round(e.amount).toLocaleString('en-NG')}</td>
-          <td><button onclick="deleteExpense(${realIdx})" class="ua-btn" style="color:#991b1b;background:#fee2e2">Delete</button></td>
+          <td><button onclick="deleteExpense(${e.id})" class="ua-btn" style="color:#991b1b;background:#fee2e2">Delete</button></td>
         </tr>`;
       }).join('');
     }
 
-    function addExpense() {
+    async function addExpense() {
       const cat    = document.getElementById('exp-cat').value;
       const desc   = document.getElementById('exp-desc').value.trim();
       const amount = parseFloat(document.getElementById('exp-amount').value);
       const date   = document.getElementById('exp-date').value;
-      if (!desc)        { adminToast('Enter a description.', 'warn'); return; }
+      if (!desc)               { adminToast('Enter a description.', 'warn'); return; }
       if (!amount || amount <= 0) { adminToast('Enter a valid amount.', 'warn'); return; }
-      if (!date)        { adminToast('Select a date.', 'warn'); return; }
-      _expenses.push({ category: cat, desc, amount, date });
-      localStorage.setItem('bns_expenses', JSON.stringify(_expenses));
+      if (!date)               { adminToast('Select a date.', 'warn'); return; }
+      const { error } = await db.from('expenses').insert({ category: cat, description: desc, amount, date });
+      if (error) { adminToast('Failed to save expense.', 'error'); return; }
       document.getElementById('exp-desc').value   = '';
       document.getElementById('exp-amount').value = '';
-      // re-fetch revenue and re-render
-      loadExpenses();
+      await loadExpenses();
       adminToast('Expense logged!', 'success');
     }
 
-    function deleteExpense(i) {
-      _expenses.splice(i, 1);
-      localStorage.setItem('bns_expenses', JSON.stringify(_expenses));
-      loadExpenses();
+    async function deleteExpense(id) {
+      await db.from('expenses').delete().eq('id', id);
+      await loadExpenses();
     }
   </script>
 </body>
